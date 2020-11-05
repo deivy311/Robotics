@@ -1,0 +1,467 @@
+Robotics II
+October 27, 2014
+Exercise 1
+The collision detection and isolation method based on the use of residuals that monitor the robot
+generalized momentum has been presented only for open chain manipulators with revolute joints.
+Consider the planar PRR robot in Fig. 1, moving on a horizontal plane. Assuming that the robot
+at rest at time t = 0, provide the explicit expressions of the contributions to the residual vector
+r ∈ R3 in terms of the robot dynamic model components1 . Comment on analogies or differences
+that may result due to the presence of prismatic joints in the chain, only one in the present case,
+or one or more in the general case.
+RF0
+FK
+FK
+q1
+
+q2
+
+q3
+
+FK
+
+Figure 1: A planar PRR robot that may undergo collisions at any point along its structure (only
+non-simultaneous collision forces F K in the plane of motion are considered)
+Exercise 2
+For the same robot of the previous exercise, assume that second and third links have unitary
+lengths. Moreover, the force (for joint 1) and torques (for joints 2 and 3) that can be delivered by
+the actuators at the joints are bounded as follows:
+|τ1 | ≤ 5 [N],
+
+|τ2 | ≤ 1 [Nm],
+
+|τ3 | ≤ 2 [Nm].
+
+The robot should be able to sustain in static conditions contact forces F that are applied to its
+end-effector in various planar directions. Determine the maximum norm of a contact force that
+can be applied in any planar direction and sustained by the robot when kept always in a fixed
+configuration. Provide at least one non-singular configuration in which the robot achieves this
+optimal result.
+[180 minutes; open books]
+
+1 For
+
+dynamic analysis, you may use whatever generalized coordinates you find most convenient.
+
+1
+
+Solution
+October 27, 2014
+Exercise 1
+When considering the Lagrangian dynamics of a robot with q ∈ Rn that is possibly subject to
+collision forces, we have
+M (q)q̈ + C(q, q̇)q̇ + g(q) = τ + τ K ,
+
+τ K = J TK (q)F K ,
+
+where the left-hand side of the dynamic equation contains the usual inertia terms, Coriolis and
+centrifugal terms (with a factorization such that Ṁ − 2C is a skew-symmetric matrix), and gravity
+terms, while the non-conservative terms on the right-hand side are the motor torque τ and the
+joint torque τ K ∈ Rn resulting from a collision/contact on the robot structure (i.e., on one of the
+links). Moreover, F K ∈ Rm is the generalized force at the contact and J TK (q) is the transpose of
+the Jacobian of the contact point. Both these quantities are unknown.
+To detect the presence of a joint torque τ K due to a collision, we use a residual vector based
+on the robot generalized momentum p = M (q)q̇. With the robot starting at rest at time t = 0,
+the residual r ∈ Rn is defined as
+
+
+Z t
+T
+r = KI p −
+(τ + C (q, q̇)q̇ − g(q) + r)ds ,
+r(0) = 0,
+0
+
+with K I > 0 and diagonal. Therefore, for its computation we need the inertia matrix M (q),
+the factorization matrix C(q, q̇) of the Coriolis and centrifugal terms (obtained using Christoffel’s
+coefficients), and the gravity vector g(q) of the specific robot.
+
+dc3
+
+q3
+
+m 3 , I3
+
+y0
+dc2
+
+q1
+
+m 2 , I2
+q2
+
+m1
+
+x0
+
+dc1
+
+Figure 2: The definition of generalized coordinates and dynamic parameters for the planar PRR
+robot (the link length are l2 and l3 )
+We define the reference frame axes and the generalized coordinates q ∈ R3 for the planar PRR
+robot as in Fig. 2 —note that these do not follow the DH convention. Since the robot is moving
+on a horizontal plane, g(q) ≡ 0.
+The kinetic energy of the robot
+T =
+
+3
+X
+i=1
+
+Ti =
+
+3
+X
+ 1
+1
+mi kv ci k2 + ω Ti I i ω i = q̇ T M (q)q̇
+2
+2
+i=1
+
+2
+
+is computed as follows2 :
+1
+T1 = m1 q̇12
+2
+!
+
+pc2 =
+
+q1 + dc1 + dc2 c2
+
+v c2 =
+
+!
+
+dc2 c2 q̇2
+
+ 1
+1
+m2 q̇12 + d2c2 q̇22 − 2dc2 s2 q̇1 q̇2 + I2 q̇22
+2
+2
+!
+!
+q1 + dc1 + l2 c2 + dc3 c23
+q̇1 − l2 s2 q̇2 − dc3 s23 (q̇2 + q̇3 )
+pc3 =
+⇒ v c3 =
+l2 s2 + dc3 s23
+l2 c2 q̇2 + dc3 c23 (q̇2 + q̇3 )
+
+
+2
+T3 = 21 m3 q̇12 + l22 q̇22 + d2c3 (q̇2 + q̇3 ) − 2l2 s2 q̇1 q̇2 − 2dc3 s23 q̇1 (q̇2 + q̇3 ) + 2l2 dc3 c23 q̇2 (q̇2 + q̇3 )
+⇒
+
+⇒
+
+⇒
+
+dc2 s2
+
+q̇1 − dc2 s2 q̇2
+
+T2 =
+
+2
+
++ 21 I3 (q̇2 + q̇3 ) .
+As a result, the inertia matrix is
+
+m1 + m2 + m3
+− (m2 dc2 + m3 l2 ) s2 − m3 dc3 s23
+
+symm
+I2 + m2 d2c2 + I3 + m3 d2c3 + m3 l22 + 2l2 m3 dc3 c3
+M (q) = 
+symm
+
+−m3 dc3 s23
+
+
+I3 + m3 d2c3 + l2 m3 dc3 c3  .
+I3 + m3 d2c3
+
+symm
+
+Using the following parametrization3
+a1 = m1 + m2 + m3
+a2 = m2 dc2 + m3 l2
+a3 = m3 dc3
+a4 = I2 + m2 d2c2 + I3 + m3 d2c3 + m3 l22
+a5 = I3 + m3 d2c3 ,
+the inertia matrix can be more compactly rewritten as
+
+
+a1
+−a2 s2 − a3 s23
+−a3 s23
+
+
+M (q) =  −a2 s2 − a3 s23 a4 + 2l2 a3 c3 a5 + l2 a3 c3  =
+−a3 s23
+
+a5 + l2 a3 c3
+
+m1 (q) m2 (q) m3 (q)
+
+
+
+.
+
+a5
+
+For the term C T (q, q̇)q̇, we use the formula
+ T
+
+q̇ C 1 (q)
+
+
+C(q, q̇) =  q̇ T C 2 (q)  ⇒ C T (q, q̇)q̇ =
+
+
+C T1 (q)q̇
+
+C T2 (q)q̇
+
+q̇ T C 3 (q)
+
+with matrices C i (q) defined as
+"
+ 
+T 
+#
+∂mi (q)
+∂mi (q)
+∂M (q)
+1
++
+−
+,
+C i (q) =
+2
+∂q
+∂q
+∂qi
+
+C T3 (q)q̇
+
+q̇1
+
+
+
+
+
+ q̇2  ,
+q̇3
+
+for i = 1, 2, 3.
+
+2 Taking into account the planar nature of the problem, we work with two-dimensional vectors for linear quantities
+(in the plane (x0 , y 0 )) and with scalars for angular quantities (components along z 0 ).
+3 Here, the kinematic parameter l is assumed to be known. This allows writing the product m l d
+2
+3 2 c3 as a3 l2 ,
+without the need of introducing a sixth dynamic coefficient.
+
+3
+
+
+
+Performing computations yields finally
+
+
+0
+
+
+C 1 (q) =  0
+0
+
+0
+
+C 2 (q) =  0
+0
+
+0
+
+C 3 (q) =  0
+0
+
+0
+
+0
+
+
+
+
+− (a2 c2 + a3 c23 ) −a3 c23  ,
+−a3 c23
+−a3 c23
+
+0
+0
+
+0
+−l2 a3 s3  ,
+−l2 a3 s3 −l2 a3 s3
+
+0
+0
+
+−l2 a3 s3 0  .
+0
+0
+
+The presence of prismatic joints in the robot does not change the overall residual approach
+to collision detection. Indeed, there are slight changes in the detectability of contact forces. For
+instance, a force F K applied to the first link of the PRR robot along a direction that is normal to
+the first joint axis will not be detected. For a robot with a first revolute joint, a force applied to
+the first link along a line crossing the first joint axis would not be detected. In both cases, note
+that such forces produce no motion anyway. When a prismatic joint is placed along the structure,
+as in a planar RPR robot, the same reasoning applies, although detectability becomes in any event
+easier, thanks to the role of the multiple joints preceding the link being hit.
+o
+n
+In general, contact forces F K ∈ N J TK (q) will never be recorded by the residual r. In a
+dual fashion, the residual method will fully detect contact forces that are completely orthogonal
+to the null space of the contact Jacobian, no matter which is the prismatic or revolute nature of
+the robot joints.
+Exercise 2
+We use the same coordinates as in Exercise 1. From the direct kinematics
+!
+q1 + l2 c2 + l3 c23
+p = f (q) =
+,
+l2 s2 + l3 s23
+the end-effector Jacobian of interest is
+∂f (q)
+=
+J (q) =
+∂q
+
+1
+0
+
+− (l2 s2 + l3 s23 ) −l3 s23
+l2 c2 + l3 c23
+
+l3 c23
+
+!
+.
+
+Note that the Jacobian is singular (loses rank) when c23 = c2 = 0, namely when the second
+and third links lie both (folded or stretched) along a line orthogonal to the first (prismatic) joint
+axis. In singular configurations, there are Cartesian directions along which arbitrary forces can
+be applied without the need of motor torques to keep the structure in static balance. While such
+configurations are indeed good candidates for the solution of the problem at hand, we should
+also take into account that even in singular configurations contact forces could be applied along
+arbitrary planar directions, and thus too large forces in norm may not be sustainable in view of
+the given actuator limits.
+
+4
+
+A generic contact force can be parametrized as
+!
+!
+Fx
+cos α
+F =
+= kF k
+,
+Fy
+sin α
+
+α ∈ (−π.π] ,
+
+(1)
+
+where α is the angle of the force w.r.t. the x0 axis. For a given robot configuration q and a given
+value of kF k, we should check if the actuator limits are still satisfied or not in correspondence to
+the ‘worst case’ angle α.
+Setting then l2 = l3 = 1 [m], and using the given actuator bounds, the following inequalities
+need to be satisfied
+  
+
+
+
+5
+Fx
+−5
+  
+
+
+
+T
+ −1  ≤ J (q)F =  − (s2 + s23 ) Fx + (c2 + c23 ) Fy  ≤  1  .
+2
+−s23 Fx + c23 Fy
+−2
+Or, using also eq. (1),
+
+
+
+
+|Fx |
+
+
+
+5
+
+
+
+
+ 
+
+ kF k · |s2−α + s23−α |  ≤  1  .
+kF k · |s23−α |
+2
+
+(2)
+
+This form is more convenient for analysis. From the first inequality in (2), the norm of F should
+certainly not exceed 5 N. From the last inequality, no matter which value takes the sum q2 + q3 ,
+we can always select a direction (i.e., a suitable value of α) such that |s23−α | = 1, yielding then
+the worst case. Thus, the norm of F cannot exceed 2 N (which dominates the former condition).
+Finally, consider the second inequality. If we had a limit on the second torque larger than or
+equal to 4 Nm, since |s2−α + s23−α | ≤ 2 holds for any combination of q2 , q3 and α, then this
+bound would anyway be dominated by the stricter condition on the third torque. Instead, with a
+maximum value of 1 Nm, we still need to carry the analysis a bit further.
+It is easy to see that c3 = −1 (namely, q3 = ±π) implies s2−α + s23−α ≡ 0, and so any
+force can be sustained by the actuator at joint 2 when folding the third link over the second, and
+independently of the value of q2 . This should not come unexpected, as the application line of any
+force applied to the end-effector would then always cross the axis of joint 2, producing thus no
+torque. Note that things would be quite different in the case l2 6= l3 .
+Summarizing, the maximum sustainable contact force applied at the robot end-effector has
+norm kF k = 2 N. A non-singular configuration where such a force can be sustained (with at least
+one torque in saturation) is given by q ∗ = (any, 3π/4, −π) —q1 is irrelevant. When applying a
+force of 2 N in the direction normal to link 3 (α = π/4), we would have as balancing joint torque
+
+
+ √ 
+√ !
+1
+0
+− 2
+2
+
+
+
+
+0  √
+=  0 .
+τ ∗ = −J T (q ∗ )F = −  0
+√
+√
+2
+2/2
+2/2
+−2
+Note that the Jacobian matrix at q ∗ has full rank, so this is not a singular configuration.
+∗∗∗∗∗
+
+5
+
+

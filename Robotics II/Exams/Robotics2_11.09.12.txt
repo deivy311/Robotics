@@ -1,0 +1,250 @@
+Robotics II
+September 12, 2011
+
+1. A 2R robot moving in the vertical plane and having link lengths l1 = l2 = 1 [m] is self-balanced
+with respect to gravity in the absence of a payload (see Fig. 1). Provide the mechanical
+conditions under which the gravity term in the dynamics of this robot is identically zero for
+any configuration q = (q1 , q2 ).
+
+y0
+l2
+g0
+
+l1
+
+x0
+Figure 1: A 2R robot
+2. For a regulation task to a desired q d , the following control law (PD + constant gravity
+compensation)
+u = K P (q d − q) − K D q̇ + g(q d ),
+
+K P > 0, K D > 0,
+
+(1)
+
+is applied to this robot, now in the presence of a point-wise payload of known mass M located
+at the end of the second link.
+a) Derive the correct expression of the gravity term g(q d ) in (1).
+b) Given the fixed choice of PD gain matrices
+K P = diag{100, 100},
+
+K D = diag{25, 25},
+
+(2)
+
+provide an upper bound for the value of M such that the control law (1), with the gains
+chosen as in (2), certainly guarantees global asymptotic stability of the equilibrium state
+(q, q̇) = (q d , 0). It is suggested to perform an approximate (conservative) analysis.
+[120 minutes; open books]
+
+1
+
+Solution
+September 12, 2011
+
+In the absence of a payload, the potential energy U due to gravity is
+U = U1 + U2 ,
+
+U1 = m1 g0 d1 sin q1 ,
+
+U2 = m2 g0 (l1 sin q1 + d2 sin(q1 + q2 )) ,
+
+where m1 and m2 are the masses of the two links, g0 = 9.81 [m/s2 ] is the gravity acceleration, and
+d1 and d2 are the (oriented) distances of the the center of mass of link 1 and, respectively, of link
+2 from the associated joint axes (d1 and d2 can be positive, zero, or negative). The gravity term
+is then
+!
+
+T
+(m1 d1 + m2 l1 )g0 cos q1 + m2 d2 g0 cos(q1 + q2 )
+∂U
+=
+g(q) =
+,
+∂q
+m2 d2 g0 cos(q1 + q2 )
+from which the requested mechanical conditions are:
+
+ d2 = 0,
+g(q) ≡ 0
+⇐⇒
+ d1 = − m2 l1 < 0.
+m1
+The center of mass of the second link is then on the axis of joint 2, while the center of mass of the
+first link is located ‘in opposition’ to the second link 2 with respect to the joint 2 axis so that the
+center of gravity of the two masses of the first and second link lies always on the axis of joint 1.
+In these conditions, it follows that U ≡ 0 (or constant).
+In the presence of a payload, the additional potential energy UM due to the point-wise mass
+M at the end-effector is
+UM = M g0 (l1 sin q1 + l2 sin(q1 + q2 )) ,
+and so the gravity term in the robot dynamics becomes
+
+g(q) =
+
+∂UM
+∂q
+
+T
+= M g0
+
+l1 cos q1 + l2 cos(q1 + q2 )
+l2 cos(q1 + q2 )
+
+!
+.
+
+Evaluating this at q = q d yields the term g(qd ) in the control law (1).
+For part 2.b, one relies on the property of boundedness for the gradient of the gravity term for
+all configurations of the robot, i.e.,
+∂g(q)
+≤ α,
+∂q
+
+∀q,
+
+∂g
+is
+∂q
+defined1 as the square root of the largest eigenvalue of the (symmetric and positive semi-definite)
+matrix AT A:
+r
+
+
+where α is a suitable (large enough) positive constant, and the norm of the matrix A =
+
+kAk =
+
+λmax AT A .
+
+1 This
+
+kxk =
+
+√ matrix norm is the one induced by (or, naturally associated with) the standard Euclidean norm of vectors:
+xT x.
+
+2
+
+Indeed, both the configuration-dependent norm of matrix A and its constant upper bound α will
+be functions of (in particular, increase with) the mass M . In order to guarantee that the control
+law (1) globally asymptotically stabilizes any desired equilibrium state of the robot, with the PD
+gains chosen as in (2), it will be sufficient to have
+α < K P,min = 100.
+
+(3)
+
+We compute then
+∂g
+= M g0
+A=
+∂q
+
+−l1 sin q1 − l2 sin(q1 + q2 ) −l2 sin(q1 + q2 )
+−l2 sin(q1 + q2 )
+
+−l2 sin(q1 + q2 )
+
+!
+,
+
+and
+2
+
+AT A = (M g0 ) ·
+2
+
+(l1 sin q1 + l2 sin(q1 + q2 )) + (l2 sin(q1 + q2 ))
+
+2
+
+(l1 sin q1 + l2 sin(q1 + q2 )) l2 sin(q1 + q2 )
+
+(l1 sin q1 + l2 sin(q1 + q2 )) l2 sin(q1 + q2 )
+
+2 (l2 sin(q1 + q2 ))
+
+2
+
+The two (real and non-negative) eigenvalues of AT A are the roots of
+
+
+det λI − AT A = λ2 − b(q, M )λ + c(q, M ) = 0,
+with
+4
+
+
+
+4
+
+h
+
+b(q, M ) = (M g0 )
+
+c(q, M ) = (M g0 )
+
+2
+
+2
+
+(l1 sin q1 + l2 sin(q1 + q2 )) + 3 (l2 sin(q1 + q2 ))
+4
+
+
+
+≥ 0,
+
+2
+
+2 (l2 sin(q1 + q2 )) + (l2 sin(q1 + q2 )) (l1 sin q1 + l2 sin(q1 + q2 ))
+
+2
+
+i
+
+≥ 0,
+
+and where the inequalities on the right hold for all q and all positive values of M . For a given
+M > 0 and q, the largest of the two eigenvalues is written compactly as
+
+ b(q, M ) + pb2 (q, M ) − 4 c(q, M )
+T
+.
+λmax A (q, M )A(q, M ) =
+2
+From the non-negativity of both b and c, an upper bound to this expression is obtained by simply
+neglecting c, so that
+
+
+λmax AT (q, M )A(q, M ) ≤ b(q, M ).
+The maximum value for b(q, M ) over all possible q is obtained when simultaneously
+sin q1 = 1
+
+AND
+
+sin(q1 + q2 ) = 1
+
+(e.g., for q1 = π/2, q2 = 0).
+
+Plugging the numerical values of the link lengths, l1 = l2 = 1, and setting g0 = 9.81, we can set
+for the constant α to be used as an upper bound to k∂g/∂qk
+α2 = b(q, M )|q1 =π/2,q2 =0 = 7 · (9.81)4 · M 4 ,
+and thus
+α=
+
+√
+
+7 · (9.81)2 · M 2 .
+
+Therefore, the inequality (3) is satisfied for
+M<
+
+10 1
+√ ' 0.6267 [kg].
+9.81 4 7
+∗∗∗∗∗
+3
+
+!
+.
+
+

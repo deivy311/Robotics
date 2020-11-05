@@ -1,0 +1,271 @@
+Robotics II
+February 6, 2013
+The end-effector of the RP robot in Fig. 1 is constrained to move on the Cartesian line x = k,
+with k > 0.
+
+Y0
+q2
+
+d
+q1
+
+X0
+
+x=k
+Figure 1: A RP robot moving on a horizontal plane with its end-effector constrained on a line
+
+• Derive the expression of the reduced robot dynamics (in this case, a single first-order differential equation), written in terms of pseudoacceleration and automatically satisfying the
+constraint. Try to provide global validity to this model.
+• Design a control law that regulates to constant desired values vd and λd , respectively the
+tangent velocity and the normal force to the end-effector constraint.
+
+[120 minutes; open books]
+
+1
+
+Solution
+February 6, 2013
+Following the Lagrangian approach for a robot with N , with multipliers λ used to weigh the M dimensional holonomic constraints h(q) = 0, the dynamic equations (in the absence of gravity)
+take the form
+B(q)q̈ + c(q, q̇) = u + AT(q)λ
+s.t. h(q) = 0,
+(1)
+with A(q) = ∂h(q)/∂q.
+The reduced dynamic model is obtained by restricting the motion to a R-dimensional configuration space, with R = N − M , that is automatically compatible with the constraints h(q) = 0.
+The constraints are thus discarded from the formulation. At the same time, it is also possible to
+eliminate the appearance of the multipliers (i.e., of the forces that arise when attempting to violate
+the constraints) in the resulting dynamic equations.
+We provide first the terms that appear in (1), namely the robot inertia matrix B, the Coriolis
+and centrifugal vector c, and the matrix A. The kinetic energy1 is
+T = T1 + T2 =
+
+
+1 2 1
+I1 q̇ +
+I2 q̇12 + m2 v Tc2 v c2 .
+2 1 2
+
+Since
+
+pc2 =
+
+(q2 − d) cos q1
+(q2 − d) sin q1
+
+
+
+
+⇒
+
+v c2 = ṗc2 =
+
+−(q2 − d) sin q1 q̇1 + q̇2 cos q1
+(q2 − d) cos q1 q̇1 + q̇2 sin q1
+
+
+,
+
+it follows
+
+1
+1
+1
+I1 + I2 + m2 (q2 − d)2 q̇12 + m2 q̇22 = q̇ T
+T =
+2
+2
+2
+
+
+
+I1 + I2 + m2 (q2 − d)2
+0
+
+0
+m2
+
+
+q̇ =
+
+1 T
+q̇ B(q)q̇.
+2
+
+From the inertia matrix, using the Christoffel symbols, we obtain
+
+
+2m2 (q2 − d)q̇1 q̇2
+c(q, q̇) =
+.
+−m2 (q2 − d)q̇12
+The (scalar) Cartesian constraint on the end-effector is
+h(q) = q2 cos q1 − k = 0.
+Thus,
+A(q) =
+
+∂h(q)
+=
+∂q
+
+−q2 sin q1
+
+cos q1
+
+
+
+.
+
+The reduction of the dynamics proceeds then as follows. In the present case, it is N = 2 and
+M = 1, so that R = 1. Define the matrix D(q) (a row in our case) such that
+
+ 
+
+A(q)
+−q2 sin q1 cos q1
+=
+is nonsingular.
+D(q)
+d1 (q)
+d2 (q)
+1 For simplicity, it is assumed that the first link has its center of mass on the axis of the first joint. Otherwise, if
+the center of mass is at a distance dc1 , simply replace I1 by I1 + m1 d2c1 in the following.
+
+2
+
+A good choice is
+D(q) =
+
+q2 cos q1
+
+sin q1
+
+
+
+
+
+⇒
+
+det
+
+A(q)
+D(q)
+
+
+= −q2 .
+
+Since the end-effector is constrained to live on x = k > 0, it will always be q2 6= 0. Thus, the
+requested non-singularity of the matrix holds globally as long as the constraint is enforced. This
+implies that the following derivations will lead also to a globally defined reduced model.
+Define then the pseudovelocity v (a scalar) and its derivative v̇ (the pseudoacceleration) as
+v = D(q)q̇ = q2 cos q1 q̇1 + sin q1 q̇2 ,
+v̇ = D(q)q̈ + Ḋ(q)q̇ = q2 cos q1 q̈1 + sin q1 q̈2 − q2 sin q1 q̇12 + 2 cos q1 q̇1 q̇2 .
+To invert these relations, define
+E(q) F (q)
+
+
+
+
+=
+
+A(q)
+D(q)
+
+−1
+
+
+=
+
+−
+
+sin q1
+q2
+
+cos q1
+
+cos q1 
+q2  .
+sin q1
+
+We obtain then
+ cos q 
+1
+q
+ v,
+
+2
+q̇ = F (q) v =
+sin q1
+ 
+ 
+ cos q 
+1
+sin q1 q̇1
+cos q1 q̇2
+−
++
+
+
+q2
+q22
+q̈ = F (q) v̇ + Ḟ (q)v =  q2  v̇ + 
+ v.
+sin q1
+cos q1 q̇1
+
+(2)
+
+Based on their definitions, the matrix relations AF = O and AE = I hold for all q. Premultiplying (1) by F T (q) and substituting the acceleration q̈ from (2) yields
+
+
+F T (q)B(q)F (q) v̇ = F T (q) u − B(q)Ḟ (q)v − c(q, q̇) ,
+(3)
+which is the reduced dynamics that we were looking for —in fact, a scalar first-order differential
+equation in v. All terms in (3) have been defined, but we can write more explicitly the leading
+scalar (a pseudoinertia)
+F T (q)B(q)F (q) = I1 + I2 + m2 (q2 − d)2
+
+ cos2 q1
++ m2 sin2 q1 .
+q22
+
+Similarly, by premultiplying (1) by E T (q) (a row) we can isolate the scalar multiplier λ. Substituting the acceleration q̈ from (2) yields
+
+
+λ = E T (q) B(q)F (q)v̇ + B(q)Ḟ (q)v + c(q, q̇) − u .
+(4)
+The control task is defined at the end-effector level, and requires the stabilization to zero of
+the error ev = vd − v for the tangential velocity and of the error eλ = λd − λ for the normal force.
+3
+
+The tangential and normal directions are indeed referred to the geometry of the constraint. This
+hybrid control task is easily achieved in a linear and decoupled way by using a preliminary feedback
+linearization law for the joint-space control input u ∈ R2 . Defining in eqs. (3) and (4)
+u = B(q)Ḟ (q)v + c(q, q̇) + B(q)F (q)u1 − AT (q)u2
+leads simultaneously to
+v̇ = u1 ,
+
+λ = u2 .
+
+The control design is completed by choosing
+Z
+u1 = k1 ev ,
+
+u2 = λd + k2
+
+t
+
+eλ (τ )dτ,
+0
+
+with k1 > 0, k2 > 0. Beside the feedforward term (λd in the force loop, while v̇d = 0 in the velocity
+loop for constant desired velocity), we have respectively a proportional action on the velocity error
+and an integral action on the force error. The two error dynamics will be
+Z
+ėv + k1 ev = 0,
+eλ + k2 eλ = 0,
+both exponentially converging to zero.
+∗∗∗∗∗
+
+4
+
+

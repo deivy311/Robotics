@@ -1,0 +1,836 @@
+Robotics II
+July 5, 2012
+Huge portal robots are used in the aeronautical industry for moving and reorienting large surface
+plates of aircraft bodies. Figure 1 shows a subassembly of one such robots, having three actuated
+joints and three passive joints (shown in different colors).
+
+Z!0! d!
+
+d!
+g0!
+q3!
+
+H!
+
+m2!
+m3!
+q2!
+
+q!1!
+
+m1!
+
+H!
+
+X!0!
+D!
+= actuated prismatic joint
+= actuated revolute joint
+
+= passive prismatic joint
+= passive revolute joint
+
+Figure 1: A portal robot used in the aeronautic industry
+Two vertical bars of height H are placed at a distance D. Along the vertical bars, two actuated
+prismatic joints (with variables q1 ∈ [0, H] and q2 ∈ [0, H]) are used to modify the position and
+the orientation of a connecting bar in the vertical plane (x0 , z 0 ). The two passive revolute joints,
+placed at a distance d << D from the vertical bars, transform the linear motion of q1 and q2
+in a linear and/or angular motion of the connecting bar. The passive prismatic joint along the
+connecting bar accommodates itself so that the bar changes length consistently with the positions
+q1 and q2 . Furthermore, the connecting bar can be rotated by an actuated revolute joint (with
+angle q3 ) along its main geometric axis. The available actuating force/torque u = (F1 , F2 , τ3 )
+performs work on the generalized coordinates q = (q1 , q2 , q3 ). From an operational point of view,
+curved plates of the aircraft body are placed and fixed on the connecting bar. Then, the motion of
+the portal robot can change the orientation of the normals to the plate surface to be worked (e.g.,
+for riveting).
+Figure 1 shows also the location of the center of masses of the three main moving bodies (of
+masses m1 , m2 , and m3 ) of the portal robot. The following assumptions are made.
+• The mechanism associated to the passive prismatic joint is such that the center of mass of
+the connecting bar is always kept on the vertical line passing through the center of the portal
+(i.e., at x0 = D/2), despite the extension or retraction of the connecting bar itself.
+• The connecting bar has a diagonal inertia matrix
+b
+
+I b = diag {Ix , Iy , Iz } ,
+1
+
+with Iy = Iz
+
+when expressed in a frame (xb , y b , z b ) attached to the bar, with origin at its center of mass
+and principal axes along its geometric axes of symmetry.
+• The values of the scalar inertias Ix and Iy = Iz change with the length of the connecting bar.
+Since the distance D is much larger than the actual excursion of q1 and q2 , this effect can be
+neglected if needed. In this case, for dynamic modeling purposes the bar will be considered
+of constant length D − 2d (as when it is horizontal or close to this situation).
+With the above description in mind, and considering the previous assumptions:
+1. Derive the dynamic model of this portal robot using the generalized coordinates q in a
+Lagrangian approach.
+2. Define the simplest control law for u that is able to regulate the robot to a desired constant equilibrium state (q, q̇) = (q d , 0), defining conditions on the control parameters that
+guarantee global asymptotic stability.
+3. Bonus, or in alternative to 2. Show that q = (q1 , q2 , q3 ) is in fact a set of generalized
+coordinates for this robot, which has the structure of a closed kinematic chain (closed through
+the floor). In particular, show that the values of the angular position of the two passive
+revolute joints and the extension of the connecting bar thanks to the presence of the passive
+prismatic joint can be uniquely obtained from the values of q1 , q2 , and q3 .
+[240 minutes; open books]
+
+2
+
+Solution
+July 5, 2012
+Following the Lagrangian approach, we compute the kinetic energy and the potential energy due
+to gravity for the robot bodies based on the generalized coordinates q = (q1 , q2 , q3 ).
+The kinetic energy for the first two bodies (moving only up and down) is simply
+T1 =
+
+1
+m1 q̇12 ,
+2
+
+T2 =
+
+1
+m2 q̇22 .
+2
+
+For the third body (the connecting bar), it is useful to introduce the variable
+
+ 
+q1 − q2
+π π
+α = arctan
+∈ − ,
+D − 2d
+2 2
+
+(1)
+
+that represents the angle of the bar w.r.t. to the horizontal (positive counterclockwise around the
+axis y 0 ). For evaluating the linear contribution to the kinetic energy of this bar
+T3,l =
+
+1
+m3 v Tc3 v c3 ,
+2
+
+we compute the position of its center of mass and then differentiate w.r.t. time:
+
+
+
+
+D
+0
+
+
+2
+
+
+
+
+0
+.
+0
+⇒
+v c3 = ṗc3 = 
+pc3 = 
+
+
+
+
+
+q̇1 + q̇2
+q1 + q2
+2
+2
+Therefore,
+T3,l
+
+1
+= m3
+2
+
+
+
+q̇1 + q̇2
+2
+
+2
+.
+
+For evaluating the angular contribution to the kinetic energy
+T3,a =
+
+1 T
+1
+ω I b ω 3 = b ω T3 b I b b ω 3
+2 3
+2
+
+it will be convenient to work in the frame (xb , y b , z b ) attached to the center of mass and having
+the xb along the principal direction of the bar (rotated thus w.r.t. x0 by the angle α around y 0 ),
+in which the inertia matrix is diagonal. Note that this frame has y b aligned with y 0 when q3 = 0.
+Its absolute orientation is expressed by the rotation matrix
+
+
+ 
+
+cos α 0 sin α
+1
+0
+0
+cα sα s3 sα c3
+0
+1
+0   0 cos q3 − sin q3  =  0
+c3
+−s3  .
+Rb = 0 Rd (α) d Rb (q3 ) =  0
+− sin α 0 cos α
+0 sin q3
+cos q3
+−sα cα s3 cα c3
+We will first compute the angular velocity 0 ω 3 , expressed in the base frame, by superposition of
+the contributions of q̇1 , q̇2 , and q̇3 (just as in the derivation of the geometric Jacobian). Consider
+the single contribution of q̇1 , while q̇2 = q̇3 = 0. When the coordinate q1 moves (say, upward,
+3
+
+i.e., with q̇1 > 0), the same linear velocity is applied to the left end of the connecting bar. This
+can be decomposed in a velocity component along the bar, which will slightly extend it, and a
+velocity component along the normal to the bar, which is responsible for its rotation (clockwise
+when looking at the structure from the front side, and thus counterclockwise when seen from y 0 ).
+When the bar is tilted by α, the resulting angular velocity contribution due to q̇1 will be
+
+
+0
+p
+ cos α 
+0
+ q̇1 ,
+with
+δ
+=
+(q1 − q2 )2 + (D − 2d)2 ,
+(2)
+ω 3|q̇1 = 
+ δ 
+0
+being δ the actual length of the connecting bar. Indeed, as mentioned in the text, we could neglect
+the (small) contribution by (q1 − q2 )2 and have simply δ = D − 2d > 0. Proceeding in the general
+case, the following relation holds from trigonometry:
+!
+!
+q1 − q2
+sin α
+=δ
+.
+(3)
+D − 2d
+cos α
+Therefore, we can rewrite the contribution of q̇1 to 0 ω 3 as
+
+
+
+0
+0
+
+
+
+D
+−
+2d
+δ
+cos
+α
+0
+ q̇1 = 
+ω 3|q̇1 = 
+
+
+
+2
+2
+δ
+(q1 − q2 ) + (D − 2d)2
+0
+
+
+
+ q̇1 .
+
+
+0
+
+The same argument can be used for the contribution of q̇2 , except that an opposite sign will result.
+Adding also the contribution of q̇3 to 0 ω 3 , we obtain finally
+
+
+
+
+
+
+0
+0
+1
+
+
+
+
+D − 2d
+D − 2d
+
+
+0
+0
+
+
+
+ω3 = 
+ (q1 − q2 )2 + (D − 2d)2  q̇1 −  (q1 − q2 )2 + (D − 2d)2  q̇2 + Rb  0  q̇3 .
+0
+0
+0
+Therefore, in the frame attached to the bar, it is
+
+b
+
+ω 3 = 0 RTb 0 ω 3
+
+
+
+
+0
+q̇3
+
+
+D − 2d
+
+
+
+= 0 RTb 
+ (q1 − q2 )2 + (D − 2d)2  (q̇1 − q̇2 ) +  0 
+0
+0
+
+
+q̇3
+
+
+
+
+(D − 2d)(q̇1 − q̇2 )
+
+
+=  (q1 − q2 )2 + (D − 2d)2 cos q3  .
+
+
+
+
+(D − 2d)(q̇1 − q̇2 )
+−
+sin
+q
+3
+(q1 − q2 )2 + (D − 2d)2
+
+By neglecting instead the presence of (q1 − q2 )2 , we have the reduced expression
+
+
+q̇3
+ q̇ − q̇
+
+2
+ 1
+
+b
+cos
+q
+
+.
+3
+ω 3,r =  D − 2d
+
+ q̇ − q̇
+
+1
+2
+−
+sin q3
+D − 2d
+4
+
+(4)
+
+(5)
+
+When using eq. (4), the angular kinetic energy T3,a of the bar will be
+T3,a
+
+1
+1
+= b ω T3 b I b b ω 3 =
+2
+2
+
+Ix q̇32
+
+1
+=
+2
+
+Ix q̇32
+
+
++
+
+(D − 2d)(q̇1 − q̇2 )
+(q1 − q2 )2 + (D − 2d)2
+
+
++ Iy
+
+!
+
+2
+
+D − 2d
+(q1 − q2 )2 + (D − 2d)2
+
+2
+
+2
+
+Iy cos q3 + Iz sin q3
+
+
+
+!
+
+2
+
+2
+
+(q̇1 − q̇2 )
+
+,
+
+where the last expression has been simplified using the assumption Iy = Iz (indeed, a very relevant
+inertial property!). If eq. (5) is used instead, the (reduced) angular kinetic energy T3,a|r of the bar
+will be
+
+
+1b T b b
+1
+Iy
+2
+2
+T3,a|r =
+ω
+I b ω 3,r =
+(q̇1 − q̇2 ) .
+Ix q̇3 +
+2 3,r
+2
+(D − 2d)2
+At this stage, the total kinetic energy of the robot takes the usual form
+T = T1 + T2 + (T3,l + T3,a ) =
+with the robot inertia matrix given by
+
+m3
+m3
+m1 +
+4
+2
+
+
+m3
+m3
+B(q) = B 0 +B 00 (q1 , q2 ) = 
+m
++
+2
+
+2
+4
+0
+0
+
+1 T
+q̇ B(q)q̇
+2
+
+ 
+
+Iy b(q1 , q2 ) −Iy b(q1 , q2 ) 0
+ 
+
+ 
++ −Iy b(q1 , q2 ) Iy b(q1 , q2 ) 0 
+0
+, (6)
+
+0
+0
+0
+Ix
+0
+
+with the notation
+
+b(q1 , q2 ) =
+
+D − 2d
+(q1 − q2 )2 + (D − 2d)2
+
+2
+.
+
+We note that only the (symmetric) matrix term B 00 of the positive definite robot inertia matrix is
+configuration dependent (and depends only on the difference q1 − q2 ).
+The associated Coriolis and centrifugal term
+
+
+
+c1 (q, q̇)
+c(q, q̇) =  c2 (q, q̇) 
+c3 (q, q̇)
+
+is computed as usual through the Christoffel symbols
+"
+ 
+T 
+#
+∂bi (q)
+∂bi (q)
+∂B(q)
+1 T
+T
++
+−
+q̇,
+ci (q, q̇) = q̇ C i (q)q̇ = q̇
+2
+∂q
+∂q
+∂qi
+being bi (q) the ith column of matrix B(q). Thus
+
+Iy c(q1 , q2 ) −Iy c(q1 , q2 )
+
+1 
+C 1 (q) =  −Iy c(q1 , q2 ) Iy c(q1 , q2 )
+2 
+0
+
+0
+
+5
+
+0
+
+
+
+
+
+0 ,
+
+0
+
+i = 1, 2, 3,
+
+with
+c(q1 , q2 ) =
+
+∂b(q1 , q2 )
+4(D − 2d)2 (q1 − q2 )
+=−
+3
+∂q1
+((q1 − q2 )2 + (D − 2d)2 )
+
+and where we used the specular dependence of b on q1 and q2 . Similarly, it is easy to see that
+C 2 (q) = −C 1 (q). Moreover, C 3 = O. As a result, we obtain
+Iy c(q1 , q2 ) (q̇1 − q̇2 )2
+
+
+c(q, q̇) =
+
+
+
+1 
+
+ −Iy c(q1 , q2 ) (q̇1 − q̇2 )2  .
+2
+0
+
+(7)
+
+If we had used instead the reduced expression for the kinetic energy of the bar, then
+T = T1 + T2 + (T3,l + T3,a|r ) =
+
+1 T
+q̇ B q̇,
+2
+
+(8)
+
+and the robot inertia matrix would be constant
+
+m3
+Iy
+m3
+Iy
+m1 +
++
+−
+2
+
+4
+(D − 2d)
+2
+(D − 2d)2
+
+Iy
+m3
+Iy
+m3
+B=
+
+−
+m2 +
++
+
+2
+(D − 2d)2
+4
+(D − 2d)2
+0
+0
+
+0
+
+
+
+
+
+.
+0 
+
+
+(9)
+
+Ix
+
+Accordingly, c = 0 would follow (no Coriolis and centrifugal terms).
+We turn now to the computation of the potential energy due to gravity, U (q) = U1 + U2 + U3 .
+T
+For this, since 0 g = 0 0 −g0
+with g0 = 9.81 [m/s2 ], we just need to evaluate the height of
+the centers of masses. Thus
+U1 = m1 g0 q1 ,
+U2 = m2 g0 q2 ,
+while, in view of the assumption on the position of the center of mass of the connecting bar,
+U3 = m3 g0
+Therefore,
+
+m3 
+g0
+2
+
+
+m3
+g0
+m2 +
+2
+0
+
+ 
+
+g=
+
+∂U (q)
+∂q
+
+T
+
+
+
+=
+
+
+q1 + q2
+.
+2
+
+m1 +
+
+
+
+
+
+g1
+
+
+
+ 
+
+ 
+ =  g2 
+.
+
+0
+
+(10)
+
+The gravity term is constant, and so ∂g/∂q = 0.
+Summarizing, in the general case the robot dynamic model takes the form
+B(q)q̈ + c(q, q̇) + g = u,
+
+(11)
+
+with inertia matrix, Coriolis and centrifugal term, and gravity term given respectively by eqs. (6),
+(7), and (10). In the reduced case, the dynamic model simplifies to
+B q̈ + g = u,
+6
+
+(12)
+
+with constant inertia matrix given by (9) and gravity term as in (10). The dynamic equations (12)
+are fully linear.
+In order to solve the regulation problem for a desired equilibrium state (q, q̇) = (q d , 0) as
+requested, we can use a decentralized PD control law with constant compensation of gravity (which
+is anyway constant for all configurations!). Therefore, we have
+
+
+kp1 (qd,1 − q1 ) − kd1 q̇1 + g1
+
+
+
+
+
+u = K p (q d − q) − K d q̇ + g =  kp2 (qd,2 − q2 ) − kd2 q̇2 + g2  .
+
+(13)
+
+kp3 (qd,3 − q3 ) − kd3 q̇3
+Since the Hessian of the gravitational potential energy is identically zero, there will be no strictly
+positive lower bound for the (diagonal) elements of K p in this control law: in order to guarantee
+global asymptotic stability, the sufficient conditions for the control gains are only K p > 0 and
+K d > 0. Note that this applies to both dynamic models (11) and (12). The only difference is that
+for (12), global exponential stability will be further obtained since the system dynamics is linear.
+In this case, the following simple modification of (13)
+u = B (K p (q d − q) − K d q̇) + g,
+i.e., with non-diagonal but still constant PD gains BK p and BK d , will also provide a fully
+decoupled dynamics of the joint errors in the closed-loop system.
+For the bonus (or alternative to the above) question, consider the sketch in Fig. 2 where, beside
+the variables q1 , q2 and q3 related to the actuated joints, we have assigned also variables β and γ to
+the two passive revolute joints1 , and δ to the passive prismatic joint. The purpose of our analysis is
+to show that the set of variables (β, γ, δ) can always be expressed as a function of (q1 , q2 ) —this is
+similar to what we have already shown in eq. (1) for the angle α. Therefore, the robot configuration
+can be fully described by the minimal set (q1 , q2 , q3 ), which is indeed the chosen set of configuration
+variables used for the Lagrangian dynamics. Because the closed kinematic chain lies always in the
+plane (x0 , z 0 ), the variable q3 plays no role in the analysis, and will then no longer be considered.
+
+Z!0! d!
+
+d!
+"
+
+q!1!
+
+#
+
+q3!
+
+!
+$
+X!0!
+
+"0%
+$ '
+#0&
+
+q2!
+
+D!
+
+Figure 2: The portal robot as a closed kinematic chain in the plane (x0 , z 0 ). The passive joints
+!
+are equipped with the additional variables β, γ, and δ
+1 Note
+
+that all angles are conveniently shown in Fig. 2 with an arrow indicating their positive rotation.
+
+7
+
+The presence of a ‘loop closure’ (through the floor) in this robotic structure imposes the following kinematic constraints (refer to the vectors shown in black in Fig. 2):
+!
+!
+!
+!
+!
+!
+!
+0
+d
+sin β
+d
+0
+−D
+0
++
++δ
++
++
++
+=
+.
+(14)
+q1
+0
+cos β
+0
+−q2
+0
+0
+Moreover, the following relations hold among angles:
+β + γ = π,
+
+α+β =
+
+π
+.
+2
+
+(15)
+
+From these, both β and γ can be expressed as a function of α and then, via eq. (1), as a function
+of q1 − q2 . Equation (14) can be rearranged as
+!
+!
+!
+sin β
+cos α
+D − 2d
+=δ
+=δ
+,
+(16)
+cos β
+sin α
+q1 − q2
+where the last equality follows from the second relation in (15). This is exactly the trigonometric
+relation (3). Moreover, squaring and adding the two equations in (16) yields
+p
+δ = (q1 − q2 )2 + (D − 2d)2 > 0,
+which is the variable already defined in (2). Finally, dividing the second equation in (16) by the
+first one, we obtain
+q1 − q2
+,
+tan α =
+D − 2d
+recovering thus the original expression for α introduced in (1).
+∗∗∗∗∗
+
+8
+
+

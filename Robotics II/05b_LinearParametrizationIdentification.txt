@@ -1,0 +1,833 @@
+Robotics 2
+
+Linear parametrization and
+identification of robot dynamics
+Prof. Alessandro De Luca
+
+Dynamic parameters of robot links
+n
+
+consider a generic link
+of a fully rigid robot
+
+Center of Mass
+(CoM) frame 𝑖
+link 𝑖
+
+joint 𝑖
+CoM 𝐶𝑖
+𝑚' 𝑔)
+base
+frame 0
+n
+
+n
+
+each link is characterized by
+10 dynamic parameters
+
+𝐼+'
+
+𝑧𝑖
+
+𝑟+'
+
+𝑦𝑖
+
+kinematic frame 𝑖
+(DH or modified DH)
+
+𝑂𝑖
+𝑥𝑖
+
+𝑟'
+
+𝑟/'
+𝑚' 𝑟+' = 𝑟0'
+𝑟1'
+
+𝐼+',//
+𝐼+' =
+symm
+
+𝐼+',/0
+𝐼+',00
+
+𝐼+',/1
+𝐼+',01
+𝐼+',11
+
+however, the robot dynamics depends in a nonlinear way on some of these
+8
+parameters (e.g., through the combination 𝐼6',11 + 𝑚' 𝑟/'
+)
+
+Robotics 2
+
+2
+
+Dynamic parameters of robots
+n
+
+kinetic energy and gravity potential energy can both be rewritten so
+that a new set of dynamic parameters appears only in a linear way
+§ need to re-express link inertia and CoM position in (any) known kinematic
+frame attached to the link (same orientation as the barycentric frame)
+
+n
+
+fundamental kinematic relation
+
+𝑣6' = 𝑣' + 𝜔' × 𝑟+' = 𝑣' + 𝑆 𝜔' 𝑟+' = 𝑣' − 𝑆 𝑟+' 𝜔'
+n
+
+kinetic energy of link 𝑖
+
+1
+1 A
+A
+𝑇' = 𝑚' 𝑣+' 𝑣+' + 𝜔' 𝐼+' 𝜔'
+2
+2
+B
+
+= 𝑚' 𝑣' − 𝑆 𝑟+' 𝜔'
+8
+
+A
+
+B
+
+𝑣' − 𝑆 𝑟+' 𝜔' + 𝜔'A 𝐼+' 𝜔'
+8
+
+1
+1 A
+A
+= 𝑚' 𝑣' 𝑣' + 𝜔' 𝐼+' + 𝑚' 𝑆 A 𝑟+' 𝑆 𝑟+' 𝜔' − 𝑣'A 𝑆 𝑚' 𝑟+' 𝜔'
+2
+2
+𝐼',//
+
+Steiner theorem
+Robotics 2
+
+𝐼' =
+symm
+
+𝐼',/0
+𝐼',00
+
+𝐼',/1
+𝐼',01
+𝐼',11
+
+3
+
+Standard dynamic parameters of robots
+n
+
+gravitational potential energy of link 𝑖
+
+𝑈' = −𝑚' 𝑔)A 𝑟),+' = −𝑚' 𝑔)A 𝑟' + 𝑟+' = −𝑚' 𝑔)A 𝑟' − 𝑔)A 𝑚' 𝑟+'
+n
+
+by expressing vectors and matrices in frame 𝑖, both 𝑇' and 𝑈' are
+linear in the set of 10 (constant) standard parameters 𝜋' ∈ ℝB)
+1
+1𝑖 A 𝑖 𝑖
+A𝑖
+A
+𝑖
+𝑖
+𝑖
+𝑖
+𝑇' = 𝑚' 𝑣' 𝑣' + 𝑚' 𝑟+' 𝑆 𝑣' 𝜔' + 𝜔' 𝐼' 𝜔'
+2
+2
+𝑈' = −𝑚' 𝑔)A 𝑟' − 𝑔)A 0𝑅' (𝑚' 𝑖 𝑟+' )
+mass of link 𝑖
+(0-th order
+moment )
+
+𝑚'
+𝝅𝒊 = 𝑚' 𝑖𝑟+'
+𝑣𝑒𝑐𝑡 𝑖 𝐼'
+n
+
+= 𝑚'
+
+mass×CoM
+position of link 𝑖
+(1-st order
+
+inertia of link 𝑖
+(2-nd order
+moment )
+
+moment )
+
+𝑚' 𝑖𝑟+',/
+
+𝑚' 𝑖𝑟+',0
+
+𝑚' 𝑖𝑟+',1
+
+𝑖𝐼
+
+',//
+
+𝑖𝐼
+
+',/0
+
+𝑖𝐼
+
+',/1
+
+𝑖𝐼
+
+',00
+
+𝑖𝐼
+
+',01
+
+𝑖𝐼
+
+',11
+
+A
+
+since the E-L equations involve only linear operations on 𝑇 and 𝑈, also
+the robot dynamic model is linear in the standard parameters 𝝅 ∈ ℝB)G
+
+Robotics 2
+
+4
+
+Linearity in the dynamic parameters
+n
+
+using a 𝑁 × 10𝑁 regression matrix 𝑌S that depends only on kinematic
+quantities, the robot dynamic equations can always be rewritten linearly
+in the standard dynamic parameters as
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑌S 𝑞, 𝑞,̇ 𝑞̈ 𝜋 = 𝑢
+𝜋 A = 𝜋BA
+n
+
+𝜋8A
+
+⋯
+
+A
+𝜋G
+
+the open kinematic chain structure of the manipulator implies that the 𝑖 -th
+dynamic equation can depend only on the standard dynamic parameters
+of links 𝑖 to 𝑁 ⇒ 𝑌S has a block upper triangular structure
+
+𝑌S 𝑞, 𝑞,̇ 𝑞̈ =
+
+𝑌BB 𝑌B8
+0 𝑌88
+⋮
+0 ⋯
+
+⋯ 𝑌BG
+⋯ 𝑌8G
+⋱
+⋮
+0 𝑌GG
+
+with row vectors
+𝑌',[ of size 1×10
+
+Property: element 𝑚'[ of 𝑀(𝑞) is a function at most of (𝑞]^B , ⋯ , 𝑞G ), for 𝑘 = min{𝑖, 𝑗} ,
+and of the inertial parameters of at most links 𝑟 to 𝑁 , with 𝑟 = max{𝑖, 𝑗}
+Robotics 2
+
+5
+
+Linearity in the dynamic coefficients
+n
+
+n
+
+n
+
+many standard parameters do not appear (“play no role”) in the dynamic model of a
+given robot ⇒ the associated columns of 𝑌S are 0!
+some standard parameters may appear only in fixed combinations with others ⇒ the
+associated columns of 𝑌S are linearly dependent!
+one can isolate 𝑝 ≪ 10𝑁 independent groups of parameters 𝜋 (associated to 𝑝
+functionally independent columns 𝑌'jklm of 𝑌S ) and partition matrix 𝑌S in two
+blocks, the second containing dependent (or zero) columns as 𝑌klm = 𝑌'jklm 𝑇, for a
+suitable constant 𝑝 × (10𝑁 − 𝑝) matrix 𝑇
+
+𝑌S 𝑞, 𝑞,̇ 𝑞̈ 𝜋 = 𝑌'jklm
+
+𝑌klm
+
+𝜋'jklm
+𝜋klm = 𝑌'jklm
+
+𝑌'jklm 𝑇
+
+𝜋'jklm
+𝜋klm
+
+= 𝑌'jklm 𝜋'jklm + 𝑇 𝜋klm = 𝑌 𝑞, 𝑞,̇ 𝑞̈ 𝑎
+n
+
+n
+
+these grouped parameters are called dynamic coefficients 𝑎 ∈ ℝm , “the only that
+matter” in robot dynamics (= base parameters by W. Khalil)
+the minimal number 𝑝 of dynamic coefficients that is needed can also be checked
+numerically (see later → Identification)
+
+Robotics 2
+
+6
+
+Linear parameterization of robot dynamics
+it is always possible to rewrite the dynamic model in the form
+regression
+matrix
+
+𝑎 = vector of
+dynamic coefficients
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑌 𝑞, 𝑞,̇ 𝑞̈ 𝑎 = 𝑢
+𝑁×𝑝
+
+𝑝×1
+
+e.g., the heuristic grouping (found by inspection) on a 2R planar robot
+
+𝑞̈ B
+0
+
+𝑐8 2𝑞̈ B + 𝑞̈ 8 − 𝑠8 𝑞̇ 88 + 2𝑞̇ B 𝑞̇ 8
+𝑐8 𝑞̈ B + 𝑠8 𝑞̇ B8
+
+𝑞̈ 8
+𝑐B
+𝑞̈ B + 𝑞̈ 8 0
+
+𝑐B8
+𝑐B8
+
+𝑎B = 𝐼6B,11 + 𝑚B 𝑑B8 + 𝐼68,11 + 𝑚8 𝑑88 + 𝑚8 𝑙B8
+𝑎B
+𝑎8 = 𝑚8 𝑙B 𝑑8
+𝑎8
+𝑢B
+𝑎s = 𝐼68,11 + 𝑚8 𝑑88
+𝑎s =
+𝑢8
+𝑎u = 𝑔) 𝑚B 𝑑B + 𝑚8 𝑙B
+𝑎u
+𝑎t
+𝑎t = 𝑔) 𝑚8 𝑑8
+
+NOTE: 4 more coefficients are added when including the coefficients 𝐹p,' and 𝐹+,' of viscous and
+Coulomb friction at the joints (“decoupled” terms appearing only in the relative equations 𝑖 = 1,2)
+Robotics 2
+
+7
+
+Linear parametrization
+of a 2R planar robot (𝑁 = 2)
+n
+
+n
+
+being the kinematics known (i.e., 𝑙B and 𝑔) ), the number of dynamic
+coefficients can be reduced since we can merge the two coefficients
+𝑎8 = 𝑚8 𝑙B 𝑑8 & 𝑎t = 𝑔) 𝑚8 𝑑8 ⇒ 𝑎8 = 𝑚8 𝑑8 (factoring out 𝑙B and 𝑔) )
+therefore, after regrouping, 𝒑 = 𝟒 dynamic coefficients are sufficient
+𝑙B 𝑐8 2𝑞̈ B + 𝑞̈ 8 − 𝑙B 𝑠8 𝑞̇ 88
+𝑙B 𝑐8 𝑞̈ B + 𝑠8 𝑞̇ B8
+
+𝑞̈ B
+0
+
+n
+
++ 2𝑞̇ B 𝑞̇ 8 + 𝑔) 𝑐B8
++ 𝑔) 𝑐B8
+
+𝑞̈ 8
+𝑞̈ B + 𝑞̈ 8
+
+𝑔) 𝑐B
+0
+
+𝑎B
+𝑢B
+𝑎8
+=
+𝑌
+𝑎
+=
+𝑢
+=
+𝑎s
+𝑢8
+𝑎u
+
+𝑎B = 𝐼6B,11 + 𝑚B 𝑑B8 + 𝐼68,11 + 𝑚8 𝑑88 + 𝑚8 𝑙B8
+
+𝑎s = 𝐼68,11 + 𝑚8 𝑑88
+
+𝑎8 = 𝑚8 𝑑8
+
+𝑎u = 𝑚B 𝑑B + 𝑚8 𝑙B
+
+this (minimal) linear parametrization of robot dynamics is not unique,
+both in terms of the chosen set of dynamic coefficients 𝑎 and for the
+associated regression matrix 𝑌
+n
+
+Robotics 2
+
+a systematic procedure for its derivation would be preferable
+8
+
+Linear parametrization
+of a 2R planar robot (𝑁 = 2)
+n
+
+as alternative to the previous heuristic method, apply the general procedure
+n 10𝑁 = 20 standard parameters are defined for the two links
+n from the assumptions made on CoM locations, only 5 such parameters actually
+appear, namely (with 𝑑' = 𝑟6',/ )
+link 1: 𝑚B 𝑑B 𝐼B,11 = 𝐼6B,11 + 𝑚B 𝑑B8
+n
+
+link 2: 𝑚8 𝑚8 𝑑8 𝐼8,11 = 𝐼68,11 + 𝑚8 𝑑88
+
+in the 2×5 matrix 𝑌S , the 3rd column (associated to 𝑚8 ) is 𝑌Ss = 𝑌SB 𝑙B + 𝑌S8 𝑙B8
+
+after regrouping/reordering, 𝒑 = 𝟒 dynamic coefficients are again sufficient
+𝑎B
+8
+𝑢B
+𝑔) 𝑐B 𝑞̈ B 𝑙B 𝑐8 2𝑞̈ B + 𝑞̈ 8 − 𝑙B 𝑠8 𝑞̇ 8 + 2𝑞̇ B 𝑞̇ 8 + 𝑔) 𝑐B8 𝑞̈ B + 𝑞̈ 8 𝑎8
+=
+𝑌
+𝑎
+=
+𝑢
+=
+𝑢8
+0
+0
+𝑙B 𝑐8 𝑞̈ B + 𝑠8 𝑞̇ B8 + 𝑔) 𝑐B8
+𝑞̈ B + 𝑞̈ 8 𝑎s
+𝑎u
+𝑎s = 𝑚8 𝑑8
+8
+8
+8
+𝑎B = 𝑚B 𝑑B + 𝑚8 𝑙B 𝑎8 = 𝐼B,11 + 𝑚8 𝑙B = 𝐼6B,11 + 𝑚B 𝑑B + 𝑚B 𝑙B
+𝑎u = 𝐼8,11 = 𝐼68,11 + 𝑚8 𝑑88
+n
+
+n
+
+determining a minimal parameterization (i.e., minimizing 𝑝) is important for
+n
+n
+
+experimental identification of dynamic coefficients
+adaptive/robust control design in the presence of uncertain parameters
+
+Robotics 2
+
+9
+
+Identification of dynamic coefficients
+n
+
+n
+n
+
+n
+
+n
+
+in order to “use” the model, one needs to know the numeric values of
+the robot dynamic coefficients
+n robot manufacturers provide at most only a few principal dynamic
+parameters (e.g., link masses)
+estimates can be found with CAD tools (e.g., assuming uniform mass)
+friction coefficients are (slowly) varying over time
+n lubrication of joints/transmissions
+for an added payload (attached to the E-E)
+n a change in the 10 dynamic parameters of last link
+n this implies a variation of (almost) all robot dynamic coefficients
+preliminary identification experiments are needed
+n robot in motion (dynamic issues, not just static or geometric ones!)
+n only the robot dynamic coefficients can be identified (and not all
+the link standard parameters!)
+
+Robotics 2
+
+10
+
+Identification experiments
+1. choose a motion trajectory 𝑞k (𝑡) that is sufficiently “exciting”, i.e.,
+§ explores the robot workspace and involves all components in the
+robot dynamic model
+§ is periodic, with multiple frequency components
+2. execute this motion (approximately) by means of a control law
+§ taking advantage of any available information on the robot model
+§ often 𝑢 = 𝐾{ (𝑞k − 𝑞) + 𝐾| (𝑞̇ k − 𝑞)
+̇ (PD, no model information used)
+3. measure 𝑞 (encoders) in 𝑛6 time instants (and, if available, also 𝑞̇ )
+§ joint velocity 𝑞̇ and acceleration 𝑞̈ can be later estimated off line by
+numerical differentiation (use of non-causal filters is feasible)
+4. with such measures/estimates, evaluate the regression matrix 𝑌 (on the
+left) and use the applied commands 𝑢 (on the right) in the expression
+
+𝑌 𝑞 𝑡] , 𝑞̇ 𝑡] , 𝑞̈ 𝑡]
+Robotics 2
+
+𝑎 = 𝑢 𝑡]
+
+𝑘 = 1, ⋯ , 𝑛6
+11
+
+Least Squares (LS) identification
+n
+
+set up the system of linear equations
+𝑌 𝑞 𝑡B , 𝑞̇ 𝑡B , 𝑞̈ 𝑡B
+⋮
+𝑌 𝑞 𝑡j‚ , 𝑞̇ 𝑡j‚ , 𝑞̈ 𝑡j‚
+
+𝑛6 × 𝑁
+n
+
+n
+
+n
+
+𝑢 𝑡B
+⋮
+𝑎=
+𝑢 𝑡j‚
+
+• = 𝑢•
+𝑌𝑎
+
+sufficiently “exciting” trajectories, large enough number of
+samples (𝑛6 × 𝑁 ≫ 𝑝), and their suitable selection/position,
+• ) = 𝑝 (full column rank)
+guarantee rank(𝑌
+
+•
+solution by pseudoinversion of matrix 𝑌
+𝑎 = 𝑌• # 𝑢• = 𝑌• A 𝑌• •B 𝑌• A 𝑢•
+
+(∈ ℝm )
+
+one can also use a weighted pseudoinverse, to take into
+account different levels of noise in the collected measures
+
+Robotics 2
+
+12
+
+Additional remarks on LS identification
+n
+
+it is convenient to preserve the block (upper) triangular structure of
+the regression matrix, by “stacking” all time evaluations in row by row
+sequence of the original 𝑌 matrix
+𝑛6
+
+𝑁×
+𝑛6
+
+n
+
+𝑌B 𝑞 𝑡B , 𝑞̇ 𝑡B , 𝑞̈ 𝑡B
+⋮
+𝑌B 𝑞 𝑡j‚ , 𝑞̇ 𝑡j‚ , 𝑞̈ 𝑡j‚
+𝑌8 𝑞 𝑡B , 𝑞̇ 𝑡B , 𝑞̈ 𝑡B
+⋮
+𝑌8 𝑞 𝑡j‚ , 𝑞̇ 𝑡j‚ , 𝑞̈ 𝑡j‚
+⋮
+𝑌G 𝑞 𝑡B , 𝑞̇ 𝑡B , 𝑞̈ 𝑡B
+⋮
+𝑌G 𝑞 𝑡j‚ , 𝑞̇ 𝑡j‚ , 𝑞̈ 𝑡j‚
+
+further practical hints
+n
+n
+
+Robotics 2
+
+𝑎=
+
+𝑢B 𝑡B
+⋮
+𝑢B 𝑡j‚
+𝑢8 𝑡B
+⋮
+𝑢8 𝑡j‚
+⋮
+𝑢G 𝑡B
+⋮
+𝑢G 𝑡j‚
+
+𝑛6
+
+• = 𝑢•
+𝑌𝑎
+
+𝑌• =
+𝑛6
+
+§ numerical check of full column rank is
+more robust ⇔ rank = 𝑝 (# of col’s)
+
+outlier data can be eliminated in advance (when building 𝑌 )
+if sufficiently rich friction models are not included in 𝑌𝑎 , discard the
+data collected at joint velocities close to zero
+13
+
+Summary on dynamic identification
+KUKA IR 361
+robot and
+optimal
+excitation
+trajectory
+
+J. Swevers, W. Verdonck, and J. De Schutter:
+“Dynamic model identification for industrial robots”
+IEEE Control Systems Mag., Oct 2007
+
+Robotics 2
+
+results after identification (first three joints only)
+
+14
+
+Dynamic identification of KUKA LWR4
+video
+
+data acquisition for identification
+dynamic coefficients: 30 inertial, 12 for gravity
+C. Gaz, F. Flacco, A. De Luca:
+“Identifying the dynamic model used by the KUKA LWR:
+A reverse engineering approach”
+IEEE ICRA 2014
+
+Robotics 2
+
+validation after identification (for all 7 joints):
+on new desired trajectories, compare
+torques computed with the identified model
+and torques measured by joint torque sensors
+
+15
+
+Identification of LWR4 gravity terms
+using the linear parametrization, gravity terms can also be identified separately
+
+symbolic expressions of gravityrelated dynamic coefficients
+
+numerical values
+identified through
+experiments
+gravity joint torques
+prediction/evaluation on
+new validation trajectory
+Robotics 2
+
+16
+
+Role of friction in identification
+KUKA LWR4 dynamic model estimation vs. joint torque sensor measurement
+
+-
+
+without the use of a joint friction model
+Robotics 2
+
+friction
+
+meas
+
+including an identified joint friction model
+17
+
+Dynamic identification of KUKA LWR4
+video
+
+using more dynamic robot motions for model identification
+J. Hollerbach, W. Khalil, M. Gautier: “Ch. 6: Model Identification”, Springer Handbook of Robotics (2nd Ed), 2016
+free access to multimedia extension: http://handbookofrobotics.org
+
+Robotics 2
+
+18
+
+Adding a payload to the robot
+n
+
+in several industrial applications, changes in the
+robot payload are often needed
+n
+
+n
+
+n
+
+using different tools for various technological operations
+such as polishing, welding, grinding, ...
+pick-and-place tasks of objects having unknown mass
+
+what is the rule of change for dynamic parameters
+when there is an additional payload?
+n
+n
+
+Robotics 2
+
+do we obtain again a linearly parameterized problem?
+does this property rely on some specific choice of
+reference frames (e.g., conventional or modified D-H)?
+19
+
+Rule of change in dynamic parameters
+n
+
+only the dynamic parameters of the link where a load is added will change
+(typically, added to the last one –link n– as payload)
+n
+last link dynamic parameters: mn (mass), cn = (cnxcnycnz)T (center of mass),
+In (inertia tensor expressed w.r.t. frame n)
+n
+payload dynamic parameters: mL (mass), cL = (cLxcLycLz)T (center of
+mass), IL (inertia tensor expressed w.r.t. frame n)
+
+n
+
+mass
+
+n
+
+center of mass
+(weighted average)
+
+n
+
+inertia tensor
+
+where i = x, y, z
+
+valid only if tensors are expressed w.r.t.
+the same reference frame (i.e., frame n)!
+
+§ linear parametrization is preserved with any kinematic convention
+
+(the parameters of the last link will always appear in the form shown above)
+
+Robotics 2
+
+20
+
+Example: 2R planar robot with payload
+y2
+y1
+
+x2
+
+a2
+q2
+
+y0
+a1
+
+x1
+
+g0 = gravity acceleration
+
+q1
+x0
+
+robot dynamics
+
+robot dynamics
+
+Note 1: position of the center of mass of the two links and of the payload may also be asymmetric
+Note 2: link inertia & center of mass are expressed in the DH kinematic frame attached to the link
+(e.g., I2zz is the inertia of the second link around the axis z2)
+Robotics 2
+
+21
+
+Validation on the KUKA LWR4 robot
+video
+
+C. Gaz, A. De Luca: “Payload estimation based on identified coefficients of robot dynamics
+– with an application to collision detection” IEEE IROS 2017, Vancouver, September 2017
+
+Robotics 2
+
+see the block
+of slides!
+
+22
+
+Bibliography
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+J. Swevers, W. Verdonck, J. De Schutter, “Dynamic model identification for industrial robots,” IEEE Control
+Systems Mag., vol. 27, no. 5, pp. 58–71, 2007
+J. Hollerbach, W. Khalil, M. Gautier, “Model Identification,” Springer Handbook of Robotics (2nd Ed), pp. 113138, 2016
+C. Gaz, F. Flacco, A. De Luca, “Identifying the dynamic model used by the KUKA LWR: A reverse engineering
+approach,” IEEE Int. Conf. on Robotics and Automation, pp. 1386-1392, 2014
+C. Gaz, F. Flacco, A. De Luca, “Extracting feasible robot parameters from dynamic coefficients using nonlinear
+optimization methods,” IEEE Int. Conf. on Robotics and Automation, pp. 2075-2081, 2016
+C. Gaz, A. De Luca, “Payload estimation based on identified coefficients of robot dynamics – with an
+application to collision detection,” IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 3033-3040, 2017
+C. Gaz, E. Magrini, A. De Luca, “A model-based residual approach for human-robot collaboration during
+manual polishing operations,” Mechatronics, vol. 55, pp. 234-247, 2018
+C. Gaz, M. Cognetti, A. Oliva, P. Robuffo Giordano, A. De Luca, “Dynamic identification of the Franka Emika
+Panda robot with retrieval of feasible parameters using penalty-based optimization,” IEEE Robotics and
+Automation Lett., vol. 4, no. 4, pp. 4147-4154, 2019
+
+KUKA
+LWR4 (7R)
+
+Robotics 2
+
+Universal Robot
+UR10 (6R)
+
+Franka Emika
+Panda (7R)
+
+23
+
+

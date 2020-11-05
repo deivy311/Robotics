@@ -1,0 +1,776 @@
+Robotics 2 - Midterm Test
+April 13, 2016
+Exercise 1
+For the PRR planar robot in Fig. 1, determine the symbolic expression of the inertia matrix B(q) and
+of the Coriolis and centrifugal vector c(q, q̇). Use the generalized coordinates and the scalar parameters
+shown in the figure.
+
+Figure 1: A planar PRR robot
+Exercise 2
+The 4R planar robot in Fig. 2 moves under gravity. For each link, the center of mass lies on its longitudinal
+axis of symmetry, at a generic distance from the driving joint. Determine: i) the expression of the gravity
+vector g(q) in the robot dynamic model; ii) all equilibrium configurations of the robot (i.e., all q e such that
+g(q e ) = 0; iii) a linear parametrization of the gravity vector in the form g(q) = Y G (q)aG ; the particular
+location of the center of masses of the links such that the gravity vector vanishes (i.e., g(q) = 0, for all q).
+
+Figure 2: A 4R planar robot under gravity
+
+1
+
+Exercise 3
+The 4R planar robot with all links of equal length ` in Fig. 3 needs to realize a motion task defined by
+a desired linear velocity v d for its end-effector position pe and by a desired angular velocity φ̇d for the
+orientation φ of its end-effector frame. Characterize first all the singular configurations of the robot for
+this specific task.
+Assume then ` = 0.5 [m], q = (0 0 π/2 0), v d = (1 0) [m/s], and φ̇d = 0.5 [rad/s]. Moreover, the joints have
+limited motion range, i.e., qi ∈ [−2, 2] [rad], for i = 1, . . . , 4. Determine the joint velocity q̇ that realizes
+the desired task while decreasing instantaneously the objective function that measures the distance from
+the midpoint of the joint ranges, i.e., in the form
+Hrange (q) =
+
+«2
+N „
+1 X
+qi − q̄i
+.
+2N i=1 qM,i − qm,i
+
+Figure 3: The kinematic skeleton of a planar 4R robot
+[150 minutes; open books]
+
+2
+
+Solution
+April 13, 2016
+Exercise 1
+Since the motion is planar, we will use two-dimensional position and velocity vectors (in the (x0 , y 0 )
+plane) and just the z-component of angular velocities. Also, the usual shorthand notation is adopted for
+trigonometric quantities, e.g., s2 = sin q2 , c23 = cos(q2 + q3 ).
+Kinetic energy
+For link 1, we have (the position of the center of mass on link 1, i.e., d1 , is irrelevant)
+T1 =
+
+1
+m1 q̇12 .
+2
+
+For link 2, we compute first the position of the center of mass and its velocity,
+!
+!
+q1 + d2 c2
+q̇1 − d2 s2 q̇2
+pc2 =
+→
+v c2 =
+,
+d2 s2
+d2 c2 q̇2
+and then
+kv c2 k2 = q̇12 + d22 q̇22 − 2d2 s2 q̇1 q̇2 .
+Since ω2z = q̇2 , we obtain
+T2 =
+
+`
+´ 1
+1
+m2 q̇12 + d22 q̇22 − 2d2 s2 q̇1 q̇2 + I2 q̇22 .
+2
+2
+
+Similarly, for link 3
+pc3 =
+
+q1 + `2 c2 + d3 c23
+`2 s2 + d3 s23
+
+!
+→
+
+v c3 =
+
+q̇1 − `2 s2 q̇2 − d3 s23 (q̇2 + q̇3 )
+`2 c2 q̇2 + d3 c23 (q̇2 + q̇3 )
+
+!
+,
+
+and then
+kv c3 k2 = q̇12 + `22 q̇22 + d3 (q̇2 + q̇3 )2 − 2`2 s2 q̇1 q̇2 − 2d3 s23 q̇1 (q̇2 + q̇3 ) + 2`2 d3 (s2 s23 + c2 c23 ) q̇2 (q̇2 + q̇3 ).
+Being ω3z = q̇2 + q̇3 , we obtain (after trigonometric simplification)
+T3 =
+
+`
+´ 1
+1
+m3 q̇12 + `22 q̇22 + d3 (q̇2 + q̇3 )2 − 2`2 s2 q̇1 q̇2 − 2d3 s23 q̇1 (q̇2 + q̇3 ) + 2`2 d3 c3 q̇2 (q̇2 + q̇3 ) + I3 (q̇2 + q̇3 )2 .
+2
+2
+
+Robot inertia matrix
+From
+T =
+
+3
+X
+
+Ti =
+
+i=1
+
+1 T
+q̇ B(q)q̇,
+2
+
+we obtain the (symmetric) elements bij = bji of the inertia matrix B(q) as
+b11 = m1 + m2 + m3 =: a1
+b22 = I2 + m2 d22 + I3 + m3 d23 + m3 `22 + 2m3 `2 d3 c3 =: a2 + 2a3 c3
+b33 = I3 + m3 d23 =: a4
+b12 = − (m2 d2 + m3 `2 ) s2 − m3 d3 s23 =: −a5 s2 − a6 s23
+b13 = −m3 d3 s23 = −a6 s23
+b23 = I3 + m3 d23 + m3 `2 d3 c3 = a4 + a3 c3 .
+
+3
+
+where we have introduced the dynamic coefficients ai (i = 1, . . . , 6) for the constant factors, in order to have
+more compact expressions. Thus, the positive definite, symmetric robot inertia matrix can be rewritten as
+0
+1
+!
+a1
+− (a5 s2 + a6 s23 )
+−a6 s23
+B
+C
+a2 + 2a3 c3
+a4 + a3 c3 A = b1 (q)
+b2 (q)
+b3 (q) .
+B(q) = @ − (a5 s2 + a6 s23 )
+(1)
+−a6 s23
+a4 + a3 c3
+a4
+Coriolis and centrifugal vector
+From (1) and
+0
+1
+c1 (q, q̇)
+c(q, q̇) = @ c2 (q, q̇) A,
+c3 (q, q̇)
+
+T
+
+ci (q, q̇) = q̇ C i (q)q̇,
+
+1
+C i (q) =
+2
+
+(
+)
+„
+«T
+∂bi (q)
+∂bi (q)
+∂B(q)
++
+−
+(i = 1, 2, 3),
+∂q
+∂q
+∂qi
+
+we compute
+80
+9
+1 0
+1T
+>
+0
+0
+0
+0
+0
+>
+< 0
+=
+1 B
+C B
+C
+C 1 (q) =
+@ 0 − (a5 c2 + a6 c23 ) −a6 c23 A + @ 0 − (a5 c2 + a6 c23 ) −a6 c23 A − 0
+>
+2>
+: 0
+;
+−a6 c23
+−a6 c23
+0
+−a6 c23
+−a6 c23
+0
+1
+0
+0
+0
+B
+C
+= @ 0 − (a5 c2 + a6 c23 ) −a6 c23 A
+0
+−a6 c23
+−a6 c23
+80
+1 0
+1
+>
+0
+0
+0
+< 0 − (a5 c2 + a6 c23 ) −a6 c23
+1 B
+C B
+C
+0
+−2a3 s3 A + @ − (a5 c2 + a6 c23 )
+0
+0 A
+C 2 (q) =
+@0
+2>
+: 0
+−a6 c23
+−2a3 s3 −a3 s3
+0
+−a3 s3
+0
+
+0
+B
+− @ − (a5 c2 + a6 c23 )
+−a6 c23
+
+− (a5 c2 + a6 c23 )
+0
+0
+
+80
+>
+< 0
+1 B
+C 3 (q) =
+@0
+2>
+: 0
+0
+
+0
+B
+= @ 0
+0
+
+1 0
+−a6 c23 −a6 c23
+0
+C B
+0
+−a3 s3 A + @ −a6 c23
+0
+0
+−a6 c23
+1
+0
+0
+C
+a3 s3 0 A,
+0
+0
+
+19 0
+−a6 c23 >
+0
+=
+C
+B
+0
+A =@ 0
+>
+;
+0
+0
+0
+0
+−a3 s3
+
+0
+0
+−a3 s3
+
+1 0
+0
+0
+C B
+0 A − @ −a6 c23
+0
+−a6 c23
+
+1
+0
+C
+−a3 s3 A
+−a3 s3
+
+−a6 c23
+−2a3 s3
+−a3 s3
+
+19
+−a6 c23 >
+=
+C
+−a3 s3 A
+>
+;
+0
+
+and thus
+1 0
+1
+−a5 c2 q̇22 − a6 c23 (q̇2 + q̇3 )2
+− (m2 d2 + m3 `2 ) c2 q̇22 − m3 d3 c23 (q̇2 + q̇3 )2
+C
+B
+C B
+c(q, q̇) = @
+−m3 `2 d3 s3 (2q̇2 + q̇3 ) q̇3
+−a3 s3 (2q̇2 + q̇3 ) q̇3
+A=@
+A.
+2
+2
+a3 s3 q̇2
+m3 `2 d3 s3 q̇2
+0
+
+(2)
+
+Exercise 2
+Again, the robot motion occurs in a (vertical) plane and we will use for simplicity two-dimensional position
+vectors in the plane (x0 , y 0 ). The total potential energy is
+U=
+
+4
+X
+
+Ui ,
+
+Ui = −mi g T r 0,ci ,
+
+i=1
+
+4
+
+i = 1, . . . , 4.
+
+Since
+`
+´
+g T = 0 −g0 0 ,
+g0 = 9.81 [m/s2 ],
+we need to compute only the y-component of the position vector r 0,ci of the center of mass of the link i,
+for i = 1, . . . , 4. We have
+r0,c1,y = d1 s1
+r0,c2,y = `1 s1 + d2 s12
+r0,c3,y = `1 s1 + `2 s12 + d3 s123
+r0,c4,y = `1 s1 + `2 s12 + `3 s123 + d4 s1234 ,
+where di is the (signed) distance of the center of mass of link i from the axis of joint i (i = 1, . . . , 4). Thus
+U = g0 m1 d1 s1 + g0 m2 (`1 s1 + d2 s12 ) + g0 m3 (`1 s1 + `2 s12 + d3 s123 ) + g0 m4 (`1 s1 + `2 s12 + `3 s123 + d4 s1234 )
+n
+o
+= g0 [m1 d1 + (m2 + m3 + m4 )`1 ] s1 + [m2 d2 + (m3 + m4 )`2 ] s12 + [m3 d3 + m4 `3 ] s123 + m4 d4 s1234
+=: aG1 s1 + aG2 s12 + aG3 s123 + aG4 s1234 ,
+where we have introduced the dynamic coefficients aGi (i = 1, . . . , 4) for the constant factors related to
+gravity.
+The gravity vector of this robot is then
+0
+„
+g(q) =
+
+∂U (q)
+∂q
+
+and its linear parametrization is
+0
+B
+B
+g(q) = B
+@
+
+«T
+
+c1
+0
+0
+0
+
+B
+B
+=B
+@
+
+c12
+c12
+0
+0
+
+aG1 c1 + aG2 c12 + aG3 c123 + aG4 c1234
+aG2 c12 + aG3 c123 + aG4 c1234
+aG3 c123 + aG4 c1234
+aG4 c1234
+c123
+c123
+c123
+0
+
+c1234
+c1234
+c1234
+c1234
+
+10
+CB
+CB
+CB
+A@
+
+aG1
+aG2
+aG3
+aG4
+
+1
+C
+C
+C,
+A
+
+(3)
+
+1
+C
+C
+C = Y G (q)aG .
+A
+
+(4)
+
+All equilibrium configurations q e are found by analyzing recursively the vector equation g(q e ) = 0 from
+the last component backwards:
+g4 (q e ) = 0
+
+→
+
+c1234 = 0
+
+g3 (q e ) = 0
+
+→
+
+being already c1234 = 0
+
+g2 (q e ) = 0
+
+→
+
+being already c1234 = 0, c123 = 0
+
+g1 (q e ) = 0
+
+→
+
+being already c1234 = 0, c123 = 0, c12 = 0
+
+→
+
+c123 = 0
+→
+
+c12 = 0
+→
+
+c1 = 0.
+
+Thus, the unforced equilibria of the robot (assuming a generic mass distribution) are characterized by
+π
+qe1 = ± ∩ qe2 = {0, π} ∩ qe3 = {0, π} ∩ qe4 = {0, π} ,
+2
+namely with the robot being stretched or folded along the vertical direction only.
+Finally, perfect balancing in all configurations (i.e., g(q) = 0) is obtained for when the mass distribution
+zeroes the vector of dynamic coefficients, namely aG = 0. Starting again from the last component and
+proceeding backwards, we obtain
+aG4 = 0
+
+→
+
+d4 = 0
+
+aG3 = 0
+
+→
+
+m3 d3 + m4 `3 = 0
+
+aG2 = 0
+
+→
+
+m2 d2 + (m3 + m4 )`2 = 0
+
+aG1 = 0
+
+→
+
+m1 d1 + (m2 + m3 + m4 )`1 = 0
+
+→
+
+d3 = −
+
+5
+
+→
+
+m4
+`3
+m3
+m3 + m4
+`2
+m2
+m2 + m3 + m4
+`1 .
+d1 = −
+m1
+
+d2 = −
+→
+
+Exercise 3
+The task vector for this 4R planar robot
+0
+!
+px
+pe
+B
+r=
+= @ py
+φ
+φ
+
+is defined as
+1 0
+1
+` (c1 + c12 + c123 + c1234 )
+C B
+C
+A = @ ` (s1 + s12 + s123 + s1234 ) A = f (q).
+q1 + q2 + q3 + q4
+
+Differentiating r w.r.t. to time yields
+ṙ =
+with the task Jacobian given by
+0
+−` (s1 + s12 + s123 + s1234 )
+B
+J (q) = @ ` (c1 + c12 + c123 + c1234 )
+1
+
+v
+φ̇
+
+!
+=
+
+∂f (q)
+q̇ = J (q)q̇,
+∂q
+
+−` (s12 + s123 + s1234 )
+` (c12 + c123 + c1234 )
+1
+
+−` (s123 + s1234 )
+` (c123 + c1234 )
+1
+
+For the purpose of singularity analysis, the matrix J (q) can be rewritten as
+0
+0
+1
+1 0 0 0
+−` s1 −` s12 −` s123 −` s1234
+B
+B
+CB 1 1 0 0
+` c12
+` c123
+` c1234 A B
+J (q) = @ ` c1
+@ 1 1 1 0
+0
+0
+0
+1
+1 1 1 1
+
+1
+−` s1234
+C
+` c1234 A .
+1
+
+(5)
+
+1
+C
+C
+C = J a (q) T ,
+A
+
+where the square matrix T is clearly nonsingular. Thus, J and J a have always the same rank. In particular,
+the Jacobian J will be full (row) rank if and only if the 2 × 3 upper left block of matrix J a will have rank
+equal to 2. This matrix block corresponds to the well-known Jacobian of a planar 3R robot (with equal
+links of length `) performing a positional task with its end-effector. The singularities of the 4R arm for
+the given task occur then if and only if
+q2 = {0, π} ∩ q3 = {0, π} ,
+namely when its first three links are stretched or folded along a single direction.
+Plugging the link length ` = 0.5 [m] and the given configuration q = (0 0 π/2 0) in (5) provides
+0
+1
+−1 −1 −1 −0.5
+B
+C
+0
+0 A.
+J = @ 1 0.5
+1
+1
+1
+1
+whose pseudoinverse is computed (by hand or using Matlab) as
+0
+1
+0
+0
+1−1
+−1
+1 1
+1/3
+3.25
+−1.5
+−3.5
+B −2/3
+“
+”−1 B −1 0.5 1 C
+B
+CB
+C
+B
+1.5 A = B
+J # = J T JJ T
+=B
+C @ −1.5 1.25
+@ −1
+@ −5/3
+0 1 A
+−3.5
+1.5
+4
+−0.5
+0 1
+2
+The desired velocity task is specified by
+
+ṙ d =
+
+vd
+φd
+
+!
+
+6
+
+0
+
+1
+1
+= @ 0 A.
+0.5
+
+1
+0
+−1
+0
+
+1/6
+−1/3
+−5/6
+2
+
+1
+C
+C
+C.
+A
+
+PN
+In view of the separability of the objective function Hrange (q) =
+i=1 Hrange,i (qi ) that measures the
+distance from the midpoint of the joint ranges, its gradient takes the form
+„
+«T
+∂Hrange (q)
+∂Hrange,i (qi )
+∂Hrange (q)
+1
+qi − q̄i
+∇q Hrange (q) =
+=
+=
+,
+with
+.
+∂q
+∂qi
+∂qi
+N (qM,i − qm,i )2
+With the data N = 4, qM,i = −qm,i = 2, and thus q̄i = 0, for i = 1, . . . , 4, the gradient at the given
+configuration q = (0 0 π/2 0) is
+0
+1
+0
+B
+C
+1 B 0 C
+∇q Hrange =
+B
+C
+64 @ π/2 A
+0
+The joint velocity solution that realizes the desired task while decreasing instantaneously the objective
+function Hrange is evaluated then as
+0
+1
+0.4126
+B −0.8252 C
+“
+”
+B
+C
+q̇ = J # ṙ d − I − J # J ∇q Hrange = −∇q Hrange + J # (ṙ d + J ∇q Hrange ) = B
+C [rad/s].
+@ −2.0874 A
+3
+∗∗∗∗∗
+
+7
+
+

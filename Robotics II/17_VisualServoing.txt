@@ -1,0 +1,1568 @@
+Robotics 2
+
+Visual servoing
+Prof. Alessandro De Luca
+
+Visual servoing
+n
+
+objective
+use information acquired by vision sensors (cameras)
+for feedback control of the pose/motion of a robot
+(or of parts of it)
+
++ data acquisition ~ human eye, with very large
+information content in the acquired images
+_ difficult to extract essential data, nonlinear perspective
+transformations, high sensitivity to ambient conditions
+(lightening), noise
+
+Robotics 2
+
+2
+
+Some applications
+automatic navigation of robotic systems (agricolture, automotive)
+video
+
+video
+
+surveillance
+
+video
+Robotics 2
+
+bio-motion synchronization (surgical robotics)
+
+video
+3
+
+Image processing
+n
+
+real-time extraction of characteristic parameters useful for
+robot motion control
+n
+
+n
+
+low-level processing
+n
+
+n
+
+binarization (threshold on grey levels), equalization (histograms),
+edge detection, …
+
+segmentation
+n
+n
+
+n
+
+features: points, area, geometric center, higher-order moments, …
+
+based on regions (possibly in binary images)
+based on contours
+
+interpretation
+n
+n
+
+Robotics 2
+
+association of characteristic parameters (e.g., texture)
+problem of correspondence of points/characteristics of objects in
+different images (stereo or on image flows)
+4
+
+Configuration of a vision system
+n
+
+one, two, or more cameras
+n
+
+n
+
+3D/stereo vision
+n
+
+n
+
+obtained even with a single (moving) camera, with the
+object taken from different (known) points of view
+
+camera positioning
+n
+n
+
+n
+
+grey-level or color
+
+fixed (eye-to-hand)
+mounted on the manipulator (eye-in-hand)
+
+robotized vision heads
+n
+
+Robotics 2
+
+motorized (e.g., stereo camera on humanoid head or
+pan-tilt camera on Magellan mobile robot)
+5
+
+Camera positioning
+
+eye-in-hand
+
+Robotics 2
+
+eye-to-hand
+
+6
+
+Vision for assembly
+video
+
+video
+
+PAPAS-DLR system
+
+(eye-in-hand, hybrid force-vision)
+Robotics 2
+
+robust w.r.t. motion of
+target objects
+7
+
+Indirect/external visual servoing
+
+vision system provides set-point references to a Cartesian motion controller
+• “easy” control law (same as without vision)
+• appropriate for relatively slow situations (control sampling 𝑓 = 1/𝑇 < 50Hz)
+Robotics 2
+
+8
+
+Direct/internal visual servoing
+
+replace Cartesian controller with one based on vision that directly computes
+joint reference commands
+• control law is more complex (involves robot kinematics/dynamics)
+• preferred for fast situations (control sampling 𝑓 = 1/𝑇 > 50Hz)
+Robotics 2
+
+9
+
+Classification of visual servoing schemes
+n
+
+position-based visual servoing (PBVS)
+n
+
+n
+
+n
+
+image-based visual servoing (IBVS)
+n
+
+n
+
+n
+
+information extracted from images (features) is used to reconstruct
+the current 3D pose (pose/orientation) of an object
+combined with the knowledge of a desired 3D pose, we generate a
+Cartesian pose error signal that drives the robot to the goal
+error is computed directly on the values of the features extracted
+on the 2D image plane, without going through a 3D reconstruction
+the robot should move so as to bring the current image features
+(what it “sees” with the camera) to their desired values
+
+some mixed schemes are possible (e.g., 2½D methods)
+
+Robotics 2
+
+10
+
+Comparison between the two schemes
+n
+
+position-based visual servoing (PBVS)
+current image
+
++
+3D information
+
+n
+
+OC
+
+Z
+
+current
+3D pose
+
+C
+
+XC
+YC
+
+ZO
+
+O
+
+(T, R)
+
+-
+
+3D Cartesian error
+driving the robot
+
+YO
+
+XO
+
+3D reconstruction
+
+desired 3D pose
+
+image-based visual servoing (IBVS)
+current image
+
+-
+
+2D error in the
+image space
+
+motion commands
+to the robot
+
+desired image
+processing
+Robotics 2
+
+11
+
+PBVS architecture
+𝑥 ∗, 𝑦 ∗, 𝑧 ∗,
+𝛼 ∗, 𝛽∗, 𝛾 ∗
+
+relatively EASY
+
+𝑒(𝑡)
+
++
+_
+
+𝑥(𝑡), 𝑦(𝑡), 𝑧(𝑡),
+𝛼(𝑡), 𝛽(𝑡), 𝛾(𝑡)
+
+Cartesian
+control law
+
+3D reconstruction
+
+𝑠(𝑡)
+
+here, we consider only
+Cartesian commands
+of the kinematic type
+
+𝑉, Ω
+
+feature extraction
+
+DIFFICULT
+
+highly sensitive to camera calibration parameters
+Robotics 2
+
+12
+
+Examples of PBVS
+video
+
+video
+
+eye-to-“robot” (SuperMario)
+position/orientation of the camera
+and scene geometry
+
+eye-in-hand (Puma robot)
+position and orientation of the robot
+(with mobile or fixed base)
+
+known a priori!
+Robotics 2
+
+13
+
+IBVS architecture
+DIFFICULT
+
+𝑠∗ +
+_
+
+𝑒(𝑡)
+
+control law in
+the image plane
+
+𝑠(𝑡)
+
+here, we consider only
+Cartesian commands
+of the kinematic type
+
+𝑉, Ω
+
+feature extraction
+
+almost insensitive to intrinsic/extrinsic camera calibration parameters
+
+Robotics 2
+
+14
+
+An example of IBVS
+video
+
+here, the
+features
+are points
+
+(selected from
+the given set,
+or in suitable
+combinations)
+
+desired feature positions
+current feature positions
+Robotics 2
+
+the error in the image plane (task space!)
+drives/controls the motion of the robot
+
+15
+
+PBVS vs IBVS
+PBVS = position-based
+visual servoing
+
+IBVS = image-based
+visual servoing
+
+video
+
+video
+
+F. Chaumette, INRIA Rennes
+
+reconstructing the instantaneous
+(relative) 3D pose of the object
+
+using (four) point features
+extracted from the 2D image
+
+...and intermediate 2½-D visual servoing...
+Robotics 2
+
+16
+
+Steps in an IBVS scheme
+n
+
+image acquisition
+n
+
+n
+
+feature extraction
+n
+
+n
+
+with image processing techniques (it could be a difficult and
+time consuming step!)
+
+comparison with “desired” feature values
+n
+
+n
+
+frame rate, delay, noise, ...
+
+definition of an error signal in the image plane
+
+generation of motion of the camera/robot
+n
+n
+n
+
+Robotics 2
+
+perspective transformations
+differential kinematics of the manipulator
+control laws of kinematic (most often) or dynamic type
+(e.g., PD + gravity cancelation --- see reference textbook)
+17
+
+Image processing techniques
+
+binarization in RGB space
+
+binarization in HSV space
+Robotics 2
+
+erosion and dilation
+
+dilation
+18
+
+What is a feature?
+n
+
+image feature: any interesting characteristic or geometric
+structure extracted from the image/scene
+n
+n
+n
+
+n
+
+points
+lines
+ellipses (or any other 2D contour)
+
+feature parameter(s): any numerical quantity associated to
+the selected feature in the image plane
+n
+n
+n
+n
+n
+
+coordinates of a point
+angular coefficient and offset of a line
+center and radius of a circle
+area and center of a 2D contour
+generalized moments of an object in the image
+n
+
+Robotics 2
+
+can also be defined so as to be scale- and rotation-invariant
+
+19
+
+Example of IBVS using moments
+video
+
+n
+n
+
+Robotics 2
+
+avoids the problem of “finding correspondences” between points
+however, it is not easy to control the motion of all 6 dofs of the
+camera when using only moments as features
+20
+
+Camera model
+n
+
+set of lenses to focus the incoming light
+n
+n
+n
+
+n
+
+n
+
+(converging) thin lenses
+pinhole approximation
+catadioptric lens or systems (combined with mirrors)
+
+matrix of light sensitive elements (pixels in image plane),
+possibly selective to RGB colors ~ human eye
+frame grabber “takes shots”: an electronic device that
+captures individual, digital still frames as output from an
+analog video signal or a digital video stream
+n
+n
+n
+
+Robotics 2
+
+board + software on PC
+frame rate = output frequency of new digital frames
+it is useful to randomly access a subset (area) of pixels
+21
+
+Thin lens camera model
+• geometric/projection optics
+
+𝑝
+
+• rays parallel to the optical axis
+are deflected through a point
+at distance 𝜆 (focal length)
+𝜆 𝑧
+𝑍
+
+𝜆
+
+𝑂
+
+optical • rays passing through the optical
+axis
+
+center 𝑂 are not deflected
+
+𝑥
+image
+plane
+
+fundamental equation
+of a thin lens
+
+1 1 1
++ =
+𝑍 𝑧 𝜆
+
+dioptric
+(optical)
+power
+
+proof? left as exercise ...
+Robotics 2
+
+22
+
+Pinhole camera model
+
+𝑃
+
+𝑥
+
+• when thin lens wideness is neglected
+• all rays pass through optical center
+• from the relations on similar triangles
+one gets the perspective equations
+
+𝑋
+𝑢=𝜆
+𝑍
+
+𝑝
+𝑢
+𝜆
+
+focal length
+
+𝑦
+
+to obtain these from discrete pixel values, an offset and
+a scaling factor should be included in each direction
+
+𝑧
+
+𝑂
+
+𝑌
+𝑣=𝜆
+𝑍
+
+𝑣
+
+sometimes normalized values (𝑢 = , 𝑣 = ) are used
+(dividing by the focal length)
+
+with
+image plane with an array
+of light sensitive elements
+(actually located symmetrically
+to the optical center 𝑂 , but this
+model avoids a change of signs...)
+
+Robotics 2
+
+𝑃 = (𝑋, 𝑌, 𝑍)
+
+Cartesian point
+
+𝑝 = (𝑢, 𝑣, 𝜆)
+
+representative point
+on the image plane
+
+(in camera frame)
+
+23
+
+Reference frames of interest
+• absolute reference frame
+𝑂F
+𝑍A
+
+𝑂A
+
+ℱB : 𝑂, 𝑋B , 𝑌B , 𝑍⃗B
+
+𝑢
+
+𝑃
+
+𝑣
+
+ℱA : 𝑂A , 𝑋A , 𝑌A , 𝑍⃗A
+
+𝑝
+
+• image plane reference frame
+
+𝑋A
+𝑌A
+
+ℱF : 𝑂F , 𝑢, 𝑣⃗
+
+𝑍B
+
+• position/orientation of ℱA
+w.r.t. ℱB
+𝑂
+
+(𝑇, 𝑅)
+𝑋B
+Robotics 2
+
+• camera reference frame
+
+𝑌B
+
+(𝑇, 𝑅)
+(translation, rotation)
+24
+
+Interaction matrix
+n
+n
+
+given a set of feature(s) parameters 𝑓 = 𝑓G
+
+⋯ 𝑓I
+
+J
+
+∈ ℝI
+
+we look for the (kinematic) differential relation between
+motion imposed to the camera and motion of features on the
+image plane
+
+𝑉
+̇
+𝑓 = 𝐽(O)
+Ω
+
+n
+
+(𝑉, Ω) ∈ ℝM is the camera linear/angular velocity, a vector
+expressed in ℱA
+𝐽(O) is a 𝑘×6 matrix, known as interaction matrix
+
+n
+
+in the following, we consider mainly point features
+
+n
+
+n
+
+Robotics 2
+
+other instances (areas, lines, …) can be treated as extensions of the
+presented analysis
+25
+
+Computing the interaction matrix
+point feature, pinhole model
+
+n
+
+from the perspective equations 𝑢 =
+
+𝑢̇
+=
+𝑣̇
+n
+
+n
+
+V
+U
+
+0
+
+Y
+
+0 −U
+V
+U
+
+Z
+−U
+
+T
+𝜆U ,
+
+𝑣=
+
+T
+𝜆 U , we have
+
+𝑋̇
+𝑋̇
+𝑌̇ = 𝐽G (𝑢, 𝑣, 𝜆) 𝑌̇
+𝑍̇
+𝑍̇
+
+̇ of a point 𝑃 in frame ℱA is actually due to the
+the velocity (𝑋,̇ 𝑌,̇ 𝑍)
+roto-translation (𝑉, Ω) of the camera (𝑃 is assumed fixed in ℱB )
+̇ and (𝑉, Ω)
+kinematic relation between (𝑋,̇ 𝑌,̇ 𝑍)
+
+𝑋
+𝑋̇
+𝑌̇ = − 𝑉 − Ω × 𝑌
+𝑍
+𝑍̇
+Note: ALL quantities are expressed in the camera frame ℱA
+without explicit indication of subscripts
+Robotics 2
+
+26
+
+Computing the interaction matrix
+
+(cont)
+
+point feature, pinhole model
+
+n
+
+the last equation can be expressed in matrix form
+
+−1 0
+0
+0 −𝑍 𝑌
+𝑋̇
+𝑍
+0 −𝑋
+𝑌̇ = 0 −1 0
+0
+0 −1 −𝑌 𝑋
+0
+𝑍̇
+n
+
+𝑉
+𝑉
+= 𝐽[(𝑋, 𝑌, 𝑍)
+Ω
+Ω
+
+combining things, the interaction matrix for a point feature is
+
+𝜆
+−
+0
+𝑢̇
+= 𝐽G𝐽[ 𝑉 = 𝑍
+𝑣̇
+𝜆
+Ω
+0 −
+𝑍
+= 𝐽\ (𝑢, 𝑣, 𝑍) 𝑉
+Ω
+
+𝑢𝑣
+𝑢[
+𝑢
+− 𝜆+
+𝜆
+𝜆
+𝑍
+𝑣
+𝑣[
+𝑢𝑣
+−
+𝑍 𝜆+ 𝜆
+𝜆
+
+𝑣
+−𝑢
+
+𝑉
+Ω
+
+here, 𝜆 is assumed to be known
+
+𝑝 = point (feature)
+Robotics 2
+
+27
+
+Comments
+n
+
+the interaction matrix in the map
+𝑢̇
+𝑉
+= 𝐽\ (𝑢, 𝑣, 𝑍)
+𝑣̇
+Ω
+n
+n
+
+depends on the actual value of the feature and on its depth
+
+since dim ker 𝐽\ = 4, there exist ∞e motions of the camera that
+are unobservable (for this feature) on the image
+n
+
+n
+
+Robotics 2
+
+Z
+
+for instance, a translation along the projection ray
+
+when more point features are considered, the associated
+interaction matrices are stacked one on top of the other
+n 𝑝 point features: the interaction matrix is 𝑘 × 6, with 𝑘 = 2𝑝
+
+28
+
+Other examples of interaction matrices
+n
+
+distance between two point features
+𝑑=
+
+𝑢G − 𝑢[
+
+𝑑̇ =
+
+1
+𝑢G − 𝑢[
+𝑑
+
+[
+
++ 𝑣G − 𝑣[
+𝑣G − 𝑣[
+
+𝑢[ − 𝑢G
+
+𝑣[ − 𝑣G
+
+𝐽\G 𝑢G , 𝑣G , 𝑍G
+𝐽\[ 𝑢[ , 𝑣[ , 𝑍[
+
+= 𝐽\ 𝑢G , 𝑢[ , 𝑣G , 𝑣[
+n
+
+[
+
+𝑢̇ G
+𝑣̇ G
+𝑢̇ [
+𝑣̇ [
+
+(𝑢G , 𝑣G )
+(𝑢[ , 𝑣[ )
+
+𝑉
+Ω
+
+image moments
+𝑚jk = m
+
+𝑥 j 𝑦 j 𝑑𝑥 𝑑𝑦
+
+ℛ(n)
+
+n
+
+n
+
+useful for representing also qualitative geometric information (area, center,
+orientation of an approximating ellipse, …)
+by using Green formulas and the interaction matrix of a generic point feature
+
+𝑚̇ jk = 𝐿jk
+Robotics 2
+
+ℛ(𝑡) region of the image plane
+occupied by the object
+
+𝑉
+Ω
+
+(see F. Chaumette: “Image moments:
+A general and useful set of features for visual servoing”,
+IEEE Trans. on Robotics, August 2004)
+
+29
+
+IBVS with straight lines as features
+video
+
+F. Chaumette, INRIA Rennes
+Robotics 2
+
+30
+
+Robot differential kinematics
+n
+
+n
+
+eye-in-hand case: camera is mounted on the end-effector of a
+manipulator arm (with fixed base or on a wheeled mobile base)
+the motion (𝑉, Ω) to be imposed to the camera coincides with the
+desired end-effector linear/angular velocity and is realized by
+choosing the manipulator joint velocity (or, more in general, the
+feasible velocity commands of a mobile manipulator)
+
+𝑉 = 𝐽 𝑞 𝑞̇ = 𝐽 𝑞 𝑢
+q
+q
+Ω
+for consistency with the
+previous interaction matrix,
+these Jacobians must be
+expressed in the camera frame ℱA
+
+Geometric Jacobian
+of a manipulator
+
+velocity
+control
+input
+
+... or the NMM Jacobian
+of a mobile manipulator
+
+with 𝑞 ∈ ℝp being the robot configuration variables
+n
+
+in general, an hand-eye calibration is needed for this Jacobian
+
+Robotics 2
+
+31
+
+Image Jacobian
+n
+
+combining the step involved in the passage from the velocity of
+point features on the image plane to the joint velocity/feasible
+velocity commands of the robot, we finally obtain
+
+𝑓̇ = 𝐽\ 𝑓, 𝑍 𝐽q 𝑞 𝑢 = 𝐽 𝑓, 𝑍, 𝑞 𝑢
+n
+
+n
+
+n
+
+n
+
+matrix 𝐽 𝑓, 𝑍, 𝑞 is called the Image Jacobian and plays the same
+role of a classical robot Jacobian
+we can thus apply one of the many standard kinematic (or even
+dynamics-based) control techniques for robot motion
+the (controlled) output is given by the vector of features in the
+image plane (the task space!)
+the error driving the control law is defined in this task space
+
+Robotics 2
+
+32
+
+Kinematic control for IBVS
+n
+
+defining the error vector as 𝑒 = 𝑓r − 𝑓, the general choice
+𝑢 = 𝐽# 𝑓ṙ + 𝑘𝑒 + 𝐼 − 𝐽# 𝐽 𝑢B
+minimum norm solution
+
+term in ker 𝐽 does not “move” the features
+
+will exponentially stabilize the task error to zero (up to singularities,
+limit joint range/field of view, features exiting the image plane, ...)
+
+n
+
+in the redundant case, vector 𝑢B (projected in the image Jacobian
+null space) can be used for optimizing behavior/criteria
+the error feedback signal depends only on feature values
+
+n
+
+there is still a dependence of 𝐽 on the depths 𝑍 of the features
+
+n
+
+n
+
+n
+
+Robotics 2
+
+use the constant and “known” values at the final desired pose
+𝐽(𝑓, 𝑍 ∗ , 𝑞)
+or, estimate on line their current values using a dynamic observer
+33
+
+Example with NMM
+n
+
+mobile base (unicycle) + 3R manipulator
+eye-in-hand configuration
+
+n
+
+5 commands
+
+n
+
+n
+n
+
+n
+
+linear and angular velocity of mobile base
+velocities of the three manipulator joints
+
+task specified by 2 point features
+𝑓 = 𝑓YG
+
+n
+
+𝑓ZG
+
+𝑓Y[
+
+4 output variables
+𝑓Z[
+
+J
+
+5 ⎯ 4 = 1 degree of redundancy (w.r.t. the task)
+
+Robotics 2
+
+34
+
+Simulation
+view from
+camera
+
+processed
+image
+
+behavior of
+the 2 features
+Robotics 2
+
+•
+•
+•
+•
+
+video
+
+simulation in Webots
+current value of 𝑍 is supposed to be known
+diagonal task gain matrix 𝑘 (decoupling!)
+“linear paths” of features motion on the
+image plane
+
+35
+
+IBVS control with Task Sequencing
+n
+
+n
+
+approach: regulate only one (some) feature at the time, while keeping
+“fixed” the others by unobservable motions in the image plane
+Image Jacobians of single point features (e.g., 𝑝 = 2)
+
+𝑓Ġ = 𝐽G 𝑢,
+n
+
+𝑓[̇ = 𝐽[ 𝑢
+
+the first feature 𝑓G is regulated during a first phase by using
+
+𝑢 = 𝐽G# 𝑘G 𝑒G + (𝐼 − 𝐽G# 𝐽G )𝑢B
+n
+
+feature 𝑓[ is then regulated by a command in the null-space of the
+first task
+𝑢 = (𝐼 − 𝐽# 𝐽 )𝐽J 𝑘 𝑒
+G G
+
+n
+
+n
+
+[ [ [
+
+in the first phase there are two (more) degrees of redundancy w.r.t.
+the “complete” case, which can be used, e.g., for improving robot
+alignment to the target
+if the complete case is not redundant: singularities are typically met
+without Task Sequencing, but possibly prevented with TS ...
+
+Robotics 2
+
+36
+
+Simulation with TS scheme
+mobile base (unicycle) + polar 2R arm: Image Jacobian is square (4×4)
+point feature 1
+(regulated in
+first phase)
+point feature 2
+(in second phase)
+
+behavior of
+the 2 features
+Robotics 2
+
+video
+• simulation in Webots
+• current value of 𝑍 is supposed to be known
+37
+
+Experiments
+Magellan (unicycle) + pan-tilt camera (same mobility of a polar 2R robot)
+
+video
+• comparison between Task Priority (TP) and Task Sequencing (TS) schemes
+• both can handle singularities (of Image Jacobian) that are possibly encountered
+• camera frame rate = 7 Hz
+Robotics 2
+
+38
+
+In many practical cases…
+n
+
+n
+
+n
+
+the uncertainty in a number of relevant data may be large
+n
+
+focal length 𝜆 (intrinsic camera parameters)
+
+n
+
+hand-eye calibration (extrinsic camera parameters)
+
+n
+
+depth 𝑍 of point features
+
+n
+
+….
+
+one can only compute an approximation of the Image Jacobian (both in
+its interaction matrix part, as well as in the robot Jacobian part)
+in the closed loop, error dynamics on features becomes
+
+𝑒̇ = −𝐽 𝐽v# 𝐾𝑒
+
+n
+
+n
+
+ideal case:
+
+𝐽 𝐽# = 𝐼
+
+real case:
+
+𝐽 𝐽v# ≠ 𝐼
+
+it is possible to show that a sufficient condition for local convergence of
+the error to zero is
+
+𝐽 𝐽v# > 0
+Robotics 2
+
+39
+
+Approximate Image Jacobian
+n
+
+v ∗) that is computed at the desired
+use a constant Image Jacobian 𝐽(𝑍
+target 𝑠 ∗ (with a known, fixed depth 𝑍 ∗)
+
+𝑞̇ = 𝐽# 𝑍 𝐾𝑒
+
+𝑞̇ = 𝐽v# 𝑍 ∗ 𝐾𝑒
+
+Robotics 2
+
+video
+
+F. Chaumette, INRIA Rennes
+
+video
+
+40
+
+An observer of the depth Z
+n
+
+n
+
+n
+
+it is possible to estimate on line the current value (possibly timevarying) of the depth 𝑍, for each considered point feature, using a
+dynamic observer
+define 𝑥 = 𝑢 𝑣 1/𝑍 J , 𝑥z = 𝑢
+z 𝑣z 1/𝑍v J as current state
+and estimated state, and 𝑦 = 𝑢 𝑣 J as measured output
+a (nonlinear) observer of 𝑥 with input 𝑢A = 𝑉
+
+𝑥ż = 𝛼 𝑥,
+z 𝑦 𝑢A + 𝛽(𝑥,
+z 𝑦, 𝑢A )
+
+Ω
+
+J
+
+guarantees lim 𝑥 𝑡 − 𝑥(𝑡)
+z
+= 0 provided that
+n→}
+
+n
+n
+
+linear velocity of the camera is not zero
+the linear velocity vector is not aligned with the projection ray of the
+considered point feature
+
+⇒ these are persistent excitation conditions (~ observability conditions)
+Robotics 2
+
+41
+
+Block diagram of the observer
+commands (input)
+to the camera/E-E
+
+𝑉, Ω
+
+𝑍
+Camera system
+with point feature
+
+Observer
+
+𝑓
+
+𝑓v
+
+measures (output)
+in the image plane
+
++
+
+𝑒 = 𝑓 − 𝑓v
+
+-
+
+estimation
+error
+
+𝑍v
+
+Robotics 2
+
+42
+
+Results on the estimation of 𝑍
+real and estimated initial state
+𝑥 𝑡B = 10
+𝑥z 𝑡B = 10
+
+−10
+−10
+
+2
+1
+
+J
+J
+
+estimation errors 𝑒(𝑡)
+Robotics 2
+
+𝑣• 𝑡
+𝑣… 𝑡
+𝜔• 𝑡
+𝜔… 𝑡
+
+= 0.1 cos 2𝜋𝑡
+= 0.5 cos 𝜋𝑡
+= 0.6 cos(𝜋⁄2)𝑡
+=1
+
+open-loop
+commands
+
+v
+𝑍(𝑡) and 𝑍(𝑡)
+43
+
+Simulation of the observer
+with stepwise displacements of the target
+
+video
+
+Robotics 2
+
+44
+
+IBVS control with observer
+n
+
+the depth observer can be easily integrated on line with any IBVS
+control scheme
+
+𝑠∗ +
+
+𝑒(𝑡)
+
+𝑉, Ω
+
+IBVS control law
+
+⎯
+
+𝑍v
+
+Depth observer
+
+𝑠(𝑡)
+
+Robotics 2
+
+Feature extraction
+
+45
+
+Experimental set-up
+n
+n
+n
+
+visual servoing with fixed camera on a skid-steering mobile robot
+very rough eye-robot calibration
+unknown depths of target points (estimated on line)
+camera
+
+Robotics 2
+
+4 target points (on a plane)
+
+a “virtual” 5th feature is also used
+as the average of the four point features
+
+46
+
+Experiments
+n
+n
+
+motion of features on the image plane is not perfect...
+the visual regulation task is however correctly realized
+external view
+
+camera view
+
+video (c/o Università di Siena)
+Robotics 2
+
+47
+
+Evolution of features
+n
+
+end
+
+n
+
+n
+
+motion of the 5 features
+(including the average point)
+in the image plane
+toward end, motion is ≈ linear
+since the depth observers have
+already converged to the true
+values
+computed Image Jacobian is
+close to the actual one
+
+𝑍v ⟶ 𝑍 ⟹ 𝐽v ⟶ 𝐽
+n
+
+start
+
+Robotics 2
+
+“true” initial and final depths
+
+𝑍 𝑡B ≅ 4 m 𝑍r ≅ 0.9 m
+
+48
+
+Experiments with the observer
+n
+
+the same task was executed with five different initializations for the
+depth observers, ranging between 0.9 m (= true depth in the final
+desired pose) and 16 m (much larger than in the true initial pose)
+• initial values of depth
+estimates in the five tests
+𝑍vG
+𝑍v[
+𝑍vŽ
+𝑍ve
+𝑍v•
+
+𝑡B
+𝑡B
+𝑡B
+𝑡B
+𝑡B
+
+= 16 m
+=8m
+=5m
+=3m
+= 0.9 m
+
+• true depths in initial pose
+
+𝑍 𝑡B ≅ 4 m
+• true depths in final pose
+the evolutions of the estimated depths for the 4 point features
+
+Robotics 2
+
+𝑍r ≅ 0.9 m
+49
+
+Visual servoing with Kuka robot
+set-up
+
+n
+n
+n
+n
+n
+
+Kuka KR5 sixx R650 manipulator (6 revolute joints, spherical wrist)
+Point Grey Flea©2 CCD camera, eye-in-hand (mounted on a support)
+Kuka KR C2sr low-level controller (RTAI Linux and Sensor Interface)
+image processing and visual servoing on PC (Intel Core2 @2.66GHz)
+high-level control data exchange every 12ms (via UDP protocol)
+
+@ DIAG Robotics Laboratory
+Robotics 2
+
+50
+
+Visual servoing with Kuka robot
+simulation and experiment with the observer
+
+n
+n
+n
+
+depth estimation for a fixed target (single point feature)
+simulation using Webots first, then experimental validation
+sinusoidal motion of four robot joints so as to provide sufficient excitation
+video
+true and
+estimated depth
+
+Kuka experiment
+
+Webots simulation
+Robotics 2
+
+norm of
+centering error
+of feature point
+[in pixels]
+goes to zero
+once control
+is activated
+
+51
+
+Visual servoing with Kuka robot
+tracking experiment
+
+n
+
+tracking a (slowly) time-varying target by visual servoing, including the
+depth observer (after convergence)
+video
+
+Robotics 2
+
+52
+
+Gazing with humanoid head
+stereo vision experiment
+
+n
+
+gazing with a robotized head (7 joints, with 𝑛 = 6 independently controlled)
+at a moving target (visual task dimension 𝑚 = 2), using redundancy (to keep
+a better posture and avoid joint limits) and a predictive feedforward
+
+video (c/o Fraunhofer IOSB, Karlsruhe)
+Robotics 2
+
+final head posture
+without and with self-motions
+
+53
+
+

@@ -1,0 +1,348 @@
+Robotics II
+January 9, 2013
+Exercise 1
+P=(px , py)!
+Y0!
+
+q3
+q2
+ya!
+q1
+X0!
+
+Figure 1: A 3R planar robot with unitary link lengths and two sets of task variables
+Consider the 3R planar robot of Fig. 1, having links of unitary length and with the generalized
+coordinates defined therein. This robot is redundant for the task of positioning its end-effector at
+p = (px , py ), as well as for the task of imposing a value to the second link end-point height ya .
+a) For each separate task, define the associated task Jacobian and its singularities.
+b) Characterize the so-called algorithmic singularities (configurations where each task can be
+executed separately, but not both tasks simultaneously).
+c) For the simultaneous execution of both tasks, provide the expression of an inverse differential
+kinematic solution at the velocity level, based on a task-priority strategy that assigns higher
+priority to the end-effector position task.
+Exercise 2
+
+Y0
+q2
+
+d
+q1
+
+X0
+
+x=k
+
+Figure 2: A RP robot moving on a horizontal plane with its end-effector constrained on a line
+The end-effector of the RP robot in Fig. 2 is constrained to move on the Cartesian line x = k, with
+k > 0. For this operative condition, derive the expression of the constrained robot dynamics (in
+this case, two second-order differential equations, with a dynamically consistent projection matrix
+acting on forces/torques so as to automatically satisfy the motion constraint in any admissible
+robot state).
+[210 minutes; open books]
+1
+
+Solutions
+January 9, 2013
+Exercise 1
+Being the generalized coordinates qi (i = 1, 2, 3) the absolute angles of the links w.r.t. the x0 axis,
+the end-effector position is expressed as
+!
+cos q1 + cos q2 + cos q3
+p=
+= f 1 (q)
+sin q1 + sin q2 + sin q3
+The associated task Jacobian is
+∂f 1
+J 1 (q) =
+=
+∂q
+
+− sin q1
+
+− sin q2
+
+− sin q3
+
+cos q1
+
+cos q2
+
+cos q3
+
+!
+
+and is singular if and only if
+sin(q2 − q1 ) = sin(q3 − q2 ) = 0,
+
+(⇒ sin(q3 − q1 ) = 0)
+
+(1)
+
+or, in terms of Denavit-Hartenberg relative link angles θi = qi − qi−1 (for i = 2.3), when sin θ2 =
+sin θ3 = 0. This occurs only when all three links are folded or stretched along a common radial
+line originating at the robot base.
+The height ya of the end-point of the second link and its associated task Jacobian are given by
+ya = sin q1 + sin q2 = f2 (q)
+
+⇒
+
+J 2 (q) =
+
+∂f2
+=
+∂q
+
+cos q1
+
+cos q2
+
+0
+
+
+
+.
+
+This Jacobian is singular if and only if
+cos q1 = cos q2 = 0,
+
+(2)
+
+namely when the first two links are either folded or stretched and the end-point of the second link
+is on the y 0 axis.
+When considering the two tasks together, the Extended Jacobian is square
+
+
+
+
+− sin q1 − sin q2 − sin q3
+J 1 (q)
+
+
+cos q2
+cos q3  .
+=  cos q1
+J E (q) =
+J 2 (q)
+cos q1
+cos q2
+0
+Algorithmic singularities will occur when both J 1 and J 2 are full (row) rank, but
+det J E = − cos q3 · sin(q2 − q1 ) = 0.
+
+(3)
+
+Comparing eqs. (1–2) with (3), this happens when
+• the third link is vertical (cos q3 = 0), while the first two are not; or,
+• the first two links are aligned (sin(q2 − q1 ) = 0) but not vertical, and the third link is not
+aligned with the first two.
+2
+
+Indeed, the above are only particular conditions for singularity of the Extended Jacobian. In fact,
+J E is not invertible as soon as the third link is vertical and/or the first two links are aligned, no
+matter what is the situation of the other links.
+Let v d ∈ R2 be a desired velocity for the robot end-effector and ẏa,d a desired height variation
+rate for the end-point of the second link. An inverse solution of the form
+
+
+vd
+−1
+q̇ = J E (q)
+ẏa,d
+will blow out as soon as a singularity occurs for J E . A task-priority solution, with the first task
+(of dimension m1 = 2) of higher priority than the second one (of dimension m2 = 1), is given by
+
+
+# 
+
+#
+q̇ = J #
+ẏa,d − J 2 (q)J #
+(4)
+1 (q) v d + J 2 (q) I − J 1 (q)J 1 (q)
+1 (q) v d .
+This will guarantee perfect execution of the first task even when J E is singular (i.e., eq. (3) holds),
+provided that eq. (1) is not satisfied (in particular, in algorithmic singularities, where eq. (2) is not
+satisfied too).
+Using the properties of projection matrices (symmetry and idempotency), and being the matrix
+J 2 (I − J #
+1 J 1 ) a row vector in our case, the solution (4) can also be rewritten as
+
+
+#
+q̇ = J #
+(q)
+v
++
+α
+I
+−
+J
+(q)J
+(q)
+J T2 (q),
+d
+1
+1
+1
+with the scalar
+α = α(q, v d , ẏa,d ) =
+
+ẏa,d − J 2 (q)J #
+vd
+1 (q)
+
+.
+#
+J 2 (q) I − J 1 (q)J 1 (q) J T2 (q)
+
+Exercise 2
+Following the Lagrangian approach, with multipliers λ used to weigh the holonomic constraints
+h(q) = 0, the dynamic equations (in the absence of gravity) take the form
+B(q)q̈ + c(q, q̇) = u + AT(q)λ
+
+s.t.
+
+h(q) = 0,
+
+with A(q) = ∂h(q)/∂q. By further elaboration, one can eliminate the multipliers (the forces
+that arise when attempting to violate the constraints) and obtain the so-called constrained robot
+dynamics in the form
+
+
+T 
+#
+T
+B(q)q̈ = I − A (q) AB (q)
+(u − c(q, q̇)) − B(q)A#
+B (q)Ȧ(q)q̇
+where
+
+
+−1
+−1
+A#
+(q)AT(q) A(q)B −1 (q)AT(q)
+B (q) = B
+
+is the (dynamically consistent) pseudoinverse of A, weighted by the robot inertia matrix.
+We need thus to provide the robot inertia matrix B, the Coriolis and centrifugal vector c, the
+matrix A and its time derivative Ȧ. The kinetic energy1 is
+
+1
+1
+I2 q̇12 + m2 v Tc2 v c2 .
+T = T1 + T2 = I1 q̇12 +
+2
+2
+1 For simplicity, it is assumed that the first link has its center of mass on the axis of the first joint. Otherwise, if
+the center of mass is at a distance dc1 , simply replace I1 by I1 + m1 d2c1 in the following.
+
+3
+
+Since
+
+pc2 =
+
+(q2 − d) cos q1
+(q2 − d) sin q1
+
+
+
+
+⇒
+
+v c2 = ṗc2 =
+
+−(q2 − d) sin q1 q̇1 + q̇2 cos q1
+(q2 − d) cos q1 q̇1 + q̇2 sin q1
+
+
+,
+
+it follows
+
+
+
+1
+1
+1
+T =
+I1 + I2 + m2 (q2 − d)2 q̇12 + m2 q̇22 = q̇ T
+2
+2
+2
+
+I1 + I2 + m2 (q2 − d)2
+0
+
+0
+m2
+
+
+q̇ =
+
+1 T
+q̇ B(q)q̇.
+2
+
+From the inertia matrix, using the Christoffel symbols, we obtain
+
+
+2m2 (q2 − d)q̇1 q̇2
+c(q, q̇) =
+.
+−m2 (q2 − d)q̇12
+The (scalar) Cartesian constraint on the end-effector is
+h(q) = q2 cos q1 − k = 0.
+Thus,
+A(q) =
+
+∂h(q)
+=
+∂q
+
+−q2 sin q1
+
+cos q1
+
+
+
+and
+Ȧ(q) =
+
+−q̇2 sin q1 − q2 cos q1 q̇1
+
+− sin q1 q̇1
+
+
+
+.
+
+Since q2 is never allowed to go to zero (by the constraint x = k > 0 on the end-effector), matrix
+A has always full rank and all expressions in the constrained dynamics hold without singularities.
+For instance, the dynamically consistent weighted pseudoinverse takes the final expression
+
+A#
+B (q) =
+
+
+m2 (I1 + I2 + m2 (q2 − d)2 )
+
+I1 + I2 + m2 q22 + m2 d(d − 2q2 ) cos2 q1 
+
+−
+
+
+q2 sin q1
+I1 + I2 + m2 (q2 − d)2 
+.
+
+cos q
+1
+
+m2
+∗∗∗∗∗
+
+4
+
+

@@ -1,0 +1,1002 @@
+Robotics 2
+
+Collision detection
+and robot reaction
+Prof. Alessandro De Luca
+
+Handling of robot collisions
+n
+n
+
+safety in physical Human-Robot Interaction (pHRI)
+robot dependability (i.e., beyond reliability)
+n
+n
+n
+n
+n
+
+n
+
+prevent, avoid, detect and react to collisions
+n
+
+n
+
+mechanics: lightweight construction and inclusion of compliance
+next generation with variable stiffness actuation devices
+typically, more/additional exteroceptive sensing needed
+human-oriented motion planning (“legible” robot trajectories)
+control strategies with safety objectives/constraints
+possibly, using only robot proprioceptive sensors
+
+different phases in the collision event pipeline
+PHRIENDS
+FP6 STREP
+(2006-09)
+
+Robotics 2
+
+SAPHARI
+FP7 IP
+(2011-15)
+
+SYMPLEXITY
+H2020 IP (2015-18)
+
+European projects that have funded our research developments
+
+2
+
+Collision event pipeline
+
+S. Haddadin, A. De Luca, A. Albu-Schäffer: “Robot Collisions: A Survey on Detection, Isolation, and Identification,”
+IEEE Trans. on Robotics, vol. 33, no. 6, pp. 1292-1312, 2017
+
+Robotics 2
+
+3
+
+Collision detection in industrial robots
+n
+n
+
+advanced option available for some robots (ABB, KUKA, UR ...)
+allow only detection, not isolation
+n
+
+based on large variations of control torques (or motor currents)
+𝜏 𝑡$ − 𝜏(𝑡$'( ) ≥ 𝜀
+
+n
+
+⇔ 𝜏, 𝑡$ − 𝜏, (𝑡$'( ) ≥ 𝜀, , for at least one joint 𝑖
+
+based on comparison with nominal torques on a desired trajectory
+𝜏0 = 𝑀 𝑞0 𝑞̈ 0 + 𝑆 𝑞0 , 𝑞̇ 0 𝑞̇ 0 + 𝑔 𝑞0 + 𝑓(𝑞0 , 𝑞̇ 0 )
+
+n
+
+n
+
+n
+
+𝜏 − 𝜏0 ≥ 𝜀
+
+based on robot state and numerical estimate of acceleration
+𝑑 𝑞̇
+𝑞̈ : =
+⇒ 𝜏: = 𝑀 𝑞 𝑞̈ : + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 + 𝑓(𝑞, 𝑞)̇ ⇒
+𝑑𝑡
+
+𝜏 − 𝜏: ≥ 𝜀
+
+based on the parallel simulation of robot dynamics
+
+𝑞̈ < = 𝑀 '( 𝑞 𝜏 − 𝑆 𝑞, 𝑞̇ 𝑞̇ − 𝑔 𝑞 − 𝑓(𝑞, 𝑞)
+̇
+n
+
+⇒
+
+⇒
+
+𝑞̇ − 𝑞̇ < ≥ 𝜀=̇ , 𝑞 − 𝑞< ≥ 𝜀=
+
+sensitive to actual control law and reference trajectory
+require noisy acceleration estimates or on-line inversion of the
+robot inertia matrix
+
+Robotics 2
+
+4
+
+ABB collision detection
+n
+
+ABB IRB 7600
+
+n
+
+the only feasible robot reaction is to stop!
+
+Robotics 2
+
+video
+
+5
+
+Collisions as system faults
+n
+
+robot model with (possible) collisions
+control torque
+
+inertia
+matrix
+
+Coriolis/centrifugal
+(with “good” factorization):
+𝑀̇ − 2𝑆 is skew-symmetric
+
+joint torque caused by link collision
+
+with transpose of the Jacobian
+associated to the contact point/area
+n
+
+n
+
+collisions may occur at any (unknown) location along
+the whole robotic structure
+simplifying assumptions (some may be relaxed)
+n
+n
+n
+
+manipulator is an open kinematic chain
+single contact/collision
+negligible friction (or has to be identified and used in the model)
+
+Robotics 2
+
+6
+
+Analysis of a collision
+
+in static conditions
+a contact force/torque
+on 𝑖 th link is balanced
+ONLY by torques at
+preceding joints 𝑗 ≤ 𝑖
+in dynamic conditions
+a contact force/torque
+on 𝑖 th link produces
+accelerations
+at ALL joints
+Robotics 2
+
+7
+
+Relevant dynamic properties
+n
+
+total energy and its variation
+
+n
+
+generalized momentum and its decoupled dynamics
+
+NOTE: this is a vector version
+of the same formula already
+encountered in actuator FDI
+
+using the skew-symmetric property
+Ex: prove this expression!
+
+Robotics 2
+
+8
+
+Monitoring collisions
+.
+
+Normal Mode
+of Operation
+
+q, q
+
+Collision
+Monitor
+Detection
+
+τ
+
+Isolation
+
+σ
+
+r
+∥r∥ ≥ rcoll
+
+YES
+|σ| ≥ σcoll
+
+without external
+or contact sensors
+deactivate/activate
+
+Robotics 2
+
+YES
+
+continue
+
+NO
+
+NO
+
+Collision recognized
+use
+
+Reaction Strategy
+9
+
+Energy-based detection of collisions
+n
+
+scalar residual (computable)
+
+n
+
+… and its dynamics (needed only for analysis)
+
+also via N-E algorithm!
+
+a stable first-order linear filter, excited by a collision!
+Robotics 2
+
+10
+
+Block diagram of residual generator
+energy-based scalar signal
+
+rigid robot with possible extra torque due to collision
++
++
+
+∫
+
+robot
+
+scalar
+residual generator
+
++
++
+initialization
+of integrator
+
+𝜎B 0 = 𝐸(0)
+(zero if robot
+starts at rest)
+
+Robotics 2
+
+𝜎B 0
+
+∫
+
++
+−
+
+11
+
+Analysis of the energy-based method
+n
+n
+
+n
+
+very simple scheme (scalar signal)
+it can only detect the presence of collision
+forces/torques (wrenches) that produce work on the
+linear/angular velocities (twists) at the contact
+does not succeed when the robot stands still…
+
+Robotics 2
+
+12
+
+Collision detection
+
+simulation with a 7R robot
+
+signal back to zero
+obstacle
+
+after contact is over
+
+Cartesian path
+
+contact detected
+when exceeding
+a threshold
+
+detection of a collision with a fixed obstacle in the work space
+during the execution of a Cartesian trajectory (redundant robot)
+Robotics 2
+
+13
+
+Collision detection
+
+experiment with a 6R robot
+robot at rest or moving
+under Cartesian impedance control
+on a straight horizontal line
+(with a F/T sensor at wrist for analysis)
+6 phases
+A: contact force applied is acting against
+motion direction ⇒ detection
+B: no force applied, with robot at rest
+C: force increases gradually, but robot is
+at rest ⇒ no detection
+D: robot starts moving again, with force
+being applied ⇒ detection
+E: robot stands still and a strong force is
+applied in 𝑧 -direction ⇒ no detection
+F: robot moves, with a 𝑧 -force applied
+≈ orthogonal to motion direction ⇒
+poor detection
+Robotics 2
+
+14
+
+Momentum-based isolation of collisions
+n
+
+residual vector (computable)
+
+in case, needs
+modified N-E algorithm!
+
+(diagonal)
+n
+
+… and its decoupled dynamics
+
+𝑁 first-order, linear filters with unitary gains, excited by a collision!
+(all residuals go back to zero if there is no longer contact = post-impact phase)
+Robotics 2
+
+15
+
+Block diagram of residual generator
+momentum-based vector signal
+
+rigid robot with possible extra torque due to collision
++
++
+
++
+
+∫
+
+robot
+
+residual
+generator
++
+
++
+initialization
+of integrators
+
+𝑝̂ 0 = 𝑝(0)
+
+(zero if robot
+starts at rest)
+
+Robotics 2
+
+𝑝̂ 0
+
+∫
+
++
+−
+
+16
+
+Analysis of the momentum method
+n
+
+n
+
+n
+
+ideal situation (no noise/uncertainties)
+
+isolation property: collision has generically occurred
+in an area located up to the 𝑖 th link if
+
+residual vector contains directional information on the
+torque at the robot joints resulting from link collision
+(useful for robot reaction in post-impact phase)
+
+Robotics 2
+
+17
+
+Safe reaction to collisions
+Collision
+Monitor
+r
+σ
+
+internal robot state
+and control command
+
+NO
+
+Normal Mode
+of Operation
+
+deactivate
+re-activate
+
+τ
+
+continue
+
+Collision recognized
+YES
+
+use
+
+Reaction Strategy
+
+𝝉𝑹
+
+without external
+or contact sensors
+Robotics 2
+
+18
+
+Robot reaction strategy
+n
+
+“zero-gravity” control in any operative mode
+
+n
+
+upon detection of a collision ( is over some threshold)
+n
+n
+
+n
+
+no reaction (strategy 0): robot continues its planned motion…
+stop robot motion (strategy 1): either by braking or by
+stopping the motion reference generator and switching to a
+high-gain position control law
+reflex* strategy: switch to a residual-based control law
+
+(diagonal)
+“joint torque command in same direction of collision torque ”
+* = in robots with transmission/joint elasticity, the reflex
+strategy can be implemented in different ways (strategies 2, 3, 4)
+Robotics 2
+
+19
+
+Analysis of the reflex strategy
+n
+
+in ideal conditions, this control strategy is equivalent to a
+reduction of the effective robot inertia as seen by the
+collision force/torque
+
+“a lighter robot that can be easily pushed way”
+
+from a cow …
+
+Robotics 2
+
+... to a frog!
+
+20
+
+DLR LWR-III robot dynamics
+n
+
+lightweight (14 kg) 7R anthropomorfic robot with
+harmonic drives (elastic joints) and joint torque sensors
+motor torques commands
+
+joint torques
+due to link
+collision
+friction at link side
+is negligible!
+
+elastic torques at the joints
+n
+
+Robotics 2
+
+proprioceptive sensing: motor positions and
+joint elastic torques
+21
+
+Exploded joint of LWR-III robot
+
+source of
+joint elasticity
+
+Robotics 2
+
+22
+
+Collision isolation for LWR-III robot
+elastic joint case
+
+§ few alternatives for extending the rigid case results
+§ for collision isolation, the simplest one takes advantage of the
+presence of joint torque sensors
+“replace the commanded torque to the motors
+
+with the elastic torque measured at the joints”
+
+n
+
+other alternatives use
+§ link+motor position measures ⇒ needs knowledge also of joint stiffness K
+§ link+motor momentum + commanded torque ⇒ affected by motor friction
+
+n
+n
+
+motion control is more complex in the presence of joint elasticity
+different active strategies of reaction to collisions are possible
+
+Robotics 2
+
+23
+
+Control of DLR LWR-III robot
+elastic joint case
+
+n
+
+general control law using full state feedback
+(motor position and velocity, joint elastic torque and its derivative)
+
+motor
+position
+error
+n
+
+elastic joint
+torque error
+
+elastic joint
+torque ffw
+command
+
+“zero-gravity” condition is realized only in a (quasi-static)
+approximate way, using just motor position measures
+
+motor
+link
+position position
+Robotics 2
+
+(diagonal) matrix
+of joint stiffness
+24
+
+Reaction strategies
+
+specific for elastic joint robots
+n
+
+strategy 2: floating reaction (robot ≈ in “zero-gravity”)
+
+n
+
+strategy 3: reflex torque reaction (closest to the rigid case)
+
+n
+
+strategy 4: admittance mode reaction (residual is used as the
+new reference for the motor velocity)
+
+n
+
+further possible reaction strategies (rigid or elastic case)
+n
+n
+n
+n
+
+Robotics 2
+
+based on impedance control
+sequence of strategies (e.g., 4 + 2)
+time scaling: stop/reprise of reference trajectory, keeping the path
+Cartesian task preservation (exploits robot redundancy by projecting
+reaction torque in a task-related dynamic null space)
+25
+
+Experiments with LWR-III robot
+“dummy” head
+
+dummy head equipped
+with an accelerometer
+Robotics 2
+
+robot straighten horizontally,
+o
+mostly motion of joint 1 @30 /sec
+26
+
+Dummy head impact
+video
+
+video
+
+strategy 0: no reaction
+planned trajectory ends just after
+the position of the dummy head
+Robotics 2
+
+strategy 2: floating reaction
+impact velocity is rather low here and
+the robot stops switching to float mode
+27
+
+Delay in collision detection
+impact with
+the dummy head
+measured (elastic)
+joint torque
+residual r1
+0/1 index for
+detection
+dummy head
+acceleration
+gain KI = diag{25}
+
+2-4 msec!
+Robotics 2
+
+threshold = 5-10% of
+max rated torque
+28
+
+Experiments with LWR-III robot
+balloon impact
+
+possibility of repeatable
+comparison of different
+reaction strategies
+at high speed conditions
+
+Robotics 2
+
+29
+
+Balloon impact
+video
+
+coordinated
+joint motion
+o
+@90 /sec
+
+strategy 4: admittance mode reaction
+Robotics 2
+
+30
+
+Experimental comparison of strategies
+balloon impact
+
+n
+
+residual and velocity at joint 4 with various reaction strategies
+0: no reaction
+4: the fastest in
+stopping the robot
+in post-impact phase
+1: motion stop
+
+impact at 90o/sec with coordinated joint motion
+Robotics 2
+
+31
+
+Human-Robot Interaction ⎯ 1
+n
+
+o
+
+first impact @60 /sec
+
+video
+
+strategy 4: admittance mode
+Robotics 2
+
+video
+
+strategy 3: reflex torque
+32
+
+Human-Robot Interaction ⎯ 2
+n
+
+o
+
+first impact @90 /sec
+video
+
+strategy 3: reflex torque
+Robotics 2
+
+33
+
+“Portfolio” of reaction strategies
+residual amplitude ∝ severity level of collision
+Reaction
+Stop
+
+Reflex
+
+Reprise
+Preserve
+Cartesian path
+(time scaling)
+
+all transitions are
+controlled by
+suitable
+thresholds
+on the residuals
+Robotics 2
+
+Cartesian trajectory
+(use of redundancy)
+Task
+relaxation
+34
+
+Experiments with LWR-III robot
+time scaling
+
+n
+n
+
+robot is position-controlled (on a given geometric path)
+timing law slows down, stops, possibly reverses (and then reprises)
+
+Robotics 2
+
+35
+
+Reaction with time scaling
+video
+
+Robotics 2
+
+36
+
+Use of kinematic redundancy
+n
+
+collision detection ⇒ robot reacts so as to preserve as
+much as possible (and if possible at all) execution of
+the planned Cartesian trajectory for the end-effector
+instant of collision detection
+
+Robotics 2
+
+37
+
+Task kinematics
+§ task coordinates
+
+with
+
+(redundancy)
+
+§ (all) generalized inverses of the task Jacobian
+
+§ all joint accelerations realizing a desired task acceleration
+(at a given robot state)
+
+arbitrary joint
+acceleration
+Robotics 2
+
+38
+
+Dynamic redundancy resolution
+set for compactness
+
+§ all joint torques realizing a precise control of the
+desired (Cartesian) task
+
+projection matrix in the
+dynamic null space of J
+
+arbitrary joint torque
+available for reaction to collisions
+
+for any generalized inverse G, the joint torque has two contributions:
+one imposes the task acceleration control, the other does not affect it
+Robotics 2
+
+39
+
+Dynamically consistent solution
+inertia-weighted pseudoinverse
+
+§ the most natural choice for matrix G is to use the dynamically
+consistent generalized inverse of J
+§ in a dual way, denoting by H a generalized inverse of J T, the
+joint torques can in fact be always decomposed as
+§ the inertia-weighted choices for H and G are then
+
+§ thus, the dynamically consistent solution is given by
+
+Robotics 2
+
+40
+
+Cartesian task preservation
+spherical obstacle
+
+video
+
+simulation in Simulink
+visualization in VRML
+De Luca, Ferrajoli @IROS 2008
+n
+
+n
+
+wish to preserve the whole Cartesian task (end-effector position & orientation)
+reacting to collisions by using only self-motions in the joint space
+if the residual (∝ contact force) grows too large, orientation is relaxed first
+and then, if necessary, the full task is abandoned (priority is given to safety)
+
+Robotics 2
+
+41
+
+Cartesian task preservation
+Experiments with LWR4+ robot
+
+video @IROS 2017
+
+Robotics 2
+
+idle ⇔ relax ⇔ abort
+
+42
+
+Combined use
+
+6D F/T sensor at the wrist + residuals
+
+n
+n
+
+enables easy distinction of intentional interactions vs. unexpected collisions
+it is sufficient to include the F/T measure in the expression of the residual!
+
+Robotics 2
+
+43
+
+HRI/HRC in closed control architectures
+KUKA KR5 Sixx R650 robot
+
+§ low-level control laws are not known nor accessible by
+the user: no current or torque commands can be used
+§ user programs, based also on other exteroceptive
+sensors (vision, Kinect, F/T sensor) can be implemented
+on an external PC via the RSI (RobotSensorInterface),
+communicating with the KUKA controller every 12 ms
+§ robot measures available to the user: joint positions (by
+encoders) and [absolute value of] motor currents
+§ controller reference is given as a velocity or a position
+in joint space (also Cartesian commands are accepted)
+Robotics 2
+
+motor currents measured
+on first three joints
+
+44
+
+Collision detection and stop
+video @ICRA 2013
+
+high-pass filtering of motor currents (a signal-based detection...)
+Robotics 2
+
+45
+
+Distinguish accidental collisions from
+intentional contact and then collaborate
+video @ICRA 2013
+
+Robotics 2
+
+with both high-pass and low-pass filtering of motor currents
+－ here collaboration mode is manual guidance of the robot
+
+46
+
+Other possible robot reactions
+after collaboration mode is established
+
+collaboration mode:
+pushing/pulling
+the robot
+
+collaboration mode:
+compliant-like
+robot behavior
+
+Robotics 2
+
+video
+@ICRA
+2013
+
+video
+@ICRA
+2013
+
+47
+
+Bibliography
+A. De Luca and R. Mattone, “Sensorless robot collision detection and hybrid force/motion
+control,” IEEE Int. Conf. on Robotics and Automation, pp. 999-1004, 2005.
+n
+A. De Luca, A. Albu-Schäffer, S. Haddadin, and G. Hirzinger, “Collision detection and safe reaction
+with the DLR-III lightweight manipulator arm,” IEEE/RSJ Int. Conf. on Intelligent Robots and
+Systems, pp. 1623-1630, 2006.
+n
+S. Haddadin, A. Albu-Schäffer, A. De Luca, and G. Hirzinger, “Collision detection and reaction: A
+contribution to safe physical human-robot interaction,” IEEE/RSJ Int. Conf. on Intelligent Robots
+and Systems, pp. 3356-3363, 2008 (IROS 2008 Best Application Paper Award).
+n
+A. De Luca and L. Ferrajoli, “Exploiting robot redundancy in collision detection and reaction,”
+IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 3299-3305, 2008.
+n
+A. De Luca and L. Ferrajoli, “A modified Newton-Euler method for dynamic computations in robot
+fault detection and control,” IEEE Int. Conf. on Robotics and Automation, pp. 3359-3364, 2009.
+n
+S. Haddadin, “Towards Safe Robots: Approaching Asimov’s 1st Law,” PhD Thesis, Univ. of Aachen,
+2011.
+n
+M. Geravand, F. Flacco, and A. De Luca, “Human-robot physical interaction and collaboration
+using an industrial robot with a closed control architecture,” IEEE Int. Conf. on Robotics and
+Automation, pp. 3985-3992, 2013.
+n
+E. Magrini, A. De Luca, “Human-robot coexistence and contact handling with redundant robots,”
+IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 4611-4617, 2017.
+n
+S. Haddadin, A. De Luca, and A. Albu-Schäffer, “Robot collisions: A survey on detection, isolation,
+and identification,” IEEE Trans. on Robotics, vol. 33, no. 6, pp. 1292-1312, 2017.
+Robotics 2
+48
+n
+
+

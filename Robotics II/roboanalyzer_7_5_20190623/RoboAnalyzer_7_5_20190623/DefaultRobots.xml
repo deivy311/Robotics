@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AllDefaultRobots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DefaultRobots DOF="1">
+    <Robot Name="1P"/>
+    <Robot Name="1R"/>
+  </DefaultRobots>
+  <DefaultRobots DOF="2">
+    <Robot Name="2P"/>
+    <Robot Name="2R"/>
+    <Robot Name="PR"/>
+    <Robot Name="RP"/>
+  </DefaultRobots>
+  <DefaultRobots DOF="3">
+    <Robot Name="3P"/>
+    <Robot Name="3R"/>
+    <Robot Name="PPR"/>
+    <Robot Name="PRP"/>
+    <Robot Name="PRR"/>
+	<Robot Name="RPP"/>
+    <Robot Name="RPR"/>
+    <Robot Name="RRP"/>
+  </DefaultRobots>
+  <DefaultRobots DOF="4">
+    <Robot Name="4R"/>
+    <Robot Name="SCARA"/>
+  </DefaultRobots>
+  <DefaultRobots DOF="5">
+    <Robot Name="5R"/>
+	<Robot Name="PPPRR"/>
+    <Robot Name="MTAB Mini" STLBased="true" />
+  </DefaultRobots>
+  <DefaultRobots DOF="6">
+    <Robot Name="6R"/>
+    <Robot Name="KUKA KR5 Arc" STLBased="true" />
+    <Robot Name="PUMA" STLBased="true" />
+    <Robot Name="STANFORD" STLBased="true" />
+	<Robot Name="ARISTO" STLBased="true" />
+	<Robot Name="SmallArm" STLBased="true" />
+  </DefaultRobots>
+  <DefaultRobots DOF="7">
+    <Robot Name="SRS"/>
+  </DefaultRobots>
+</AllDefaultRobots>

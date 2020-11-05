@@ -1,0 +1,113 @@
+Robotics II
+February 12, 2020
+Exercise 1
+Consider the 3-dof planar robot in Fig. 1, with one prismatic and two revolute joints, moving in the
+vertical plane. The coordinates q to be used are defined in the figure. Each link of the robot has uniformly
+distributed mass mi > 0, i = 1, 2, 3, with center of mass on its physical link axis, and a purely diagonal
+barycentric link inertia matrix. The prismatic joint range is limited as q2 ∈ [q2,min , q2,max ], with 0 <
+q2,min < q2,max . The robot is commanded by a generalized vector of joint forces/torques τ ∈ R3 .
+a) Derive the robot inertia matrix M (q) > 0.
+b) Derive the gravity term g(q) and find all free equilibrium configurations of the robot.
+c) Provide a linear parametrization of g(q) = Y g (q) ag , in terms of a vector ag ∈ Rp of unknown
+dynamic coefficients and a 3 × p regressor matrix Y g (q). Assume that the gravity acceleration is
+known, g0 = 9.81 [m/s2 ]. Discuss the minimality of p.
+d) Determine which of the 9 non-zero inertia parameters of the three links are irrelevant for the describing
+the motion of the robot.
+e) Provide an upper bound α > 0 for the norm of the gradient of the gravity vector, k∂g(q)/∂qk < α for
+all feasible q, expressed in terms of the dynamic parameters of the robot.
+
+y0
+
+q2
+
+L2
+
+g0
+
+q1
+
+L3
+
+x0
+
+q3
+
+P
+
+Figure 1: A planar RPR robot, with the definition of the coordinates to be used q = (q1 q2 q3 )T .
+Exercise 2
+Consider the same planar RPR robot as in Exercise 1. Assume that the robot can be commanded directly
+by the generalized vector of joint velocities q̇ ∈ R3 defined in Fig. 1, thanks to a low-level control action
+that guarantees their accurate reproduction. For a desired smooth motion of the end-effector position
+p = pd (t) of its end-effector point P , provide the explicit expression of the instantaneous joint velocity
+command that executes the Cartesian motion while minimizing 21 kq̇k2 . Modify this scheme in order to keep
+possibly the prismatic joint close to the center of its limited range [q2,min , q2,max ], by using two alternative
+methods: weighted pseudoinversion and projected gradient in the null space.
+
+1
+
+Exercise 3
+With reference to Fig. 2, we consider a control problem for a mechanical system made by a first mass
+mr > 0, representing the robot moved by a force F , and a second mass me > 0, anchored to a rigid wall by
+a spring of stiffness ke > 0, representing as a whole a compliant dynamic environment. When in contact,
+the two masses are connected by another spring of stiffness ks > 0, representing a force sensor. The
+positional coordinates xr and xe of the two masses have their respective zero reference when the system
+has no stored elastic energy, i.e., when there is no compression (nor extension) of the two springs. As a
+result, the force measured by the sensor is Fs = ks (xr − xe ) ≥ 0, when xr ≥ xe (the robot is in contact),
+or Fs = 0, when xr < xe (no contact).
+We would like to regulate the contact force to a constant value Fd > 0 by means of four alternative
+feedback/feedforward schemes F = Fi , i = 1, . . . , 4, defined as follows:
+F1 = k1 (Fd − Fs ),
+
+P control,
+
+(1)
+
+F2 = Fd + k2 (Fd − Fs ),
+P +ffw control,
+Z
+F3 = k3 (Fd − Fs ) dt,
+I control,
+Z
+F4 = Fd + k4 (Fd − Fs ) dt,
+I+ffw control,
+
+(2)
+(3)
+(4)
+
+for suitable choices of ki > 0, i = 1, . . . , 4.
+a) Determine the dynamic model of the open-loop system in the two situations xr (t) ≥ xe (t) (contact)
+and xr (t) < xe (t) (no contact).
+b) For each of the control laws (1) to (4), provide the equilibrium conditions of the closed-loop system in
+terms of positions and contact forces. Which schemes satisfy zero force error at the equilibrium? Are
+the equilibria unique in each case?
+c) Is there any case in which a steady-state condition is not reached? Using any preferred analysis
+technique (e.g., Lyapunov-based, or Routh criterion in the Laplace domain, or even qualitatively),
+study the asymptotic stability of the closed-loop equilibria for at least two of the control laws.
+d) Determine the initial motion of mass mr under the action of the different control laws, when starting
+with xr (0) < xe (0) and with the system at rest. What problem would be encountered during the
+non-contact phase and how could this be milden/resolved by the addition, when needed, of a damping
+term −dv ẋr , dv > 0, in the control law?
+
+ks
+F
+
+mr
+
+xr
+
+ke
+me
+
+Fs
+
+xe
+
+Figure 2: The model of a mechanical system used for the design of force control laws.
+
+[210 minutes, open books]
+
+2
+
+

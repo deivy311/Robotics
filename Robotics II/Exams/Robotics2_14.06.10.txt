@@ -1,0 +1,53 @@
+Robotics II
+June 10, 2014
+Exercise 1
+Consider a planar 3R robot with unitary link lengths as in Fig. 1. Taking into account the
+robot redundancy, a velocity control scheme is active so as to track desired end-effector position
+trajectories while trying to locally maximize the minimum Cartesian distance of the robot body
+from the obstacles.
+• In the shown configuration q = (30◦ , −30◦ , 30◦ ), the end-effector is assigned a unitary velocity
+v in the positive x0 direction. Specify the velocity control scheme and provide the associated
+numerical value of the command vector q̇ ∈ R3 .
+• Compare with a minimum velocity norm solution that neglects the presence of the obstacle.
+y0
+P
+
+v
+
+0.5
+
+1+ 5 3/6
+
+x0
+
+!
+Figure 1: A planar 3R robot moving
+in the presence of an obstacle
+
+Exercise 2
+The two-mass flexible system in Fig. 2 moves under gravity and is subject to a control force F . The
+position coordinates q1 and q2 have their zero in a position where the elastic spring is undeformed.
+• Derive the dynamic model assuming that all friction effects can be neglected.
+• Determine all forced equilibrium configurations of the system.
+• Design a feedforward plus linear feedback control scheme using only measurements of the
+position q1 and velocity q̇1 of the first mass, which is able to regulate the position of the
+second mass to a constant desired position q2,d .
+• Prove the global asymptotic (actually, exponential) stability of the desired closed-loop equilibrium. Hint: The closed-loop system dynamics is affine, and a simple analysis can be made
+by linearizing the system around the desired equilibrium, which removes constant terms.
+q1!
+!F!
+
+m1!
+
+!k!
+
+g0!
+
+m2!
+
+q2!
+
+Figure 2: A system of two masses m1 and m2 , coupled by an elastic transmission of stiffness k
+[180 minutes; open books]
+
+

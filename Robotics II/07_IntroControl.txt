@@ -1,0 +1,806 @@
+Robotics 2
+
+Introduction to Control
+Prof. Alessandro De Luca
+
+What do we mean by robot control?
+n
+
+different level of definitions may be given to robot control
+n
+n
+n
+
+successfully complete a task or work program
+accurate execution of a motion trajectory
+zeroing a positioning error
+
+⇒ control system unit has a hierarchical internal structure
+... ...
+
+more
+intelligence
+
+high-level control
+
+more
+precision
+
+direct control
+§ different but cooperating models, objectives, methods are used
+at the various control layers
+
+Robotics 2
+
+2
+
+Evaluation of control performance
+n
+
+quality of execution in nominal conditions
+velocity/speed of task completion
+n accuracy/repeatability (in static and dynamic terms)
+n energy requirements
+⇒ improvements also thanks to models (software!)
+n
+
+§ robustness in perturbed/uncertain conditions
+
+§ adaptation to changing environments
+§ high repeatability despite disturbances, changes of
+
+parameters, uncertainties, modeling errors
+⇒ can be improved by a generalized use of feedback,
+using more sensor information
+⇒ learn through repeated robot trials/human experience
+Robotics 2
+
+3
+
+Static positioning
+
+accuracy and repeatability
+
+poor accuracy
+poor repeatability
+
+poor accuracy
+good repeatability
+
+good accuracy
+poor repeatability
+
+good accuracy
+good repeatability
+
+what about “dynamic” accuracy on (test or selected) motion trajectories?
+Robotics 2
+
+4
+
+Basic control schemes
+control
+
+robot
+open-loop
+command
+
+control
+
+environment
+action
+
+robot
+
+environment
+perception
+
+combination of
+feedforward and
+feedback commands
+Robotics 2
+
+closed-loop commands
+METHODS
+
+MODELS
+5
+
+Control schemes and uncertainty
+n
+
+feedback control
+n
+
+n
+
+robust control
+n
+
+n
+
+tolerates relatively large uncertainties of known range
+
+adaptive control
+n
+
+n
+
+insensitivity to mild disturbances and small variations of parameters
+
+improves performance on line, adapting the control law to a priori
+unknown range of uncertainties and/or large (but not too fast)
+parameter variations
+
+intelligent control
+n
+n
+
+performance improved based on experience: LEARNING
+autonomous change of internal structure for optimizing system
+behavior: SELF-ORGANIZING
+uncertainty on parametric values
+… on the system structure
+
+Robotics 2
+
+IDENTIFICATION
+...
+6
+
+Limits in control of industrial robots
+n
+
+-1
+
+from a functional viewpoint
+“closed” control architectures, relatively difficult to interface with
+external computing systems and sensing devices
+⇒ especially in applications where hard real-time operation is a must
+n
+
+n
+
+at the higher level
+open-loop task command generation
+⇒ exteroceptive sensory feedback absent or very loose
+n
+
+n
+
+at the intermediate level
+limited consideration of advanced kinematic and dynamic issues
+⇒ e.g., singularity robustness: solved on a case-by-case basis
+⇒ task redundancy: no automatic handling of the extra degrees of
+freedom of the robot
+n
+
+Robotics 2
+
+7
+
+Limits in control of industrial robots
+
+-2
+
+§ at the lower (direct) level
+reduced execution speed (“control bandwidth”)
+⇒ typically heavy mechanical structure
+n reduced dynamic accuracy on fast motion trajectories
+⇒ standard use of kinematic control + PID only
+n problems with dry friction and backlash at the joints
+n compliance in the robot structure
+⇒ flexible transmissions
+now desired
+(belts, harmonic drives, long shafts)
+for safe
+⇒ large structures or relatively lightweight links
+physical
+n
+
+Human-Robot
+Interaction
+
+need to include better dynamic models and model-based control laws
+handled, e.g., using direct-drive actuators or online friction compensation
+Robotics 2
+
+8
+
+Example of robot positioning
+n
+
+low damped vibrations due to joint elasticity
+video
+
+without modeling
+and explicit
+control of
+joint elasticity
+
+n
+
+Robotics 2
+
+6R KUKA KR-15/2 robot (235 kg), with 15 kg payload
+9
+
+Advanced robot control laws
+n
+
+n
+
+deeper mathematical/physical analysis and modeling of
+robot components (model-based approach)
+schemes using various control loops at different/multiple
+hierarchical levels (feedback) and with additional sensors
+n
+n
+n
+
+n
+
+visual servoing
+force/torque sensors for interaction control
+...
+
+“new” methods
+n
+
+integration of (open-loop/feedforward) motion planning and
+feedback control aspects (e.g., sensor-based planning)
+n
+n
+
+n
+n
+
+Robotics 2
+
+fast (sensor-based) re-planning
+model predictive control (with preview)
+
+learning (iterative, by imitation, skill transfer, ...)
+…
+10
+
+Example of visual-based control
+n
+
+human-obstacle collision avoidance
+video
+
+n
+
+Robotics 2
+
+3R SoftArm prototype with McKibben actuators (Univ. of Pisa)
+using repulsive force field built from stereo camera information
+11
+
+Functional structure of a control unit
+sensor measurements
+
+task
+program
+
+fault detection, vision
+
+trajectory
+planning
+
+vision, force
+
+direct control
+algorithms
+actuators
+robot
+environment
+Robotics 2
+
+position
+velocity
+
+proprioceptive sensors
+
+SENSORS:
+optical encoders,
+velocity tachos,
+strain gauges,
+joint or wrist
+F/T sensors,
+tactile sensors,
+micro-switches,
+range/depth
+sensors, laser,
+CCD cameras,
+RGB-D cameras
+…
+
+exteroceptive sensors
+(also “virtual” ones, i.e., model-based)
+
+12
+
+Functional structure of a control unit
+programming languages
+
+task
+program
+
+Java, Lisp, expert- and
+rule-based systems
+
+trajectory
+planning
+
+Matlab, C++, Python
+
+direct control
+algorithms
+actuators
+robot
+
+Assembler (PICs), C, C++
+
+dedicated
+programming
+languages
+TaskObjectRobotOriented
+
+T-O: insert P1 into H5
+O-O: move APPR frame #13
+R-O: rotate joint 3 by -45°
+
+environment
+Robotics 2
+
+often “addressed” using the manual TEACH BOX
+in conventional industrial robots
+13
+
+Functional structure of a control unit
+modeling issues
+
+task
+program
+
+modeling of tasks
+
+trajectory
+planning
+
+geometric and kinematic models
+coordinate transformations
+
+direct control
+algorithms
+
+nonlinear methods
+dynamic control
+
+actuators
+robot
+environment
+Robotics 2
+
+(electrical and mechanical)
+dynamic models
+structured and unstructured
+world modeling (and acquisition)
+14
+
+Robot control/research software
+(last updated in April 2020)
+
+§ a (partial) list of open source robot software
+§ for simulation and/or real-time control
+§ for interfacing with devices and sensors
+§ research oriented
+
+Player/Stage playerstage.sourceforge.net ⇒ github.com/rtv/stage
+§ Stage: in origin, a networked Linux/MacOS X robotics server serving as
+abstraction layer to support a variety of hardware ⇒ now a 2(.5)D
+mobile robot standalone simulation environment
+§ Gazebo: 3D robot simulator (ODE physics engine and OpenGL
+rendering), now an independent project ⇒ gazebosim.org
+
+CoppeliaSIM (ex VREP; edu version available) www.coppeliarobotics.com
+§ each object/model controlled via an embedded script, a plugin, a ROS
+node, a remote API client, or a custom solution
+§ controllers written in C/C++, Python, Java, Matlab, ...
+Robotics 2
+
+15
+
+Robot control/research software
+
+(cont’d)
+
+Robotics Toolbox (free addition to Matlab) petercorke.com
+§ study and simulation of kinematics, dynamics, trajectory planning,
+control, and vision for serial manipulators and beyond ⇒ releases 9 & 10
+
+ROS (Robot Operating System) ros.org
+§ middleware with: hardware abstraction, device drivers, libraries,
+visualizers, message-passing, package management
+§ “nodes”: executable code (in Python, C++) running with a
+publish/subscribe communication style
+§ drivers, tools, state-of-the-art algorithms … (all open source)
+
+PyRobotics (Python API) pypi.org/project/pyRobotics (v1.8 in 2015)
+OpenRDK openrdk.sourceforge.net ⇒ developed @DIAG, but dismissed
+§ “agents”: modular processes dynamically activated, with blackboardtype communication (repository)
+Robotics 2
+
+16
+
+OROCOS control software
+§ OROCOS (Open RObot COntrol Software) orocos.org
+•
+•
+•
+•
+
+open-source, portable C++ libraries for robot control
+Real-Time Toolkit (for Linux, MacOS X, Windows Visual Studio)
+supports CORBA for distributed network computing and ROS interface
+(user-defined) application libraries
+
+⇒ github
+Robotics 2
+
+17
+
+Example application using OROCOS
+video
+
+multi-sensor fusion for multi-robot manipulation
+in a human populated environment (KU Leuven)
+Robotics 2
+
+18
+
+Summarizing …
+n
+
+to improve performance of robot controllers
+1. more complete modeling (kinematics and dynamics)
+2. introduction of feedback throughout all hierarchical levels
+
+§ dynamic control at low level allows in principle
+1. much higher accuracy on generic motion trajectories
+2. larger velocity in task execution with same accuracy
+
+§ interplay between control, mechanics, electronics
+1. able to control accurately also lightweight/compliant robots
+2. full utilization of task-related redundancy
+3. smart mechanical design can reduce control efforts (e.g.,
+closed kinematic chains simplifying robot inertia matrix)
+4. actuators with higher dynamic performance (e.g., direct drives)
+and/or including controlled variable stiffness
+advanced applications should justify additional costs
+(e.g., laser cutting with 10g accelerations, safe human-robot interaction)
+
+Robotics 2
+
+19
+
+Benefits of model-based control
+n
+
+trajectory tracking task: comparison between standard
+industrial and new model-based controller
+video
+three squares in:
+
+y
+
+z
+
+x
+
+Robotics 2
+
+horizontal
+plane
+vertical
+front
+plane
+vertical
+sagittal
+plane
+
+20
+
+Robot learning by imitation
+n
+n
+
+learning from human motion primitives (imitation)
+motion refinement by kinesthetic teaching (with impedance control)
+video
+
+@TUM, Munich (D. Lee, C. Ott), for the EU SAPHARI project
+Robotics 2
+
+21
+
+Using visual or depth sensor feedback
+video
+n
+
+n
+
+robust visual or depth (Kinect)
+feedback for motion tracking
+
+collision avoidance schemes
+
+(here, redundancy w.r.t. an E-E task)
+video
+Robotics 2
+
+22
+
+Panoramic view of control laws
+n
+
+problems & methods for robot manipulators that will be considered
+(control command is always a joint torque, if not else specified)
+type of
+task
+
+free
+motion
+
+definition
+of error
+
+joint
+space
+
+Cartesian
+space
+
+task
+space
+
+regulation
+
+PD, PID,
+gravity compensation,
+iterative learning
+
+PD with
+gravity
+compensation
+
+visual
+servoing
+
+trajectory
+tracking
+
+feedback linearization,
+inverse dynamics + PD,
+passivity-based control,
+robust/adaptive control
+
+feedback
+linearization
+
+-
+
+impedance
+control
+(with variants),
+admittance
+control
+
+contact
+motion
+(with force exchange)
+Robotics 2
+
+(kinematic
+scheme)
+
+hybrid
+force-velocity
+control
+
+(kinematic scheme)
+
+23
+
+Control laws: dynamic or kinematic
+n
+
+torque-controlled robots
+n
+
+n
+
+n
+
+n
+
+n
+
+may use a torque measure 𝜏( (by joint torque sensors) to do the
+same, in case of joint/transmission elasticity (with 𝜏( = 𝐾(𝜃 − 𝑞))
+best suited for high dynamic performance and ’transparent’ control
+of interaction forces
+
+position/motion-controlled robots
+n
+
+n
+
+n
+
+issue current commands 𝑖 = 𝑖$ (with 𝜏$ = 𝐾' 𝑖$ ) to drive the
+(electrical) motors, based on information on the dynamic models
+often, a low-level (analog) current loop is present to enforce the
+execution of the desired command
+
+issue kinematic commands: velocity 𝑞̇ = 𝑞̇ $ , acceleration 𝑞̈ = 𝑞̈ $ ,
+or their integrated/micro-interpolated version 𝑞 = 𝑞$
+references for a low-level direct loop at high frequency (𝑇$ ≅ 400 𝜇𝑠!)
+
+both modes can be present also on the same robotic system
+
+Robotics 2
+
+24
+
+HRI in industrial settings
+non-collaborative robots:
+safety fences are required to
+prevent harming human operators
+collaborative robots:
+allow human workers to
+stand in their proximity and
+work together on the same task
+Main robot safety standards
+ISO 10218-1/2:2011
+ISO/TS 15066:2016
+
+Robotics 2
+
+25
+
+Human-Robot Interaction taxonomy
+n
+n
+
+cognitive (cHRI) vs. physical (pHRI) Human-Robot Interaction
+cHRI models of humans, of robots, and of the interaction itself
+n
+
+dialog-based, intention- and activity-based, simulation-theoretic models
+
+B. Mutlu, N. Roy, S. Sabanovic: Ch. 71, Springer Handbook of Robotics, 2016
+
+Robotics 2
+
+26
+
+Human-Robot Interaction taxonomy
+n
+
+pHRI planned and controlled robot behaviors: 3-layer architecture
+Safety
+lightweight mechanical design
+compliance at robot joints
+
+collision detection
+and safe reaction
+
+Coexistence
+robot and human sharing
+the same workspace
+
+collision avoidance
+no need of physical contact
+
+Collaboration
+contactless, e.g., gestures
+or voice commands
+
+with intentional contact and
+coordinated exchange of forces
+A. De Luca, F. Flacco: IEEE BioRob Conference, 2012
+
+Robotics 2
+
+27
+
+Human-Robot Collaboration
+n
+
+the different possible levels of pHRI are represented also within
+ISO safety standards (from safe coexistence to safe collaboration)
+
+V. Villani et al.: Mechatronics, 2018
+
+Robotics 2
+
+video
+28
+
+Panoramic view of control laws
+reprise for HRI
+
+type of
+task
+
+free
+motion
+
+definition
+of error
+
+joint
+space
+
+Cartesian
+space
+
+task
+space
+
+regulation
+
+PD, PID,
+gravity compensation,
+iterative learning
+
+PD with
+gravity
+compensation
+
+visual
+servoing
+
+trajectory
+tracking
+
+feedback linearization,
+inverse dynamics + PD,
+passivity-based control,
+robust/adaptive control
+
+feedback
+linearization
+
+HRI
+control
+
+-
+
+impedance
+control
+(with variants),
+admittance
+control
+
+hybrid
+force-velocity
+control
+
+contact
+motion
+(with force exchange)
+
+Robotics 2
+
+(kinematic
+scheme)
+
+(kinematic scheme)
+
+29
+
+

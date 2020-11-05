@@ -1,0 +1,1177 @@
+Robotics 2
+Midterm test in classroom – April 29, 2019
+Exercise 1
+Determine which of the following four 2×2 matrices can be, under the stated conditions, the inertia
+matrix associated to a real 2-dof robot with coordinates q1 and q2 , and which not (and why):
+
+
+a1 + a2 q12 a2
+MA =
+,
+a1 > a2 > 0;
+a2
+a2
+
+
+a1
+a3 cos(q2 − q1 )
+,
+a1 > 0, a1 a2 > a23 > 0;
+MB =
+a3 cos(q2 − q1 )
+a2
+
+
+a1 + 2a2 cos q2 a1 + a2 cos q2
+MC =
+,
+a1 > 2a2 > 0;
+a1 + a2 cos q2
+a1
+
+
+m1 + m2 −0.5m2
+MD =
+,
+m1 > 0, m2 > 0.
+−0.5m2
+m2
+For each case that is feasible, sketch the possible structure of the associated robot.
+Exercise 2
+Consider the 3-dof robot in Fig. 1, moving on a horizontal plane.
+• Using the generalized coordinates q ∈ R3 and the dynamic parameters defined in Fig. 1,
+determine the dynamic model of this robot using a Lagrangian formulation.
+• Assume that the kinematic parameters are known. Provide a linear parameterization of the
+dynamic model in the form
+Y (q, q̇, q̈) a = u,
+being u ∈ R3 the generalized force provided by the motors at the joints, such that the vector
+of dynamic coefficients a ∈ Rp has the minimum possible dimension p.
+
+y
+m3,I3 ⊕
+
+q3
+
+l2
+dc2
+
+⊕ m2,I2
+
+q2
+
+q1
+
+⊕ m1,I1
+
+x
+
+Figure 1: A 3-dof planar PRP robot, with its associated coordinates q and dynamic data.
+
+1
+
+Exercise 3
+The nR planar robot in Fig. 2 moves in the vertical plane under gravity. Each link has length li > 0
+and has its center of mass on the kinematic axis at a distance dci R 0 from the driving joint. Using
+the absolute coordinates q shown in Fig. 2, determine: i) the generic expressions of the components
+of the gravity vector g(q) in the robot dynamic model; ii) all equilibrium configurations of the
+robot (i.e., all q e ∈ Rn such that g(q e ) = 0); and, iii) the generic conditions on the center of mass
+of each link such that the gravity vector vanishes identically (i.e., g(q) ≡ 0, ∀q).
+
+y
+
+dc1
+
+q1
+
+⊕ m1
+
+dc2
+
+𝒈𝟎
+⊕ m2
+
+q2
+
+dc,n-1
+mn-1 ⊕
+
+x
+
+qn-1
+dcn
+⊕
+
+mn
+
+qn
+Figure 2: A nR planar robot, with its associated absolute coordinates q
+Exercise 4
+a) A 2-dof robot has the following inertia matrix:
+
+a1
+M (q) =
+a2 sin q2
+
+a2 sin q2
+a3
+
+
+.
+
+(1)
+
+Find two matrices S 1 and S 2 that factorize the centrifugal/Coriolis terms in c(q, q̇) (i.e., with
+S i (q, q̇)q̇ = c(q, q̇), for i = 1, 2), such that Ṁ − 2S 1 is skew-symmetric and Ṁ − 2S 2 is not.
+b) Consider a robot with n = 3 joints, inertia matrix M (q) > 0, and centrifugal/Coriolis terms
+c(q, q̇) = S(q, q̇)q̇, where the 3 × 3 factorizing matrix S is obtained through the Christoffel
+symbols. Show that one can always find another factorizing matrix S 0 6= S that satisfies
+S 0 (q, q̇)q̇ = c(q, q̇) and leads to a skew-symmetric matrix Ṁ − 2S 0 .
+
+2
+
+Exercise 5
+For a 2R planar robot with links of length l1 and l2 and inertia matrix
+
+
+a1 + 2a2 cos q2 a3 + a2 cos q2
+M (q) =
+,
+a3 + a2 cos q2
+a3
+
+(2)
+
+the task requires the end-effector to be moved so as to change its distance ρ = ρ(q) from the base
+according to a desired smooth timing law ρd (t). Define the instantaneous joint velocity q̇ that
+realizes the task while minimizing the robot kinetic energy, and provide the symbolic expression
+of all the terms needed for its evaluation. Compute then the numerical value of q̇ with the data:
+q1 = 0,
+
+q2 =
+
+π
+,
+2
+
+l1 = l2 = 1 [m],
+
+a1 = 10,
+
+a2 = 2.5,
+
+a3 =
+
+5
+,
+3
+
+ρ̇d = 0.5 [m/s].
+
+(3)
+
+Exercise 6
+A 3R planar robot with links
+ of unitary length is at rest in the Denavit-Hartenberg configuration q = π/6 π/6 π/6 [rad] and should instantaneously accelerate its end effector at
+p̈ = 4 2 [m/s2 ]. Find, if possible, a joint acceleration q̈ ∈ R3 with the least possible norm
+that perfectly realizes the task under the bounds
+|q̈1 | ≤ 2.8 [rad/s2 ],
+
+|q̈2 | ≤ 3.6 [rad/s2 ],
+
+|q̈3 | ≤ 4 [rad/s2 ].
+
+(4)
+
+[210 minutes (3.5 hours); open books, computer, but no internet and no smartphone]
+
+3
+
+Solution
+April 29, 2019
+Exercise 1
+A) Matrix M A is not a robot inertia matrix because it is a function of the first coordinate q1 at
+the robot base. This can never be the case: the definition of q1 is in fact arbitrary, as is the
+choice of a base frame for the robot. The inertia matrix is instead an intrinsic property of the
+manipulator structure.
+B) M B is the inertia matrix of a 2-dof robot with a parallelogram structure (see left of Fig. 3,
+2
+2
+which is taken from the lecture slides), in which we have a1 = Ic1,zz + m1 lc1
++ Ic3,zz + m3 lc3
++
+2
+2
+2
+2
+m4 l1 , a2 = Ic2,zz + m2 lc2 + Ic4,zz + m4 lc3 + m3 l2 , and a3 = m3 l2 lc3 − m4 l1 lc2 . Absolute
+coordinates have been used therein. The dependence of M B only on the difference q2 − q1
+confirms that a robot inertia matrix can only be a function of the internal configuration
+(thus, it does not depend on the choice of the base reference frame). This can be seen also
+analytically, by applying the linear change of coordinates
+!
+!
+!
+p1
+1 0
+q1
+p=
+=
+= J q.
+p2
+−1 1
+q2
+In the new coordinates p ∈ R2 , the transformed inertia matrix becomes
+f B = J −T M B J −1 =
+M
+
+a1 + 2a3 cos p2
+
+a2 + a3 cos p2
+
+a2 + a3 cos p2
+
+a3
+
+!
+,
+
+which is a function of the second coordinate p2 only.
+C) Matrix M C resembles the inertia matrix of the usual 2R planar robot, but is not. A dynamic
+coefficient a3 > 0 is missing in M (1, 1), and this destroys the positive definiteness for every q,
+as it should be instead for an inertia matrix. In fact, the determinant
+det M C = −a22 cos2 q2
+is never positive.
+D) M D is the inertia matrix of a 2P robot, with the second prismatic joint having a twist angle
+of α = ±120◦ w.r.t. the first prismatic joint. The first link has mass m1 and the second link
+has mass m2 . A sketch of this robot is shown on the right of Fig. 3.
+
+y
+
+q1
+
+m2 ⊕
+⊕
+
+m1
+
+q2
+
+a = 120o
+
+x
+
+Figure 3: [left] 2-dof parallelogram robot; [right] PP robot with second axis twisted by α = 120◦ .
+
+4
+
+Exercise 2
+Following a Lagrangian approach, we derive the kinetic energy of the robot, T (q, q̇) = T1 + T2 + T3 .
+Using König theorem1 ,
+1
+1
+2
+Ti = mi kv ci k + ω Ti I i ω i ,
+2
+2
+and performing computations for each link, one has
+T1 =
+
+1
+2
+
+m1 q̇12 ,
+
+
+dc2 cos q2
+q1 + k1 + dc2 sin q2
+
+pc2 =
+T2 =
+
+1
+2
+
+
+
+
+⇒
+
+v c2 = ṗc2 =
+
+
+m2 q̇12 + d2c2 q̇22 + 2 dc2 cos q2 q̇1 q̇2 +
+
+1
+2
+
+−dc2 sin q2 q̇2
+q̇1 + dc2 cos q2 q̇2
+
+
+,
+
+I2 q̇22 ,
+
+where k1 is the distance from the center of mass of link 1 to the axis of joint 2 (an irrelevant
+constant), and
+
+
+
+
+l2 cos q2 − q3 sin q2
+− (l2 sin q2 + q3 cos q2 ) q̇2 − sin q2 q̇3
+pc3 =
+⇒ v c3 = ṗc3 =
+,
+q1 + k1 + l2 sin q2 + q3 cos q2
+q̇1 + (l2 cos q2 − q3 sin q2 ) q̇2 + cos q2 q̇3
+
+
+T3 = 12 m3 q̇12 + l22 + q32 q̇22 + q̇32 + 2 (l2 cos q2 − q3 sin q2 ) q̇1 q̇2 + 2 cos q2 q̇1 q̇3 + 2l2 q̇2 q̇3 + 12 I3 q̇22 .
+Thus
+
+T =
+
+1 T
+1
+
+q̇ M (q)q̇ = q̇ T 
+2
+2
+
+m1 + m2 + m3
+
+m3 (l2 cos q2 − q3 sin q2 ) + m2 dc2 cos q2
+
+I2 + m2 d2c2 + I3 + m3 l22 + q32
+
+symm
+
+m3 cos q2
+m3 l2
+
+
+
+ q̇.
+
+m3
+
+Introduce now a (minimal) parametrization of the robot inertia matrix, collecting the 4 dynamic
+coefficients that appear in M (q) and defined as follows2 :
+
+ 
+
+m1 + m2 + m3
+a1
+ a   I + m d2 + I 
+2 c2
+3 
+ 2  2
+a=
+(5)
+=
+.
+ a3  
+m3
+
+a4
+m2 dc2
+As a result, the inertia matrix M (q) takes the linearly parametrized form
+
+a1
+a3 (l2 cos q2 − q3 sin q2 ) + a4 cos q2
+
+
+a2 + a3 l22 + q32
+M (q) =  a3 (l2 cos q2 − q3 sin q2 ) + a4 cos q2
+a3 cos q2
+a3 l2
+
+
+a3 cos q2
+
+a3 l2  .
+a3
+(6)
+
+The components of the Coriolis and centrifugal vector are computed from (6) using the Christoffel’s
+symbols
+!
+
+T
+∂M i (q)
+∂M (q)
+1 ∂M i (q)
+T
++
+−
+,
+ci (q, q̇) = q̇ C i (q)q̇,
+C i (q) =
+2
+∂q
+∂q
+∂q i
+1 Being
+
+the motion planar, we restrict all linear vectors (e.g., pc2 or v c2 ) to be two-dimensional (living in the
+plane (x, y)), while angular velocities are just scalars (the component of ω i along the z-axis normal to the plane).
+2 As indicated in the text, we consider the kinematic parameter l to be known.
+2
+
+5
+
+being M i the ith column of the inertia matrix M (q). We have
+
+
+0
+0
+0
+1 
+
+C 1 (q) =  0 −a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2 −a3 sin q2 
+2
+0
+−a3 sin q2
+0
+
+
+
+0
+0
+0
+
+
+
++  0 −a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2 −a3 sin q2  − 0
+0
+−a3 sin q2
+0
+
+
+0
+0
+0
+
+
+=  0 −a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2 −a3 sin q2 
+0
+−a3 sin q2
+0
+⇒
+
+c1 (q, q̇) = − (a3 (l2 sin q3 + q3 cos q2 ) + a4 sin q2 ) q̇22 − 2 a3 sin q2 q̇2 q̇3 .
+
+Similarly,
+
+0 −a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2 −a3 sin q2
+1 
+
+0
+2a3 q3 
+C 2 (q) =  0
+2
+0
+0
+0
+
+
+0
+0
+0
+
+
+0
+0
++  −a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2
+−a3 sin q2
+2a3 q3 0
+
+0
+−a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2
+
+0
+−  −a3 (l2 sin q2 + q3 cos q2 ) − a4 sin q2
+−a3 sin q2
+0
+
+
+0
+0
+0
+
+
+0
+a3 q3 
+⇒
+c2 (q, q̇) = 2 a3 q3 q̇2 q̇3
+=0
+0 a3 q3
+0
+
+
+
+−a3 sin q2
+
+0
+
+0
+
+and
+
+
+0 −a3 sin q2
+1 
+0
+C 3 (q) =  0
+2
+0
+0
+
+
+0
+0
+0
+
+
+=  0 −a3 q3 0 
+0
+0
+0
+
+ 
+0
+0
+ 
+0  +  −a3 sin q2
+0
+0
+
+⇒
+
+ 
+0 0
+0
+ 
+0 0  −  −a3 sin q2
+0 0
+0
+
+−a3 sin q2
+2a3 q3
+0
+
+
+0
+
+0 
+0
+
+c3 (q, q̇) = −a3 q3 q̇22 .
+
+Summarizing, we have the final expression:
+
+
+− (a3 (l2 sin q2 + q3 cos q2 ) + a4 sin q2 ) q̇22 − 2 a3 sin q2 q̇2 q̇3
+
+
+2 a3 q3 q̇2 q̇3
+c(q, q̇) = 
+.
+−a3 q3 q̇22
+
+6
+
+(7)
+
+Using the inertia matrix in (6) and the quadratic velocity vector in (7), the complete robot dynamic
+model can be expressed in the linearly parametrized form
+M (q)q̈ + c(q, q̇) = Y (q, q̇.q̈) a = u,
+where a ∈ R4 is defined in (5) and the 3 × 4 matrix Y is given by
+
+
+q̈1
+0
+cos q2 q̈2 − sin q2 q̇22
+
+
+q̈2
+cos q2 q̈1
+Y = 0
+Y3
+,
+0
+0
+0
+
+(8)
+
+being the third column
+
+
+(l2 cos q2 − q3 sin q2 ) q̈2 + cos q2 q̈3 − (l2 sin q2 + q3 cos q2 ) q̇22 − 2 sin q2 q̇2 q̇3
+
+
+
+(l2 cos q2 − q3 sin q2 ) q̈1 + l22 + q32 q̈2 + l2 q̈3 + 2q3 q̇2 q̇3
+Y3=
+.
+2
+cos q2 q̈1 + l2 q̈2 + q̈3 − q3 q̇2
+Exercise 3
+The use of absolute coordinates makes it simpler to derive the solution for the gravity term in the
+general case of a planar (serial) robot arm with n revolute joints. Since
+
+
+g0
+g0 =  0  ,
+g0 = 9.81 [m/s2 ],
+0
+the potential energy due to gravity of link j of the robot, for j = 1, . . . , n, is
+!
+j−1
+X
+T
+Uj (q) = −mj g 0 r 0,cj = −mj g0
+lk cos qk + dcj cos qj .
+
+(9)
+
+k=1
+
+The total potential energy due to gravity is then
+U (q) =
+
+n
+X
+
+Uj (q) = −g0
+
+j=1
+
+n
+X
+
+j−1
+X
+
+mj
+
+j=1
+
+= −g0
+
+n
+X
+
+!
+lk cos qk + dcj cos qj
+
+k=1
+
+
+
+n
+X
+
+
+i=1
+
+
+
+
+
+mj  li + mi dci  cos qi .
+
+j=i+1
+
+For instance, setting n = 5, we have from eq. (9)
+U1 = −m1 g0 dc1 cos q1
+U2 = −m2 g0 (l1 cos q1 + dc2 cos q2 )
+U3 = −m3 g0 (l1 cos q1 + l2 cos q2 + dc3 cos q3 )
+U4 = −m4 g0 (l1 cos q1 + l2 cos q2 + l3 cos q3 + dc4 cos q4 )
+U5 = −m5 g0 (l1 cos q1 + l2 cos q2 + l3 cos q3 + l4 cos q4 + dc5 cos q5 )
+U (q) =
+
+5
+X
+
+Uj ,
+
+j=1
+
+7
+
+(10)
+
+where the structure of the last expression of U (q) in eq. (10) can be easily recognized.
+According to (10), the components gi (q) of the gravity vector g(q) ∈ Rn are
+
+
+
+n
+X
+∂U (q)
+gi (q) =
+= g0 
+mj  li + mi dci  sin qi ,
+i = 1, . . . , n.
+∂qi
+j=i+1
+
+(11)
+
+The unforced equilibrium configurations of the robot (independently of the values of kinematic and
+dynamic parameters) are then characterized by
+qi = qe,i = {0, π},
+
+∀i ∈ {1, . . . , n}
+
+⇒
+
+g(q e ) = 0.
+
+All these configurations correspond to the robot links being stretched or folded along the vertical
+axis x. The total number of such equilibria is Ne = 2n .
+In order to have a robot always balanced with respect to gravity, i.e., g(q) ≡ 0, the following
+conditions should hold from (11):
+
+
+n
+X
+
+
+
+mj  li
+n
+X
+j=i+1
+
+< 0,
+i = 1, . . . , n − 1,
+mj  li + mi dci = 0
+⇐⇒
+dci = −
+mi
+j=i+1
+and
+dcn = 0.
+In words, the mass and location of the center of mass of each link should balance (at the associated
+joint axis) the total mass of the following links in the chain, as if it were concentrated at the end
+of the link. Any configuration q ∈ Rn would then be an equilibrium.
+Exercise 4
+a) From the inertia matrix (1) of this robot, which is a PR planar arm already treated in the
+lecture slides, the matrices of Christoffel symbols and the velocity vector (containing only a
+centrifugal term in the present case) are computed as
+
+
+
+
+0
+0
+a2 cos q2 q̇22
+C 1 (q) =
+,
+C 2 (q) = 0
+⇒
+c(q, q̇) =
+(12)
+0 a2 cos q2
+0
+with a2 = −m2 dc2 . The time derivative of the inertia matrix (1) is
+
+
+0
+a2 cos q2 q̇2
+Ṁ =
+.
+a2 cos q2 q̇2
+0
+A factorization S 1 q̇ of vector c in (12) leading to the skew symmetry of Ṁ − 2S 1 is found by
+using the matrices of Christoffel symbols (or just by trivial inspection). It is easy to check that
+the matrix
+! 
+
+q̇ T C 1 (q)
+0 a2 cos q2 q̇2
+S 1 (q, q̇) =
+=
+(13)
+0
+0
+q̇ T C 2 (q)
+provides
+
+Ṁ − 2S 1 =
+
+0
+a2 cos q2 q̇2
+8
+
+−a2 cos q2 q̇2
+0
+
+
+,
+
+which satisfies the desired skew-symmetric property. On the other hand, a different feasible
+factorization that uses the matrix
+
+
+q̇2 a2 cos q2 q̇2 − q̇1
+S 2 (q, q̇) =
+0
+0
+(14)
+
+
+q̇2 −q̇1
+= S 1 (q, q̇) +
+= S 1 (q, q̇) + S 0 (q̇), with S 0 (q̇)q̇ = 0,
+0
+0
+satisfies S 2 q̇ = c and provides
+
+Ṁ − 2S 2 =
+
+−2q̇2
+a2 sin q2 q̇2
+
+−a2 sin q2 q̇2 + 2q̇1
+0
+
+
+,
+
+which is clearly not a skew-symmetric matrix.
+b) We use here the simple fact that, when q̇ ∈ R3 ,
+
+0
+
+q̇ × q̇ = S 0 (q̇)q̇ =  q̇3
+−q̇2
+
+one has
+−q̇3
+0
+q̇1
+
+
+
+q̇1
+q̇2
+
+
+−q̇1   q̇2  = 0,
+q̇3
+0
+
+where S 0 is by construction a skew-symmetric matrix. If a factorization c(q, q̇) = S(q, q̇)q̇
+leading to a skew symmetric matrix Ṁ − 2S is available, then matrix S 0 = S + S 0 6= S will
+be another feasible factorization, since
+S 0 (q, q̇)q̇ = (S(q, q̇) + S 0 (q̇)) q̇ = S(q, q̇)q̇ = c(q, q̇).
+Moreover, the matrix
+
+
+Ṁ − 2S 0 = Ṁ − 2S + (−2S 0 )
+is also skew symmetric, being the sum of two skew-symmetric matrices. Indeed, matrix S 0 is
+not obtained using the Christoffel symbols only, and it is also clear that an infinite number of
+such feasible factorizations exists, all leading to the skew-symmetric property.
+This construction can be easily generalized to the case of arbitrary n ≥ 3, by considering for
+instance a velocity vector q̇ 0 ∈ Rn with all zero components but three consecutive ones, and
+an associated n × n skew-symmetric matrix S 0 (q̇ 0 ) with a single non-zero 3 × 3 block at the
+proper place on the diagonal, constructed as in the three-dimensional case.
+Exercise 5
+The direct kinematics of the 2R planar robot is
+
+
+l1 cos q1 + l2 cos(q1 + q2 )
+p=
+.
+l1 sin q1 + l2 sin(q1 + q2 )
+Therefore, the distance of the robot end effector from the base is
+q
+ρ(q) = kpk = l12 + l22 + 2 l1 l2 cos q2 .
+The task Jacobian is then a 1 × 2 matrix
+∂ρ(q)
+J (q) =
+=
+∂q
+
+
+0
+
+9
+
+l1 l2 sin q2
+−
+kpk
+
+
+,
+
+(15)
+
+which, for l1 6= l2 , is full rank except when q2 = {0, π}. For l1 = l2 , the rank of J drops only at
+q2 = 0, whereas the element J12 (q2 ) has a discontinuity at q2 = ±π (the two limits for q2 → +π
+and q2 → −π are non-zero and different).
+A joint velocity q̇ that realizes the task while minimizing the robot kinetic energy uses the inertiaweighted pseudoinverse of the task Jacobian,
+
+−1
+−1
+q̇ = q̇ W P s = J #
+(q) J T (q) J (q) M −1 (q) J T (q)
+ρ̇d ,
+(16)
+M (q) ρ̇d = M
+where the last equality holds provided that J is full rank. In this case, using in (16) the symbolic
+expressions (2) and (15), we obtain
+!−1
+
+
+−(a3 + a2 cos q2 )
+(l1 l2 sin q2 )2 (a1 + 2a2 cos q2 )
+l1 l2 sin q2
+·
+ρ̇d ,
+q̇ W P s = −
+2
+kpk · det M (q)
+a1 + 2a2 cos q2
+kpk · det M (q)
+where det M (q) = a3 (a1 − a3 ) − a22 cos2 q2 > 0. Simplifying, this yields
+
+
+a3 + a2 cos q2
+kpk  a + 2a cos q 
+2
+2  ρ̇d .
+q̇ W P s =
+ 1
+l1 l2 sin q2
+−1
+Substituting in (17) the numerical data of the problem, we obtain finally
+
+
+0.1179
+q̇ W P s =
+.
+−0.7071
+
+(17)
+
+(18)
+
+An alternative (and simpler) solution would have been to seek for the minimum norm joint velocity,
+i.e., using the pseudoinverse of J ,
+
+
+0
+ ρ̇d ,
+q̇ P s = J # (q) ρ̇d = 
+kpk
+−
+l1 l2 sin q2
+leading to the numerical value
+
+q̇ P s =
+
+0
+−0.7071
+
+
+.
+
+(19)
+
+Indeed, a different target is reached by the two solutions q̇ W P s in (18) and q̇ P s in (19) in terms of
+the objective function that is being minimized. We have in fact
+1 T
+1 T
+1
+q̇ W P s M q̇ W P s = min
+q̇ M q̇ = 0.3472 < 0.4167 = q̇ TP s M q̇ P s
+q̇: J q̇ = ρ̇d 2
+2
+2
+and, viceversa,
+1 T
+1 T
+1
+q̇ P s q̇ P s = min
+q̇ q̇ = 0.25 < 0.2569 = q̇ TW P s q̇ W P s .
+q̇: J q̇ = ρ̇d 2
+2
+2
+Exercise 6
+Using Denavit-Hartenberg coordinates, the Jacobian of a 3R planar robot with unitary links is
+
+
+− (s1 + s12 + s123 ) − (s12 + s123 ) −s123
+J (q) =
+,
+c1 + c12 + c123
+c12 + c123
+c123
+10
+
+with the usual compact notation. At the configuration q = π/6 π/6 π/6
+
+J=
+
+−2.3660
+1.3660
+
+−1.8660
+0.5
+
+−1
+0
+
+
+=
+
+J1
+
+J2
+
+J3
+
+
+
+T
+
+[rad], it becomes
+
+.
+
+(20)
+
+Note that rank J = 2. Moreover, its three 2 × 2 minors are all different from zero in this case.
+Since the robot is at rest (q̇ = 0), the second-order differential mapping to be inverted is simply
+ 
+4
+p̈ = J q̈,
+for p̈ =
+[m/s2 ].
+2
+In order to get a solution that is feasible with respect to the hard bounds (4) and has the least
+possible norm, we can apply the SNS (Saturation in the Null Space) method on joint accelerations3 .
+To start with, we look for a solution with minimum acceleration norm,
+
+
+
+
+0.1715
+0.9832
+ 
+2.6524
+
+ 4
+
+
+q̈ P S = J # p̈ =  −0.4686 −0.6861 
+=  −3.2466  .
+2
+−0.5314 −1.0460
+−4.2175
+
+(21)
+
+The third joint acceleration violates its maximum bound, q̈P S,3 = −4.2175 < −4 = −A3 , so this
+solution is not feasible. Next, we search for a feasible solution by saturating the (single) overdriven
+joint, i.e., setting q̈3 = −A3 = −4 [rad/s2 ] (this is step 1 of the SNS algorithm). The original task
+is modified by removing the contribution of the saturated acceleration of the third joint (and by
+discarding the associated column of J ). We rewrite this as
+  
+
+  
+
+
+−2.3660 −1.8660
+4
+−1
+0
+q̈1
+p̈1 = p̈−J 3 (−A3 ) =
+−
+·(−4) =
+=
+= J −3 q̈ −3 ,
+2
+0
+2
+q̈2
+1.3660
+0.5
+where J −i is the matrix obtained by deleting the ith column from the Jacobian in (20) and,
+accordingly, q̈ −i is the vector of joint accelerations without the ith component. For the modified
+task, we compute the contribution of the two active joints by inverting matrix J −3 , which is now
+square and nonsingular. Thus, we obtain the unique solution
+
+  
+
+0.3660 1.3660
+0
+2.7321
+−1
+q̈ −3 = (J −3 ) p̈1 =
+=
+[rad/s2 ].
+2
+−3.4641
+−1
+−1.7321
+All bounds are now satisfied and the resulting joint acceleration, with the third component fixed
+at q̈3 = −4 = −A3 , is feasible. Thus, there is no need to scale down the original task acceleration
+p̈. Recomposing the complete joint acceleration vector, we have the solution
+
+
+2.7321
+q̈ ∗ =  −3.4641  [rad/s2 ],
+with J q̈ ∗ = p̈ and kq̈ ∗ k = 5.9552.
+(22)
+−4
+This solution is not unique, but the underlying SNS method which has been followed guarantees
+that a feasible solution of minimum norm has been obtained.
+For instance, another feasible solution can be obtained by setting the acceleration of the second
+joint to its lower bound (q̈2 = −A2 = −3.6 [rad/s2 ]), which is the saturation level that is closer
+3 The
+
+solution is quite intuitive in this case and could also be obtained without any knowledge of the SNS method.
+
+11
+
+to the value of this component in the unconstrained minimum norm solution (21), and adjusting
+accordingly the other two joint accelerations. Since
+
+
+ 
+
+0
+0.7321
+−2.7177
+2.7818
+−1
+q̈ −2 = (J −2 ) (p̈ − J 2 · (−A2 )) =
+=
+[rad/s2 ],
+3.8
+−3.8641
+−1 −1.7321
+the complete solution q̈  is feasible but has slightly larger norm than the SNS solution q̈ ∗ in (22):
+
+
+2.7818
+q̈  =  −3.6  [rad/s],
+with J q̈  = p̈ and kq̇  k = 5.9691.
+−3.8641
+Finally, it is easy to see that a solution having the acceleration of the first joint saturated at its
+T
+upper bound, q̈ = 2.8 −3.6497 −3.8144 , would instead be unfeasible (the second component
+is out of bounds).
+∗∗∗∗∗
+
+12
+
+

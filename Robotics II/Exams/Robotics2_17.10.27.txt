@@ -1,0 +1,85 @@
+Robotics II
+October 27, 2017
+A robot manipulator having generalized coordinates q ∈ Rn and dynamic model
+M (q)q̈ + c(q, q̇) + g(q) = u,
+
+(1)
+
+with inertia matrix M , Coriolis and centrifugal terms c, and gravity vector g, should perform a task that
+is described in terms of variables x = f (q) ∈ Rm , with m < n, and is specified by a smooth desired task
+trajectory x = xd (t), for t ≥ 0.
+Provide the expressions of the feedback laws that solve the following control problems, in which we consider
+different objectives and different feasible command inputs for the robot system. In the first three cases,
+possible errors in the execution of the desired task trajectory should be recovered in an exponential way.
+For all cases, give also some hints on the physical meaning of the pursued solution.
+1. Assume the joint velocity q̇ ∈ Rn as control input. Execute the desired m-dimensional task trajectory
+by minimizing instantaneously the objective function
+1
+kM (q)q̇ − p0 k2 ,
+2
+
+H1 =
+
+where p0 ∈ Rn is a desired vector value for the generalized momentum of the robot.
+2. Assume again the joint velocity q̇ ∈ Rn as control input. Execute the desired m-dimensional task
+trajectory by minimizing instantaneously the objective function
+H2 =
+
+1
+kq̇ + α∇q H(q)k2 ,
+2
+
+with H =
+
+1
+kg(q)k2 ,
+2
+
+for a scalar α > 0.
+3. Assume now the joint acceleration q̈ ∈ Rn as control input. Execute the desired m-dimensional task
+trajectory by minimizing instantaneously the objective function
+H3 =
+
+1
+kuk2 .
+2
+
+4. Assume finally the joint torque u ∈ Rn as control input. Determine u by minimizing instantaneously
+the objective function
+‚
+‚2
+λ
+1‚
+‚
+H4 = kuk2 + ‚ẍd − J (q)q̈ − J̇ (q)q̇ ‚ ,
+2
+2
+for a suitable scalar λ > 0 and being J = (∂f /∂q) the m × n task Jacobian.
+Provide next the symbolic expressions of all the terms needed in the control laws for problems 1 and 2
+when the robot is the RP planar arm (n = 2) of Fig. 1, the task variable is a scalar (m = 1) given by
+x = f (q) = q2 cos q1 , and the desired task trajectory is xd (t) = L + L(1 − cos ωt)/4, for some constants
+L > 0 and ω > 0. The robot starts at rest in a generic configuration q1 (0) = q10 > 0, q2 (0) = q20 > 0.
+
+y
+
+q2
+m2,I2
+
+䎩!
+
+F
+
+I1
+
+dc2
+
+g0
+
+q1
+x
+
+!"
+Figure 1: A RP planar robot with the relevant variables and parameters.
+[180 minutes, open books but no computer or smartphone]
+
+

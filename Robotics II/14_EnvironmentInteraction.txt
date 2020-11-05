@@ -1,0 +1,1365 @@
+Robotics 2
+
+Robot Interaction
+with the Environment
+Prof. Alessandro De Luca
+
+Robot-environment interaction
+a robot (end-effector) may interact with the environment
+§ modifying the state of the environment (e.g., pick-and-place operations)
+§ exchanging forces (e.g., assembly or surface finishing tasks)
+control of free motion
+
+control of compliant motion
+G
+
+inspection
+task
+
+S
+
+sensors: position (encoders)
+at the joints* or
+vision at the Cartesian level
+*and velocity (by numerical differentiation
+or, more rarely, with tachos)
+
+Robotics 2
+
+“peg in hole”
+task
+
+sensors: as before +
+6D force/torque
+(at the robot wrist)
+2
+
+Robot compliance
+PASSIVE
+
+ACTIVE
+
+robot end-effector equipped
+with mechatronic devices
+that “comply” with the
+generalized forces applied at
+the TCP = Tool Center Point
+
+robot is moved by a control
+law so as to react in a desired
+way to generalized forces
+applied at the TCP (typically
+measured by a F/T sensor)
+§ admittance control
+contact forces ⇒ velocity commands
+
+RCC = Remote Center of
+Compliance device
+
+§ stiffness/compliance control
+contact displacements ⇒ force commands
+
+§ impedance control
+contact displacements ⇔ contact forces
+Robotics 2
+
+3
+
+RCC device
+
+flexible
+(elastic)
+elements
+
+RCC models of
+different size
+by ATI
+
+Robotics 2
+
+4
+
+RCC behavior
+
+in case of misalignment errors in assembly tasks
+
+Robotics 2
+
+5
+
+Effects of RCC positioning
+
+too high...
+
+too low...
+
+correct!
+(TCP = RCC)
+Robotics 2
+
+6
+
+Typical evolution of assembly forces
+
+“peg-in-hole” task
+
+chamfer angle 𝛽 = to ease the insertion,
+related also to the tolerances of the hole
+Robotics 2
+
+7
+
+Active compliance
+for contour following
+
+Robotics 2
+
+8
+
+Active compliance
+
+“matching” of mechanical parts
+
+Robotics 2
+
+9
+
+Tasks with environment interaction
+n
+
+mechanical machining
+n
+
+n
+
+tele-manipulation
+n
+
+n
+
+the environment includes one of more other robots with their own
+dynamic behaviors
+
+physical human-robot interaction
+n
+
+Robotics 2
+
+power grasp and fine in-hand manipulation require force/motion
+cooperation and coordinated control of the multiple fingers
+
+cooperation of multi-manipulator systems
+n
+
+n
+
+force and velocity/vision sensor fusion allow 2D/3D geometric
+identification of unknown objects and their contour following
+
+dexterous robot hands
+n
+
+n
+
+force feedback improves performance of human operators in
+master-slave systems
+
+contact exploration for shape identification
+n
+
+n
+
+deburring, surface finishing, polishing, assembly,...
+
+humans as active, dynamic environments that need to be handled
+under full safety premises …
+10
+
+Examples of mechanical machining
+
+Robotics 2
+
+11
+
+Abrasive finishing of surfaces
+
+Robotics 2
+
+12
+
+Abrasive finishing of surfaces
+video
+
+technological processes: cold forging of surfaces
+and hammer peening by pneumatic machine
+Robotics 2
+
+13
+
+Non-contact surface finishing
+video
+
+Fluid Jet technology
+
+H2020 EU project for the
+Factory of the Future (FoF)
+
+Pulsed Laser technology
+video
+Robotics 2
+
+14
+
+In all cases ...
+n
+
+n
+
+for physical interaction tasks, the desired motion
+specification and execution should be integrated with
+complementary data for the desired force
+è hybrid planning and control objectives
+the exchanged forces/torques at the contact(s) with the
+environment can be explicitly set under control or simply
+kept limited in an indirect way
+
+Robotics 2
+
+15
+
+Evolution of control approaches
+
+a bit of history from the late 70’s-mid ‘80s …
+n
+
+explicit control of forces/torques only [Whitney]
+n
+
+n
+
+active admittance and compliance control [Paul, Shimano, Salisbury]
+n
+
+n
+
+n
+
+contact forces handled through position (stiffness) or velocity (damping)
+control of the robot end-effector
+robot reacts as a compressed spring (with damper) in selected/all directions
+
+impedance control [Hogan]
+n
+
+n
+
+n
+
+used in quasi-static operations (assembly) in order to avoid deadlocks
+during part insertion
+
+a desired dynamic behavior is imposed to the robot-environment
+interaction, e.g., a “model” with forces acting on a mass-spring-damper
+mimics the human arm behavior moving in an unknown environment
+
+hybrid force-motion control [Mason]
+n
+
+Robotics 2
+
+decomposes the task space in complementary sets of directions where
+either force or motion is controlled, based on
+n a purely kinematic robot model [Raibert, Craig]
+n the actual dynamic model of the robot [Khatib]
+appropriate for fast and accurate motion in dynamic interaction...
+
+16
+
+Interaction tasks of interest
+interaction tasks with the environment that require
+n
+
+n
+
+accurate following/reproduction by the robot end-effector of desired
+trajectories (even at high speed) defined on the surface of objects
+control of forces/torques applied at the contact with environments
+having low (soft) or high (rigid) stiffness
+
+deburring task
+
+robot
+turning
+a crank
+
+e.g., removing extra glue from
+the border of a car windshield
+Robotics 2
+
+e.g., opening a door
+17
+
+Robotized deburring of windshields
+
+c/o ABB Excellence Center in Cecchina (Roma), 2002
+Robotics 2
+
+18
+
+Impedance vs. Hybrid control
+environment model (
+impedance control
+
+domain of control application)
+hybrid force/motion control
+
+environment = mechanical
+n a rigid environment reduces the
+system undergoing small but finite
+degrees of freedom of the robot
+deformations
+when in (bi-/uni-lateral) contact
+n contact forces arise as the result
+n contact forces result from attempts
+of a balance of two coupled
+to violate geometric constraints
+dynamic systems (robot+environment)
+imposed by the environment
+è desired dynamic characteristics
+è task space is decomposed in sets
+are assigned to the force/motion
+of directions where only motion or
+interaction
+only reaction forces are feasible
+n
+
+§ the required level of knowledge about the environment geometry is
+§
+Robotics 2
+
+only apparently different between the two control approaches
+however, measuring contact forces may not be needed in impedance
+control, while it always necessary in hybrid force/motion control
+19
+
+Impedance vs. Hybrid control
+n
+
+opening a door with a mobile
+manipulator under impedance
+control
+
+video
+Robotics 2
+
+n
+
+piston insertion in a motor
+based on hybrid control of
+force-position (visual)
+
+video
+20
+
+A typical constrained situation …
+robot
+wrist
+6D F/T sensor
+or RCC (or both)
+
+tool
+
+ù
+workpiece
+(rigid)
+
+the robot end-effector follows in a stable and accurate
+way the geometric profile of a very stiff workpiece,
+while applying a desired contact force
+
+Robotics 2
+
+21
+
+An unusual compliant situation …
+
+Trevelyan (AUS): Oracle robotic system in a test dated 1981
+Robotics 2
+
+…is the sheep happy?
+
+22
+
+A mixed interaction situation
+1. approach
+
+Z-axis
+control
+
+2. search
+
+3. insertion
+
+X,Y-axes
+control
+
+processing/reasoning on force measurements
+leads to a sequence of fine motions
+⇒ correct completion of insertion task with
+help of (sufficiently large) passive compliance
+Robotics 2
+
+23
+
+Ideally constrained contact situation
+a first possible modeling choice for very stiff environments
+
+𝑓'
+𝑓&
+
+𝑚
+
+𝑓(
+
+𝑥<𝑐
+
+𝑓( = 0
+
+𝑥=𝑐
+
+𝑥̇ = 0
+
+𝑓& ≥ 0
+
+𝑥̈ = 0
+
+𝑥( = 𝑐
+
+𝑚𝑥̈ = 𝑓& + 𝑓(
+
+𝑓( = −𝑓&
+
+𝑚𝑦̈ = 𝑓'
+
+Robotics 2
+
+“ideal” = robot (sketched here as a Cartesian mass)
++ environment are both infinitely STIFF
+(and without friction at the contact)
+
+24
+
+In more complex situations
+n
+
+n
+
+how can we describe more complex contact situations, where
+the end-effector of an articulated robot (not yet reduced to a
+Cartesian mass via feedback linearization control) is constrained
+to move on an environment surface with nonlinear geometry?
+example: a planar 2R robot with end-effector moving on a circle
+𝑦
+(𝑥5 , 𝑦5 )
+𝑅
+end-effector
+constrained on
+a circular surface
+
+𝑥
+
+Robotics 2
+
+25
+
+Constrained robot dynamics
+n
+
+consider a robot in free space described by its Lagrange dynamic
+model and a task output function (e.g., the end-effector pose)
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢
+n
+
+𝑟 = 𝑓(𝑞)
+
+𝑞 ∈ ℝI
+
+suppose that the task variables are subject to 𝑀 < 𝑁 (bilateral)
+geometric constraints in the general form 𝑘 𝑟 = 0 and define
+
+ℎ 𝑞 =𝑘 𝑓 𝑞
+n
+
+-1
+
+=0
+
+the constrained robot dynamics can be derived using again the
+Lagrange formalism, by defining an augmented Lagrangian as
+
+𝐿A 𝑞, 𝑞,̇ 𝜆 = 𝐿 𝑞, 𝑞̇ + 𝜆B ℎ 𝑞 = 𝑇 𝑞, 𝑞̇ − 𝑈 𝑞 + 𝜆B ℎ 𝑞
+where the Lagrange multipliers 𝜆 (a 𝑀-dimensional vector) can
+be interpreted as the generalized forces that arise at the contact
+when attempting to violate the constraints
+Robotics 2
+
+26
+
+Constrained robot dynamics
+
+-2
+
+applying the Euler-Lagrange equations in the extended space of
+generalized coordinates 𝑞 AND multipliers 𝜆 yields
+
+n
+
+𝑑 𝜕𝐿A
+𝑑𝑡 𝜕𝑞̇
+
+B
+
+𝜕𝐿A
+−
+𝜕𝑞
+
+B
+
+𝑑 𝜕𝐿
+=
+𝑑𝑡 𝜕𝑞̇
+
+𝜕𝐿A
+𝜕𝜆
+
+B
+
+𝜕𝐿
+−
+𝜕𝑞
+
+B
+
+𝜕 B
+−
+𝜆 ℎ(𝑞)
+𝜕𝑞
+
+B
+
+=ℎ 𝑞 =0
+
+=𝑢
+
+contact forces do
+NOT produce work
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢 + 𝐴B (𝑞)𝜆
+subject to
+
+B
+
+(★)
+
+ℎ 𝑞 =0
+
+where we defined the Jacobian of the constraints as the matrix
+
+𝜕ℎ(𝑞)
+𝐴 𝑞 =
+𝜕𝑞
+that will be assumed of full row rank (= 𝑀)
+Robotics 2
+
+27
+
+Constrained robot dynamics
+n
+
+-3
+
+we can eliminate the appearance of the multipliers as follows
+n differentiate the constraints twice w.r.t. time
+
+𝜕ℎ(𝑞)
+̇
+ℎ 𝑞 =0 ⇒ ℎ=
+𝑞̇ = 𝐴 𝑞 𝑞̇ = 0 ⇒ ℎ̈ = 𝐴 𝑞 𝑞̈ + 𝐴̇ 𝑞 𝑞̇ = 0
+𝜕𝑞
+n
+
+substitute the joint accelerations from the dynamic model (★)
+(dropping dependencies)
+
+𝐴𝑀OP 𝑢 + 𝐴B 𝜆 − 𝑐 − 𝑔 + 𝐴̇ 𝑞̇ = 0
+n
+
+solve for the multipliers
+
+the inertia-weighted
+pseudoinverse of the
+constraint Jacobian 𝐴
+
+invertible 𝑀×𝑀 matrix,
+when 𝐴 is full rank
+
+𝜆 = (𝐴𝑀OP𝐴B )OP 𝐴𝑀OP 𝑐 + 𝑔 − 𝑢 − 𝐴̇ 𝑞̇
+B
+#
+= 𝐴Q 𝑐 + 𝑔 − 𝑢 − 𝐴𝑀OP𝐴B OP𝐴̇ 𝑞̇
+
+to be replaced in the dynamic model...
+Robotics 2
+
+constraint
+forces 𝜆 are
+uniquely
+determined
+by the robot
+state (𝑞, 𝑞)
+̇
+and input 𝑢 !!
+28
+
+Constrained robot dynamics
+
+-4
+
+the final constrained dynamic model can be rewritten as
+
+n
+
+𝑀 𝑞 𝑞̈ = 𝐼
+
+− 𝐴B (𝑞)
+
+B
+#
+𝐴Q(𝑞)
+
+̇ 𝑞̇
+𝑢 − 𝑐(𝑞, 𝑞̇ − 𝑔(𝑞)) − 𝑀(𝑞)𝐴#Q(𝑞)𝐴(𝑞)
+
+dynamically consistent projection matrix
+OP(𝑞)𝐴B (𝑞)(𝐴(𝑞)𝑀OP(𝑞)𝐴B (𝑞))OP and with
+where 𝐴#
+𝑞
+=
+𝑀
+Q
+
+𝜆=
+n
+
+B
+#
+𝐴Q(𝑞)
+
+𝑐(𝑞, 𝑞)
+̇ + 𝑔(𝑞) − 𝑢 − 𝐴 𝑞
+
+𝑀OP
+
+𝑞
+
+𝐴B
+
+𝑞
+
+OP
+
+̇ 𝑞̇
+𝐴(𝑞)
+
+if the robot state (𝑞(0), 𝑞(0))
+̇
+at time 𝑡 = 0 satisfies the constraints,
+i.e.,
+
+ℎ 𝑞 0
+
+= 0,
+
+𝐴 𝑞 0 𝑞(0)
+̇
+=0
+
+then the robot evolution described by the above dynamics will be
+consistent with the constraints for all 𝑡 ≥ 0 and for any 𝑢(𝑡)
+
+§ this is a useful simulation model (constrained direct dynamics)
+Robotics 2
+
+29
+
+Example – ideal mass
+constrained robot dynamics
+
+𝑓'
+
+𝑥
+𝑞= 𝑦
+
+𝑓&
+
+𝑓&
+𝑢= 𝑓
+'
+
+𝑀𝑞̈ = 𝑢
+𝑚
+
+𝑀=
+
+𝑓(
+𝑥=𝑐
+
+ℎ 𝑞 =𝑥−𝑐 =0 ⇒ 𝐴 𝑞 = 1 0
+B
+
+𝐼 − 𝐴 (𝑞)
+𝜆=−
+
+B
+#
+𝐴Q (𝑞)
+
+B
+#
+𝐴Q (𝑞) 𝑢
+
+0 0
+=
+0 1
+
+= − 1 0 𝑢 = −𝑓&
+
+0
+𝑥̈
+0 0
+𝑀
+= 𝑀𝑞̈ =
+𝑢= 𝑓
+𝑦̈
+0 1
+'
+Robotics 2
+
+robot dynamics
+in free motion
+
+𝑚 0
+0 𝑚
+
+⇒ 𝐴#Q 𝑞 = ⋯ = 1
+0
+dynamically consistent
+projection matrix
+multiplier (contact force 𝑓( )
+constrained
+robot dynamics
+30
+
+Example – planar 2R robot
+constrained robot dynamics
+
+𝑘 𝑟 = 𝑥 − 𝑥5
+
+𝑦
+𝑟=𝑓 𝑞 =
+
+X
+
++ 𝑦 − 𝑦5
+
+X
+
+− 𝑅X = 0
+
+𝑞2
+
+𝑙P cos 𝑞P + 𝑙X cos 𝑞P + 𝑞X
+𝑙P sin 𝑞P + 𝑙X sin 𝑞P + 𝑞X
+
+(𝑥5 , 𝑦5 )
+𝑙2
+
+𝑙1
+𝑞1
+
+𝑅
+
+𝑥
+𝑟= 𝑦
+
+𝑥
+
+ℎ 𝑞 = 𝑘(𝑓 𝑞) =
+𝑙P cos 𝑞P + 𝑙X cos 𝑞P + 𝑞X − 𝑥5
+𝜕𝑘 𝜕𝑟
+𝑞̇ = 2 𝑥 − 𝑥5
+𝜕𝑟 𝜕𝑞
+= 2 𝑙P 𝑐P + 𝑙X 𝑐PX − 𝑥5
+
+ℎ̇ =
+
+Robotics 2
+
+X
+
++ 𝑙P sin 𝑞P + 𝑙X sin 𝑞P + 𝑞X − 𝑦5
+
+2 𝑦 − 𝑦5
+
+X
+
+− 𝑅X = 0
+
+𝐽_ (𝑞)𝑞̇
+
+2 𝑙P 𝑠P + 𝑙X 𝑠PX − 𝑦5
+
+𝐽_ 𝑞 𝑞̇ = 𝐴(𝑞)𝑞̇
+31
+
+Reduced robot dynamics
+n
+
+n
+
+by imposing 𝑀 constraints ℎ(𝑞) = 0 on the 𝑁 generalized coordinates 𝑞,
+it is also possible to reduce the description of the constrained robot
+dynamics to a 𝑁 − 𝑀 dimensional configuration space
+start from constraint matrix 𝐴(𝑞) and select a matrix 𝐷(𝑞) such that
+
+𝐴(𝑞)
+𝐷(𝑞)
+n
+
+is a nonsingular
+𝑁×𝑁 matrix
+
+𝐴(𝑞)
+𝐷(𝑞)
+
+OP
+
+= 𝐸(𝑞) 𝐹(𝑞)
+
+define the (𝑁 − 𝑀)-dimensional vector of pseudo-velocities 𝑣 as the
+linear combination (at a given 𝑞) of the robot generalized velocities
+
+𝑣 = 𝐷(𝑞)𝑞̇
+n
+
+-1
+
+̇
+𝑣̇ = 𝐷 𝑞 𝑞̈ + 𝐷(𝑞)
+𝑞̇
+
+inverse relationships (from “pseudo” to “generalized” velocities and
+accelerations) are given by
+
+𝑞̇ = 𝐹 𝑞 𝑣
+
+̇
+𝑞̈ = 𝐹 𝑞 𝑣̇ − 𝐸 𝑞 𝐴̇ 𝑞 + 𝐹(𝑞)𝐷(𝑞)
+𝐹 𝑞 𝑣
+
+properties of block products in inverse matrices have been used for
+eliminating the appearance of 𝐹̇ (often 𝐹 is only known numerically)
+Robotics 2
+
+32
+
+Reduced robot dynamics
+
+–2
+
+whiteboard …
+
+𝐴(𝑞)
+𝐷(𝑞)
+
+OP
+
+= 𝐸(𝑞) 𝐹(𝑞)
+
+a number of properties from this definition…
+three useful identities!
+
+two matrix inverse products
+
+𝐴(𝑞)
+𝐷(𝑞)
+
+0
+𝐼Q×Q
+𝐴 𝑞 𝐸(𝑞) 𝐴 𝑞 𝐹(𝑞)
+𝐸(𝑞) 𝐹(𝑞) =
+=
+𝐼(IOQ)×(IOQ)
+0
+𝐷 𝑞 𝐸(𝑞) 𝐷 𝑞 𝐹(𝑞)
+𝐴(𝑞)
+𝐸(𝑞) 𝐹(𝑞)
+= 𝐸 𝑞 𝐴 𝑞 + 𝐹 𝑞 𝐷 𝑞 = 𝐼I×I
+𝐷(𝑞)
+
+differentiating w.r.t. time
+from pseudo-velocity 𝑣 = 𝐷(𝑞)𝑞̇
+since 𝐹 is a right inverse of the
+full row rank matrix 𝐷 (𝐷𝐹 = 𝐼 )
+
+̇ + 𝐸 𝐴̇ + 𝐹𝐷
+̇ + 𝐹 𝐷̇ = 0
+𝐸𝐴
+𝑞̇ = 𝐹 𝑞 𝑣
+= 𝐷B (𝑞) 𝐷(𝑞)𝐷B (𝑞)
+
+differentiating w.r.t. time 𝑞̇ = 𝐹 𝑞 𝑣
+
+◁
+
+(in fact
+OP𝑣
+
+𝐷 𝑞̇ = 𝐷𝐹𝑣
+= 𝑣)
+
+(◁)
+
+̇ = 𝐹 𝑣̇ + (𝐹𝐷)
+̇ 𝑞̇ = 𝐹 𝑣̇ − 𝐸𝐴
+̇ + 𝐸𝐴̇ + 𝐹 𝐷̇ 𝐹𝑣
+𝑞̈ = 𝐹 𝑣̇ + 𝐹𝑣
+= 𝐹(𝑞)𝑣̇ − 𝐸 𝑞 𝐴̇ 𝑞 + 𝐹 𝑞 𝐷̇ 𝑞 𝐹(𝑞)𝑣
+Robotics 2
+
+33
+
+Reduced robot dynamics
+
+-3
+
+n
+
+consider again the dynamic model (★), dropping dependencies
+
+n
+
+𝑀𝑞̈ + 𝑐 + 𝑔 = 𝑢 + 𝐴B 𝜆
+since 𝐴𝐸 = 𝐼 , multiplying on the left by 𝐸 B isolates the multipliers
+
+n
+
+𝐸B 𝑀𝑞̈ + 𝑐 + 𝑔 − 𝑢 = 𝜆
+since 𝐴𝐹 = 0, multiplying on the left by 𝐹 B eliminates the multipliers
+𝐹 B 𝑀𝑞̈ = 𝐹 B 𝑢 − 𝑐 − 𝑔
+
+n
+
+substituting in the latter the generalized accelerations and velocities
+with the pseudo-accelerations and pseudo-velocities leads finally to
+
+invertible
+
+𝑁−𝑀 × 𝑁−𝑀
+
+positive definite matrix
+
+𝐹 B 𝑀𝐹 𝑣̇ = 𝐹 B 𝑢 − 𝑐 − 𝑔 + 𝑀 𝐸𝐴̇ + 𝐹 𝐷̇ 𝐹𝑣
+
+which is the reduced (𝑁 − 𝑀)-dimensional dynamic model
+
+n
+
+similarly, the expression of the multipliers becomes
+
+𝜆 = 𝐸B 𝑀𝐹𝑣̇ − 𝑀 𝐸𝐴̇ + 𝐹 𝐷̇ 𝐹𝑣 + 𝑐 + 𝑔 − 𝑢
+Robotics 2
+
+(§)
+34
+
+Example – ideal mass
+reduced robot dynamics
+
+𝑓'
+
+𝑥
+𝑞= 𝑦
+
+𝑓&
+
+𝑓&
+𝑢= 𝑓
+'
+
+𝑀𝑞̈ = 𝑢
+𝑚
+
+𝑀=
+
+𝑓(
+𝑥=𝑐
+
+ℎ 𝑞 =𝑥−𝑐 =0 ⇒ 𝐴 = 1 0
+𝜆 = 𝐸B 𝑀𝐹𝑣̇ − 𝑢
+= 1 0
+
+𝑚 0
+0 𝑚
+
+𝐹 B 𝑀𝐹 𝑣̇ = 0 1
+Robotics 2
+
+0 𝑦̈ − 𝑓&
+𝑓'
+1
+
+𝑚 0
+0 𝑚
+
+robot dynamics
+in free motion
+
+𝑚 0
+0 𝑚
+
+𝐴
+1
+0
+⇒
+=
+= 𝐸 𝐹
+𝐷
+0 1
+𝑣 = 𝐷𝑞̇ = 𝑦̇ pseudo-velocity
+=− 1
+
+0
+
+𝑓&
+𝑓' = −𝑓&
+
+0
+𝑣̇ = 𝑚𝑦̈ = 𝑓' = 𝐹 B 𝑢
+1
+
+multiplier
+(contact
+force 𝑓( )
+reduced
+robot dynamics
+35
+
+Example – planar 2R robot
+reduced robot dynamics
+
+𝑦
+
+𝑘 𝑟 = 𝑥 − 𝑥5
+
+𝑞2
+
+(𝑥5 , 𝑦5 )
+𝑙2
+
+𝑙1
+𝑞1
+
+X
+
++ 𝑦 − 𝑦5
+
+X
+
+− 𝑅X = 0
+
+𝑣 = (scalar) value of
+
+𝑅
+
+end-effector velocity reduced
+along the tangent
+to the constraint
+
+𝑥
+𝑟= 𝑦
+
+𝑥
+
+robot
+Jacobian
+
+𝐴 𝑞 = 2 𝑥 − 𝑥5 2 𝑦 − 𝑦5 𝐽_ 𝑞
+= 2 𝑙P 𝑐P + 𝑙X 𝑐PX − 𝑥5 2 𝑙P 𝑠P + 𝑙X 𝑠PX − 𝑦5
+a feasible selection of matrix 𝐷(𝑞)
+1
+1
+𝐷(𝑞) = − 𝑦 − 𝑦5
+𝑥 − 𝑥5 𝐽_ 𝑞
+2
+2
+𝐴(𝑞)
+𝐷(𝑞)
+
+OP
+
+Robotics 2
+
+= 𝐸(𝑞)
+
+𝐹(𝑞)
+
+𝑣 = 𝐷(𝑞)𝑞̇
+a scalar
+
+𝐽_ 𝑞
+
+out of robot
+singularities
+
+𝐴(𝑞)
+= 𝑅 X h det 𝐽_ (𝑞) ≠ 0
+𝐷(𝑞)
+−2(𝑦 − 𝑦5 )j
+X
+𝑅
+OP
+𝑞̇ = 𝐹 𝑞 𝑣 = 𝐽_ (𝑞)
+𝑣
+2(𝑥 − 𝑥5 )j
+𝑅X
+det
+
+36
+
+Control based on reduced robot dynamics
+n
+
+n
+n
+
+the reduced 𝑁 − 𝑀 dynamic expressions are more compact but also
+more complex and less used for simulation purposes than the
+𝑁-dimensional constrained dynamics
+however, they are useful for control design (reduced inverse dynamics)
+in fact, it is straightforward to verify that the feedback linearizing
+control law
+
+𝑢 = 𝑐 + 𝑔 − 𝑀 𝐸𝐴̇ + 𝐹 𝐷̇ 𝐹𝑣 + 𝑀𝐹𝑢P − 𝐴B 𝑢X
+applied to the reduced robot dynamics and to the expression (§) of
+the multipliers leads to the closed-loop system
+
+𝑣̇ = 𝑢P
+
+𝜆 = 𝑢X
+
+Note: these are exactly in the form of the ideal mass example of slide #24,
+with 𝑣 = 𝑦,̇ 𝑢P = 𝑓' /𝑚, λ = 𝑓( , 𝑢X = −𝑓& (being 𝑁 = 2, 𝑀 = 1, 𝑁 − 𝑀 = 1)
+Robotics 2
+
+37
+
+Compliant contact situation
+a second possible modeling choice for softer environments
+
+𝑓'
+𝑓&
+
+𝑚
+
+𝐾(
+
+𝑓(
+
+compliance/impedance
+control (in all directions)
+is here a good choice
+that allows to handle
+§ uncertain position
+§ uncertain orientation
+of the wall
+
+𝑥( = 𝑐
+
+𝑚𝑥̈ = 𝑓& + 𝑓(
+𝑚𝑦̈ = 𝑓'
+Robotics 2
+
+𝑥<𝑐
+𝑥≥𝑐
+
+𝑓( = 0
+𝑓( = 𝐾( (𝑥 − 𝑐)
+
+with 𝐾( > 0 being the stiffness of the environment
+38
+
+Robot-environment contact types
+modeled by a single elastic constant
+
+compliant
+force sensor
+
+rigid environment
+
+negligible intermediate
+mass
+
+𝐾o
+𝐾 = 𝐾o
+
+𝐾(
+
+compliant environment
+
+rigid robot
+(including
+force sensor)
+
+Robotics 2
+
+𝐾 = 𝐾(
+
+1
+1
+1
+=
++
+𝐾 𝐾o 𝐾(
+
+𝐾o 𝐾(
+𝐾=
+𝐾o +𝐾(
+
+series of springs =
+sum of compliances
+(inverse of stiffnesses)
+39
+
+Force control
+
+1-dof robot-environment linear dynamic models
+n
+n
+
+n
+
+with a force sensor (having stiffness 𝑘𝑠 and damping 𝑏𝑠) measuring the contact force 𝐹𝑐
+stability analysis of a proportional control loop for regulation of the contact force (to a
+desired constant value 𝐹𝑑 ) can be made using the root-locus method (for a varying 𝑘𝑓 )
+by including/excluding work-piece compliance and/or robot (transmission) compliance
+stable
+for all 𝑘𝑓
++ work-piece
+compliance
+
+𝐹r = 𝑘o 𝑥_
+
+𝐹 = 𝑘t 𝐹u − 𝐹r , 𝑘t > 0
+
+𝐹r = 𝑘o (𝑥_ −𝑥s )
+
++ robot
+compliance
+
+𝐹r = 𝑘o 𝑥X
+Robotics 2
+
+large 𝑘𝑓
+⇓
+unstable
+
+𝐹r = 𝑘X (𝑥X −𝑥s )
+
+(see the paper by S. Eppinger, W.P. Seering: IEEE Control Systems Mag., 1987;
+available as extra material on the course web)
+
+40
+
+Tasks requiring hybrid control
+two generalized
+directions of
+instantaneous
+free motion
+at the contact:
+
+tangential velocity
+& angular velocity
+around handle axis
+
+↕
+
+four directions
+of generalized
+reaction forces
+at the contact
+
+Robotics 2
+
+the robot should turn a crank
+having a free-spinning handle
+
+41
+
+Tasks requiring hybrid control
+one direction only
+of instantaneous
+free motion
+at the contact:
+
+tangential velocity
+
+↕
+
+five directions
+of generalized
+reaction forces
+at the contact
+
+Robotics 2
+
+the robot should turn a crank
+having a fixed handle
+
+42
+
+Tasks requiring hybrid control
+
+the robot should push a mass
+elastically coupled to a wall and constrained in a guide
+Robotics 2
+
+43
+
+Tasks requiring hybrid control
+direction of free motion control
+(no contact forces can be imposed)
+
+dynamic direction of control:
+either motion is controlled
+(and a contact force results)
+or contact force is controlled
+(and a motion results)
+
+KE
+
+three sets of possible
+
+directions in the task frame
+
+direction of contact force control
+(no motion can be imposed)
+
+generalized hybrid modeling and control for dynamic environments
+A. De Luca, C. Manes: IEEE Trans. Robotics and Automation, vol. 10, no. 4, 1994
+Robotics 2
+
+44
+
+

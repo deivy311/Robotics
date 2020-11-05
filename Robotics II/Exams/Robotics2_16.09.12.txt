@@ -1,0 +1,403 @@
+Robotics II
+September 12, 2016
+Exercise 1
+
+q3
+
+䎩
+
+ℓ3
+
+g0
+
+q2
+
+y
+
+䎩
+
+! = "/2
+(constant) #
+
+ℓ1
+
+䎩
+
+q1
+x
+
+Figure 1: A RPR planar robot moving in a vertical plane.
+Derive the inertia matrix B(q) and the gravity vector g(q) in the dynamic model of the planar RPR
+T
+robot in Fig. 1, using the Lagrangian coordinates q = q1 q2 q3
+defined therein. Determine all
+equilibrium configurations q 0 under no external or dissipative forces/torques nor actuation inputs.
+Exercise 2
+
+!
+u
+
+nonlinear
+spring
+
+b
+
+g0
+
+m
+
+q
+
+Figure 2: A two-mass system connected by a nonlinear spring, under the action of gravity.
+In the mechanical system shown in Fig. 2, the first body (of mass b > 0 and position θ) is actuated
+by a force u and is connected to the second body (of mass m > 0 and position q) through a
+nonlinear spring having potential energy
+Ue =
+
+1
+1
+k(q − θ)2 + kn (q − θ)4 ,
+2
+4
+
+k, kn > 0.
+
+• Derive the dynamic model of this system by following a Lagrangian approach and using as
+generalized coordinates (θ, q).
+• Determine the (unique!) equilibrium position θ̄ for the first mass and the required constant
+input force ū to be applied in order to keep the second mass at a desired position (height) q̄.
+• Verify your result by computing the values of θ̄ and ū for the following numerical data:
+q̄ = 0.1 [m],
+
+b = m = 3 [kg],
+
+k = 1000 [N/m],
+
+kn = 10000 [N/m3 ],
+
+g0 = 9.81 [m/s2 ].
+
+[150 minutes; open books]
+1
+
+Solution
+September 12, 2016
+
+Exercise 1
+For link i, i = 1, 2, 3, let mi be its mass and Ii its inertia around an axis normal to the plane of
+motion and passing through the center of mass. Moreover, for i = 1 and i = 3, di is the distance
+of the center of mass of link i from the axis of joint i, while for the second link, d2 will denote the
+(constant) distance of its center of mass from the axis of joint 3 —see Fig. 3.
+
+q3
+䎩
+y
+d1
+
+d3
+q2
+d2
+
+䎩
+
+䎩
+
+q1
+
+g0
+
+x
+Figure 3: Parameters di defining the location of the center mass of the links of the RPR robot.
+To derive the robot dynamic model terms, we follow a Lagrangian approach. For obtaining the
+inertia matrix B(q), we compute the kinetic energy T = T1 + T2 + T3 of the three robot links. For
+the first link, it is
+1
+T1 = (I1 + m1 d21 ) q̇12 .
+2
+For the second link, the position of the center of mass is1
+
+
+`1 cos q1 − (q2 − d2 ) sin q1
+pc2 =
+,
+(1)
+`1 sin q1 + (q2 − d2 ) cos q1
+where `1 is the length of link 1. Thus, the velocity of this center of mass is
+
+
+− (`1 sin q1 + (q2 − d2 ) cos q1 ) q̇1 − sin q1 q̇2
+v c2 = ṗc2 =
+(`1 cos q1 − (q2 − d2 ) sin q1 ) q̇1 + cos q1 q̇2
+and its squared norm is
+
+kv c2 k2 = v Tc2 v c2 = `21 + (q2 − d2 )2 q̇12 + q̇22 + 2`1 q̇1 q̇2 .
+The (scalar) angular velocity of link 2 is simply q̇1 . As a result,
+T2 =
+1 We
+
+
+
+1 
+I2 + m2 `21 + (q2 − d2 )2 q̇12 + m2 q̇22 + 2m2 `1 q̇1 q̇2 .
+2
+
+take into account the following identities (for β = π/2): cos(q1 + π/2) = − sin q1 , sin(q1 + π/2) = cos q1 .
+
+2
+
+Similarly, the position of the center of mass of the third link is
+
+
+`1 cos q1 − q2 sin q1 − d3 sin(q1 + q3 )
+pc3 =
+.
+`1 sin q1 + q2 cos q1 + d3 cos(q1 + q3 )
+
+(2)
+
+Its velocity is
+
+v c3 = ṗc3 =
+
+− (`1 sin q1 + q2 cos q1 ) q̇1 − sin q1 q̇2 − d3 cos(q1 + q3 )(q̇1 + q̇3 )
+(`1 cos q1 − q2 sin q1 ) q̇1 + cos q1 q̇2 − d3 sin(q1 + q3 )(q̇1 + q̇3 )
+
+
+
+and the squared norm becomes
+
+kv c3 k2 = `21 + q22 q̇12 +q̇22 +d23 (q̇1 +q̇3 )2 +2`1 q̇1 q̇2 −2d3 sin q3 (q̇1 +q̇3 )(`1 q̇1 +q̇2 )+2d3 q2 cos q3 (q̇1 +q̇3 )q̇1 .
+The (scalar) angular velocity of link 3 is simply (q̇1 + q̇3 ). As a result,
+
+
+
+T3 = 21 I3 + m3 d23 (q̇1 + q̇3 )2 + m3 `21 + q22 q̇12 + m3 q̇22
++ 2m3 `1 q̇1 q̇2 + 2m3 d3 (q̇1 + q̇3 ) (q2 cos q3 q̇1 − sin q3 (`1 q̇1 + q̇2 ))] .
+Therefore,
+
+T =
+
+1 T
+q̇ 
+2
+
+b11 (q2 , q3 ) b12 (q3 ) b13 (q2 , q3 )
+b22
+
+b23 (q3 )
+
+symm
+
+
+1 T
+
+ q̇ = q̇ B(q)q̇,
+2
+
+b33
+
+from which the elements bij of the 3 × 3, symmetric, positive definite inertia matrix B(q) can be
+extracted:
+b11 (q2 , q3 ) = I1 + m1 d21 + I2 + m2 d22 + I3 + m3 d23 + (m2 + m3 )`21
+− 2m2 d2 q2 + (m2 + m3 )q22 + 2m3 d3 (q2 cos q3 − `1 sin q3 )
+= π1 + π2 q2 + π3 q22 + 2π4 (q2 cos q3 − `1 sin q3 )
+b12 (q3 ) = (m2 + m3 )`1 − m3 d3 sin q3 = π3 `1 − π4 sin q3
+b13 (q2 , q3 ) = I3 + m3 d23 + m3 d3 (q2 cos q3 − `1 sin q3 ) = π5 + π4 (q2 cos q3 − `1 sin q3 )
+
+(3)
+
+b22 = m2 + m3 = π3
+b23 (q3 ) = −m3 d3 sin q3 = −π4 sin q3
+b33 = I3 + m3 d23 = π5 .
+In the expressions (3) of the elements of B(q), we have assumed that the kinematic parameter
+`1 is known and found thus a linear parameterization in terms of five dynamic coefficients πi ,
+i = 1, . . . , 5.
+For obtaining the vector g(q), we compute the potential energy U = U1 + U2 + U3 due to gravity
+for the three robot links. Using the expressions of the y-component of the vectors pci , i = 1, 2, 3
+(see also eqs. (1) and (2)), we have
+U1 (q1 ) = m1 g0 pc1,y = m1 g0 d1 sin q1
+U2 (q1 , q2 ) = m2 g0 pc2,y = m2 g0 (`1 sin q1 + (q2 − d2 ) cos q1 )
+U3 (q1 , q2 , q3 ) = m3 g0 pc3,y = m3 g0 (`1 sin q1 + q2 cos q1 + d3 cos(q1 + q3 )) .
+
+3
+
+Therefore,
+T
+∂U (q)
+g(q) =
+∂q
+
+
+(m1 d1 + (m2 + m3 )`1 ) g0 cos q1 − (m2 (q2 − d2 ) + m3 q2 ) g0 sin q1 − m3 d3 g0 sin(q1 + q3 )
+
+
+(m2 + m3 )g0 cos q1
+=
+.
+
+
+−m3 d3 g0 sin(q1 + q3 )
+(4)
+Solving for g(q 0 ) = 0 provides all equilibrium configurations q 0 . From the second component
+in (4), it follows that q0,1 = ±π/2, which confirms also the intuition that the prismatic joint
+axis should be horizontal at the equilibrium. Plugging this into the third equation leads again
+to q0,3 = ±π/2. Imposing these two conditions in the first equation, g1 (q 0 ) = 0 provided the
+additional condition q2 = m2 d2 /(m2 + m3 ). Thus, all unforced equilibrium configurations for this
+RPR robot are of the form
+T
+
+m2 d2
+π
+π
+.
+q0 =
+±
+±
+2 m2 + m3
+2
+
+Exercise 2
+The kinetic and potential energies of the mechanical system in Fig. 2 are given by
+T =
+
+1 2 1
+b θ̇ + m q̇ 2 ,
+2
+2
+
+U = Ue + Ug =
+
+1
+1
+k(q − θ)2 + kn (q − θ)4 − mg0 q.
+2
+4
+
+Thus, applying the Euler-Lagrange equations to L = T − U yields the two second-order differential
+equations
+bθ̈ + k(θ − q) + kn (θ − q)3 = u
+
+(5)
+
+3
+
+mq̈ − mg0 + k(q − θ) + kn (q − θ) = 0,
+
+(6)
+
+which are nonlinear due to the cubic terms in the deformation δ = q − θ of the spring.
+For the equilibrium conditions, we set θ̈ = q̈ = 0 in eqs. (5)–(6). From the second one, we obtain
+the following algebraic equation:
+kn (q − θ)3 + k(q − θ) − mg0 = 0.
+This is a cubic equation of the form
+δ 3 + pδ + r = 0,
+
+with p =
+
+k
+,
+kn
+
+r=−
+
+mg0
+,
+kn
+
+which is known to have the single real solution2
+s
+s
+r
+r
+3
+3
+r
+r2
+p3
+r
+r2
+p3
+δ= − +
++
++ − −
++ .
+2
+4
+27
+2
+4
+27
+2 The
+
+(7)
+
+(8)
+
+(depressed) cubic equation in (7) was studied already in the XVI century. The formula (8) is attributed to
+the mathematician Gerolamo Cardano, but in fact is due to Scipione del Ferro and Niccolò Fontana (also known as
+Tartaglia).
+
+4
+
+Therefore, for a given desired position q = q̄ of the mass m, we compute from (8) the spring
+deformation δ̄ at steady state and set
+θ̄ = q̄ − δ̄.
+(9)
+Moreover, from eq. (5) at steady state we obtain the required input force
+ū = k(θ̄ − q̄) + kn (θ̄ − q̄)3 = k δ̄ + kn δ̄ 3 = −mg0 .
+
+(10)
+
+The input force balances the weight of the mass m, as reflected through the elastic force τe of the
+deformed spring. Note that that the mass b plays no role in this analysis.
+Using now the given numerical data, and in particular q̄ = 0.1, k = 1000, kn = 10000 and m = 3,
+we compute
+δ = 0.0292,
+θ̄ = 0.0708,
+ū = −29.4300.
+(11)
+As a result, the static deformation of the nonlinear spring at the equilibrium is equal to slightly
+less than 3 cm. The deformation-force characteristics τe = kδ + kn δ 3 of the chosen spring is shown
+in Fig. 4, where we have indicated also the actual deformation δ̄ at equilibrium. In correspondence
+to this value, we can easily check that the elastic force is τe = −ū.
+nonlinear spring characteristic
+
+300
+
+200
+
+100
+
+0
+
+−100
+
+−200
+
+−300
+−0.2
+
+−0.15
+
+−0.1
+
+−0.05
+
+0
+deformation [m]
+
+0.05
+
+0.1
+
+0.15
+
+0.2
+
+Figure 4: The nonlinear deformation-force characteristics of the spring for k = 103 [N/m] and
+kn = 104 [N/m3 ]. The equilibrium condition for the given problem data is reported in red.
+∗∗∗∗∗
+
+5
+
+

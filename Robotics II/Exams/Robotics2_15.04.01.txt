@@ -1,0 +1,28 @@
+Robotics II
+April 1, 2015
+Exercise 1
+Consider the planar RP in Fig. 1, moving in the vertical plane. The center of mass of the first
+link lies always on the axis of the revolute joint. In the following, use the generalized coordinates
+q = (q1 , q2 ) defined in this figure.
+
+Figure 1: A planar RP robot moving in the vertical plane
+a) Determine all equilibrium configurations q 0 = (q01 , q02 ) for the open-loop system.
+b) Derive the linearized model equations, obtained by a first-order Taylor expansion around an
+equilibrium x = (q, q̇) = (q 0 , 0) = x0 , expressed in the state-space format ẋ = Ax + Bu,
+where u is the vector of generalized joint forces provided by the actuators.
+c) Design a regulation controller that globally asymptotically stabilizes any desired state of the
+form x0 = (q 0 , 0) in the closed-loop system, specifying all model terms in the control law.
+d) What kind of behavior can be inferred locally around the desired state for the obtained
+closed-loop system, using the linearized model as in step b)?
+Exercise 2
+
+Figure 2: A planar 3R robot moving among obstacles
+The 3R robot shown in Fig. 2 has equal links of unitary length and is redundant for all tasks
+defined only in terms of the position of its end effector in the plane. The robot should move its
+end-effector toward the goal, while avoiding to collide with the obstacles in its workspace. Discuss
+the use of redundancy for the specific configuration shown in the figure, illustrating also graphically
+the instantaneous velocities imposed to the robot structure by the goal attraction and the repulsion
+from the obstacle(s).
+[120 minutes; open books]
+
+

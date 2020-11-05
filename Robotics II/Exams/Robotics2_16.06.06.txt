@@ -1,0 +1,472 @@
+Robotics II
+June 6, 2016
+Exercise 1
+
+q2
+g0
+
+q1
+
+y0
+x0
+
+Figure 1: A 2R polar robot
+Derive the dynamic model of a 2R polar robot moving in the presence of gravity, using the generalized coordinates q = (q1 , q2 ) defined in Fig. 1. Assume that the links have cylindric form (as in
+the picture) and uniformly distributed mass.
+Provide for this robot the explicit expression of the terms of an adaptive control law that guarantees
+asymptotic tracking of a desired smooth joint trajectory q d (t), without any a priori knowledge
+about the robot dynamic parameters. Which is the minimum dimension of such an adaptive
+controller?
+Exercise 2
+For the robot in Fig. 1, write down all different symbolic expressions of control laws that you are
+aware of, which guarantee regulation to a desired (generic) constant configuration q d . Specify for
+each law the design conditions for success and the type of convergence/stability achieved.
+[180 minutes; open books]
+
+1
+
+Solution
+June 6, 2016
+Exercise 1
+The definition of the joint variables q1 and q2 follows the Denavit-Hartenberg convention. We show
+in Fig. 2 the two DH frames attached to the two moving links (and indexed with 1 and 2), which
+will be used for defining conveniently their inertial parameters. The rotation matrices between
+frames 0 and 1 and between frames 1 and 2 are found easily by inspection (without the need of
+explicitly defining a DH table of parameters) as
+
+
+
+
+cos q1 0
+sin q1
+cos q2 − sin q2 0
+0
+1
+cos q2 0  .
+R1 (q1 ) =  sin q1 0 − cos q1  ,
+R2 (q2 ) =  sin q2
+0
+1
+0
+0
+0
+1
+Since the cylindric links have uniform mass, their center of mass will lie along the y 1 -axis for link
+1 and along the x2 -axis for link 2. We denote with d2 > 0 the distance of the center of mass of
+link 2 from the axis of joint 1 (slightly more than half of the link length). The inertia matrix of
+each link is diagonal when referred to the kinematic reference frame attached to the link, as well
+as when referred to the frame with origin in the center of mass and having the same orientation.
+We denote the link inertia matrices in the latter case as
+
+
+Iix
+i
+,
+Iiy
+Ii = 
+i = 1, 2.
+Iiz
+
+x2
+
+y2
+
+䎩
+
+x1
+
+g0
+
+q1
+
+q2
+
+z1
+
+䎩
+
+y0
+x0
+
+Figure 2: The reference frames used for defining link inertial parameters of the 2R polar robot
+We start by computing the various terms in the robot dynamic model, following a Lagrangian
+approach.
+The kinetic energy of the robot is T = T1 + T2 . For the first link,
+1
+I1y q̇12 .
+2
+For the second link, the position of its center of mass is
+
+
+d2 cos q2 cos q1
+pc2 =  d2 cos q2 sin q1  ,
+`1 + d2 sin q2
+T1 =
+
+2
+
+where `1 is the length of link 1 (an irrelevant kinematic parameter for what follows). Thus, its
+velocity is
+
+
+−d2 cos q2 sin q1 q̇1 − d2 cos q1 sin q2 q̇2
+v c2 = ṗc2 =  d2 cos q2 cos q1 q̇1 − d2 sin q1 sin q2 q̇2  ,
+d2 cos q2 q̇2
+and its squared norm simplifies to
+
+kv c2 k2 = v Tc2 v c2 = d22 q̇22 + cos2 q2 q̇12 .
+The angular velocity of link 2, when expressed in frame 0, is computed as1
+ 
+
+
+0
+sin q1
+0
+ω 2 = 0 z 0 q̇1 + 0 z 1 q̇2 =  0  q̇1 +  − cos q1  q̇2 .
+1
+0
+In order to use the constant diagonal inertia matrix of link 2, we need to express the angular
+velocity in frame 2. Since
+
+
+ 
+sin q2
+0
+T
+T
+2
+1
+z 0 = 1 R2 (q1 ) 1 z 0 =  cos q2 
+z 0 = 0 R1 (q1 ) 0 z 0 =  1  ,
+0
+0
+and
+
+
+
+
+0
+1
+z1 =  0  ,
+1
+
+we have
+
+
+0
+2
+z 1 = 1 RT2 (q1 ) 1 z 1 =  0  ,
+1
+
+
+
+
+
+sin q2 q̇1
+2
+ω 2 = 2 z 0 q̇1 + 2 z 1 q̇2 =  cos q2 q̇1  .
+q̇2
+
+As a result,
+T2 =
+
+
+
+
+1
+1
+1
+m2 v Tc2 v c2 + 2 ω T2 2 I 2 2 ω 2 =
+I2x sin2 q2 + I2y + m2 d22 cos2 q2 q̇12 + I2z + m2 d22 q̇22 .
+2
+2
+2
+
+We note that in general I2x 6= I2y , whereas it is I2y = I2z , due to the cylindric form and uniform
+mass distribution of the links. Therefore,
+
+
+
+1
+1 T I1y + I2x sin2 q2 + I2y + m2 d22 cos2 q2
+0
+q̇ = q̇ T B(q)q̇.
+T = T1 + T2 = q̇
+2
+0
+I
++
+m
+d
+2
+2
+2z
+2 2
+Using the following definition of dynamic coefficients
+a01 = I1y ,
+
+a02 = I2x ,
+
+a03 = I2y + m2 d22 = I2z + m2 d22 ,
+
+we can write the inertia matrix as
+
+B(q) =
+1 We
+
+a01 + a02 sin2 q2 + a03 cos2 q2
+0
+
+0
+a03
+
+
+.
+
+use here the expression for revolute joints of the columns of the angular part of the geometric Jacobian.
+
+3
+
+Although there will be no reduction in the number of dynamic coefficients, it is slightly more
+convenient to use the trigonometric identity cos2 q2 = 1 − sin2 q2 and obtain
+
+
+
+a1 + a2 sin2 q2 0
+B(q) =
+= b1 (q2 ) b2 ,
+0
+a3
+with
+
+a1 = (a01 + a03 =) I1y + I2y + m2 d22
+a2 = (a02 − a03 =) I2x − I2y − m2 d22
+a3 = (a03 =) I2y + m2 d22 = I2z + m2 d22 .
+
+For the Coriolis and centrifugal terms, we have
+
+
+c1 (q, q̇)
+c(q, q̇) =
+= S(q, q̇)q̇,
+ci (q, q̇) = q̇ T C i (q)q̇,
+c2 (q, q̇)
+where
+1
+C i (q) =
+2
+
+
+i = 1, 2,
+
+(
+)
+
+T
+∂bi (q)
+∂bi (q)
+∂B(q)
++
+−
+,
+∂q
+∂q
+∂qi
+
+S(q, q̇) =
+
+q̇ T C 1 (q)
+q̇ T C 2 (q)
+
+
+
+i = 1, 2.
+
+Note that with the above definition based on Christoffel symbols, the factorization matrix S
+satisfies automatically the property of skew-symmetry for Ḃ − 2S.
+Computing
+
+
+0
+0
+
+2a2 sin q2 cos q2
+0
+
+
+
+
+
+0
++
+2a2 sin q2 cos q2
+
+0
+a2 sin q2 cos q2
+a2 sin q2 cos q2
+0
+
+
+−a2 sin q2 cos q2 0
+C 2 (q) = · · · =
+0
+0
+
+1
+C 1 (q) =
+2
+
+=
+
+0
+0
+
+
+
+
+−0
+
+,
+
+we have
+
+c(q, q̇) =
+
+2a2 sin q2 cos q2 q̇1 q̇2
+−a2 sin q2 cos q2 q̇12
+
+
+
+
+and
+
+S(q, q̇) = a2 sin q2 cos q2
+
+q̇2
+−q̇1
+
+q̇1
+0
+
+
+.
+
+The potential energy of the robot is given by
+Ui = −mi g T0 r 0,ci ,
+
+U = U1 + U2 ,
+
+i = 1, 2.
+
+Since
+g T0 =
+
+0
+
+0
+
+−g0
+
+
+
+,
+
+g0 = 9.81 [m/s2 ]
+
+and the potential energy U1 is constant, we only need the z-component of the position vector r 0,c2
+of the center of mass of link 2. We have
+U1 = cost,
+
+U2 = m2 g0 d2 sin q2 = a4 sin q2 ,
+
+where we have introduced a fourth, and last, dynamic coefficient a4 = m2 g0 d2 . Therefore,
+
+T 
+
+0
+∂U (q)
+g(q) =
+.
+=
+∂q
+a4 cos q2
+4
+
+,
+
+The dynamic model of the robot can thus be written in its linear parametrized form,
+B(q)q̈ + S(q, q̇)q̇ + g(q) = Y (q, q̇, q̈)a = u,
+with
+
+
+
+Y (q, q̇, q̈) =
+
+q̈1
+0
+
+sin2 q2 q̈1 + 2 sin q2 cos q2 q̇1 q̇2
+− sin q2 cos q2 q̇12
+
+0
+q̈2
+
+0
+cos q2
+
+
+,
+
+
+a1
+ a2 
+
+a=
+ a3  .
+a4
+
+Defining q̇ r = q̇ d + Λe = q̇ d + Λ(q d − q), with a diagonal matrix Λ > 0, two diagonal gain
+matrices K D > 0 and K P = K D Λ−1 > 0, and a diagonal estimation gain matrix Γ > 0, the
+adaptive controller will have dimension 4 (equal to the minimum number of dynamic coefficients
+to be estimated in this robot) and the expression
+u = B̂(q)q̈ r + Ŝ(q, q̇)q̇ r + ĝ(q) + K P e + K D ė = Y (q, q̇, q̇ r , q̈ r )â + K P e + K D ė
+˙ = Γ Y T (q, q̇, q̇ , q̈ ) (q̇ − q̇) ,
+â
+r
+r
+r
+
+â(0) = arbitrary,
+
+where
+
+
+
+Y (q, q̇, q̇ r , q̈ r ) =
+
+q̈r1
+0
+
+sin2 q2 q̈r1 + sin q2 cos q2 (q̇1 q̇r2 + q̇r1 q̇2 ) 0
+− sin q2 cos q2 q̇1 q̇r1
+q̈r2
+
+∗∗∗∗∗
+
+5
+
+0
+cos q2
+
+
+,
+
+
+â1
+ â2 
+
+â = 
+ â3  .
+â4
+
+

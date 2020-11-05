@@ -1,0 +1,779 @@
+Robotics 2
+
+Adaptive Trajectory Control
+Prof. Alessandro De Luca
+
+Motivation and approach
+n
+
+need of adaptation in robot motion control laws
+n
+n
+
+n
+
+characteristics of direct adaptive control
+n
+
+n
+
+n
+
+large uncertainty on the robot dynamic parameters
+poor knowledge of the inertial payload
+direct aim is to bring to zero the state trajectory error, i.e.,
+position and velocity errors
+no need to estimate on line the true values of the dynamic
+coefficients of the robot (as opposed to indirect adaptive control)
+
+main tool and methodology
+n
+n
+
+Robotics 2
+
+linear parametrization of robot dynamics
+nonlinear control law of the dynamic type (the controller has its
+own ‘states’)
+
+2
+
+Summary of robot parameters
+n
+
+parameters assumed to be known
+n
+
+n
+
+uncertain parameters that can be identified off line
+n
+
+n
+
+masses 𝑚" , positions 𝑟-" of CoMs, and inertia matrices 𝐼" of each link,
+appearing in combinations (dynamic coefficients)
+⇒ 𝑝 ≪ 10×𝑁
+
+parameters that are (slowly) varying during operation
+n
+
+n
+
+kinematic description based, e.g., on Denavit-Hartenberg parameters
+({𝛼" , 𝑑" , 𝑎" , 𝑖 = 1, … , 𝑁} in case of all revolute joints), including link
+lengths (kinematic calibration)
+
+viscous 𝐹5" , dry 𝐹6" , and stiction 𝐹7" friction at each joint ⇒ 1 ÷ 3×𝑁
+
+unknown and abruptly changing parameters
+n
+
+mass, CoM, inertia matrix of the payload w.r.t. the tool center point
+
+when a payload is firmly attached to the robot E-E, only the 10 parameters of the
+last link are modified, influencing however most part of the robot dynamics
+Robotics 2
+
+3
+
+Goal of adaptive control
+n
+
+given a twice-differentiable desired joint trajectory 𝑞; (𝑡)
+n
+n
+
+n
+
+with known desired velocity 𝑞̇ ; (𝑡) and acceleration 𝑞̈ ; (𝑡)
+possibly obtained by kinematic inversion + joint interpolation
+
+execute this trajectory under large dynamic uncertainties
+n
+
+with a trajectory tracking error vanishing asymptotically
+
+𝑒 = 𝑞; − 𝑞 ⟶ 0
+n
+
+n
+
+n
+
+𝑒̇ = 𝑞̇ ; − 𝑞̇ ⟶ 0
+
+guaranteeing global stability, no matter how far are the initial
+estimates of the unknown/uncertain parameters from their true
+values and how large is the initial trajectory error
+
+identification is not of particular concern: in general, the estimates of
+dynamic coefficients will not to converge to the true ones!
+if this convergence is a specific extra requirement, then one should
+use (more complex) indirect adaptive schemes
+
+Robotics 2
+
+4
+
+Linear parameterization
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 + 𝐹5 𝑞̇ = 𝑢
+n
+
+there exists always a (𝑝-dimensional) vector 𝑎 of dynamic
+coefficients, so that the robot model takes the linear form
+
+𝑌 𝑞, 𝑞,̇ 𝑞̈ 𝑎 = 𝑢
+n
+n
+
+n
+
+vector 𝑎 contains only unknown or uncertain coefficients
+each component of 𝑎 is in general a combination of the
+robot physical parameters (not necessarily all of them)
+the model regression matrix 𝑌 depends linearly on 𝑞̈ ,
+quadratically on 𝑞̇ (for the terms related to kinetic energy),
+and nonlinearly (trigonometrically) on 𝑞
+
+Robotics 2
+
+5
+
+Trajectory controllers
+based on model estimates
+
+n
+
+inverse dynamics feedforward (FFW) + PD (linear) control
+
+J 𝑞; 𝑞̈ ; + 𝑆O 𝑞; , 𝑞̇ ; 𝑞̇ ; + 𝑔N 𝑞; + 𝐹P5 𝑞̇ ; + 𝐾L 𝑒 + 𝐾7 𝑒̇
+𝑢=𝑀
+𝑢N ;
+
+n
+
+(nonlinear) control based on feedback linearization (FBL)
+
+J 𝑞 (𝑞̈ ; + 𝐾L 𝑒 + 𝐾7 𝑒)̇ + 𝑆O 𝑞, 𝑞̇ 𝑞̇ + 𝑔N 𝑞 + 𝐹P5 𝑞̇
+𝑢=𝑀
+
+J 𝑆,
+O 𝑔,
+𝑀,
+N 𝐹P5
+n
+
+n
+
+⟺
+
+estimate 𝑎N
+
+approximate estimates of dynamic coefficients may lead to
+instability with FBL due to temporary ’non-positive’ PD gains
+J 𝑞 𝐾L < 0!)
+(e.g., 𝑀
+not easy to turn these laws in adaptive schemes: inertia
+inversion/use of acceleration (FBL); bounds on PD gains (FFW)
+
+Robotics 2
+
+6
+
+A control law easily made ‘adaptive’
+n
+
+nonlinear trajectory tracking control (without cancellations)
+having global asymptotic stabilization properties
+
+J 𝑞 𝑞̈ ; + 𝑆O 𝑞, 𝑞̇ 𝑞̇ ; + 𝑔N 𝑞 + 𝐹P5 𝑞̇ ; + 𝐾L 𝑒 + 𝐾7 𝑒̇
+𝑢=𝑀
+n
+
+a natural adaptive version would require ...
+a suitable update law
+𝑎Ṅ = designing
+(in continuous time)
+n
+
+n
+
+without extra assumptions, it can be shown only that joint velocities
+become eventually “clamped” to those of the desired trajectory
+(zero velocity error), but a permanent residual position error is left
+
+idea: on-line modification with a reference velocity
+𝑞̇ ;
+
+⟶
+
+𝑞̇ R = 𝑞̇ ; + Λ(𝑞; − 𝑞)
+
+Λ>0
+
+typically Λ = 𝐾7UV𝐾L (all matrices will be chosen diagonal)
+Robotics 2
+
+7
+
+Intuitive interpretation of 𝑞̇ R
+n
+
+elementary case
+n
+
+a mass ‘lagging behind its mobile reference (𝑒 > 0) on a linear rail
+controlled
+mass
+
+𝑢
+𝑞
+
+mobile
+reference
+
+𝑞̇
+
+𝑞̇ R = 𝑞̇ ; + Λ 𝑒
+𝑞̇ ;
+
+𝑒>0
+
+𝑞; (𝑡)
+
+‘enhanced’ velocity error 𝑠 = 𝑞̇ R − 𝑞̇ > 𝑞̇ ; − 𝑞̇ = 𝑒̇
+
+𝑢 = 𝐾7 𝑠 = 𝐾7 𝑞̇ R − 𝑞̇ = 𝐾7 𝑞̇ ; + Λ 𝑒 − 𝑞̇ = 𝐾7 𝑒̇ + 𝐾7 Λ 𝑒
+n
+
+a mass ‘leading in front’ of its mobile reference (𝑒 < 0)
+
+𝐾L
+
+in a symmetric way, a ‘reduced’ velocity error will appear (𝑠 < 𝑒̇ )
+Robotics 2
+
+8
+
+Adaptive control law design
+n
+
+substituting 𝑞̇ R = 𝑞̇ ; + Λ𝑒, 𝑞̈ R = 𝑞̈ ; + Λ𝑒̇ in the previous nonlinear
+controller for trajectory tracking
+
+J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P5 𝑞̇ R + 𝐾L 𝑒 + 𝐾7 𝑒̇
+𝑢=𝑀
+= 𝑌 𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R 𝑎N
++
+𝐾L 𝑒 + 𝐾7 𝑒̇
+dynamic parameterization of
+PD stabilization
+the control law using current estimates (diagonal matrices, >0)
+(note here the 4 arguments in 𝑌(X) !)
+n
+
+update law for the estimates of the dynamic coefficients (𝑎N becomes
+the 𝑝-dimensional state of the dynamic controller)
+
+𝑎Ṅ = Γ𝑌 Z (𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R )(𝑞̇ R − 𝑞)̇
+𝑠
+
+Γ>0
+
+(diagonal)
+
+estimation gains
+
+(variation rate of estimates)
+
+‘modified’ velocity error
+Robotics 2
+
+9
+
+Asymptotic stability of trajectory error
+Theorem
+The introduced adaptive controller makes the tracking error along
+the desired trajectory globally asymptotically stable
+
+𝑒 = 𝑞; − 𝑞 ⟶ 0, 𝑒̇ = 𝑞̇ ; − 𝑞̇ ⟶ 0
+Proof
+n
+
+a Lyapunov candidate for the closed-loop system (robot +
+dynamic controller) is given by
+
+1 Z
+1 Z
+1 Z UV
+𝑉 = 𝑠 𝑀 𝑞 𝑠 + 𝑒 𝑅𝑒 + 𝑎[ Γ 𝑎[ ≥ 0
+2
+2
+2
+𝑠 = 𝑞̇ R − 𝑞̇ (= 𝑒̇ + Λ𝑒)
+𝑅>0
+𝑎[ = 𝑎 − 𝑎N
+modified velocity error
+
+𝑉=0
+Robotics 2
+
+⟺
+
+constant matrix
+error in parametric
+(to be specified later)
+estimation
+
+𝑎N = 𝑎, 𝑞 = 𝑞; , 𝑠 = 0 (⇒ 𝑞̇ = 𝑞̇ ; )
+10
+
+Proof
+n
+
+(cont)
+
+the time derivative of V is
+
+1 Z
+𝑉̇ = 𝑠 𝑀̇ 𝑞 𝑠 + 𝑠 Z 𝑀 𝑞 𝑠̇ + 𝑒 Z 𝑅𝑒̇ − 𝑎[ Z Γ UV 𝑎Ṅ
+2
+
+n
+
+since 𝑎[̇ = −𝑎Ṅ (𝑎̇ = 0)
+the closed-loop dynamics is given by
+
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 + 𝐹5 𝑞̇ =
+J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P5 𝑞̇ R + 𝐾L 𝑒 + 𝐾7 𝑒̇
+=𝑀
+subtracting the two sides from 𝑀 𝑞 𝑞̈ R + 𝑆 𝑞, 𝑞̇ 𝑞̇ R + 𝑔 𝑞 + 𝐹5 𝑞̇ R
+leads to
+
+𝑀(𝑞)𝑠̇ + 𝑆 𝑞, 𝑞̇ + 𝐹5 𝑠 =
+` 𝑞 𝑞̈ R + 𝑆a 𝑞, 𝑞̇ 𝑞̇ R + 𝑔[ 𝑞 + 𝐹b5 𝑞̇ R − 𝐾L 𝑒 − 𝐾7 𝑒̇
+=𝑀
+` = 𝑀 − 𝑀,
+J 𝑆a = 𝑆 − 𝑆,
+O 𝑔[ = 𝑔 − 𝑔,
+with 𝑀
+N 𝐹b5 = 𝐹5 − 𝐹P5
+Robotics 2
+
+11
+
+Proof
+n
+
+(cont)
+
+from the property of linearity in the dynamic coefficients, it follows
+
+𝑀(𝑞)𝑠̇ + 𝑆 𝑞, 𝑞̇ + 𝐹5 𝑠 = 𝑌 𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R 𝑎[ − 𝐾L 𝑒 − 𝐾7 𝑒̇
+n
+
+substituting in 𝑉,̇ together with 𝑎Ṅ = Γ𝑌 Z 𝑠, and using the skewsymmetry of matrix 𝑀̇ − 2𝑆 we obtain
+
+1
+̇𝑉 = 𝑠 Z 𝑀̇ 𝑞 − 2𝑆 𝑞, 𝑞̇ 𝑠 − 𝑠 Z 𝐹5 𝑠 + 𝑠 Z 𝑌𝑎[
+2
+−𝑠 Z (𝐾L 𝑒 + 𝐾7 𝑒)̇ + 𝑒 Z 𝑅𝑒̇ − 𝑎[ Z 𝑌 Z 𝑠
+= −𝑠 Z 𝐹5 𝑠 − 𝑠 Z (𝐾L 𝑒 + 𝐾7 𝑒)̇ + 𝑒 Z 𝑅𝑒̇
+
+n
+
+replacing 𝑠 = 𝑒̇ + Λ 𝑒 and being 𝐹5 = 𝐹5Z (diagonal)
+
+𝑉̇ = −𝑒 Z (ΛZ 𝐹5 Λ + ΛZ 𝐾L )𝑒
+a complete
+quadratic form
+in 𝑒, 𝑒̇ !
+Robotics 2
+
+−𝑒 Z 2ΛZ 𝐹5 + ΛZ 𝐾7 + 𝐾L − 𝑅 𝑒̇ − 𝑒̇ Z (𝐹5 + 𝐾7 )𝑒̇
+12
+
+Proof
+n
+
+(end)
+
+defining now (all matrices are diagonal!)
+leads to
+
+Λ = 𝐾7UV 𝐾L > 0
+
+𝑅 = 2𝐾L (𝐼 + 𝐾7UV 𝐹5 ) > 0
+
+𝑉̇ = −𝑒 Z ΛZ (𝐹5 + 𝐾7 )Λ𝑒 − 𝑒̇ Z (𝐹5 + 𝐾7 )𝑒̇
+= −𝑒 Z 𝐾L 𝐾7UV (𝐹5 + 𝐾7 )𝐾7UV 𝐾L 𝑒 − 𝑒̇ Z (𝐹5 + 𝐾7 )𝑒̇ ≤ 0
+
+and thus
+
+𝑉̇ = 0 ⟺ 𝑒 = 𝑒̇ = 0
+the thesis follows from Barbalat lemma + LaSalle theorem
+the set of states of convergence has zero trajectory error and
+a constant value for 𝑎N , not necessarily the true one (𝑎[ ≠ 0)
+
+Robotics 2
+
+13
+
+Remarks
+n
+
+n
+
+if the desired trajectory 𝑞; (𝑡) is persistently exciting, then also the
+estimates of the dynamic coefficients converge to their true values
+condition of persistent excitation
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+for linear systems: # of frequency components in the desired trajectory
+should be at least twice as large as # of unknown coefficients
+for nonlinear systems: the condition can be checked only a posteriori
+(a certain motion integral should be permanently lower bounded)
+
+in case of known absence of (viscous) friction (𝐹5 ≡ 0), the same
+proof applies (a bit easier in the final part)
+the adaptive controller does not require the inverse of the inertia
+matrix (true or estimated), nor the actual robot acceleration (only the
+desired acceleration), nor further lower bounds on 𝐾L > 0, 𝐾7 > 0
+adaptation can be also used only for a subset of dynamic coefficients,
+the remaining being known (𝑌𝑎 = 𝑌f;fgh 𝑎Nf;fgh + 𝑌ijklj 𝑎ijklj )
+the non-adaptive version (using accurate estimates) is a static
+tracking controller based on the passivity property of robot dynamics
+
+Robotics 2
+
+14
+
+Case study: Single-link under gravity
+model 𝐼 𝜃̈ + 𝑚𝑔𝑑 sin 𝜃 + 𝑓5 𝜃̇ = 𝑢
+𝑑
+
+𝑢
+𝑚
+𝜃
+
+(with friction)
+
+linear parameterization
+
+𝑌 𝜃, 𝜃,̇ 𝜃̈ 𝑎 = 𝜃̈
+
+sin 𝜃
+
+𝐼
+𝜃̇ 𝑚𝑔𝑑 = 𝑢
+𝑓5
+
+adaptive controller
+
+t sin 𝜃 + 𝑓J5 𝜃̇ + 𝑘L 𝑒 + 𝑘7 𝑒̇
+𝑒 = 𝜃; − 𝜃 Λ > 0 𝑢 = J𝐼 𝜃̈ + 𝑚𝑔𝑑
+̇
+𝑘L
+J
+̈R
+𝐼
+𝛾
+𝜃
+̇𝜃R = 𝜃̇; +
+V
+𝑒
+̇
+𝑘7
+̇
+t
+𝑎Ṅ = 𝑚𝑔𝑑
+= 𝛾u sin 𝜃 (𝜃̇R − 𝜃)
+̇R
+𝛾" > 0, 𝑖 = 1,2,3
+̇
+𝛾
+𝜃
+J
+v
+𝑓5
+Robotics 2
+
+15
+
+Simulation data
+n
+
+real dynamic coefficients
+
+𝐼 = 7.5,
+n
+
+t = 5,
+𝑚𝑔𝑑
+
+𝑓J5 = 2
+
+control parameters
+
+𝑘L = 25,
+
+n
+
+𝑓5 = 1
+
+initial estimates
+
+J𝐼 = 5,
+n
+
+𝑚𝑔𝑑 = 6,
+
+𝛾" = 5,
+𝑖 = 1,2,3
+test trajectories (starting with 𝜃 0 = 0, 𝜃̇ 0 = 0)
+n
+
+first
+
+n
+
+second
+
+𝑘7 = 10,
+
+𝜃; 𝑡 = − sin 𝑡
+
+Note: same test trajectories
+used also for robust control
+
+𝜃̈; 𝑡 = (periodic) bang-bang acceleration profile with
+𝐴 = 1 rad/s2, 𝜔 = 1 rad/s
+Robotics 2
+
+16
+
+Results
+
+first trajectory
+note the nonlinear system dynamics
+(no sinusoidal regime at steady state!)
+
+𝑒
+
+𝑒̇
+
+position and velocity errors
+
+control torque
+
+𝜃; 𝑡 = − sin 𝑡
+Robotics 2
+
+17
+
+Results
+
+second trajectory
+note the torque discontinuities
+(due to those of the desired acceleration)
+
+𝑒
+
+𝑒̇
+position and velocity errors
+
+control torque
+
+𝜃̈; 𝑡 = (periodic) bang-bang acceleration profile
+Robotics 2
+
+18
+
+Estimates of dynamic coefficients
+𝐼 − 𝐼J
+
+t
+𝑚𝑔𝑑 − 𝑚𝑔𝑑
+
+t
+𝑚𝑔𝑑 − 𝑚𝑔𝑑
+𝐼 − 𝐼J
+
+𝑓5 − 𝑓J5
+
+𝑓5 − 𝑓J5
+
+errors 𝑎[ = 𝑎 − 𝑎N
+first trajectory
+
+second trajectory
+
+only the estimate of the viscous
+friction coefficient converges
+to the true value
+
+all three estimates of
+dynamic coefficients converge
+to their true values
+
+Robotics 2
+
+19
+
+A special case: Adaptive regulation
+n
+n
+
+adaptation in case 𝑞; is constant
+no special simplifications for the presented adaptive control
+law (designed for the general tracking case…)
+J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P} 𝑞̇ R + 𝐾L 𝑒 + 𝐾7 𝑒̇
+𝑢=𝑀
+𝑎Ṅ = Γ𝑌Z (𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R )(𝑞̇ R − 𝑞)̇
+
+n
+
+since 𝑞̇ R = Λ(𝑞; − 𝑞) and 𝑞̈ R = −Λ𝑞̇ do not vanish!
+a different case would be the availability of an adaptive
+version of the trajectory tracking controller
+J 𝑞 𝑞̈ ; + 𝑆O 𝑞, 𝑞̇ 𝑞̇ ; + 𝑔N 𝑞 + 𝐹P} 𝑞̇ ; + 𝐾L 𝑒 + 𝐾7 𝑒̇
+𝑢=𝑀
+since, when 𝑞; collapses to a constant, only the adaptation
+of the gravity term would be left over (which is what one
+would naturally expect…)
+
+Robotics 2
+
+20
+
+An efficient adaptive regulator
+n
+
+use a linear parameterization of the gravity term only
+
+𝑔 𝑞 = 𝐺(𝑞)𝑎‚
+with a 𝑝𝑔-dimensional vector 𝑎𝑔
+n
+
+an adaptive regulator yielding global asymptotic stability
+of the equilibrium state (𝑞𝑑, 0) is provided by
+
+𝑢 = 𝐺 𝑞 𝑎N‚ + 𝐾L 𝑞; − 𝑞 − 𝐾7 𝑞̇
+𝑎Ṅ ‚ = 𝛾𝐺 Z 𝑞
+
+2𝑒
+1+2 𝑒
+
+u
+
+− 𝛽𝑞̇ ,
+
+𝛾>0
+
+where 𝑒 = 𝑞𝑑 − 𝑞, 𝐾𝑃 > 0, 𝐾𝐷 > 0 (symmetric), and
+𝛽 > 0 is chosen sufficiently large
+(see paper by P. Tomei, IEEE TRA, 1991; available as extra material on the course web)
+Robotics 2
+
+21
+
+An adaptive regulator
+
+Sketch of asymptotic stability analysis
+n
+
+use the function
+Z𝑀 𝑞 𝑒
+𝛽 Z
+2
+𝑞
+̇
+1
+Z
+𝑉 = 𝑞̇ 𝑀 𝑞 𝑞̇ + 𝑒 𝐾L 𝑒 −
++ 𝑎N‚ − 𝑎‚
+u
+2
+1+2 𝑒
+2
+
+n
+
+n
+
+Z
+
+𝑎N‚ − 𝑎‚
+
+a sufficient condition for 𝑉 to be a Lyapunov candidate is that
+2𝑀„
+𝛽>
+𝑀ƒ 𝐾L,ƒ
+a sufficient condition which guarantees also that
+is
+
+𝑉̇ = ⋯ ≤ −𝑎 𝑒
+𝛽 > max
+
+2𝑀„
+
+u
+
+− 𝑏 𝑞̇
+,
+
+1
+
+𝑀ƒ 𝐾L,ƒ 𝐾7,ƒ
+
+u
+
+≤ 0,
+
+𝑎 > 0, 𝑏 > 0
+
+u
+𝐾7,ƒ
+𝛼6
++ 4𝑀„ +
+2𝐾L,ƒ
+2
+
+𝑆(𝑞, 𝑞)
+̇ ≤ 𝛼6 𝑞̇
+
+Note: for any symmetric, positive definite matrix 𝐴
+
+𝐴„ = 𝜆Œ•Ž 𝐴 =
+𝐴ƒ = 𝜆Œ•• 𝐴
+Robotics 2
+
+𝜆Œ•Ž 𝐴Z 𝐴 = 𝐴
+
+and thus, e.g.,
+
+V
+u
+
+V
+
+𝑞̇ Z 𝑀 𝑞 𝑞̇ ≥ 𝑀ƒ 𝑞̇
+
+u
+
+u
+
+22
+
+

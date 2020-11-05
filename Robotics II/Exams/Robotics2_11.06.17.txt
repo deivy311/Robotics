@@ -1,0 +1,191 @@
+Robotics II
+June 17, 2011
+
+Consider a 2R planar robot with equal links of unitary length, uniformly distributed link masses,
+and moving in the horizontal plane. During free motion, the robot dynamics is
+B(q)q̈ + c(q, q̇) = τ ,
+where
+B(q) =
+
+a1 + 2a2 cos q2
+
+a3 + a2 cos q2
+
+a3 + a2 cos q2
+
+a3
+
+!
+c(q, q̇) =
+
+−a2 sin q2 q̇2 (q̇2 + 2q̇1 )
+a2 sin q2 q̇12
+
+!
+,
+
+and with the dynamic coefficients a1 , a2 , and a3 being known (their numerical value is not essential
+in the following).
+In the configuration q = (0, π/4) [rad] and with q̇ = (0, −π/2) [rad/s], the robot is hit by an
+instantaneous planar Cartesian force F = (−10, 0) [N] applied at the midpoint of the second link.
+1. Determine the explicit expression of the feedback control law for the joint torque vector τ that
+minimizes in norm the resulting instantaneous joint acceleration q̈. Provide the associated
+expression of kq̈k.
+2. What are the robot sensing requirements for achieving this result? How could we design
+a dynamic control law for the torque τ that approximates this same robot behavior when
+having only joint position and velocity measurements available?
+
+[120 minutes; open books]
+
+1
+
+Solution
+June 17, 2011
+When the 2R planar robot is hit at a given state (q, q̇) by a force F , its dynamics becomes
+B(q)q̈ + c(q, q̇) = τ + J Tk (q)F ,
+
+(1)
+
+where the Jacobian J k (q) is associated to the collision point, in the present case the midpoint of the
+second link. Taking into account the kinematic data and the collision configuration q = (0, π/4),
+we have
+!
+− sin q1 − 0.5 sin(q1 + q2 ) −0.5 sin(q1 + q2 )
+J K = J k (q)|q=(0,π/4) =
+cos q1 + 0.5 cos(q1 + q2 )
+0.5 cos(q1 + q2 )
+q=(0,π/4)
+√
+√
+
+
+2
+2
+−
+ − 4
+4 
+.
+= 
+√
+√
+
+
+2
+2
+1+
+4
+4
+The instantaneous joint acceleration q̈ in response to the collision force F and to an applied
+torque τ at the joints will be
+
+
+q̈ = B −1 (q) τ + J Tk (q)F − c(q, q̇) .
+Therefore, the control torque
+τ = τ (q, q̇, F ) = c(q, q̇) − J Tk (q)F
+
+(2)
+
+will produce q̈ = 0, which is the minimum possible acceleration (kq̈k = 0, and the robot will
+continue its motion unperturbed by the collision). In order to be realizable, this control law should
+have access to a (direct or indirect) instantaneous measure of F , beyond measuring the internal
+state of the robot. Moreover, the collision point (assumed to be at the midpoint of the second
+link in the formulation) should also be known exactly in order to use the correct J Tk (q). These
+two requirements could be matched in principle if there is a camera observing the scene and/or a
+surface touch sensor capable of measuring the collision force (if different from the assumed one).
+If this can be accomplished, the actual value of the control torque at the collision instant is
+computed using
+!
+−a2 sin q2 q̇2 (q̇2 + 2q̇1 )
+c = c(q, q̇)|q=(0,π/4),q̇=(0,−π/2) =
+a2 sin q2 q̇12
+q=(0,π/4),q̇=(0,−π/2)
+√   
+
+2
+2 π
+−a2
+
+= 
+2
+2
+0
+as
+√
+√    
+2
+2 π 2
+ − 4
+−a
+2
+T
+− √
+τ = c − JKF = 
+2
+2
+
+2
+0
+−
+4
+
+
+2
+
+
+∗ 
+
+
+∗
+
+−10
+0
+
+!
+
+√
+
+
+ π 2 
+2  5 − a2
+ , (3)
+2
+=
+2
+5
+
+where the dynamic coefficient a2 is known.
+Indeed, the above situation is quite restrictive. In order to get rid of extra sensing and measurements, we could use the concept of model-based residuals to estimate at once the global quantity
+τk = J k (q)T F
+needed in the control action (2). In fact, we can generate on line the following (here, twodimensional) residual signal r
+
+Z 
+ 
+T
+r = K I B(q)q̇ −
+C (q, q̇)q̇ + r + τ dt
+(4)
+for K I > 0, typically diagonal, and where the matrix C(q, q̇) is a factorization of the Coriolis and
+centrifugal terms that satisfies
+c(q, q̇) = C(q, q̇)q̇, s.t. Ḃ(q) − 2C(q, q̇) is skew-symmetric ⇒ Ḃ(q) = C(q, q̇) + C T (q, q̇). (5)
+Such a matrix always exists and can be computed, e.g., using the Christoffels symbols. From (4),
+using the dynamics (1) and the property (5), it follows that the evolution of r satisfies
+
+
+ṙ = K I B(q)q̈ + Ḃ(q)q̇ − C T (q, q̇)q̇ − r − τ
+
+
+= K I τ + τ k − C(q, q̇)q̇ + Ḃ(q)q̇ − C T (q, q̇)q̇ − r − τ
+= K I (τ k − r) .
+Therefore, r is a low-pass stable first-order filter of the unknown signal τ k with bandwidth going
+to infinity for increasingly larger K I . Its evaluation in (4) requires only the proprioceptive measurements q and q̇ (beside, and as before, a reasonable accuracy for the dynamic model of the
+robot) and the available of the command τ being applied to the robot.
+As a result, the control law (2) can be replaced by
+τ = c(q, q̇) − r,
+and the resulting robot behavior approximated at a low expense.
+∗∗∗∗∗
+
+3
+
+(6)
+
+

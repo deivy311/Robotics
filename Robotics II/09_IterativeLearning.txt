@@ -1,0 +1,411 @@
+Robotics 2
+
+Iterative Learning
+for Gravity Compensation
+Prof. Alessandro De Luca
+
+Control goal
+n
+
+regulation of arbitrary equilibrium configurations in the
+presence of gravity
+n
+
+n
+
+without explicit knowledge of robot dynamic coefficients (nor of
+the structure of the gravity term)
+
+n
+
+without the need of “high” position gain
+
+n
+
+without complex conditions on the control gains
+
+based on an iterative control scheme that uses
+1. PD control on joint position error + constant feedforward term
+2. iterative update of the feedforward term at successive steadystate conditions
+
+n
+
+derive sufficient conditions for the global convergence
+of the iterative scheme with zero final error
+
+Robotics 2
+
+2
+
+Preliminaries
+n
+
+robot dynamic model
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢
+n
+
+available bound on the gradient of the gravity term
+
+𝜕𝑔(𝑞)
+≤𝛼
+𝜕𝑞
+n
+
+regulation attempted with a joint-based PD law
+(without gravity cancellation nor compensation)
+
+𝑢 = 𝐾1 𝑞2 − 𝑞 − 𝐾4 𝑞̇
+n
+
+at steady state, there is a non-zero error left
+
+𝑞 = 𝑞7 , 𝑞̇ = 0
+Robotics 2
+
+𝐾1 > 0, 𝐾4 > 0
+
+𝑔(7
+𝑞) = 𝐾1 𝑞2 − 𝑞7
+
+𝑒̅ = 𝑞2 − 𝑞7 ≠ 0
+3
+
+Iterative control scheme
+n
+
+control law at the 𝑖 -th iteration (for 𝑖 = 1, 2, …)
+
+𝑢 = 𝛾𝐾1 𝑞2 − 𝑞 − 𝐾4 𝑞̇ + 𝑢?@A
+
+𝛾>0
+
+with a constant compensation term 𝑢?@A (feedforward)
+n
+n
+n
+n
+
+𝐾1 > 0, 𝐾4 > 0 are chosen diagonal for simplicity
+𝑞B is the initial robot configuration
+𝑢B = 0 is the ‘easiest’ initialization of the feedforward term
+at the steady state of the 𝑖 -th iteration (𝑞 = 𝑞? , 𝑞̇ = 0), one has
+
+𝑔(𝑞? ) = 𝛾𝐾1 𝑞2 − 𝑞? + 𝑢?@A
+n
+
+update law of the compensation term (for next iteration)
+
+𝑢? = 𝛾𝐾1 𝑞2 − 𝑞? + 𝑢?@A
+← for implementation →
+Robotics 2
+
+= 𝑔(𝑞? )
+[ for analysis ]
+4
+
+Convergence analysis
+Theorem
+
+(a) 𝜆IJK 𝐾1 > 𝛼
+
+(b) 𝛾 ≥ 2
+guarantee that the sequence {𝑞B , 𝑞A , 𝑞E , … } converges to 𝑞𝑑
+(and 𝑞̇ = 0) from any initial value 𝑞B (and 𝑞̇ B ), i.e., globally
+n
+
+condition (a) is sufficient for the global asymptotic stability
+of the desired equilibrium state when using
+
+𝑢 = 𝐾1 𝑞2 − 𝑞 − 𝐾4 𝑞̇ + 𝑔(𝑞2 )
+
+n
+
+with a known gravity term and diagonal gain matrices
+the additional sufficient condition (b) guarantees the
+convergence of the iterative scheme, yielding
+
+lim 𝑢? = 𝑔(𝑞2 )
+
+Robotics 2
+
+?→Q
+
+5
+
+Proof
+n
+
+let 𝑒? = 𝑞2 − 𝑞? be the error at the end of the 𝑖 -th iteration;
+based on the update law, it is 𝑢? = 𝑔(𝑞? ) and thus
+
+𝑢? − 𝑢?@A = 𝑔(𝑞? ) − 𝑔(𝑞?@A ) ≤ 𝛼 𝑞? − 𝑞?@A
+≤ 𝛼 𝑒? + 𝑒?@A
+n
+
+on the other hand, from the update law it is
+
+𝑢? − 𝑢?@A = 𝛾 𝐾1 𝑒?
+n
+
+combining the two above relations under (a), we have
+
+𝛾𝛼 𝑒? < 𝛾𝜆IJK 𝐾1
+or
+Robotics 2
+
+𝑒?
+
+𝑒? ≤ 𝛾 𝐾1 𝑒? ≤ 𝛼 𝑒? + 𝑒?@A
+1
+<
+𝛾
+
+𝑒? + 𝑒?@A
+6
+
+Proof
+n
+
+(cont)
+
+condition (b) guarantees that the error sequence {𝑒B , 𝑒A , 𝑒E , … }
+
+𝑒? <
+
+A
+T
+
+1−
+
+A
+T
+
+𝑒?@A
+
+1
+=
+𝑒?@A
+𝛾−1
+
+is a contraction mapping, so that
+
+lim 𝑒? = 0
+
+?→Q
+
+with asymptotic convergence from any initial state
+
+⇒ the robot progressively approaches the desired configuration
+through successive steady-state conditions
+n 𝐾1 and 𝐾4 affect each transient phase
+n coefficient 𝛾 drives the convergence rate of intermediate steady states
+to the final one
+Robotics 2
+
+7
+
+Remarks
+n
+
+combining (a) and (b), the sufficient condition only requires the
+doubling of the proportional gain w.r.t. the known gravity case
+
+U1 = 𝛾𝐾1
+𝐾
+
+U1 > 2𝛼
+𝜆IJK 𝐾
+
+n
+
+U1 , this condition implies a (positive) lower bound
+for a diagonal 𝐾
+on the single diagonal elements of the matrix
+
+n
+
+again, it is only a sufficient condition
+n
+
+n
+
+the scheme may converge even if this condition is violated ...
+
+the scheme can be interpreted as using an integral term
+n
+
+n
+
+updated only in correspondence of a discrete sequence of time
+instants
+with guaranteed global convergence (and implicit stability)
+
+Robotics 2
+
+8
+
+Numerical results
+n
+
+n
+
+n
+
+3R robot with uniform links, moving in the vertical plane
+𝑙A = 𝑙E = 𝑙[ = 0.5 [m]
+𝑚A = 30, 𝑚E = 20, 𝑚[ = 10 [kg]
+𝛼 ≅ 400
+with saturations of the actuating torques
+𝑈A,Iab = 800, 𝑈E,Iab = 400, 𝑈[,Iab = 200 [Nm]
+three cases, from the downward position 𝑞B = (0, 0, 0)
+I: 𝑞2 = (𝜋/2, 0, 0)
+II: 𝑞2 = (3𝜋/4, 0, 0)
+III: 𝑞2 = (3𝜋/4, 0, 0)
+
+Robotics 2
+
+U1 = diag 1000, 600, 280
+𝐾
+𝐾4 = diag 200, 100, 20
+U1 = diag 500, 500, 500
+𝐾
+𝐾4 = as before
+9
+
+Case I: 𝑞2 = (𝜋/2, 0, 0)
+
+joint position errors (zero after 3 updates)
+
+Robotics 2
+
+control torques
+
+10
+
+Case II: 𝑞2 = (3𝜋/4, 0, 0)
+
+joint position errors (zero after 5 updates)
+
+Robotics 2
+
+control torques
+
+11
+
+Case III: 𝑞2 = (3𝜋/4, 0, 0), reduced gains
+
+joint position errors (limit cycles, no convergence!)
+
+Robotics 2
+
+control torques
+
+12
+
+Final comments
+n
+
+n
+
+only few iterations are needed for obtaining convergence,
+learning the correct gravity compensation at the desired 𝑞𝑑
+
+sufficiency of the condition on the 𝑃 gain
+n
+
+n
+
+n
+
+n
+
+even if violated, convergence can still be obtained (first two cases);
+otherwise, a limit motion cycle takes place between two equilibrium
+configurations that are both incorrect (as in the third case)
+this shows how ‘distant’ is sufficiency from necessity
+
+analysis can be refined to get lower bounds on the 𝐾𝑃𝑖 (diagonal
+case) that are smaller, but still sufficient for convergence
+n intuitively, lower values for 𝐾𝑃𝑖 should be sufficient for distal joints
+in practice, update of the feedforward term occurs when the
+robot is close enough to a steady state (joint velocities and
+position variations are below suitable thresholds)
+
+Robotics 2
+
+13
+
+Control experiments with flexible robots
+without gravity
+
+video
+
+rest-to-rest maneuver in given motion time
+for a single flexible link (PD + feedforward)
+
+video
+
+end-effector trajectory tracking for FlexArm
+—a planar 2R robot with flexible forearm
+Robotics 2
+
+14
+
+Extension to flexible robots
+n
+
+the same iterative learning control approach has been extended to
+position regulation in robots with flexible joints and/or links under gravity
+n
+n
+
+n
+
+at the motor/joint level
+at the Cartesian level (end-effector tip position, beyond flexibility), using a
+double iterative scheme
+
+experimentally validated on the Two-link FlexArm @ DIS (now DIAG!)
+
+6° tilt
+from horizontal
+
+∆
+
+with supporting base
+tilted by approx ∆ = 6°
+(inclusion of gravity)
+Robotics 2
+
+15
+
+Experimental results for tip regulation
+3 iterations!
+
+0g
+
+sin ∆
+
+motion task:
+o
+o
+o
+(0 ,0 ) ⇒ (90 ,0 )
+o
+
+first link position
+
+tip angle w.r.t. first link
+
+final deflection
+
+double iterative scheme
+De Luca, Panzieri: Int J Adapt Cont & Sign Proc, 1996
+(factor 𝛾 → 1⁄𝛽 in the original paper)
+Robotics 2
+
+second link deflection
+16
+
+

@@ -1,0 +1,244 @@
+Robotics II
+July 7, 2010
+
+Consider the one-dimensional mass/spring/damper scheme of a robot in contact with a compliant
+workpiece and with a force sensing cell in between, as shown in Fig. 1. The robot and the workpiece
+are represented by the mass mr > 0, with position xr , and by the mass mw > 0, with position xw ,
+respectively. The rest positions of the springs modeling the stiffness ks > 0 of the force sensor and
+the stiffness kw > 0 of the workpiece are xr = xw = 0. Viscous damping is included between the
+robot mass mr and the ground, between the workpiece mass mw and the ground, and between the
+two masses, with positive coefficients br , bw , and bs , respectively. An input force F is applied on
+the robot mass.
+
+Figure 1: Robot contact model, with two masses, springs and dampers
+
+1. Determine the differential equations of motion for this system.
+2. For a contact force control problem, let the input F be specified by a proportional control
+law of the form F = kf (Fd − Fc ), with gain kf and desired contact force Fd , and where
+Fc = ks (xr − xw ) is the force measured across the sensor. Determine the unique closed-loop
+equilibrium position xr,e and xw,e of the two masses mr and mw and show that a contact
+force error with respect to the desired value Fd is present at the equilibrium.
+3. Which control actions should be considered in order to reduce or eliminate the presence of a
+steady-state contact force error?
+4. Optional. Prove that the closed-loop equilibrium state xr = xr,e , xw = xw,e , ẋr = ẋw = 0
+is exponentially stable for any positive value of the gain kf (Hint: Use a root locus analysis
+and/or the Routh criterion in the Laplace domain).
+
+[120 minutes (150 minutes including the optional item); open books]
+
+1
+
+Solution
+July 7, 2010
+The differential equations of motion for the system are:
+mr ẍr + br ẋr + bs (ẋr − ẋw ) + ks (xr − xw ) = F
+mw ẍw + bw ẋw + bs (ẋw − ẋr ) + ks (xw − xr ) + kw xw = 0.
+
+(1)
+
+Setting F = kf (Fd − Fc ) = kf (Fd − ks (xr − xw )) and evaluating the system at an equilibrium (i.e.,
+setting ẋr = ẋw = ẍr = ẍw = 0), gives
+ks (xr − xw ) = kf (Fd − ks (xr − xw ))
+ks (xw − xr ) + kw xw = 0.
+It is easy to see that the unique solution is
+xr.e =
+
+ks + kw kf
+Fd
+ks kw 1 + kf
+
+xw.e =
+
+kf
+1
+Fd ,
+kw 1 + kf
+
+that provides also the contact force at the equilibrium
+Fc,e = ks (xr,e − xw,e ) =
+
+kf
+Fd .
+1 + kf
+
+Therefore, there will be an error on the desired force given by
+eF = Fd − Fc,e =
+
+1
+Fd .
+1 + kf
+
+This error can be reduced by amplifying the gain kf , but cannot be eliminated when using a simple
+proportional controller. This situation typically asks for the introduction of an integral action of
+the type
+Z t
+Z t
+F = kf (Fd − Fc ) + ki
+(Fd − Fc )dτ = kf (Fd − ks (xr − xw )) + ki
+(Fd − ks (xr − xw ))dτ.
+0
+
+0
+
+At steady-state (t → ∞), the argument of the integral term should vanish. Therefore,
+Z t
+lim
+(Fd − ks (xr − xw ))dτ = constant ⇒
+lim ks (xr − xw ) = Fd .
+t→∞
+
+t→∞
+
+0
+
+The modified equilibrium (denoted with a prime) will be
+x0r.e =
+
+ks + kw
+Fd
+ks kw
+
+x0w.e =
+
+1
+Fd ,
+kw
+
+and the associated contact force will be desired one,
+0
+Fc,e
+= ks (x0r,e − x0w,e ) = Fd ,
+
+as expected. The same result is obtained if we combine the feedback control action with a constant
+feedforward term Fd , i.e.
+F = Fd + kf (Fd − Fc ).
+2
+
+The equilibrium configuration should satisfy then
+ks (xr − xw ) = Fd + kf (Fd − ks (xr − xw ))
+ks (xw − xr ) + kw xw = 0,
+0
+leading again to Fc,e
+= Fd and the same previous positions x0r.e and x0w,e .
+
+Indeed, no matter if we keep the proportional control law or add also the integral action or the
+feedforward term, we need to show that the associated equilibrium is asymptotically stable for the
+closed-loop system (otherwise it would never be reached from a generic initial state). Since the
+system is linear, asymptotic stability is equivalent to exponential stability. Moreover, whenever it
+holds, this result is global.
+Considering again the case of a proportional force controller, the easiest way to prove asymptotic
+stability of the closed-loop state xr = xr,e , xw = xw,e , ẋr = ẋw = 0 is to use Laplace transform
+and the root locus method, thanks to the linearity of the system. From eq. (1) we have
+
+mr s2 + (br + bs )s + ks Xr (s) = F (s) + (bs s + ks )Xw (s)
+
+mw s2 + (bw + bs )s + (kw + ks ) Xw (s) = (bs s + ks )Xr (s),
+where Xr (s), Xw (s), and F (s) are the Laplace transforms of xr (t), xw (t), and F (t). Defining for
+compactness
+
+
+Ns (s) = bs s + ks Dr (s) = mr s2 + (br + bs )s + ks
+Dw (s) = mw s2 + (bw + bs )s + (kw + ks ) ,
+we can solve for
+Dw (s)
+Xr (s)
+=
+F (s)
+Dr (s)Dw (s) − Ns2 (s)
+
+Xw (s)
+Ns (s)
+=
+F (s)
+Dr (s)Dw (s) − Ns2 (s)
+
+Xw (s)
+Ns (s)
+=
+.
+Xr (s)
+Dw (s)
+
+Being the output defined as the contact force Fc (s) = ks (Xr (s) − Xw (s)), the transfer function of
+the (open-loop) system is
+P (s) =
+
+Fc (s)
+Dw (s) − Ns (s)
+= ks
+.
+F (s)
+Dr (s)Dw (s) − Ns2 (s)
+
+Closing the feedback loop with F (s) = kf (Fd (s) − Fc (s)), where Fd (s) is the Laplace transform of
+the step reference input Fd (t) = Fd · δ−1 (t), we obtain the transfer function
+W (s) =
+
+Fc (s)
+kf P (s)
+kf ks (Dw (s) − Ns (s))
+=
+=
+.
+Fd (s)
+1 + kf P (s)
+(Dr (s)Dw (s) − Ns2 (s)) + kf (ks (Dw (s) − Ns (s)))
+
+Asymptotic stability of the closed-loop system depends on the location on the complex plane s of
+the poles of W (s), i.e., of the roots of the polynomial equation
+
+Dr (s)Dw (s) − Ns2 (s) + kf (ks (Dw (s) − Ns (s))) = A(s) + kf B(s) = 0.
+(2)
+By varying kf in (2), we can explore the root locus. For kf = 0, the (four) poles coincide with
+the poles of the open-loop system P (s), i.e., with the roots of
+A(s) = Dr (s)Dw (s) − Ns2 (s)
+= mr mw s4 + ((bw + bs )mr + (br + bs )mw ) s3 + ((ks + kw )mr + ks mw + br bs + bs bw + br bw ) s2
++ ((br + bw )ks + (br + bs )kw ) s + ks kw = 0.
+3
+
+Applying the Routh criterion to the fourth-order polynomial A(s) and using the positivity of all
+physical coefficients in (1), it is straightforward to check that the four poles of P (s) have all negative
+real parts (the process itself is asymptotically stable). Moreover, by the standard rules of the root
+locus, when kf is increased toward +∞, two of the closed-loop poles converge to the open-loop
+zeros, i.e., to the roots of
+
+B(s) = ks (Dw (s) − Ns (s)) = ks mw s2 + bw s + kw = 0,
+which are in the left-hand side of the complex plane. The two other poles will approach the
+asymptotes of the positive root locus, which are vertical (since the pole-zero excess of P (s) is
+n − m = 2) and are located in the left-hand side of the complex plane s. As a result, the closedloop system is asymptotically stable for any value of kf ≥ 0.
+Figure 2 shows the complete positive root locus obtained with Matlab, for some arbitrary
+(positive) values of the model parameters, confirming the above analysis.
+
+Root Locus
+80
+60
+
+Imaginary Axis
+
+40
+20
+0
+−20
+−40
+−60
+−80
+−15
+
+−10
+
+−5
+Real Axis
+
+0
+
+5
+
+Figure 2: A typical root locus of eq. (2), when varying kf ∈ [0, +∞)
+Indeed, the same asymptotic stability result could have been proven by applying the Routh
+criterion to check the locations of roots of the whole polynomial on the left-hand side of (2) (but
+this would have been more tedious).
+∗∗∗∗∗
+
+4
+
+

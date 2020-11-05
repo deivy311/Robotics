@@ -1,0 +1,965 @@
+Robotics II
+July 11, 2019
+Exercise 1
+The 3R planar robot in Fig. 1 is commanded at the joint velocity level. The robot has to perform two
+tasks simultaneously, if possible. The first task is to keep the second link vertical and upwards at any time.
+The second task is to follow a desired cyclic Cartesian trajectory pd (t) ∈ R2 , t ∈ [0, T ], for the end-effector
+position. Provide the actual expressions of all terms in a task priority control law, with the given order
+of tasks. Determine the robot configurations for which both tasks can be perfectly executed together, and
+define accordingly the region of the plane where this can happen. Which would be the control law in this
+case? With link lengths L1 = L2 = L3 = 0.5 [m], compute the numerical value of q̇ ∈ R3 using the task
+T
+T
+priority law at q 0 = 0 π/2 −π/2
+[rad] for ṗd = 0.1 −0.5
+[m/s]. Finally, when errors are present
+during the execution of these tasks, how should the control law be modified in order to reduce them?
+
+y0
+
+L3
+q2
+L1
+
+q3
+
+g0
+
+L2
+q1
+
+x0
+Figure 1: A 3R planar robot with its joint variables and generic link lengths.
+Exercise 2
+The RP planar robot shown in Fig. 2 lives in a vertical plane and may collide with some (human) obstacle
+when in motion. Its controller is therefore equipped with a momentum-based collision detection algorithm
+that generates a residual vector r ∈ R2 as monitoring signal. Provide the explicit symbolic expressions
+of the two scalar components of r (introduce the needed kinematic and/or dynamic quantities). Suppose
+that, at time t = tc , a collision occurs on the robot tip with an impact force F c that is purely normal to
+the second link. What will be the instantaneous value of the time derivative of the residual vector ṙ(tc )?
+
+y0
+g0
+
+q2
+q1
+x0
+Figure 2: A RP robot moving in a vertical plane.
+Exercise 3
+An actuated pendulum under gravity should perform a rest-to-rest swing-up maneuver from the downward
+position θ(0) = 0 to the upward position θ(T ) = π in a total time T , using a bang-coast-bang acceleration
+profile with symmetric acceleration and deceleration phases, each of duration Ts = T /4. The link of
+the pendulum is a thin rod of length l = 2 [m], with uniformly distributed mass m = 10 [kg] and
+baricentral inertia Ic = ml2 /12 [kg·m2 ]. The motor at the link base can deliver a maximum absolute
+torque τmax = 200 [Nm]. Determine the minimum time Tmin in the chosen class of trajectories such that
+the motion is feasible. Sketch the resulting angular position, velocity, acceleration, and torque profiles.
+[open books, 210 minutes]
+
+Solution
+July 11, 2019
+Exercise 1
+We will use throughout the DH coordinates indicated in Fig. 2. The first task, i.e., keeping the second link
+vertical and upwards, is one-dimensional (m1 = 1) and is specified by
+f1 (q) = q1 + q2 = rd1 =
+
+π
+2
+
+⇒
+
+J1 =
+
+∂f1 (q)
+=
+∂q
+
+1
+
+1
+
+0
+
+T
+
+,
+
+ṙd1 = 0.
+
+The second task, i.e., following a desired cyclic Cartesian trajectory pd (t) with the robot tip, is twodimensional (m2 = 2) and is specified by
+!
+L1 c1 + L2 c12 + L3 c123
+f 2 (q) =
+= r d2 = pd (t)
+L1 s1 + L2 s12 + L3 s123
+!
+−(L1 s1 + L2 s12 + L3 s123 ) −(L2 s12 + L3 s123 ) −L3 s123
+∂f 2 (q)
+⇒ J 2 (q) =
+=
+, ṙ d2 = ṗd .
+∂q
+L1 c1 + L2 c12 + L3 c123
+L2 c12 + L3 c123
+L3 c123
+with the usual compact notation for the trigonometric functions (e.g., c12 = cos(q1 + q2 )).
+The basic Task Priority (TP) method for two ordered tasks provides
+
+
+
+# 
+
+#
+q̇ = J #
+with v 1 = J 2 (q)(I − J #
+ṙ d2 − J 2 (q)J #
+1 ṙd1 + I − J 1 J 1 v 1 ,
+1 J 1)
+1 ṙd1 ,
+
+(1)
+
+where P 1 = I − J #
+1 J 1 is the (here, constant) projection matrix in the null space of the first task and no
+extra term has been used in the null space of the second task (v 2 = 0). Since ṙd1 = 0 in this case, and
+being P (JP )# = (JP )# for any projection matrix P , equation (1) simplifies to
+q̇ = (J 2 (q)P 1 )# ṗd .
+From
+
+
+
+J#
+1
+
+
+0.5
+
+
+=  0.5  ,
+0
+
+
+
+0.5
+
+P 1 =  −0.5
+0
+
+(2)
+−0.5
+0.5
+0
+
+
+0
+
+0 ,
+1
+
+we have
+J 2 (q)P 1 =
+
+−0.5L1 s1
+0.5L1 c1
+
+0.5L1 s1
+−0.5L1 c1
+
+−L3 s123
+L3 c123
+
+!
+.
+
+(3)
+
+While the first two columns of the matrix in (3) are always dependent, it is easy to see that its rank is
+full unless sin(q2 + q3 ) = 0. With the joint velocity command (2), the first task will always be satisfied if
+the constraint f1 (q) = π/2 holds at the start, whereas the second task will be satisfied either exactly or
+in a least squares sense, depending on the current robot configuration and on the direction of the desired
+velocity ṗd .
+In order to verify when both tasks can be achieved simultaneously, we impose q1 (t) + q2 (t) ≡ π/2 at all
+times. From the direct kinematics of the robot tip p = f 2 (q), one obtains then the reduced form
+!
+L1 c1 − L3 s3
+pred = f 2 (q)|q1 +q2 =π/2 =
+= pred (q1 , q3 ).
+L1 s1 + L2 + L3 c3
+In order to keep the constraint on the first task satisfied, we need to have q̇2 = −q̇1 for the second joint
+T
+command. The two remaining joints q red = q1 q3
+will produce a tip velocity
+!
+!
+−L1 s1 −L3 c3
+q̇1
+∂pred (q red )
+=
+, q̇ red =
+.
+ṗred = J red (q red )q̇ red ,
+with J red (q red ) =
+∂q red
+L1 c1
+−L3 s3
+q̇3
+
+2
+
+As a result, the robot will be able to generate also any desired ṗred = ṗd ∈ R2 , provided that
+det J red = L1 L3 cos(q3 − q1 ) 6= 0
+
+⇐⇒
+
+q3 6= q1 ±
+
+π
+.
+2
+
+(4)
+
+The actual region of the plane where the two tasks can be performed simultaneously is illustrated in Fig. 3
+for some specific but arbitrary values of the link lengths. The second link is always kept vertical and
+upwards. The circular annulus has outer radius Rout , inner radius Rin , and center CWS on the axis y 0 ,
+computed by simple geometric reasoning as
+Rout =
+
+(L1 + L2 + L3 ) − (−L1 + L2 − L3 )
+= L1 + L3 ,
+2
+
+Rin = Rout − 2L3 = |L1 − L3 | ,
+
+and
+
+(L1 + L2 + L3 ) + (−L1 + L2 − L3 )
+= L2 .
+2
+For L1 = L2 = L3 = L, this is a full circle (Rin = 0) of radius Rout = 2L, centered at CWS = L on axis y 0 .
+CWS =
+
+y0
+
+CWS
+
+Rin
+
+L1 = 0.6
+L2 = 0.5
+L3 = 0.17
+Rin = 0.43
+Rout = 0.77
+CWS = 0.5
+
+x0
+Rout
+
+Figure 3: The Cartesian region of compatibility for both tasks (drawn for a specific set of link lengths).
+As mentioned, when q1 + q2 = π/2 and (4) hold, then the TP method (2) will generate the exact (and
+unique) solution for both tasks. In these conditions, the same solution is obtained with q̇ red = J −1
+red (q red )ṗd
+and q̇2 = −q̇red,1 . Equivalently, because of the assumed consistency of the two tasks, the problem can be
+solved also by the Extended Jacobian method (since n = m1 + m2 = 3):
+!
+!
+!
+0
+ṗ1
+J1
+−1
+−1
+ṙ =
+=
+q̇ = J E (q)q̇
+⇒
+q̇ = J E (q)ṙ d = J E (q)
+.
+(5)
+J 2 (q)
+ṗd
+ṗ2
+We have in fact det J E (q) = −L1 L3 sin(q2 + q3 ). So, when the second link is kept vertical and upwards
+(q1 + q2 = π/2), the two singularities of the Extended Jacobian matrix (q2 + q3 = {0, π}) correspond
+exactly to having q3 = q1 ± π/2, i.e., the violation of condition (4).
+T
+With the link lengths L1 = L2 = L3 = 0.5 [m] and for the given desired tip velocity ṗd = 0.1 −0.5
+[m/s],
+T
+when the robot is, e.g., in the configuration q b = 0 π/2 π/3
+(condition (4) holds), then
+
+
+
+
+!
+1
+1
+0
+−3.4641
+2
+J1
+
+
+
+
+−0.25  , (J 2 (q b )P 1 )# =  3.4641
+−2  ,
+J E (q b ) =
+=  −0.75 −0.75
+J 2 (q b )
+0.067 −0.433 −0.433
+−4
+0
+
+3
+
+and the joint velocity provided by (2) or by (5) is
+
+q̇ b = (J 2 (q b )P 1 )# ṗd = J −1
+E (q b )
+
+0
+ṗd
+
+!
+
+
+
+
+
+−1.3464
+
+
+=  1.3464  [rad/s]
+−0.4
+
+⇒
+
+
+
+
+J 1 q̇ b = 0 = ṙd1
+
+
+
+
+
+
+
+ J 2 (q b )q̇ b =
+
+0.1
+−0.5
+
+!
+= ṙ d2 .
+
+T
+On the other hand, when the robot is in the requested configuration q 0 = 0 π/2 −π/2
+[rad], the two
+tasks are inconsistent (condition (4) is violated). In this situation, the robot end effector is on the outer
+boundary of the Cartesian region of compatibility, and the desired tip velocity points outside. The task
+priority law (2) provides in this case
+
+
+
+
+0 2/3
+
+
+q̇ 0 = (J 2 (q 0 )P 1 )# ṗd =  0 −2/3 
+0 4/3
+
+0.1
+−0.5
+
+!
+
+
+
+
+
+
+J 1 q̇ 0 = 0 = ṗd1
+
+
+
+
+
+
+−1/3
+
+
+=  1/3  [rad/s] ⇒
+
+
+
+−2/3
+
+J 2 (q 0 )q̇ 0 =
+
+0
+−0.5
+
+!
+= ṗ0 6= ṗd .
+
+Note that the computed solution q̇ 0 will realize only part of the desired tip velocity ṗd requested as
+secondary task, namely the component of ṗd ∈ R {J 2 (q 0 )} (see Fig. 4).
+
+y0
+
+q3 = - 90°
+
+q2 = 90°
+
+𝑝̇$
+
+q1 = 0
+
+𝑝̇#
+x0
+
+Figure 4: The specified secondary task velocity ṗd for the actual 3R planar robot in the configuration q 0
+and the realized one ṗ0 .
+Finally, suppose that errors e1 = rd1 −f1 (q) = π/2−(q1 +q2 ) 6= 0 and/or e2 = r d2 −f 2 (q) = pd −f 2 (q) 6= 0
+are present during the simultaneous execution of the tasks. The task priority scheme (1) will be modified
+by introducing an error feedback term in both tasks as
+
+
+#
+q̇ c = J #
+ṙ d2 + K 2 e2 − J 2 (q)J #
+1 (ṙd1 + k1 e1 ) + P 1 (J 2 (q)P 1 )
+1 (ṙd1 + k1 e1 )
+(6)
+
+
+#
+= J#
+ṗd + K 2 e2 − J 2 (q)J #
+1 k1 e1 + (J 2 (q)P 1 )
+1 k1 e1 ,
+with a scalar gain k1 > 0 and a (typically, diagonal) matrix gain K 2 > 0. Since J 1 q̇ c = k1 e1 , we always
+have ė1 = −k1 e1 and the error on the first task will exponentially converge to zero. On the other hand,
+the control law (6) will generate the largest possible reduction (or, in the worst case, the smallest increase)
+of the error on the second task, without ever affecting the first task.
+Exercise 2
+Based on the dynamic model of the RP planar robot
+M (q)q̈ + c(q, q̇) + g(q) = τ ,
+
+4
+
+with c(q, q̇) = S(q, q̇) q̇,
+
+(7)
+
+we need to derive the dynamic elements that appear in the expression of the residual vector
+
+
+Z t
+
+r(t) = K I p(t) −
+τ + S T(q, q̇) q̇ − g(q) + r ds − p(0) ,
+
+(8)
+
+0
+
+where p = M (q)q̇ is the generalized momentum and matrix K I > 0 is diagonal. Without loss of generality,
+we can assume that the robot is at rest at the beginning of the experiment, i.e, p(0) = 0.
+
+Fc
+
+y0
+
+g0
+
+m2,Ic2
+dc2
+
+Ic1
+
+x0
+Figure 5: Definition of the relevant dynamic parameters for the RP robot of Fig. 2. Also shown is a
+collision force F c acting at the tip along the normal direction to the second link.
+With reference to the dynamic parameters defined in Fig. 5, for the kinetic energy
+T = T1 + T2 =
+since pc2 = (q2 − dc2 )
+T1 =
+
+cos q1
+
+1
+Ic1 q̇12 ,
+2
+
+sin q1
+
+T2 =
+
+T
+
+1 T
+q̇ M (q)q̇,
+2
+
+and v c2 = ṗc2 , we have
+
+
+1
+1
+1
+1
+Ic2 q̇12 + m2 kv c2 k2 =
+Ic2 + m2 (q2 − dc2 )2 q̇12 + m2 q̇22 .
+2
+2
+2
+2
+
+The robot inertia matrix is then
+M (q) =
+
+Ic1 + Ic2 + m2 (q2 − dc2 )2
+0
+
+0
+m2
+
+!
+.
+
+(9)
+
+From this, we compute the Coriolis/centrifugal terms using the matrices of Christoffel symbols
+"
+ 
+T 
+#
+∂mi (q)
+∂mi (q)
+∂M (q)
+1
+C i (q) =
++
+−
+,
+i = 1, 2.
+2
+∂q
+∂q
+∂qi
+We obtain
+C 1 (q) =
+
+0
+m2 (q2 − dc2 )
+
+and thus
+c(q, q̇) =
+
+m2 (q2 − dc2 )
+0
+q̇ T C 1 (q)q̇
+q̇ T C 2 (q)q̇
+
+!
+,
+
+!
+=
+
+C 2 (q) =
+
+−m2 (q2 − dc2 )
+0
+
+2m2 (q2 − dc2 ) q̇1 q̇2
+−m2 (q2 − dc2 ) q̇12
+
+0
+0
+
+U = U1 + U2 = U (q),
+we have
+U1 = constant,
+
+U2 = m2 g0 (q2 − dc2 ) sin q1 ,
+
+5
+
+,
+
+!
+.
+
+A factorization c(q.q̇) = S(q, q̇) q̇ in (7) such that Ṁ − 2S is skew-symmetric is given by
+!
+!
+q̇ T C 1 (q)
+m2 (q2 − dc2 ) q̇2
+m2 (q2 − dc2 ) q̇1
+S(q, q̇) =
+=
+.
+−m2 (q2 − dc2 ) q̇1
+0
+q̇ T C 2 (q)
+For the potential energy
+
+!
+
+(10)
+
+(11)
+
+and so
+
+g(q) =
+
+∂U (q)
+∂q
+
+T
+=
+
+m2 g0 (q2 − dc2 ) cos q1
+m2 g0 sin q1
+
+From the expressions (9) and (11–12), we finally obtain
+
+Z
+
+r1 (t) = kI1 Ic1 + Ic2 + m2 (q2 − dc2 )2 q̇1 −
+
+t
+
+!
+.
+
+(12)
+
+
+(τ1 − m2 g0 (q2 − dc2 ) cos q1 + r1 ) ds ,
+
+0
+
+and
+
+
+
+t
+
+Z
+
+r2 (t) = kI2 m2 q̇2 −
+
+τ2 + m2 (q2 −
+
+dc2 ) q̇12
+
+
+
+
+
+− m2 g0 sin q1 + r2 ds .
+
+0
+
+Suppose now that, at time t = tc , a collision force F c acts at the robot tip in the orthogonal direction
+to the second link and with an intensity F 6= 0 (see again Fig. 5). The Jacobian J c (q) associated to the
+contact point and the contact force are then
+!
+!
+−q2 sin q1 cos q1
+− sin q1
+J c (q) =
+,
+Fc = F
+,
+q2 cos q1
+sin q1
+cos q1
+while the resulting torque at the joint is computed as
+τ c = J Tc (q)F c =
+
+F q2
+0
+
+!
+.
+
+From the nominal behavior of the residual vector r, being r(t) = 0 for all t ∈ [0, tc ], it follows that
+(
+ṙ1 (tc ) = kI1 F (tc ) q2 (tc )
+ṙ(tc ) = K I (τ c (tc ) − r(tc ))
+⇒
+ṙ2 (tc ) = 0.
+Although the collision occurs on the second link, the second component of the residual will not be affected
+immediately; in fact, F c is not producing work on q2 , due to the specific direction assumed for the impact
+force.
+Exercise 3
+The acceleration profile for the rest-to-rest motion trajectory θ(t) is assigned to be of the bang-coast-bang
+type, having symmetric initial and final acceleration/deceleration phases, each of duration Ts = T /4 and
+with θ̈ = ±A, and a cruising phase that lasts for half of the motion time, i.e., T /2, with constant velocity
+θ̇ = V . From this motion structure, it is easy to compute the following quantities:
+ 
+ 2
+ 
+T
+T
+1
+T
+AT 2
+T
+3AT 2
+T
+=A ,
+∆θs = θ
+= A
+=
+,
+∆θ = θ(T ) = 2∆θs + V
+=
+.
+V = θ̇
+4
+4
+4
+2
+4
+32
+2
+16
+Thus, for a desired total displacement ∆θ > 0 and a given motion time T , we have for the acceleration A
+and cruise velocity V
+16∆θ
+4∆θ
+A=
+>0
+⇒
+V =
+> 0.
+(13)
+3T 2
+3T
+The swing-up maneuver from θ(0) = 0 to ∆θ = θ(T ) = π in time T needs then an acceleration/deceleration
+A = ±16π/(3T 2 ) in the first and third motion phases. Note that, when the acceleration phase ends
+at time t = Ts = T /4, the performed motion will be ∆θs = ∆θ/6 = π/6. By symmetry, when the
+deceleration phase begins at time t = T − Ts = 3T /4, the performed motion completed so far will be
+∆θ − ∆θs = 5∆θ/6 = 5π/6.
+With the above in mind, consider the dynamics of the actuated pendulum
+I θ̈ + mg0 d sin θ = τ,
+
+6
+
+(14)
+
+where θ = 0 corresponds to the downward equilibrium and the dynamic parameters are given by
+ 2
+l
+ml2
+ml2
+40
+l
+d = = 1 [m], mg0 d = 98.1 [kg·m2 ], I = Ic + md2 =
++m
+=
+=
+= 13.33 [kg·m2 ].
+2
+12
+2
+3
+3
+By inverse dynamics on (14), the torque needed to perform the desired motion during the three phases is:
+
+IA + mg0 d sin θ(t),
+θ ∈ [0, π/6),
+phase I: t ∈ [0, T /4),
+
+
+
+mg0 d sin θ(t),
+θ ∈ [π/6, 5π/6),
+phase II: t ∈ [T /4, 3T /4),
+τ (t) =
+(15)
+
+
+
+−IA + mg0 d sin θ(t),
+θ ∈ [π/6, π],
+phase III: t ∈ [3T /4, T ].
+The gravity contribution to the inverse dynamics torque is maximum at the midpoint of motion, i.e., at
+θ = π/2, is independent of the total motion time, and is equal to τg = mg0 d < τmax . Note that if it
+were τg > τmax , then actuation would be too weak to perform the intended task (even when moving the
+pendulum very slowly, with an arbitrarily long motion time T ).
+Further, from (13) and (15) it is easy to see that, when speeding up motion by uniformly reducing T , the
+inertial torque component in the first phase will increase quadratically and the maximum required torque
+will be attained at the end of the first phase, where the gravity contribution is the largest (and has the
+same sign of the acceleration). Thus, for feasibility we require that
+π
+16πI
++ mg0 d sin ≤ τmax ,
+3T 2
+6
+and the optimal motion time will be defined as the lower bound for all feasible motion times,
+s
+16πI
+T ≥
+= Tmin .
+3 (τmax − mg0 d sin(π/6))
+IA + mg0 d sin ∆θs =
+
+angular position
+
+3.5
+
+angular velocity
+
+3.5
+
+3
+
+3
+
+2.5
+2.5
+2
+
+[rad]
+
+[rad/s]
+
+2
+1.5
+
+1.5
+1
+1
+0.5
+
+0.5
+
+0
+
+0
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+1.2
+
+-0.5
+
+1.4
+
+0
+
+0.2
+
+0.4
+
+time [s]
+
+0.6
+
+0.8
+
+1
+
+1.2
+
+1.4
+
+time [s]
+
+angular acceleration
+
+15
+
+torque
+
+200
+
+150
+10
+100
+5
+
+[Nm]
+
+[rad/s 2]
+
+50
+
+0
+
+0
+
+-50
+-5
+-100
+-10
+-150
+
+-15
+0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+1.2
+
+-200
+
+1.4
+
+0
+
+time [s]
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1
+
+1.2
+
+1.4
+
+time [s]
+
+Figure 6: Kinematic (position, velocity, and acceleration) and dynamic (torque) profiles of the minimum
+time rest-to-rest swing-up maneuver.
+Plugging in the numerical data, we find the optimal time Tmin = 1.2165 [s]. The maximum torque during
+motion is indeed τmax = 200 [Nm], reached at the single instant t = Tmin /4 = 0.3041 [s]. Accordingly, we
+obtain from (13) A = 11.3212 [rad/s2 ] and V = 3.4432 [rad/s]. Figure 6 shows the resulting time profiles
+of the angular position, velocity and acceleration, and of the commanded torque τ (t).
+∗∗∗∗∗
+
+7
+
+

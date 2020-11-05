@@ -1,0 +1,654 @@
+Robotics II
+March 27, 2018
+Exercise 1
+An automated crane can be seen as a mechanical system with two degrees of freedom that moves
+along a horizontal rail subject to the actuation force F , and that transports a swinging link
+connected with a passive and frictionless revolute joint, as sketched in Fig. 1. With reference to
+the kinematic variables and dynamic parameters defined therein:
+• derive the dynamic model of this system using a Lagrangian formalism;
+• provide a linear parameterization of the obtained model in terms of a minimal number of
+dynamic coefficients;
+• provide a linear approximation of the nonlinear model for small variations around the unT
+forced equilibrium state x0 = q1 q2 q̇1 q̇2 = 0;
+• find the nonlinear state feedback law for the force F = F (x, a) that linearizes exactly the
+dynamics of the first coordinate as q̈1 = a.
+q1
+F
+m
+passive
+joint
+
+dp
+
+g0
+
+䎩!mp, Ip
+q2
+
+Figure 1: An automated crane with the relevant kinematic and dynamic definitions.
+Exercise 2
+The end-effector of a PPR robot moving on a horizontal plane and equipped with a 2D force sensor
+should follow a stiff and frictionless linear surface tilted by α > 0 w.r.t. the absolute y axis, starting
+T
+at time t = t0 in the position ps = xs ys , with a tangential speed Vt = Vt (t0 ) + At (t − t0 )
+(with Vt (t0 ) > 0 and a constant At > 0), and applying a constant normal force Fn > 0 (see Fig. 2).
+Assuming full knowledge of geometric, kinematic, and dynamic parameters, provide the symbolic
+expressions of the initial robot state and explicitly of all terms in the force/torque commands at
+the joints that will guarantee perfect execution of the desired task in nominal conditions. Is the
+solution unique? If not, provide the simplest one.
+!!
+2D force
+sensor
+
+y
+
+dc3
+
+m2
+
+䎩!
+
+q1
+
+dc1
+
+q2
+
+䎩!m1
+
+dc2
+
+m!,I!
+
+䎩! q3
+
+l3
+
+stiff and frictionless
+linear surface S
+
+ps
+
+x
+
+Figure 2: A PPR robot should move in contact with a stiff and frictionless linear surface.
+[150 minutes; open books]
+1
+
+Solution
+March 27, 2018
+Exercise 1
+The crane is an underactuated mechanical system with n = 2 degrees of freedom, but with only
+a single control command (p = 1). To derive its dynamic model, we can follow a Lagrangian
+approach. For this, the position and velocity of the center of mass of the swinging link are1
+
+
+
+
+q1 + dp sin q2
+q̇1 + dp cos q2 q̇2
+pc =
+,
+v c = ṗc =
+.
+− dp cos q2
+dp sin q2 q̇2
+The kinetic energy of the system is
+T = Tm +Tp =
+
+
+1
+1
+1
+2 1
+m q̇12 + mp kv c k + Ip q̇22 =
+(m + mp )q̇12 + (Ip + mp d2p )q̇22 + 2mp dp cos q2 q̇1 q̇2 ,
+2
+2
+2
+2
+
+and thus
+1
+T = q̇ T M (q)q̇
+2
+
+⇒
+
+M (q) =
+
+m + mp
+
+mp dp cos q2
+
+mp dp cos q2
+
+Ip + mp d2p
+
+!
+.
+
+Using the Christoffel’s symbols, we found only a centrifugal term
+!
+−mp dp sin q2 q̇22
+c(q, q̇) =
+.
+0
+The potential energy and the associated gravity vector are
+
+U = U0 − mp g0 dp cos q2
+
+⇒
+
+g(q) =
+
+∂U (q)
+∂q
+
+T
+=
+
+0
+mp g0 dp sin q2
+
+!
+,
+
+with g0 = 9.81 [m/s2 ]. Assuming the possible presence of a viscous friction term (with a viscous
+coefficient fv ≥ 0) on the movement along the rail, the dynamic equations take the scalar form
+(m + mp )q̈1 + mp dp cos q2 q̈2 − mp dp sin q2 q̇22 + fv q̇1 = F
+mp dp cos q2 q̈1 + (Ip + mp d2p )q̈2 + mp g0 dp sin q2 = 0
+Equations (1) can be rewritten in the linearly parametrized
+
+m + mp
+!
+2
+q̈1 0 cos q2 q̈2 − sin q2 q̇22 q̇1 
+I
+ p + mp dp
+
+0 q̈2 cos q2 q̈1 + g0 sin q2 0  mp dp
+fv
+
+(1)
+
+form
+
+ 
+
+F
+
+.
+ = Y (q, q̇, q̈)π =
+
+0
+
+The linear approximation of the dynamic equations of the crane around the (stable) equilibrium
+T
+T
+state x0 = q T0 q̇ T0
+= q1 q2 q̇1 q̇2 = 0, which satisfies (1) with F = F0 = 0 (unforced), is
+obtained by setting in (1)
+q = q 0 + ∆q = ∆q,
+1 We
+
+q̇ = q̇ 0 + ∆q̇ = ∆q̇,
+
+q̈ = q̈ 0 + ∆q̈ = ∆q̈,
+
+F = F0 + ∆F = ∆F,
+
+have taken the x-axis along the rail, and the y-axis in the vertical upward direction.
+
+2
+
+and neglecting second- and higher-order increments (e.g., setting sin ∆q2 ' ∆q2 and cos ∆q2 ' 1):
+
+
+m + mp
+mp dp
+
+mp dp
+Ip + mp d2p
+
+
+
+∆q̈1
+∆q̈2
+
+
+
+
++
+
+fv
+0
+
+0
+0
+
+
+
+∆q̇1
+∆q̇2
+
+
+
+
++
+
+0
+0
+
+
+
+0
+mp g0 dp
+
+∆q1
+∆q2
+
+
+
+
+=
+
+∆F
+0
+
+
+.
+
+Finally, partial feedback linearization of the crane dynamics as concerns the motion of q1 is obtained
+as follows. Solve (globally!) for the revolute joint acceleration q̈2 from the second equation in (1),
+q̈2 = −
+
+1
+(mp dp cos q2 q̈1 + mp dp g0 sin q2 )
+Ip + mp d2p
+
+and substitute it in the first one, yielding
+!
+m2p d2p cos2 q2
+m2p d2p g0 sin q2 cos q2
+(m + mp ) −
+− mp dp sin q2 q̇22 + fv q̇1 = F.
+q̈
+−
+1
+Ip + mp d2p
+Ip + mp d2p
+From this, it is immediate to see that the nonlinear state feedback law
+F =
+
+m2p d2p g0 sin q2 cos q2
+(m + mp )Ip + m mp d2p + m2p d2p sin2 q2
+a
+−
+− mp dp sin q2 q̇22 + fv q̇1
+Ip + mp d2p
+Ip + mp d2p
+
+yields (again, globally) q̈1 = a. Accordingly, the second equation in (1) becomes
+(Ip + mp d2p )q̈2 + mp g0 dp sin q2 = −mp dp cos q2 a
+Exercise 2
+Noting that q1 affects the y-coordinate and q2 the x-coordinate, the direct/differential kinematics
+of the end-effector position, velocity, and acceleration are given respectively by
+
+
+q2 + l3 cos q3
+= f (q),
+p=
+q1 + l3 sin q3
+ṗ =
+
+∂f (q)
+q̇ = J (q)q̇ =
+∂q
+
+
+
+−l3 sin q3
+l3 cos q3
+
+0 1
+1 0
+
+and
+
+p̈ = J (q)q̈ + J̇ (q)q̇ = J (q)q̈ +
+
+0
+0
+
+0
+0
+
+
+q̇
+
+−l3 cos q3 q̇3
+−l3 sin q3 q̇3
+
+(2)
+
+q̇,
+
+(3)
+
+where the Jacobian J (q) has been introduced.
+The robot has n = 3 joints and the (hybrid) planar task has dimension m = 2 (one in force, the
+other in motion/velocity). In the presence of n − m = 1 degree of redundancy, the task can be
+executed in an infinite number of ways, beginning right from the different initial choices of an
+inverse kinematic configuration q(t0 ) at time t0 , among those associated to the initial Cartesian
+point p(t0 ) = ps , and of the initial joint velocity q̇(t0 ), among those associated to the initial
+end-effector velocity
+
+
+− sin α
+ṗ(t0 ) = Vt (t0 )
+.
+cos α
+
+3
+
+It is then possible to parametrize the joint-space motion in terms of one variable. In this case, the
+easy choice is to pick the third joint variable q3 as the parametrizing one. We set an arbitrary (but
+sufficiently smooth) time profile for it
+q3 (t) = β(t),
+
+q̇3 (t) = β̇(t),
+
+∀t ≥ t0 ,
+
+and thus
+q3 (t0 ) = β(t0 ),
+
+q̇3 (t0 ) = β̇(t0 ).
+
+As a result, the two prismatic joints will be initialized at
+
+ 
+
+q1 (t0 )
+ys − l3 sin β(t0 )
+=
+,
+q2 (t0 )
+xs − l3 cos β(t0 )
+with initial velocity
+
+
+q̇1 (t0 )
+q̇2 (t0 )
+
+Vt (t0 ) cos α − l3 β̇(t0 ) cos β(t0 )
+−Vt (t0 ) sin α − l3 β̇(t0 ) sin β(t0 )
+
+
+=
+
+!
+.
+
+Moreover, we can also invert the second-order differential kinematics (3) in a parametrized way as
+
+
+
+ 
+2
+p̈
++
+l
+−
+cos
+β
+β̈
++
+sin
+β
+β̇
+q̈1
+y
+3
+
+ 
+
+ 
+
+q̈ =  q̈2  = 
+(4)
+ p̈x + l3 sin β β̈ + cos β β̇ 2  .
+q̈3
+β̈
+With this in mind, the dynamic model of the planar PPR robot (in the absence of gravity and
+without dissipative effects), when in contact with a stiff environment environment takes the form
+M (q)q̈ + c(q, q̇) = τ + J T (q)F .
+
+(5)
+
+where F ∈ R2 is the contact force applied by the environment on the robot end-effector (equal and
+opposite to the one applied by the robot on the environment) and J has been defined in (2). We
+provide next the explicit symbolic expressions of the dynamic terms appearing in (5). Note first
+that the position and velocity of the center of mass of the third link are
+
+
+
+
+q2 + dc3 cos q3
+q̇2 − dc3 sin q3 q̇3
+.
+pc3 =
+,
+v c3 = ṗc3 =
+q1 + dc3 sin q3
+q̇1 + dc3 cos q3 q̇3
+Following a Lagrangian approach, we compute the total kinetic energy T = T1 + T2 + T3 as:
+
+T2 = 21 m2 q̇12 + q̇22 ,
+T1 = 21 m1 q̇12 ,
+⇒ T = 21 q̇ T M (q)q̇,
+ 1
+1
+2
+2
+2
+2
+2
+T3 = 2 m3 q̇1 + q̇2 + dc3 q̇3 + 2dc3 q̇3 (cos q3 q̇1 − sin q3 q̇2 ) + 2 I3 q̇3
+with
+
+
+M (q) = 
+
+m1 + m2 + m3
+
+0
+
+0
+
+m2 + m3
+
+m3 dc3 cos q3
+
+−m3 dc3 sin q3
+
+m3 dc3 cos q3
+
+
+
+
+−m3 dc3 sin q3  .
+I3 + m3 d2c3
+
+The Coriolis and centrifugal terms c(q, q̇) are derived using the Christoffel’s symbols, i.e., for each
+component
+!
+
+T
+1 ∂mi (q)
+∂mi (q)
+∂M (q)
+T
+ci (q, q̇) = q̇ C i (q)q̇, C i (q) =
++
+−
+, i = 1, 2, 3,
+2
+∂q
+∂q
+∂q i
+4
+
+being mi the ith column
+
+0
+
+C 1 (q) =  0
+0
+
+0
+
+C 2 (q) =  0
+0
+
+of the inertia matrix M . We obtain
+
+0
+0
+
+0
+0
+⇒
+c1 (q, q̇) = −m3 dc3 sin q3 q̇32 ,
+
+0 −m3 dc3 sin q3
+
+0
+0
+
+0
+0
+⇒
+c2 (q, q̇) = −m3 dc3 cos q3 q̇32 ,
+
+0 −m3 dc3 cos q3
+⇒
+
+C 3 (q) = 0
+
+c3 (q, q̇) = 0.
+
+We note that there are only centrifugal terms and no Coriolis torques.
+Applying now to (5) the feedback linearizing control law
+τ = M (q)a + c(q, q̇) − J T (q)F
+
+(6)
+
+will transform the system into a set of decoupled input-output integrators
+q̈ = a.
+For the specified hybrid task, the desired end-effector acceleration and contact force are respectively
+
+
+
+
+− sin α
+cos α
+p̈d = At
+,
+F d = Fn
+.
+cos α
+sin α
+From the desired end-effector acceleration, using (4), we obtain also the desired joint acceleration
+in parametrized form
+
+
+
+At cos α + l3 − cos β β̈ + sin β β̇ 2
+ 
+
+
+
+q̈ d = 
+ −At sin α + l3 sin β β̈ + cos β β̇ 2 
+β̈
+Substituting a = q̈ d and F = −F d in the feedback linearizing law (6), yields the desired nominal
+control commands
+
+
+
+At cos α + l3 − cos β β̈ + sin β β̇ 2
+
+
+
+ 
+
+Fn cos α
+T
+
+
+2
+τ d = M (q)  −At sin α + l3 sin β β̈ + cos β β̇
+(7)
+ + c(q, q̇) + J (q) Fn sin α ,
+β̈
+where the dependence of the inertia matrix M and of the Jacobian J is actually only on q3 = β
+and that of the centrifugal terms c is only on q3 = β and q̇3 = β̇. This can be made more explicit
+by rewriting (7) in extended form as
+
+
+
+
+
+
+
+(m1 +m2 +m3 ) At cos α + l3 − cos β β̈ + sin β β̇ 2 + m3 dc3 cos β β̈ − sin β β̇ 2 + Fn sin α
+
+
+
+
+
+
+
+
+
+τ d =  (m1 +m3 ) −At sin α + l3 sin β β̈ + cos β β̇ 2 − m3 dc3 sin β β̈ + cos β β̇ 2 + Fn cos α  .
+
+
+
+
+
+I3 + m3 d2c3 β̈ + m3 dc3 At cos(α − β) − l3 β̈ + Fn l3 sin(α − β)
+Note that the first two components of τ d are forces (the units of all terms are [N] = [kg·m/s2 ]),
+while the last component is a torque (units in [Nm]). Moreover, thanks to the fact that the initial
+5
+
+robot state is matched with the task at the initial time t = t0 , there will be no need of a feedback
+action on task errors in the nominal control commands (7) in order to execute the entire task in
+ideal conditions.
+The above parametrized control law is one of the many realizing the desired task, depending on the
+choice of the time evolution β(t) for the variable q3 of the revolute joint. Indeed, simplifications
+arise for specific choices. The simplest one is choosing to keep q3 at a constant value β, with
+β̇ = β̈ = 0. We obtain
+
+
+ 
+At (m1 + m2 + m3 ) cos α + Fn sin α
+τd1
+
+
+ 
+−At (m1 + m3 ) sin α + Fn cos α
+τ d =  τd2  = 
+.
+At m3 dc3 cos(α − β) + Fn l3 sin(α − β)
+τd3
+Having chosen to keep the third joint at rest for the entire motion, the robot behaves kinematically
+as a 2P robot. In particular, when placing the third robot link normal to the frictionless surface,
+we have β = α and the third control component reduces to τd3 = At m3 dc3 .
+∗∗∗∗∗
+
+6
+
+

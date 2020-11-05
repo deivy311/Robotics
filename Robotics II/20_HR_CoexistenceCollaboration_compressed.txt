@@ -1,0 +1,1726 @@
+Robotics 2
+
+Human-Robot
+Coexistence and Collaboration
+Prof. Alessandro De Luca
+
+Human-friendly robotics
+The goal
+
+traditional
+robotics
+
+replacing
+humans
+humanfriendly
+robotics
+collaborating
+with humans
+co-workers on factory floor
+Robotics 2
+
+personal robots in service
+2
+
+SAPHARI concept
+Place the human at the center of the entire robot development
+
+FP7 ICT
+EU project
+(2011-15)
+
+(coordinator)
+
+address all essential aspects of safe and intuitive physical interaction
+between humans and complex human-like robots in a strongly integrated way
+Robotics 2
+
+3
+
+Handling of collisions and intentional contacts
+Basic safety-related control problems in physical Human-Robot Interaction (pHRI)
+
+collision detection/isolation and reaction
+(without the use of external sensing)
+workspace monitoring
+for continuous
+collision avoidance
+(while the task is running)
+
+estimation and control
+of intentional forces
+exchanged at the contact
+(with or without a F/T sensor)
+for human-robot collaboration
+Robotics 2
+
+4
+
+Safe physical Human-Robot Interaction (pHRI)
+Control architecture of consistent robot behaviors (De Luca, Flacco: IEEE BioRob 2012)
+
+Safety
+Coexistence
+Collaboration
+§ integrated design & use of soft mechanics, actuation, (proprio- and
+exteroceptive) sensing, communication, and control algorithms
+Robotics 2
+
+5
+
+Physical HRI
+Hierarchy of consistent behaviors
+
+Safety
+lightweight mechanical design
+compliance at robot joints
+
+Robotics 2
+
+Safety is the most important feature of a robot
+that has to work close to human beings
+Classical solutions for preserving safety in
+industrial environments, i.e., using cages or
+stopping the robot in the presence of humans
+[ISO 10218], are inappropriate for pHRI
+
+6
+
+Physical HRI
+Hierarchy of consistent behaviors
+
+Safety
+Coexistence
+
+Coexistence is the robot capability of sharing the
+workspace with other entities, most relevant with
+humans
+Human (and robot!) safety requirements must be
+always guaranteed (i.e., safe coexistence)
+
+original robot task
+sharing the workspace
+without the need of physical contacts
+
+safe HR coexistence
+Robotics 2
+
+7
+
+Physical HRI
+Hierarchy of consistent behaviors
+
+Safety
+Coexistence
+Collaboration
+
+Robotics 2
+
+Collaboration occurs when the robot performs
+complex tasks with direct human interaction and
+coordination
+Two modalities which are not mutually exclusive:
+contactless and physical
+gestures or voice commands
+visual coordination
+
+with intentional contact
+and exchange of forces
+
+8
+
+Types of collaborative operations
+From ISO 10218-1:2011 & 10218-2:2011 standards (refined in ISO-TS 15066:2016)
+
+Robotics 2
+
+9
+
+Qualification of our control architecture for pHRI
+Relation with ISO Standard 10218 and Technical Specification 15066
+
+Speed
+
+Separation distance
+
+Torques
+
+Operator controls
+
+Main risk
+reduction
+
+Zero while operator
+in CWS
+
+Small or zero
+
+Gravity + load
+compensation only
+
+None while operator
+in CWS
+
+No motion in
+presence of operator
+
+Safety-rated
+monitored speed
+
+Small or zero
+
+As by direct operator
+input
+
+E-stop;
+Enabling device;
+Motion input
+
+Motion only by
+direct operator input
+
+Safety-rated
+monitored speed
+
+Safety-rated monitored
+distance
+
+As required to
+execute application
+and maintain min
+separation distance
+
+None while operator
+in CWS
+
+Contact between
+robot and operator
+prevented
+
+Small or zero
+
+Max determined by
+RA to limit static
+forces
+
+As required by
+application
+
+By design or control,
+robot cannot impart
+excessive force
+
+SAFETY
+Safety-rated
+monitored stop
+
+Safety
+
+COEXISTENCE
+Hand guiding
+
+COLLABORATION
+Lightweight mechanical design
+Speed and
+Compliance at robot joints separation
+monitoring
+
+COEXISTENCE
+Power and force Max determined by
+RA to limit impact
+limiting
+forces
+
+COLLABORATION
+
+ISO 10218-1/2:2011
+ISO/TS 15066:2016
+
+Collaboration
+Safety
+
+Physical, with intentional contact
+Coexistence
+and coordinated exchange of forces
+
+Collaboration
+Robotics 2
+
+§ collision detection and reaction
+§ workspace sharing
+− with collision avoidance
+§ coordinated motions & actions
+− with/without contact
+10
+
+Control levels in the collision event pipeline
+Haddadin, De Luca, Albu-Schäffer: IEEE T-RO 2017
+
+Coexistence
+
+Safety
+
+Collaboration
+control
+to avoid
+
+e.g., for
+collision
+handling
+
+plan to
+prevent
+
+detect, isolate
+and distinguish
+
+react
+and/or re-plan
+(to collaborate)
+Monitoring signals can be generated from sensors or models (signal- or model-based methods)
+Context information is needed (or useful) to take the right or most suitable decisions
+
+Robotics 2
+
+11
+
+Collision detection and reaction
+Residual-based experiments on DLR LWR-III (IROS 2006, IROS 2008)
+
+§ collision detection followed by different reaction strategies
+§ zero-gravity behavior: gravity is always compensated first (by control)
+§ detection time: 2-3 ms, reaction time: + 1 ms
+
+3 videos
+
+admittance mode
+
+reflex torque
+
+first impact at 60°/s
+
+Robotics 2
+
+reflex torque
+first impact at 90°/s
+
+12
+
+Coexistence
+Early days and yesterday …
+
+video
+
+Lightweight mechanical design
+Compliance at robot joints
+
+informational video by National Institute
+for Occupational Safety and Health (USA)
+
+1989
+
+2012
+
+commercial video by ABB Robotics
+on EPS (Electronic Position Switch)
+and early SafeMove software
+
+Collaboration
+
+video
+Robotics 2
+
+13
+
+Coexistence
+Today and tomorrow? …
+
+video
+commercial video by ABB Robotics
+of SafeMove2 software
+(using 2 laser scanners)
+https://youtu.be/pIIhY8E3HFg
+
+2016
+IROS 2013
+Best Video Award Finalist
+(using 1 Kinect
+depth sensor)
+
+video
+Robotics 2
+
+14
+
+Collision avoidance
+Using exteroceptive sensors to monitor robot workspace (ICRA 2010)
+
+§ external sensing: stereo-camera, TOF, structured light, depth, laser, presence, ...
+placed optimally to minimize occlusions (robot can be removed from images)
+
+Robotics 2
+
+15
+
+Depth image
+How to use it?
+
+Configuration Space
+
+Cartesian Space
+Depth Space
+
+Robotics 2
+
+16
+
+Cartesian space
+A long process
+
+video
+Robotics 2
+
+TU Munich
+17
+
+Configuration space
+Possible, but tipically only for few dofs
+
+video
+Robotics 2
+
+Univ Pisa
+18
+
+Depth space
+A 2.5-dimensional space
+
+§ non-homogeneous 2.5 dimensional space
+§ x,y position of the point in the image plane [pixel]
+§ d depth of the point with respect to the image plane [m]
+§
+§
+§
+§
+
+depth space is modeled as a pin-hole sensor
+point in Cartesian reference frame
+point in sensor frame
+point in depth space
+
+gray areas
+behind the obstacles
+Robotics 2
+
+19
+
+Depth space
+Distance evaluation
+
+§ distance between a point of interest
+and an obstacle point
+
+(if obstacle point is closer than point of interest, set
+
+)
+
+8 points of interest
+on the robot
+
+Robotics 2
+
+20
+
+Repulsive vector
+A version of artificial potentials
+
+§ repulsive vector generated from the distance vector
+
+§ repulsive vectors due to all obstacles near to point of interest are considered
+§ orientation ⇒ sum of all repulsive vectors, magnitude ⇒ nearest obstacle only
+§ inclusion of a pivoting strategy to avoid local minima or “too fast” obstacles
+
+video
+Robotics 2
+
+video
+21
+
+Obstacle velocity
+The pivot method (similar to a vortex field)
+
+§ for moving obstacles that are faster than the control point (on the robot)
+
+Robotics 2
+
+O
+
+PoI
+
+O
+
+PoI
+
+22
+
+Motion control
+Different handling of end-effector and other control points on the robot
+
+§ end-effector repulsive vector
+
+repulsive velocity added to the
+original task velocity
+
+§ collision avoidance for the whole robot body (e.g., 8 control points)
+§ repulsive vector
+§ Cartesian constraints
+§ joint velocity limits
+modification (using SNS)
+
+§ fluid, jerk-limited motion
+
+human feeling of safety
+
+www.reflexxes.com
+
+Robotics 2
+
+23
+
+Safe coexistence
+Collision avoidance in depth space (BioRob 2012)
+
+video
+Robotics 2
+
+24
+
+Safe coexistence
+Collision avoidance in depth space (ICRA 2012, J. Intell. & Rob. Syst. 2015)
+
+video
+
+resuming a cyclic Cartesian task as soon as possible …
+Robotics 2
+
+25
+
+Monitoring the workspace with two Kinects
+… without giving away the depth space computational approach (RA-L 2016)
+
+video
+https://youtu.be/WIw_Uj_ooYI
+
+real-time efficiency
+algorithm extremely fast also
+with 2 devices: 300 Hz rate
+(RGB-D camera has 30 fps)
+
+problems solved by the second camera
++ eliminates collision with false, far away “shadow” obstacles
++ reduces to a minimum gray areas, thus detects what is “behind” the robot
++ relative calibration of the two Kinects is done off-line
+Robotics 2
+
+26
+
+SYMPLEXITY cell for robotized work on metallic surfaces
+For abrasive finishing/fluid jet polishing tasks & for human-robot quality assessment
+
+H2020 FoF EU project (2015-18)
+
+§ ABB IRB 4600-60 robot, with
+
+two external
+
+two internal
+
+integrated SafeMove option
+
+§ certified communication with cell
+PLC, using ProfiSAFE protocol
+
+§ due to the intrinsic risks in the
+
+technological process, only for HR
+coexistence during visual check and
+measuring phase or for contactless
+collaboration
+
+§ 2 external Kinects to recognize
+
+human gestures (e.g., automatic door
+opening, …)
+
+§ initially ... 2 internal Kinects (placed
+at the top corners of the cabin) for
+monitoring human-robot distances
+
+Robotics 2
+
+27
+
+Additional safety hardware
+Certified laser scanners to be used in parallel with the Kinects
+
+H2020 FoF EU project (2015-18)
+
+§ two laser scanners KEYENCE SZ-V 32n placed at calf height (∼50 cm)
+§ maximize coverage of the free area inside the cell
+§ each sensor localizes the (radial) position of the operator in the cell, estimating an
+approximate/conservative distance to the robot
+
+§ no missed situations: robot slows down or stops according to sensed distance/area
+§ a cascaded solution of Kinects/laser scanners is a viable compromise between certified
+safety and more flexible sharing of the 3D workspace by human and robot
+
+Robotics 2
+
+28
+
+CAD robot model and equipment in depth images
+Considering CWS laser measuring device, cables or other equipment in distance computation
+CWS =
+Coherent Wave Scattering
+
+H2020 FoF EU project (2015-18)
+
+for each robotic set up, the suitable CAD model for depth space subtraction is loaded at start
+Robotics 2
+
+29
+
+Implemented control and communication architecture
+Two Kinects for accurate HR distance monitoring, two laser scanners for backup safety
+
+Read robot
+joint position
+Distance computation
+with Kinects data
+Communication
+to PLC
+
+ProfiSAFE
+communication
+Kinects OK
+Kinects KO
+
+ProfiSAFE
+communication
+
+Robotics 2
+
+30
+
+Safe coexistence in an industrial robotic cell
+ABB IRB 4600 operation in an abrasive finishing cell with human access
+
+video
+
+video
+
+depth images and GUI
+■ robot is moving at max 100 mm/s
+■ no safety zones were defined in ABB SafeMove
+■ Kinects OK (except when the view of one of the cameras is obstructed on purpose)
+
+Robotics 2
+
+31
+
+Collaboration
+Contactless or physical
+
+§ in contactless collaboration, robot (or human!) actions are guided or
+follow from an exchange of information without physical interaction
+§ this can be achieved via direct communication, e.g., with gestures and/or
+voiceLightweight
+commands
+mechanical design
+
+§ or via Compliance
+indirect communication,
+at robot joints by recognizing human intention or attention,
+e.g., through eye gaze
+§ another form is visual coordination in which vision is used to coordinate
+human-robot relative motion
+
+§ in physical collaboration, there is an explicit and intentional contact
+with exchange of forces between
+human and robot
+Collaboration
+§ by measuring or estimating contact forces, the robot can predict human
+motion intention and react accordingly to it
+
+§ collaborative tasks (e.g., human and robot carrying a heavy object) require
+control of exchanged forces (and motion) at the contact
+Robotics 2
+
+32
+
+Contactless collaboration
+Using gesture and voice commands
+
+§ human body parts and gesture recognition
+
+§ speech recognition
+voice
+command
+
+Robotics 2
+
+collaboration
+starts
+
+33
+
+Human-robot communication
+Using Kinect and SDK library
+
+§ the robot end-effector position is commanded by voice/gestures to follow (or
+go to) the human left, right, or nearest hand
+video
+
+Robotics 2
+
+34
+
+Gesture communication in SYMPLEXITY cell
+Using Kinect 2.0 RGB-D sensor, with built-in skeleton tracking
+
+■ initial 5 sec gesture to activate
+
+■ left closed + right open = limit speed
+
+■ both hands open = start motion
+
+■ left open + right closed = recover speed
+
+■ both hands closed = stop robot
+
+■ final gesture to deactivate
+
+video
+Robotics 2
+
+35
+
+Visual coordination task
+
+Dual formulations of human-robot relative tracking (IROS 2017)
+
+§ camera on robot, pointing to moving human
+head/face kept at a certain relative position
+
+§ camera on human head, with robot pointing
+to it and kept at a certain relative position
+
+different Cartesian motion tasks
+of varying dimension m ≤ n
+cone represents a relaxation
+of the pointing task by some
+relative angle ad
+Robotics 2
+
+36
+
+Simulation
+
+Motion control using Task Augmentation method
+
+§ camera tracing a circle in a vertical plane,
+while pointing direction is kept constant
+
+ROS environment, integrated
+with robot simulator V-REP
+position errors < 1.5 mm
+
+pointing error < 0.006
+
+video
+Robotics 2
+
+37
+
+Experiment of visual coordination
+KUKA LWR robot in ROS environment with FRI
+
+https://youtu.be/SRfpNrZD7k0
+
+position error ≤ 5 cm pointing error < 0.03 rad
+
+also in multi-sensory operation
+Kinect depth
+sensor
+
+Oculus Rift
+HMD
+
+Obstacle
+Monitor
+NO
+
+Human-Head
+Localization
+EE Desired Pose
+Task
+
+Nearby Obstacles Detected
+YES
+
+Nearby
+EE
+
+Nearby
+Robot Body
+
+EE
+Collision
+Avoidance
+
+Robot Body
+Collision
+Avoidance
+
+SNS Control
+Algorithm
+
+video
+Robotics 2
+
+38
+
+Safe human-robot interaction
+From coexistence to physical collaboration
+
+video
+
+coexistence through
+collision avoidance
+
+video
+https://youtu.be/pIIhY8E3HFg
+
+physical collaboration through
+contact identification
+(here, end-effector only)
+
+Robotics 2
+
+39
+
+Distance and contact point localization
+Using Kinect, CAD model, and distance computation to localize contact (early 2014)
+
+§ depth image is acquired by a Kinect
+§ robot is removed from image (URDF filter
+by TUM), starting from its 3D CAD model
+§ human hand tracking on filtered image
+§ 3D CAD model of robot and hand position
+are used to localize contact point on robot
+surface
+§ surfaces of robot links are modeled using
+polygonal patches
+§ 3D robot model is projected in workspace
+with a calibration matrix
+§ distances are computed between vertices
+of patches and the human hand
+§ ranges vary from about 20 cm (area of
+interest) down to 0 (contact)
+§ residuals are always zero when robot
+moves in free space
+Robotics 2
+
+40
+
+Distance and contact point localization
+Use residuals to detect the contact event, also for multiple locations
+
+§ when the residual indicates a contact/collision (and colliding link), the vertex in
+the robot CAD surface model with minimum distance is taken as the contact point
+§ algorithm applied here in parallel to both left and right hand (no other body parts)
+
+video
+Robotics 2
+
+41
+
+Improved contact point localization
+Real-time localization using the CUDA framework (IROS 2017)
+
+§ the algorithm, based on distance computation in depth space, takes advantage of a CUDA
+framework for massively parallel GPU programming; three 2.5D images are processed:
+§ real depth image , captured by a RGB-D sensor (a Kinect)
+§ virtual depth image , containing only a projection of the robot CAD model
+§ filtered depth image
+, containing only the obstacles
+
+§ parallel distance computations between all robot points in virtual image and all obstacle
+points in filtered image (same time needed to localize one or multiple contact points!)
+Robotics 2
+
+42
+
+Contact force estimation
+Combining internal and external sensing
+
+§ task
+localize (in the least invasive way) points on robot surface where contacts occur
+§ estimate exchanged Cartesian forces
+§ control the robot to react to these forces according to a desired behavior
+§
+
+§ solution idea
+use residual method to detect physical contact, isolate the colliding link, and
+identify the joint torques associated to the external contact force
+§ use a depth sensor to classify the human parts in contact with the robot and
+localize the contact points on the robot structure (and the contact Jacobian)
+§ solve a linear set of equations with the residuals, i.e., estimates of joint torques
+resulting from contact wrenches (forces/moments) applied anywhere to the
+robot
+§
+
+Robotics 2
+
+43
+
+Contact force estimation
+Some simplifying assumptions
+
+§ dealing with contact forces
+§ most intentional contacts with a single human part (hand, arm, fingers) are not able to
+transfer relevant torques
+§ to estimate reliably
+we should have rank Jc = 6, which is true only if the robot has
+n ≥ 6 joints and the contact occurs at a link with index ≥ 6
+assume
+only a pure Cartesian force is considered
+§ dimension of the task related to the contact force is now m = 3 and its estimation is
+
+§ the contact Jacobian can be evaluated once the contact point is detected by the
+external depth sensor that closely monitors the robot workspace
+§ this procedure represents a so-called virtual force sensor
+
+Robotics 2
+
+44
+
+Validation of virtual force sensor
+Experiments in static conditions with the KUKA LWR 4 (IROS 2014)
+
+§ evaluation of estimated contact force
+
+§ estimation accuracy was initially tested using
+known masses in known positions
+§ a single mass hung either on link 4 or on link 7,
+to emulate a single (point-wise) contact
+
+§ a mass hung on link 7, and then a second on
+link 4 so as to emulate a double contact
+
+case of one mass
+case of two masses
+
+Robotics 2
+
+45
+
+On-line estimation of contact force
+Used within an admittance control scheme (IROS 2014)
+https://youtu.be/Yc5FoRGJsrc
+
+video
+Robotics 2
+
+46
+
+On-line estimation of contact force
+Evolution of residuals, estimated forces, and compliant displacements
+
+§ control gains are chosen so as to assign a stiff
+behavior at a reference configuration
+§ at some time, human pushes on robot link 3
+§ due to the stiff robot behavior, a large force
+needs to be applied to move the robot
+§ when the hand is removed, the contact point
+returns smoothly to its initial position (zero error)
+
+see slide #54 for the chosen
+admittance control scheme
+Robotics 2
+
+47
+
+Further validation of virtual force sensor
+In static and dynamic conditions, using a hand-held F/T sensor (February 2019)
+
+§ comparing the F/T ground truth
+contact force measure with its
+residual-based estimation
+§ with robot at rest (pushing)
+§ in robot motion (hitting)
+
+video
+
+outgrowth of Emanuele Magrini’s
+PhD thesis, May 2016
+video
+Robotics 2
+
+48
+
+Estimation of contact force
+Some limitations of the residual method
+
+§ multiple simultaneous contacts can be considered (e.g., with both human hands)
+
+but with much less confidence in the resulting force estimates (detection is still ok)
+§ estimates will be limited only to those
+components of
+which can be
+detected by the residual (i.e., that
+produce work on robot motion)
+§ all forces
+will never
+be recovered ⇔ they are ‘absorbed’
+by the robot structure
+
+Robotics 2
+
+49
+
+Estimation of contact force
+Sometimes, even without external sensing
+
+§ if contact is sufficiently “down” along the kinematic chain (≥ 6 residuals available),
+the estimation of pure contact forces does not need any external information ...
+
+Robotics 2
+
+50
+
+A closer analysis
+Which force components are being estimated? Do we really need external sensing?
+
+• a simple 3R planar case, with contact on different links
+r is a vector of
+dimension 3
+
+rank { Jc1 } = 1
+
+rank { Jc2 } = 2
+
+only normal force to link,
+if contact point is known
+(1 informative residual signal)
+
+• forces
+Robotics 2
+
+full force on link,
+if contact point is known
+(2 informative residuals)
+
+rank { Jc3 } = 2
+full force on link, even
+without knowing contact
+(3 informative residuals)
+
+will never be recovered (even with known contact)
+51
+
+Additional F/T sensor at the base
+Combining real & virtual sensors for estimating interaction forces/moments (IROS 2016)
+
+KUKA 6-dof Agilus robot (@Augsburg)
+§ Recursive Newton-Euler Algorithm (fed by the
+residuals) for ground force/moment prediction
+§ comparison with base F/T sensor readings
+  
+
+(large) F/T sensor mounted at the base
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+Table of possible options/improvements
+for a contact wrench Wext,l = (Fext,l , Mext,l)
+
+§ an external wrench acting on link l will only
+affect the first l components of τext
+§ effect of Fext on τext depends on point pl
+while that of Mext does not, since only the
+contact link is relevant (isolated by residual)
+Robotics 2
+
+52
+
+Collision or collaboration?
+Distinguishing hard/accidental collisions and soft/intentional contacts
+
+§ using suitable low and high bandwidths for
+the residuals (first-order stable filters)
+
+for generic j-th joint
+
+§ a threshold is added to prevent false
+collision detection during robot motion
+
+soft contacts
+
+collisions
+Robotics 2
+
+video
+53
+
+Collaboration control
+Use of estimate of the external contact force for control (e.g., on a Kuka LWR)
+
+§ shaping the robot dynamic behavior in specific collaborative tasks with human
+§ joint carrying of a load, holding a part in place, whole arm force manipulation, ...
+§ robot motion controlled by
+§ admittance control law (in velocity FRI mode)
+§ force, impedance or hybrid force-motion control laws (needs torque FRI mode)
+all implemented at contact level
+§ e.g., admittance control law using estimated contact force (as in video of slide #46)
+§ the scheme is realized at the single (or first) contact point
+§ desired velocity of contact point taken proportional to (estimated) contact force
+
+initial contact point position when interaction begins
+
+Robotics 2
+
+54
+
+Contact force regulation with virtual force sensing
+Human-robot collaboration in torque control mode (ICRA 2015)
+
+§ contact force estimation & control (anywhere/anytime)
+
+video
+
+see ICRA 2015
+trailer (at 3’26’’):
+https://youtu.be/glNHq7MpCG8 (Italian); https://youtu.be/OM_1F33fcWk (English)
+Robotics 2
+
+55
+
+Impedance-based control of interaction
+Reaction to contact forces by generalized impedance —at different levels
+consider a fully rigid robot
+
+Joint compliance
+impedance
+needs joint torque sensors
+
+Cartesian compliance
+impedance
+needs F/T sensor
+
+Contact point impedance
+without force/torque sensing, with estimation of contact force
+Robotics 2
+
+56
+
+Control of generalized impedance
+HR collaboration at the contact level (ICRA 2015)
+natural (unchanged) robot inertia at the contact
+
+video
+
+assigned robot inertia at the contact
+with different apparent masses along X, Y, Z
+
+video
+Z
+
+Y
+X
+
+contact force estimates are used here
+only to detect and localize contact
+in order to start a collaboration phase
+Robotics 2
+
+contact force estimates used explicitly in
+control law to modify robot inertia at the contact
+(Md,X = 20, Md,Y = 3, Md,Z = 10 [kg])
+
+https://youtu.be/NHn2cwSyCCo
+
+57
+
+Control of generalized contact force
+Direct force scheme
+
+§ explicit regulation of the contact force to a desired value, by imposing
+§ a force control law needs always a measure (here, an estimate) of contact force
+§ task-compatibility: human-robot contact direction vs. desired contact force vector
+video
+Z
+
+Y
+X
+
+however, drift effects due to poor control design
+Robotics 2
+
+58
+
+Control of generalized contact force
+Task-compatible force control scheme (ICRA 2015)
+
+§ only the norm of the desired contact force is controlled along the instantaneous
+direction of the estimated contact force
+⇔
+
+|| Fd || = 15 [N]
+
+§ in static conditions, the force control law is able to regulate contact forces exactly
+Z
+
+video
+Y
+X
+
+task-compatible control of contact force
+Robotics 2
+
+59
+
+b c k =4 0 5kF
+b c k =4 0 5 ,
+=4 v T 5wkF
+b ck
+1
+wT
+k
+F
+Collaboration control
+
+Hybrid force/velocity
+control
+scheme (ICRA
+2016)
+which
+completely
+agrees
+with the contact frame defi-
+
+b c is aligned with the z t
+nition, i.e., the contact force F
+axis.
+§ it allows to control
+forceno
+andcontact
+motionforce
+in
+3)both
+wx contact
+= 0, i.e.,
+along x0 direction.
+two mutually independent
+sub-spaces
+b ck =
+Provided
+that kF
+6 0, |wy | and/or |wz | are non-zero.
+§ extends at the contact
+level the
+a hybrid
+Thus,
+sameforce/velocity
+previous considerations can be made
+control law, with the for
+orientation
+of contact
+task of w, obtaining a different
+a different
+component
+frame being determined
+instantaneously
+expression
+for the rotation matrix Rt .
+§ task frame obtained by a rotation matrix
+such
+IV.estimated
+H YBRID contact
+F ORCE /V
+ELOCITY C ONTROL
+that is aligned with the
+force
+AT THE C ONTACT
+Consider the robot dynamic model in (5) and the feedback
+linearization control law
+
+the velocity dam
+The motion dyna
+described as
+
+where ef = Fd
+other hand, the d
+for ⌫˙ in (17) the
+
+⌫˙ = ⌫˙ d + K
+
+where K ⌫ > 0 a
+⌫=
+
+is the velocity o
+subspace. The dy
+
+b c ,, the acceleration command is
+J Tc F
+with K ⌫ and
+Rt K
+which leads, in ideal conditions, to a linear and decoupled
+error e⌫ = 0 (⌫
+system of double integrators q̈ = a. With reference to (4),
+Finally, the co
+the control
+inputforce
+a iscontrol
+chosenand
+as velocity control can be achieved by
+§ complete decoupling
+between
+⇣
+#
+1
+⇣ ac input as ⇣
+⌘⌘
+a = Jc Md S
+choosing the new auxiliary
+control
+#
+1
+t
+a = J c M d Rt ac + M d Ṙt ẋc J̇ c q̇
++ P c q̈ 0 ,
+(16)
+⇣
+⌘
+
+§ after feedback linearization with ⌧ = M a + n
+
+Robotics 2
+
+where M d = J c M
+
+1
+
+J Tc
+
+1
+
+is the natural inertia of the
+3
+
+60
+
+with matrices S
+
+Collaboration control
+Hybrid force/velocity control scheme
+
+§ the force regulation task should be along the instantaneous direction of the applied
+external force while the motion control task lives in the orthogonal plane
+§ the selection matrices are chosen as
+
+§ regulation of the contact force to desired constant value
+
+is obtained choosing
+
+§ control of the desired velocity can be achieved using
+§ the final control acceleration input becomes
+
+Robotics 2
+
+61
+
+Collaboration control
+Hybrid force/velocity control at contact level (IROS 2016)
+https://youtu.be/tIhEK5f00QU
+Z
+
+§ desired contact force along Y direction
+regulated to
+§ constant desired velocity to perform a line
+in the vertical XZ plane
+
+Y
+X
+
+video
+Z
+
+Y
+
+X
+
+Robotics 2
+
+X
+
+62
+
+Collaboration control
+Hybrid force/velocity control at contact level (IROS 2016)
+
+§ desired contact force along the X direction
+regulated to
+§ desired velocity/acceleration to perform a
+circle in the vertical YZ plane
+
+video
+Z
+
+X
+
+Robotics 2
+
+≈ 7 cm of motion in the force-controlled direction
+
+Y
+
+63
+
+Validation of collaboration control with a F/T sensor
+Force and hybrid force/velocity control schemes at contact level (February 2019)
+
+§ desired contact force along the
+estimated contact direction
+regulated at 15 N
+§ … and trajectory control with
+constant speed along a circle in
+the orthogonal plane
+
+video
+
+video
+Robotics 2
+
+64
+
+SYMPLEXITY cell for laser polishing
+Including a manual polishing station with human-robot physical collaboration
+
+H2020 FoF EU project (2015-18)
+
+UR10
+Robot
+
+Measure
+Tool
+
+Laser
+Polishing
+Machine
+
+Kinect 1
+Ultrasonic
+Bath
+
+Airlock
+
+Kinect 2
+
+Manual Polishing Station
+
+Robotics 2
+
+Contact detection
+(model-based) for safety
+3D workspace monitoring
+with 2 Kinects for
+HR coexistence
+Use of F/T sensor
+and of residuals for
+HR physical collaboration
+Universal Robots UR10
+• lightweight design
+• CE safety certified
+speed scaling/stop
+from sensing HR distance
+(= 0 in physical collaboration)
+ISO/TS15066:2016
+65
+
+Scenario for HRC in manual polishing
+Preparing a metallic part for the final polishing by the laser machine
+
+UR10 robot operation with HR coexistence/collaboration
+
+part to be
+polished
+video
+
+video
+
+measuring Berlin Heart part with the CWS
+
+physical collaboration in contact
+
+video
+
+video
+
+coexistence
+Robotics 2
+
+coordination with LP machine
+
+CWS = Coherent Wave Scattering (laser measurement of surface quality)
+
+66
+
+Scenario for HRC in manual polishing
+Distinguishing different contact forces
+
+contact force at unknown location
+- not measurable by the F/T sensor
+- possibly applied by the human while
+manipulating the work piece held by robot
+- contact Jacobian Jc is not known
+
+F/T sensor
+
+Fe
+Je,JeT
+Fc
+
+Fe
+
+Jc,JcT
+6D Force/Torque (F/T) sensor at wrist
+- manual polishing force is measured
+- end-effector Jacobian Je is known
+Robotics 2
+
+67
+
+Handling multiple contacts
+Dynamic model and residual computation using also the F/T sensor
+
+§ robot dynamic model takes the form
+
+S
+§ joint torques resulting from different contacts
+(measured) at the end-effector level
+
+at a generic point along the structure
+
+§ monitor the robot generalized momentum
+§ (model-based) residual vector signal to detect and isolate the generic contacts
+
+ST
+
+Robotics 2
+
+68
+
+Admittance control strategy during manual polishing
+Human and robot are physically collaborating
+
+§ when there is no extra contact along the structure, position and orientation of
+the end-effector are both held fixed by a stiff kinematic control law
+
+as large as possible
+
+constant values
+
+§ in this way, the control law counterbalances all forces/torques applied by the
+operator during manual polishing
+§ when the human intentionally pushes on the robot body, control of the endeffector orientation is relaxed
+residual-based
+3×6 for UR10
+
+admittance reaction
+to extra contacts
+
+§ human can reconfigure the arm, thus reorient the work piece held by the robot
+Robotics 2
+
+69
+
+HRC phase with UR10 robot
+Experimental verification in the lab (Mechatronics 2018)
+
+https://youtu.be/slwUiRT_IJQ
+
+video
+
+no F/T sensor, switch to UR FreeDrive mode
+
+video
+
+https://youtu.be/bjZbmlAclYk
+
+with F/T sensor, using our residual method
+for a similar behavior with the KUKA LWR
+see https://youtu.be/TZ6nPqLPDxI
+
+Robotics 2
+
+70
+
+HRC phase with UR10 robot
+Experimental results (separating F/T measures from residuals)
+
+in all cases, no linear motion of EE position!
+
+both forces at the same time...
+
+extra force detected...
+polishing force only...
+
+...joints move accordingly
+
+...no joint motion
+Robotics 2
+
+...joints move due to extra force only
+71
+
+Combining motor currents and F/T sensor data
+Enhanced flexible interaction by filtering, thresholding, merging signals (ICRA 2019)
+
+video
+
+collaborative
+forces at E-E
+
+ATI Mini45
+F/T sensor
+video
+
+intentional contacts
+and/or collisions
+may occur anywhere
+6-dof KUKA KR5 Sixx with
+closed control architecture
+and RSI interface at 𝑇' = 12 ms
+Robotics 2
+
+72
+
+Our team at DIAG
+Robotics Lab of the Sapienza University of Rome (back in 2014)
+
+Acknowledgements
+@Sapienza – DIAG - Gabriele Buondonno, Lorenzo Ferrajoli, Fabrizio Flacco♱,
+Claudio Gaz, Milad Geravand, Emanuele Magrini, Eleonora Mariotti, Raffaella Mattone
+@DLR – Institute of Robotics and Mechatronics - Alin Albu-Schäffer, Sami Haddadin
+@Stanford – Artificial Intelligence Lab - Oussama Khatib, Torsten Kröger
+Robotics 2
+
+73
+
+References - 1
+Download pdf for personal use at www.diag.uniroma1.it/deluca/Publications
+§
+§
+§
+§
+§
+§
+§
+§
+§
+§
+§
+
+§
+
+A. De Luca and R. Mattone, “Sensorless robot collision detection and hybrid force/motion control,” IEEE Int. Conf. on
+Robotics and Automation, pp. 999-1004, 2005.
+A. De Luca, A. Albu-Schäffer, S. Haddadin, and G. Hirzinger, “Collision detection and safe reaction with the DLR-III
+lightweight manipulator arm,” IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 1623-1630, 2006.
+S. Haddadin, A. Albu-Schäffer, A. De Luca, and G. Hirzinger, “Collision detection and reaction: A contribution to safe
+physical human-robot interaction,” IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 3356-3363, 2008 (IROS
+2008 Best Application Paper Award).
+A. De Luca and L. Ferrajoli, “Exploiting robot redundancy in collision detection and reaction,” IEEE/RSJ Int. Conf. on
+Intelligent Robots and Systems, pp. 3299-3305, 2008.
+A. De Santis, B. Siciliano, A. De Luca, A. Bicchi, “An atlas of physical human-robot interaction,” Mechanism and Machine
+Theory, vol. 43, no. 3, pp. 253–270, 2008 (2017 MMT Award for Excellence).
+A. De Luca and L. Ferrajoli, “A modified Newton-Euler method for dynamic computations in robot fault detection and
+control,” IEEE Int. Conf. on Robotics and Automation, pp. 3359-3364, 2009.
+F. Flacco, A. De Luca, “Multiple depth/presence sensors: Integration and optimal placement for human/robot
+coexistence,” IEEE Int. Conf. on Robotics and Automation, pp. 3916-3923, 2010.
+F. Flacco, T. Kröger, A. De Luca, and O. Khatib, “A depth space approach to human-robot collision avoidance,” IEEE Int.
+Conf. on Robotics and Automation, pp. 338-345, 2012.
+A. De Luca and F. Flacco, “Integrated control for pHRI: Collision avoidance, detection, reaction and collaboration,” 4th
+IEEE RAS Int. Conf. on Biomedical Robotics and Biomechatronics, pp. 288-295, 2012 (BioRob 2012 Best Paper Award).
+M. Geravand, F. Flacco, and A. De Luca, “Human-robot physical interaction and collaboration using an industrial robot
+with a closed control architecture,” IEEE Int. Conf. on Robotics and Automation, pp. 3985-3992, 2013.
+E. Magrini, F. Flacco, and A. De Luca, “Estimation of contact force using a virtual force sensor,” IEEE/RSJ Int. Conf. on
+Intelligent Robots and System, pp. 2126-2133, 2014.
+
+F. Flacco, T. Kröger, A. De Luca, and O. Khatib, “A depth space approach for evaluating distance to objects —with
+application to human-robot collision avoidance,” J. of Intelligent & Robotic Systems, vol. 80 S.1, pp. 7-22, 2015.
+Robotics 2
+
+74
+
+References - 2
+Download pdf for personal use at www.diag.uniroma1.it/deluca/Publications
+§
+§
+§
+§
+§
+§
+§
+§
+§
+§
+§
+§
+
+E. Magrini, F. Flacco, and A. De Luca, “Control of generalized contact motion and force in physical human-robot
+interaction,” IEEE Int. Conf. on Robotics and Automation, pp. 2298-2304, 2015 (ICRA 2015 Best Conference Paper
+Award Finalist).
+G. Buondonno and A. De Luca, “Combining real and virtual sensors for measuring interaction forces and moments
+acting on a robot," IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 794-800, 2016.
+E. Magrini and A. De Luca, “Hybrid force/velocity control for physical human-robot collaboration tasks,” IEEE/RSJ Int.
+Conf. on Intelligent Robots and Systems. pp. 857-863, 2016.
+F. Flacco and A. De Luca, “Real-time computation of distance to dynamic obstacles with multiple depth sensors,” IEEE
+Robotics and Automation Lett., vol. 2, no. 1, pp. 56-63, 2017.
+M. Khatib, K. Al Khudir, A. De Luca, "Visual coordination task for human-robot collaboration," IEEE/RSJ Int. Conf. on
+Intelligent Robots and Systems, pp. 3762-3768, 2017.
+E. Magrini, A. De Luca, “Human-robot coexistence and contact handling with redundant robots,” IEEE/RSJ Int. Conf. on
+Intelligent Robots and Systems, pp. 4611-4617, 2017.
+S. Haddadin, A. De Luca, and A. Albu-Schäffer, “Robot collisions: A survey on detection, isolation, and identification,”
+IEEE Trans. on Robotics, vol. 33, no. 6, pp. 1292-1312, 2017.
+C. Gaz, A. De Luca, “Payload estimation based on identified coefficients of robot dynamics --with an application to
+collision detection, ” IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 3033-3040, 2017.
+C. Gaz, E. Magrini, A. De Luca “ A model-based residual approach for human-robot collaboration during manual
+polishing operations,” Mechatronics, vol. 55, pp. 234-247, 2018.
+E. Mariotti, E. Magrini, A. De Luca, “Admittance control for human-robot interaction using an industrial robot equipped
+with a F/T sensor,” IEEE Int. Conf. on Robotics and Automation, pp. 6130-6136, 2019.
+E. Magrini, F. Ferraguti, A.J. Ronga, F. Pini, A. De Luca, F. Leali, "Human-robot coexistence and interaction in open
+industrial cells," Robotics and Computer-Integrated Manufacturing, vol. 61, 101846, 2020.
+Videos: YouTube channel RoboticsLabSapienza. Playlist: Physical human-robot interaction
+Robotics 2
+
+75
+
+

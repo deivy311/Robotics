@@ -1,0 +1,430 @@
+Robotics II
+June 11, 2012
+Exercise 1
+In an image-based visual servoing scheme, a pin-hole camera with constant focal length λ > 0 is
+mounted on the end-effector of a robot manipulator. A fixed Cartesian point P = (X Y Z)T ,
+whose coordinates are expressed in the camera frame and having Z > 0, is associated to a point
+feature f = (u v)T in the image plane. The 2 × 6 interaction matrix J p in
+
+
+v
+ḟ = J p (u, v, Z)
+ω
+provides the velocity of the point feature f when the robot imposes to the camera a linear velocity
+v ∈ R3 and an angular velocity ω ∈ R3 , both expressed in the camera frame. Determine a basis
+for all possible motions of the camera that do not move the point feature in the image plane, i.e.,
+yielding ḟ = 0. How many independent pure translation motions (i.e., with ω = 0) of this kind
+exist for the camera? And how many independent pure rotation motions (i.e., with v = 0)?
+Exercise 2
+A planar 3R robot with equal uniform thin rod links of unitary length moves in the vertical plane,
+actuated by the joint torques τ ∈ R3 and subject to a constant contact force F c applied to the
+midpoint of the second link and pointing always upward (see Fig. 1).
+Y!0!
+
+g0!
+
+!2!
+!1!
+
+Fc!
+
+!3!
+X!0!
+
+Figure 1: A planar 3R robot with a contact force
+• Define a control law for τ that regulates the robot to a desired generic equilibrium state
+(q, q̇) = (q d , 0) and give the explicit expression of the kinematic and dynamic terms needed
+for its implementation. The contact force and its location are assumed to be known, and
+thus there is no need of a force sensor. Provide a Lyapunov candidate that allows to prove
+the global asymptotic stability of the closed-loop system using Lyapunov/LaSalle arguments.
+• Suppose that the robot is in its desired steady state (q d , 0) under the action of the previously
+defined control law. The contact force is then suddenly doubled in intensity, but the control
+law is left unchanged. Does the third joint accelerate instantaneously? Assuming that the
+system remains stable, find a characterization of the new final configuration reached at the
+end of the transient in terms of the parameters of the controller.
+• If the contact force could be measured, would it be possible to preserve the global asymptotic
+stability of the original state (q d , 0) by suitably modifying the control law? If so, how?
+[180 minutes; open books]
+1
+
+Solution
+June 11, 2012
+
+Exercise 1
+The interaction matrix J p for a point feature takes the form (see lecture slides)
+
+
+λ
+u
+uv
+u2
+−
+0
+−
+−
+λ
+v
+ Z
+
+
+Z
+λ
+λ
+ = Jv Jω .
+Jp = 
+
+
+2
+λ v v
+uv
+0
++λ
+−
+−u
+Z Z
+λ
+λ
+
+(1)
+
+Since λ > 0 and Z is limited (by the range of the camera), the interaction matrix as well as its
+two (2 × 3) blocks J v and J ω will all have rank 2, independently from the values of u and v.
+The problem requires to define a basis for the null space of J p in the six-dimensional space of
+linear and angular camera velocity (v, ω). From the analysis of the structure of J p in (1), we have
+that
+dim N {J p } = 4,
+dim N {J v } = 1,
+dim N {J ω } = 1.
+This means that there will be four independent velocity vector of the camera that will not move
+the feature (u, v) in the image plane, and that one such vector can be given the form of a pure
+translation (v, 0) and another one of a pure rotation (0, ω). The other two vectors will be associated
+to roto-translations. With this in mind, we can solve the problem by inspection or by resorting to
+the following symbolic Matlab code.
+% null space of point feature interaction matrix
+clear all
+clc
+syms lam u v Z real
+J =
+[ -lam/Z, 0, u/Z, (u*v)/lam, - u2 /lam - lam, v]
+[ 0, -lam/Z, v/Z, v2 /lam + lam, -(u*v)/lam, -u];
+N=null(J)
+% check special case for u=v=0 (point at the center of the image plane)
+Norigin=subs(N,[u,v],[0,0])
+% check alternative solution (a pure rotation) that Matlab does not provide as such
+nrot=simplify(u*N(:,2)+v*N(:,3)+lam*N(:,4))
+verifynrot=simplify(J*nrot)
+% OUTPUT
+N
+[
+[
+[
+[
+[
+[
+
+=
+u/lam, (Z*u*v)/lam2 , -(Z*(lam2 + u2 ))/lam2 , (Z*v)/lam]
+v/lam, (Z*(lam2 + v2 ))/lam2 , -(Z*u*v)/lam2 , -(Z*u)/lam]
+1, 0, 0, 0]
+0, 1, 0, 0]
+0, 0, 1, 0]
+0, 0, 0, 1]
+2
+
+Norigin
+[ 0, 0,
+[ 0, Z,
+[ 1, 0,
+[ 0, 1,
+[ 0, 0,
+[ 0, 0,
+
+=
+-Z, 0]
+0, 0]
+0, 0]
+0, 0]
+1, 0]
+0, 1]
+
+nrot =
+0
+0
+0
+u
+v
+lam
+verifyrot =
+0
+0
+The columns of matrix N provide the solution. It is apparent that the first vector (conveniently
+scaled by λ) is a pure translation
+
+u
+ v 
+
+λ N(:, 1) = 
+ λ =
+
+
+v
+0
+
+!
+.
+
+0
+This represents a linear motion of the camera along the ray connecting the point (u, v) on the
+image plane to the Cartesian point (X, Y.Z). On the other hand, the remaining three basis vectors
+for the null space of J p found by Matlab have all the form of roto-translations. However, it is easy
+to see that their linear combination
+
+
+0
+
+
+ u 
+0
+=
+u N(:, 2) + v N(:, 3) + λ N(:, 4) = 
+ v 
+ω
+λ
+is a pure rotation along the previously defined ray. Indeed, if not properly guided, Matlab will
+find the null space of a matrix by suitable orthogonalizations and normalizations (see the resulting
+(4 × 4) identity matrix in the lower part of N), without providing automatically a solution with a
+desired physical meaning.
+Finally, the two remaining null space vectors can be given the form of roto-translations, either
+both with linear and angular components in the image plane
+
+
+
+
+uvZ
+−(u2 + λ2 )Z
+ (v 2 + λ2 )Z 
+
+
+−uvZ
+
+
+
+
+
+
+
+
+0
+0
+2
+2
+
+
+
+,
+λ N(:, 2) = 
+λ N(:, 3) = 
+2
+,
+
+λ
+0
+
+
+
+
+
+
+
+
+0
+λ2
+0
+0
+3
+
+or one still of this type and the other with linear component in the image plane and angular
+component along the camera main axis
+ 
+
+
+
+− u2 + λ2 − uv Z
+vZ
+ −uZ 
+ v 2 + λ2 − uv Z 
+
+
+
+
+ 0 
+
+
+0
+2
+
+.
+
+
+λ N(:, 4) = 
+λ (N(:, 2) + N(:, 3)) = 
+
+,
+λ2
+ 0 
+
+
+2
+
+
+
+
+0
+λ
+λ
+0
+
+Exercise 2
+The robot dynamics, under the action of the contact force F c and the motor control torque τ , is
+described by
+B(q)q̈ + c(q, q̇) + g(q) = τ + J Tc (q)F c ,
+where the Jacobian J c (q) is associated to the linear velocity (in the plane) of the mid point of the
+second robot link, where the contact force is applied in the upward direction. For a regulation task
+in the presence of the constant and known force F c , we can use the control law
+τ = g(q) − J Tc (q)F c + K P (q d − q) − K D q̇.
+
+(2)
+
+In fact, by canceling gravity and the effect of the contact force at the joint level, the task becomes
+in this way one of free regulation in the absence of gravity. This is solvable by a PD joint error
+action with K P > 0 and K D > 0, yielding global asymptotic stability of the desired equilibrium
+state (q d , 0). The proof uses the Lyapunov candidate
+V =
+
+1 T
+1
+T
+q̇ B(q)q̇ + (q d − q) K P (q d − q)
+2
+2
+
+and LaSalle analysis.
+To implement the control law (2), we need to measure only (q, q̇) (no force sensing is needed)
+and compute g(q) and J (q). From the gravitational potential energy
+
+
+
+
+
+`1
+`2
+`3
+U = U1 + U2 + U3 = g0 m1 s1 + m2 `1 s1 + s12 + m3 `1 s1 + `2 s12 + s123
+,
+2
+2
+2
+setting `1 = `2 = `3 = 1, we obtain
+
+
+m1 c1 + m2 (2c1 + c12 ) + m3 (2c1 + 2c12 + c123 )
+
+T
+∂U (q)
+g0 
+
+m2 c12 + m3 (2c12 + c123 )
+g(q) =
+=
+
+.
+∂q
+2
+m3 c123
+From the positional kinematics of the mid point of the second link
+!
+`1 c1 + 0.5 `2 c12
+pc = f c (q) =
+,
+`1 s1 + 0.5 `2 s12
+setting `1 = `2 = 1, we obtain
+1
+∂f (q)
+=
+J c (q) =
+∂q
+2
+
+− (2s1 + s12 ) −s12
+2c1 + c12
+4
+
+c12
+
+0
+0
+
+!
+.
+
+Therefore
+J Tc (q)F c = J Tc (q)
+
+0
+
+
+
+!
+=
+
+Fc,y
+
+Fc,y 
+
+2
+
+2c1 + c12
+
+
+
+c12
+
+
+.
+
+0
+
+Note that no additional control torque is present at the third joint since the contact force is applied
+at the second link. However, this contact force, if not compensated, will in general accelerate also
+the third joint because of the inertial coupling.
+With the robot at the desired equilibrium state (q d , 0) under the action of the control law (2),
+suppose that the contact force is doubled from F c to 2F c . The dynamic equations become in this
+state
+B(q d )q̈ = −J Tc (q d )F c + 2J Tc (q d )F c = J Tc (q d )F c
+and thus the instantaneous acceleration is
+q̈ = B −1 (q d )J Tc (q d )F c .
+Being in general the inertia matrix a full matrix (and so its inverse), all joints will have a non-zero
+acceleration q̈i , including q̈3 .
+Suppose now that a new steady state is reached, with q = q̄ and q̇ = q̈ = 0. In this equilibrium
+state, it is necessarily
+K P (q d − q̄) + J Tc (q̄)F c = 0.
+(3)
+We can determine the equilibrium configuration q̄ only by solving numerically the nonlinear equation (3). However, assuming that K P is chosen diagonal as usual, since the last component of
+J Tc (q)F c is always zero, the third equation in (3) becomes
+KP,3 (qd,3 − q̄3 ) = 0
+
+⇒
+
+q̄3 = qd,3
+
+while q̄i 6= qd,i for i = 1, 2. This means that the third joint will resume its desired value after the
+perturbation due to the doubling of the contact force acting on the second link.
+Finally, if the contact force is measured (in some way) and used in feedback control, then the
+same law (2) —now with any value for the measured quantity J Tc (q)F c — will guarantee that
+(q d , 0) will always remain the unique globally asymptotically stable equilibrium for the robot
+system.
+∗∗∗∗∗
+
+5
+
+

@@ -1,0 +1,544 @@
+Robotics 2
+
+Introduction
+Prof. Alessandro De Luca
+
+Robotics 2 ̶ 2019/20
+n
+
+second semester
+n
+
+n
+
+courses of study
+n
+n
+
+n
+
+~60 h of lectures, 90 h of individual study (1 ECTS = 25 h work)
+
+classes
+n
+n
+
+n
+
+Master in Artificial Intelligence and Robotics
+Master in Control Engineering
+
+credits: 6
+n
+
+n
+
+Monday, February 24 ̶ Wednesday, May 27, 2020
+
+Monday
+Wednesday
+
+08:00-10:00 (room B2, Via Ariosto 25)
+14:00-17:00 (room B2, Via Ariosto 25)
+
+video recordings of the course
+n
+
+Robotics 2
+
+each lecture will be available soon after in the Robotics 2 playlist
+on the Video DIAG – Sapienza YouTube channel
+2
+
+General information
+n
+
+prerequisites
+n
+
+n
+
+aims
+n
+n
+
+n
+
+advanced kinematics & dynamic analysis of robot manipulators
+design of sensory feedback control laws for free motion and
+interaction tasks
+
+textbook
+n
+
+n
+
+Robotics 1 as prerequisite (see www.diag.uniroma1.it/deluca/rob1_en.php)
+
+B. Siciliano, L. Sciavicco, L. Villani, G. Oriolo: Robotics: Modelling,
+Planning and Control, 3rd Edition, Springer, 2009
+
+related courses
+n
+n
+
+n
+
+Autonomous and Mobile Robotics: first semester, 6 credits
+Elective in Robotics: whole year, 12 credits (four modules)
+or Control Problems in Robotics: 6 credits (two out of four modules)
+Medical Robotics: second semester, 6 credits
+
+Robotics 2
+
+3
+
+An international textbook...
+B. Siciliano, L. Sciavicco, L. Villani, G. Oriolo: Robotics: Modelling,
+Planning and Control, 3rd Edition, Springer, 2009
+
+Robotics 2
+
+4
+
+Robotics
+n
+
+algorithms for robotics*
+n
+n
+n
+n
+
+n
+
+process inputs from sensors that provide noisy and partial data
+build geometric and physical models of the robot and the world
+plan high- and low-level actions at different time horizons
+execute these actions on actuators with uncertainty/limited precision
+
+design & analysis of robot algorithms raise a unique combination
+of questions from many fields
+n
+n
+n
+n
+n
+n
+
+control theory
+control
+theory
+computational geometry and topology
+geometrical
+geometrical and
+and physical
+physical modeling
+modeling
+reasoning under uncertainty
+probabilistic algorithms and game theory
+theoretical computer science
+* = from intro to WAFR 2016
+
+Robotics 2
+
+5
+
+Program - 1
+n
+
+advanced kinematics
+n
+n
+
+n
+
+kinematic calibration
+kinematic redundancy and related control methods
+
+dynamic modeling of manipulators
+n
+n
+n
+n
+n
+n
+n
+
+Robotics 2
+
+all on fixed-base
+robot manipulators!
+
+direct and inverse dynamics
+Euler-Lagrange formulation
+Newton-Euler formulation
+properties of the dynamic model
+identification of dynamic parameters
+inclusion of flexibility at the joints
+inclusion of geometric constraints
+6
+
+Program - 2
+n
+
+design of feedback control laws
+n
+
+free motion tasks
+n
+
+set-point regulation
+n
+n
+n
+
+n
+
+trajectory tracking
+n
+n
+n
+
+n
+
+feedback linearization and input-output decoupling
+passivity-based control
+adaptive (and robust) control
+
+interaction tasks with the environment
+n
+n
+n
+
+Robotics 2
+
+PD with gravity cancellation or compensation
+PID or saturated PID
+iterative learning
+
+compliance control
+impedance control
+hybrid force/velocity control
+
+7
+
+Program - 3
+n
+
+exteroceptive feedback control laws
+n
+
+image- and position-based visual servoing
+n
+
+n
+
+research-oriented seminars
+n
+n
+
+diagnosis of robot actuator faults
+physical Human-Robot Interaction (pHRI)
+n
+n
+n
+
+n
+
+kinematic treatment
+
+safety: sensorless collision detection and robot reaction
+coexistence: collision avoidance while sharing workspace
+collaboration: intentional exchange of contact forces
+
+simulation tools
+n
+n
+
+Robotics 2
+
+Matlab/Simulink
+CoppeliaSim (was V-REP)
+8
+
+Sneak preview of videos follows ...
+n
+
+kinematic redundancy and related control methods
+
+n
+
+robot dynamic modeling and identification
+
+n
+
+interaction with the environment: force and motion control
+
+n
+
+n
+
+motion control in the presence of joint flexibility or variable
+stiffness actuation
+safe physical human-robot interaction & collaboration
+
+Robotics 2
+
+9
+
+Kinematic/dynamic control and redundancy
+SNS algorithm handles hard bounds on robot motion
+
+KUKA LWR4 robot
+Robotics 2
+
+video DIAG Sapienza/Stanford, IEEE ICRA 2012
+10
+
+Kinematic control and redundancy
+(standing) HRP-2 humanoid robot
+
+video @LAAS/CNRS Toulouse
+
+HQP approach for multiple equality and inequality tasks with priorities
+Robotics 2
+
+11
+
+Dynamic modeling and identification
+
+data acquisition
+for identification
+KUKA LWR4+ robot
+with joint torque
+sensing
+Robotics 2
+
+2 videos ICRA 2014 @DIAG Robotics Lab
+
+model validation
+by torque prediction
+dynamic
+simulation
+with V-REP
+video
+
+12
+
+Dynamic modeling and identification
+e.g., linear parametrization of gravity term in robot dynamic model
+
+symbolic expressions of gravityrelated dynamic coefficients
+
+numerical values
+identified through
+experiments
+gravity joint torques
+prediction/evaluation on
+new validation trajectory
+Robotics 2
+
+13
+
+Dynamic modeling and identification
+complete dynamic model estimation vs. joint torque sensor measurement
+
+-
+
+without the use of a joint friction model
+Robotics 2
+
+friction
+
+meas
+
+including an identified joint friction model
+14
+
+Control of environment interaction
+2 video clips extracted from Springer Handbook of Robotics - Multimedia
+
+surface contour following
+
+peg-in-hole insertion strategy
+
+De Schutter et al @KU Leuven, Belgium (mid ‘90s)
+Robotics 2
+
+15
+
+Motion control under joint flexibility
+2 videos @DLR München
+
+low-damped oscillations due to flexibility
+of robot transmissions at the joints
+(use of Harmonic Drives)
+Robotics 2
+
+end-effector response to forces
+with impedance control
+(behavior selective in directions)
+16
+
+Motion control with VSA
+
+3 videos
+@University of Pisa
+
+Robotics 2
+
+modular, low-cost
+qbmove units
+
+compliant motion with Variable Stiffness Actuators
+
+17
+
+Safe human-robot collaboration
+finalist video IROS 2013 @DIAG Robotics Lab
+
+Robotics 2
+
+18
+
+Physical human-robot interaction control
+video ICRA 2015 @DIAG Robotics Lab
+
+Robotics 2
+
+19
+
+Some recent EU research projects
+n
+
+FP7 SAPHARI (2011-15)
+n
+
+n
+
+n
+
+H2020 SYMPLEXITY (2015-18)
+n
+
+n
+
+n
+
+Safe and Autonomous Physical
+Human-Aware Robot Interaction
+www.saphari.eu
+Symbiotic Human-Robot Solutions for
+Complex Surface Finishing Operations
+www.symplexity.eu
+
+H2020 COMANOID (2015-18)
+Multi-Contact Collaborative Humanoids
+in Aircraft Manufacturing
+§ comanoid.cnrs.fr
+n
+
+Robotics 2
+
+20
+
+Contacts
+n
+
+office hours
+n
+n
+n
+
+n
+
+Tuesday 12:00-13:30 c/o A-210, left wing, floor 2, DIAG, Via Ariosto 25
+.. and/or by email (with some advance)
+look at the tab “My travel dates” on my web site
+
+communication by email
+deluca@diag.uniroma1.it
+please check/add your address in my Robotics 2 mailing list
+
+n
+n
+
+n
+n
+n
+
+URL: http://www.diag.uniroma1.it/deluca
+video channel: http://www.youtube.com/user/RoboticsLabSapienza
+course material (lecture slides, videos, written exams, …)
+n
+n
+
+n
+
+http://www.diag.uniroma1.it/deluca/rob2_en.html
+lecture slides ready (will be updated during the course)
+
+registration to exams in infostud (code 1021883)
+
+Robotics 2
+
+21
+
+Exams and Master Thesis
+n
+
+type of exam
+n
+n
+
+n
+
+classroom midterm test (qualifies for final project)
+written test + oral part (or final project + oral presentation)
+
+schedule for academic year 2019/20 (already in infostud)
+n
+
+2 sessions at the end of this semester
+n
+
+n
+
+1 session after the summer break
+n
+
+n
+
+n
+
+in April (between 15 and 21) and in October 2020: times/rooms tbd
+
+2 sessions at the end of the first semester of next year
+n
+
+n
+
+September 11, 9:00, room B2
+
+2 extra sessions only for students of previous years, part-time, etc.
+n
+
+n
+
+June 5, 9:00, room B2 and July 15, 9:00, room B2
+
+January and February 2021
+
+registration in infostud, up to one week before!
+
+master theses
+n
+
+available at DIAG Robotics Lab: http://www.diag.uniroma1.it/labrob
+
+Robotics 2
+
+22
+
+

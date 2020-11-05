@@ -1,0 +1,80 @@
+Robotics II
+January 7, 2020
+Exercise 1
+Consider the robot in Fig. 1 with N = 3 joints, one prismatic and two revolute. Each link of the robot has
+uniformly distributed mass, center of mass on its physical link axis, and a diagonal barycentric link inertia
+matrix. We assume that friction at the joints can be neglected. The robot is commanded at the joint level
+by a generalized vector of forces/torques τ ∈ R3 .
+a) Derive the dynamic model of the robot in the Lagrangian form M (q)q̈ + c(q.q̇) + g(q) = τ .
+b) Find a linear parametrization Y (q, q̇, q̈) a = τ of the robot dynamics in terms of a vector a ∈ Rp of
+dynamic coefficients and of a 3 × p regressor matrix Y . Discuss the minimality of p.
+c) Determine which of the 10N = 30 dynamic parameters of the links are irrelevant for the describing the
+motion of the robot.
+d) Given a desired smooth trajectory q d (t) ∈ C 2 in the joint space, design for this robot an adaptive control
+law that globally asymptotically stabilizes the tracking error e(t) = q d (t) − q(t) to zero, without any
+a priori knowledge of the robot dynamic parameters.
+
+l2
+q3
+
+dc2
+m1
+
+q1
+
+dc3
+
+q2
+
+m2,
+I2
+
+m3,
+I3
+
+g0
+y0
+x0
+Figure 1: A PRR robot with coordinates q = (q1 q2 q3 )T and relevant kinematic/dynamic parameters.
+Exercise 2
+A number of questions and statements are reported on the Questionnaire Sheet. Fill in your answers
+and/or comments on the same sheet, providing also a short motivation/explanation for each item. Add
+your name on the sheet and return it.
+[210 minutes, open books]
+
+Robotics II - Questionnaire Sheet
+January 7, 2020
+Name:
+Answer to the questions or comment the statements, providing also a short motivation/explanation for
+each of the following 4 items.
+1. Write down the calibration equation for a planar 2R robot in which the only inaccurate values are the
+link lengths l1 and l2 . Describe briefly how to set up a kinematic calibration procedure in this caee.
+
+2. At a given q ∈ RN , we have to choose the velocity command q̇ ∈ RN that minimizes the objective
+function H = 12 q̇ T A−1 q̇, with A > 0, while satisfying the task J q̇ = ẋ ∈ RM , with M < N and
+rank{J } = M . Two commands have been computed as
+
+−1
+q̇ 0 = A−1 J T JA−1 J T
+ẋ
+
+and
+
+
+
+q̇ 00 = J # ẋ − I − J # J ∇q̇ H,
+
+with ∇q̇ H = A−1 q̇.
+
+Which command is better? Why?
+
+3. Consider an assembly task, in which a peg having an equilateral triangle as section is to be inserted at
+a slow but constant speed V in a similar hole with reduced clearance. Define a suitable task frame and
+the natural and artificial constraints for this task.
+
+4. For a 2-dof RP robot in the horizontal plane, write the explicit expression of an energy-based scalar
+residual, able to detect collisions when all the robot joints are in motion. Determine also which type of
+contact forces in the plane F c ∈ R2 (i.e., where they are applied on the robot, and in which direction)
+cannot be detected by this method, even if the robot is not at rest.
+
+

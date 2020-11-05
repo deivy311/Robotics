@@ -1,0 +1,362 @@
+Robotics 2
+
+Control in the Cartesian Space
+Prof. Alessandro De Luca
+
+Regulation of robot Cartesian pose
+n
+
+“PD +” type control for regulation problems
+n
+
+n
+
+robot
+n
+n
+
+n
+
+proportional to the Cartesian pose error, with a derivative term
+(on velocity) + cancellation/compensation of gravity in joint space
+
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢
+kinematics
+𝑝 = 𝑓 𝑞 ⟶ 𝑝̇ = 𝐽 𝑞 𝑞̇
+dynamics
+
+dimension of spaces
+joint = 𝑛
+Cartesian = 𝑚
+
+goal: asymptotic stabilization of the end-effector pose
+𝑝 = 𝑝5 , 𝑞̇ = 0 ⟶ 𝑝̇5 = 0
+Note: if 𝑛 = 𝑚, then 𝑞̇ = 0 ⇔ 𝑝̇ = 0 up to singularities
+n
+
+Robotics 2
+
+if 𝑛 > 𝑚, then the goal is not uniquely associated
+to a complete robot state: 𝑛 − 𝑚 joint
+coordinates are missing…
+2
+
+A Cartesian regulation law
+(*)
+
+𝑢 = 𝐽9 𝑞 𝐾7 𝑝5 − 𝑝 − 𝐾8 𝑞̇ + 𝑔(𝑞)
+
+𝐾7 , 𝐾8 > 0
+(symmetric)
+
+Theorem
+under the control law (*), the robot state will converge asymptotically
+to the set
+
+𝐴 = {𝑞̇ = 0, 𝑞: 𝐾7 𝑝5 − 𝑓 𝑞 ∈ 𝑁 𝐽9 𝑞 )
+⊇ {𝑞̇ = 0, 𝑞: 𝑓 𝑞 = 𝑝5 }
+
+Proof
+define 𝑒7 = 𝑝5 − 𝑝 (Cartesian error) and the associated
+Lyapunov-like candidate function
+𝑉 = GH 𝑞̇ 9 𝑀 𝑞 𝑞̇ + GH 𝑒I9 𝐾7 𝑒7
+̇ ∈ {𝑞̇ = 0, 𝑞: 𝑓 𝑞 = 𝑝5 } ⊆ 𝐴
+with 𝑉 = 0 ⟺ (𝑞, 𝑞)
+Robotics 2
+
+𝐴
+𝑉=0
+
+3
+
+Proof
+
+(cont)
+
+G 9
+G 9
+differentiating 𝑉 = H 𝑞̇ 𝑀 𝑞 𝑞̇ + H 𝑒I 𝐾7 𝑒7 ≥ 0
+
+𝑉̇ = 𝑞̇ 9 𝑀𝑞̈ + GH 𝑀̇ 𝑞̇ − 𝑒I9 𝐾7 𝑝̇
+= 𝑞̇ 9 𝑢 − 𝑆𝑞̇ − 𝑔 + M 𝑀̇ 𝑞̇ −𝑒I9 𝐾7 𝑝̇
+N
+
+= 𝑞̇ 9 𝐽9 𝐾7 𝑒7 − 𝐾8 𝑞̇ + 𝑔 − 𝑔 − 𝑒I9 𝐾7 𝐽𝑞̇
+= −𝑞̇ 9 𝐾8 𝑞̇ ≤ 0
+with 𝑉̇ = 0 ⟺ 𝑞̇ = 0
+
+in this situation, the closed-loop equations become
+
+𝑀 𝑞 𝑞̈ + 𝑔 𝑞 = 𝐽9 𝑞 𝐾7 𝑒7 + 𝑔(𝑞)
+
+𝑞̈ = 𝑀KG(𝑞)𝐽9 𝑞 𝐾7 𝑒7
+
+𝑞̈ = 0 ⟺ 𝐾7 𝑒7 ∈ 𝑁 𝐽9 (𝑞)
+by applying LaSalle theorem, the thesis follows
+
+Robotics 2
+
+4
+
+Corollary
+for a given initial state (𝑞 0 , 𝑞(0)
+̇ ), if the robot does not
+encounter any singularity of 𝐽𝑇(𝑞) (configurations where
+𝜌 𝐽9 < 𝑚 ≤ 𝑛) during its motion, then there is asymptotic
+stabilization to one single state (𝑚 = 𝑛) or to a set of
+states (𝑚 < 𝑛) such that
+
+𝑒7 = 0, 𝑞̇ = 0
+Note: singular configurations 𝑞 of 𝐽𝑇(𝑞) coincide with those of 𝐽(𝑞)
+
+Robotics 2
+
+5
+
+A possible variant for regulation
+“all Cartesian” PD control + gravity cancellation in joint space
+(**)
+
+𝑢 = 𝐽9 𝑞 𝐾7 𝑝5 − 𝑝 − 𝐾8 𝑝̇ + 𝑔(𝑞)
+
+𝐾7 , 𝐾8 > 0
+(symmetric)
+
+mechanical
+interpretation
+
+(*)
+
+𝑝𝑑
+
+(**)
+
+𝑝𝑑
+
+𝐽𝑇 transforms the “virtual” elastic, for (*), or visco-elastic, for (**),
+force/torque acting on the end-effector into control torques at the joints
+Robotics 2
+
+6
+
+Feedback linearization in Cartesian space
+robot
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢
+
+output
+
+𝑦 = 𝑝, 𝑝 = 𝑓(𝑞)
+
+Cartesian
+position/orientation
+
+assume: 𝑀 = 𝑁
+
+algorithm differentiate the output(s) as many times as needed
+up to the appearance of (at least one of) the input torque(s),
+then verify if it is possible to solve for the input = “inversion”
+uniform
+“relative degree’’
+
+𝜌=2
+
+for all outputs
+
+𝑦=𝑓 𝑞
+from the dynamic model
+𝑦̇ = 𝐽 𝑞 𝑞̇
+𝑦̈ = 𝐽 𝑞 𝑞̈ + 𝐽̇ 𝑞 𝑞̇
+= 𝐽 𝑞 𝑀KG 𝑞 𝑢 − 𝐽 𝑞 𝑀KG 𝑞 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + 𝐽̇ 𝑞 𝑞̇
+
+Theorem
+for a non-redundant robot, it is possible to exactly linearize and
+decouple the dynamic behavior at the Cartesian level if and only if
+
+det 𝐽(𝑞) ≠ 0
+Robotics 2
+
+7
+
+Feedback linearization in Cartesian space
+(in the right coordinates!)
+
+control law
+
+𝑢 = 𝑀 𝑞 𝐽KG 𝑞 𝑎 + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 − 𝑀 𝑞 𝐽KG 𝑞 𝐽̇ 𝑞 𝑞̇
+= 𝛽 𝑞 𝑎 + 𝛼(𝑞, 𝑞)
+̇
+
+𝑦̈ = 𝑝̈ = 𝐽 𝑞 𝑀KG 𝑞 𝑢 − 𝐽 𝑞 𝑀KG 𝑞 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + 𝐽̇ 𝑞 𝑞̇ = 𝑎
+𝑝, 𝑝̇ are the so-called “linearizing” coordinates
+closed-loop equations (in the joint space)
+
+̇ ̇
+𝑀KG ∗ 𝑀𝑞̈ + 𝑐 + 𝑔 = 𝑀𝐽KG𝑎 + 𝑐 + 𝑔 − 𝑀𝐽KG𝐽𝑞
+purely
+kinematic
+equations
+(but still nonlinear and coupled!!)
+
+𝑞̈ = 𝐽KG 𝑞 𝑎 − 𝐽KG 𝑞 𝐽̇ 𝑞 𝑞̇
+
+Robotics 2
+
+8
+
+Physical interpretation
+𝑧
+
+𝑞 3, 𝑢 3
+
+𝑧
+
+𝐹
+
+𝑎𝑧
+
+𝑝̈
+
+𝑢 = 𝛼 𝑞, 𝑞̇
++𝛽 𝑞 𝑎
+
+𝑞 2, 𝑢 2
+𝑞 1, 𝑢 1
+
+𝑎𝑥
+𝑦
+
+𝑦
+articulated robot
+𝑥 inertia depends on 𝑞 and is
+variable in different Cartesian directions
+
+𝑎𝑦
+
+𝑥
+
+(unitary) mass
+same constant behavior
+in all Cartesian directions
+
+when a control force 𝐹 is applied at the end-effector
+§ the uncontrolled robot will accelerate with 𝑝̈ in a different direction
+§ the (unitary) mass accelerates in the same direction of applied force 𝐹
+Robotics 2
+
+9
+
+Alternative derivation
+in purely Cartesian terms
+
+the previous exact linearizing and decoupling law can be rewritten
+in Cartesian terms using a control force/torque 𝐹
+𝑢 = 𝑀 𝑞 𝐽KG 𝑞 𝑎 + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 − 𝑀 𝑞 𝐽KG 𝑞 𝐽̇ 𝑞 𝑞̇
+joint torque 𝑢 is moved to the Cartesian space as 𝐹 = 𝐽K9 (𝑞)𝑢 (for 𝑚 = 𝑛)
+
+𝐹 = 𝐽K9 𝑀𝐽KG 𝑎
+̇ ̇
++ 𝐽K9 𝑐 − 𝐽K9 𝑀𝐽KG 𝐽𝑞
++ 𝐽K9 𝑔
+= 𝑀I 𝑎 + 𝑐I + 𝑔I
+this is the feedback linearization law
+applied to the Cartesian dynamic
+model of the robot
+Robotics 2
+
+Cartesian inertia [= 𝑀I 𝑝 ]
+Cartesian Coriolis/centrifugal terms
+Cartesian gravity
+
+𝑀I 𝑝 𝑝̈ + 𝑐I 𝑝, 𝑝̇ + 𝑔I 𝑝 = 𝐹
+𝑝̈ = 𝑎
+10
+
+Remarks
+n
+
+-1
+
+the design of a Cartesian trajectory tracking control is completed
+by stabilizing the tracking error in the 𝑚 independent chains of
+double integrators, i.e., by setting
+
+𝑎h = 𝑝̈5h + 𝐾8h 𝑝̇5h − 𝑝̇h + 𝐾7h 𝑝5h − 𝑝h
+n
+
+n
+
+scalars
+
+𝐾𝑃𝑖 > 0, 𝐾𝐷𝑖 > 0
+𝑖 = 1, … , 𝑚
+
+in redundant (𝑚 < 𝑛) robots: replacing 𝐽KG with 𝐽# in the control
+law, we obtain input-output decoupling and linearization, but not
+exact linearization of the whole state dynamics
+n there is an remaining internal dynamics of dimension 𝑛 − 𝑚 left
+the Cartesian pose/velocity can either be directly measured by
+external sensors (cameras) or computed through the direct and
+differential kinematics of the robot arm
+
+Robotics 2
+
+11
+
+Remarks
+n
+
+n
+
+-2
+
+the transient behavior of the Cartesian error along a desired
+trajectory is exponentially stable (with arbitrary eigenvalues
+assigned by choosing the diagonal gains of 𝐾𝑃, 𝐾8 )
+when applied to the case 𝑝𝑑 = constant (regulation task), the
+control law becomes
+̇ 𝑞̇
+𝑢 = 𝑀 𝑞 𝐽KG 𝑞 𝐾7 𝑒7 − 𝐾8 𝐽 𝑞 𝑞̇ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 − 𝑀(𝑞)𝐽KG (𝑞)𝐽(𝑞)
+
+which is computationally more expensive than a control law
+designed directly for regulation, such as the previous laws (*)
+or (**), but keeps the additional property of obtaining an
+exponentially stable transient error
+
+Robotics 2
+
+12
+
+Conclusion
+n
+
+most of the control laws presented in the joint space
+(i.e., driven by a joint error) can be translated with
+relative ease to the Cartesian space, e.g.
+n
+n
+n
+n
+
+n
+
+the main issues are related to
+n
+
+n
+
+Robotics 2
+
+regulation with constant gravity compensation
+adaptive regulation
+robust control for trajectory tracking
+adaptive control for trajectory tracking
+presence of kinematic singularities, both for the Jacobian
+transpose or the Jacobian inverse control laws, needs some
+suitable singularity robustness modifications
+presence of kinematic redundancy (𝑚 < 𝑛) needs the use of
+an additional stabilizing null-space torque for the extra 𝑛 − 𝑚
+generalized coordinates (locally, 𝑛 − 𝑚 joint variables)
+13
+
+

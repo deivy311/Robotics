@@ -1,0 +1,48 @@
+Robotics II
+July 4, 2011
+With reference to the scheme in Fig. 1, consider a one-dimensional force control problem in which
+the robot is modeled as a mass m in contact with a compliant environment having mass mw ,
+stiffness kw , and viscous damping dw . A control force u acts on the robot mass m. Let x1 and
+x2 be the position of the robot mass and, respectively, of the environment mass. A force sensor
+having stiffness ks is used to measure the contact force fc . All physical data can be assumed to be
+positive.
+
+#")"*&
+
+u
+
+!"#$%&
+%(+,#"(-%(*&
+'%('"#&
+
+kw
+
+m
+ks
+x1
+
+mw
+dw
+x2
+
+Figure 1: A one-dimensional contact with a dynamic environment
+We want to regulate the contact force to a constant positive value fd , by means of the following
+control law:
+u = kp (fd − fc ) + kf fd − kv ẋ1
+(1)
+where kp is a proportional feedback gain on the contact force error, kf is a force feedforward gain,
+and kv is a gain on the robot mass velocity.
+1. Derive the dynamic equations describing the robot-environment system when a generic force
+input u is applied to the robot mass.
+2. Draw a block diagram of the control scheme when using eq. (1) and write the associated
+closed-loop equations.
+3. Study the equilibrium configurations of the closed-loop system. In particular, choose suitable
+(interval of) values for kp , kv , and kf such that the controlled system is asymptotically stable
+and has a zero force error at steady state.
+Optional: in this case, 60 minutes of additional time are available.
+4. If feasible, perform a simulation with the resulting controller. For the simulation, use the following system parameters: m = 1 [kg], mw = 10 [kg], kw = 1000 [N/m], dw = 1000 [N·s/m],
+ks = 100 [N/m]. The system is initially at rest and in equilibrium. The desired force has a
+step variation of fd = 10 [N].
+[90 minutes; open books]
+
+

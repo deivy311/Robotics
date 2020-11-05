@@ -1,0 +1,451 @@
+Robotics 2
+
+Kinematic calibration
+Prof. Alessandro De Luca
+
+Accuracy and Repeatability
+robot as a measuring device
+average value
+
+*
+
+*
+*
+
+measurements
+
+*
+*
+
+from Robotics 1
+
+*
+* **
+*
+* **
+
+*
+
+target value
+(ground truth)
+
+low accuracy
+low repeatability
+
+Robotics 2
+
+low accuracy
+high repeatability
+
+better components!
+
+high accuracy
+high repeatability
+
+calibration!
+
+2
+
+Direct kinematics
+n
+
+nominal set of Denavit-Hartenberg (D-H) parameters
+
+𝛼$
+𝜶= ⋮
+𝛼&
+n
+
+𝑎$
+𝒂= ⋮
+𝑎&
+
+𝑑$
+𝒅= ⋮
+𝑑&
+
+nominal direct kinematics
+
+𝒓&,- = 𝑓(𝜶, 𝒂, 𝒅, 𝜽)
+θ are typically measured by encoders
+Robotics 2
+
+for simplicity, suppose
+an all-revolute joints
+manipulator
+
+𝜃$
+𝜽= ⋮
+𝜃&
+3
+
+Need for calibration
+n
+
+n
+
+n
+
+n
+
+n
+
+tolerances in mechanical construction and in assembly of
+links/joints imply small errors in actual end-effector pose
+(real ≠ nominal parameters)
+encoder mounting on motor axes may not be consistent
+with the “zero reference” of the robot direct kinematics
+(joint angle measures are constantly biased)
+errors distributed “along” the arm are amplified, due to the
+open chain kinematic structure of most robots
+calibration goal: recover as much as possible E-E pose
+errors by correcting the nominal set of D-H parameters,
+based on independent external (accurate!) measurements
+experiments to be done once for each robot, before
+starting operation... (and maybe repeated from time to time)
+
+Robotics 2
+
+4
+
+Cartesian measurement systems - 1
+
+calibration table
+Robotics 2
+
+5
+
+Cartesian measurement systems - 2
+
+laser/camera system + triangulation
+Robotics 2
+
+6
+
+Cartesian measurement systems - 3
+FANUC 6R robot
+M-710iC/50
+
+API
+laser tracker III
+
+www.apisensor.com
+
+3 SMRs
+(SphericallyMounted
+Reflectors)
+
+laser tracker + targets on end-effector
+Robotics 2
+
+7
+
+Acquiring data for calibration
+FARO ION
+laser tracker
+
+ABB
+IRB 1600
+robot
+4 SMRs
+
+video
+@CoRo Lab
+ETS Montréal
+
+Robotics 2
+
+8
+
+Linearization of direct kinematics
+partial Jacobians evaluated in nominal conditions
+
+Δ𝑟 = 𝑟 − 𝑟&,- =
+“small”
+errors
+
+78
+79
+
+: Δ𝛼 +
+
+78
+7<
+
+obtained by external
+measurement system
+
+: Δ𝑎 +
+
+78
+7=
+
+: Δ𝑑 +
+
+78
+7>
+
+: Δ𝜃
+
+first-order variations
+cameras +
+triangulation
+
+. Δ𝒓.
+𝒓
+𝒓
+Robotics 2
+
+𝒏𝒐𝒎
+
+calibration
+table
+9
+
+Calibration equation
+Δ𝛼
+∆𝜑 = Δ𝑎
+Δ𝑑
+Δ𝜃
+
+6ℓ × 1
+
+∆𝑟̅ =
+
+Robotics 2
+
+Δ𝑟$
+Δ𝑟I
+⋮
+Δ𝑟ℓ
+
+4n × 1
+
+𝜕𝑓
+Φ=
+𝜕𝛼
+
+𝜕𝑓
+𝜕𝑎
+
+𝜕𝑓
+𝜕𝑑
+
+𝜕𝑓
+𝜕𝜃
+
+∆𝑟 = Φ : ∆𝜑
+
+6 × 4n
+
+6ℓ × 4n
+
+J =
+Φ
+
+ℓ experiments (ℓ ≫ n)
+Φ$
+ΦI
+⋮
+Φℓ
+
+J : ∆𝜑
+∆𝑟̅ = Φ
+measures
+
+full column rank
+(for sufficiently large ℓ)
+
+unknowns
+
+regressor matrix evaluated
+at nominal parameters
+10
+
+Under- and over-determined
+systems of linear equations
+full rank
+
+full rank
+
+Ax = b
+
+A
+x2
+
+1 equation
+2 unknowns
+
+x
+
+3 equations
+2 unknowns
+
+x2
+
+x1
+minimum norm solution
+
+A
+x
+x1
+
+minimum error norm
+“solution”
+
+, among x: A x = b
+
+Robotics 2
+
+pseudoinverse !!
+
+if multiple solutions x exist (having the same
+minimum error norm), the pseudoinverse
+provides the one having minimum norm
+
+11
+
+Calibration algorithm
+J : ∆𝜑
+∆𝑟̅ = Φ
+minimizes
+
+∆𝜑 =
+
+J # ∆𝑟̅
+Φ
+
+=
+
+J LΦ
+J M$ Φ
+JL
+Φ
+
+𝜑&,- + ∆𝜑 = 𝜑’
+
+: ∆𝑟̅
+
+1
+J ∆𝜑 − ∆𝑟̅
+Φ
+2
+
+I
+
+new set of DH parameters
++ “bias” on measures of q
+
+J N : ∆𝜑
+∆𝑟̅ N = Φ
+… ITERATE!
+Robotics 2
+
+evaluated with new values 𝜑’
+12
+
+Improvement by kinematic calibration
+• ABB IRB 120 6R industrial robot
+• 1000 random configurations (collision-free by simulation)
+• 50 arbitrary configurations used for measurement in calibration
+• 950 configurations used for validation
+• Cartesian position errors
+before calibration
+Average
+1.746 mm
+Median
+1.567 mm
+Standard Deviation
+1.043 mm
+Min
+0.050 mm
+Max
+4.423 mm
+• Improvement by a factor 8÷10
+Robotics 2
+
+after calibration
+0.193 mm
+0.180 mm
+0.085 mm
+0.010 mm
+0.516 mm
+
+13
+
+Final comments
+n
+
+an iterative least squares method
+n
+
+n
+
+it is useful to calibrate first and separately those quantities that are less
+accurate (typically, the encoder bias)
+n
+
+n
+
+n
+
+more complex than D-H parameters, but leading to a better numerical
+conditioning of the regressor matrix in calibration algorithm
+one such description uses the POE (Product Of Exponential) formula
+
+more in general, 6 base parameters should also be included
+n
+
+n
+
+keeping the remaining ones at their nominal values
+
+alternative kinematic descriptions can be used
+n
+
+n
+
+original problem is nonlinear in the unknowns, then linearized using firstorder Taylor expansion
+
+to locate 0-th robot frame w.r.t. world coordinate frame (of external sensor)
+
+accurate calibration/estimation of real parameters is a general problem
+in robotics (and beyond...)
+n
+n
+
+Robotics 2
+
+for sensors (e.g., camera calibration)
+for models (identification of dynamic parameters of a manipulator)
+14
+
+Calibration experiment
+in a research environment
+
+video
+Videre Design
+stereovision
+camera
+
+§ automatic data acquisition for simultaneous calibration of
+§ robot-camera transformation
+§ DH parameters of the manipulator
+Robotics 2
+
+15
+
+Calibration experiment
+in an industrial setting
+
+video
+FANUC
+3D Laser
+calibration
+(with iR Vision)
+
+Robotics 2
+
+16
+
+

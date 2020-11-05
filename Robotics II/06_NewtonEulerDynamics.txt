@@ -1,0 +1,537 @@
+Robotics 2
+
+Dynamic model of robots:
+Newton-Euler approach
+Prof. Alessandro De Luca
+
+Approaches to dynamic modeling
+(reprise)
+
+Newton-Euler method
+(balance of forces/torques)
+
+energy-based approach
+(Euler-Lagrange)
+n
+n
+
+n
+
+n
+
+multi-body robot seen as a whole
+constraint (internal) reaction forces
+between the links are automatically
+eliminated: in fact, they do not
+perform work
+
+n
+
+n
+
+Robotics 2
+
+inverse dynamics in real time
+n
+
+closed-form (symbolic) equations
+are directly obtained
+best suited for study of dynamic
+properties and analysis of control
+schemes
+
+dynamic equations written
+separately for each link/body
+
+n
+
+n
+
+equations are evaluated in a
+numeric and recursive way
+best for synthesis
+(=implementation) of modelbased control schemes
+
+by elimination of reaction forces and
+back-substitution of expressions, we
+still get closed-form dynamic
+equations (identical to those of EulerLagrange!)
+2
+
+Derivative of a vector in a moving frame
+… from velocity to acceleration
+
+𝑅̇ $ = 𝑆 0𝜔$
+
+!
+
+0𝑅
+
+$
+
+derivative of “unit” vector
+𝜔𝑖
+
+𝑑𝑒$
+= 𝜔$ × 𝑒$
+𝑑𝑡
+
+𝑒$
+
+Robotics 2
+
+3
+
+Dynamics of a rigid body
+n
+
+Newton dynamic equation
+n
+
+balance: sum of forces = variation of linear momentum
+𝑑
+1 𝑓$ =
+𝑚𝑣5 = 𝑚𝑣̇5
+𝑑𝑡
+
+n
+
+Euler dynamic equation
+n
+
+balance: sum of torques = variation of angular momentum
+𝑑
+𝑑
+̅ 9 𝜔 = 𝐼 𝜔̇ + 𝑅̇ 𝐼𝑅
+̅ 9 + 𝑅𝐼𝑅
+̅ ̇9 𝜔
+1 𝜇$ =
+𝐼𝜔 = 𝐼 𝜔̇ +
+𝑅 𝐼𝑅
+𝑑𝑡
+𝑑𝑡
+̅ 9 𝜔 + 𝑅 𝐼𝑅
+̅ 9 𝑆 9 𝜔 𝜔 = 𝐼 𝜔̇ + 𝜔 × 𝐼𝜔
+= 𝐼 𝜔̇ + 𝑆 𝜔 𝑅 𝐼𝑅
+
+n
+
+principle of action and reaction
+n
+
+Robotics 2
+
+forces/torques: applied by body 𝑖 to body 𝑖 + 1
+= − applied by body 𝑖 + 1 to body 𝑖
+4
+
+Newton-Euler equations
+link 𝑖
+
+FORCES
+center 𝒗𝒄𝒊
+of mass
+
+𝑓$ force applied
+
+𝑓$>? force applied
+
+from link 𝑖 on link 𝑖 + 1
+
+.
+
+.𝑂$B?
+axis 𝑖
+(𝑞$ )
+
+from link 𝑖 − 1 on link 𝑖
+
+𝑧$
+
+𝑪𝒊
+
+𝑧$B?
+
+𝑓$
+
+-1
+
+𝑓$>?
+
+𝑂$
+
+𝑚$ 𝑔
+
+Newton equation
+
+axis 𝑖 + 1
+(𝑞$>? )
+
+𝑚$ 𝑔 gravity force
+all vectors expressed in the
+same RF (better RF𝑖 )
+
+𝑓$ − 𝑓$>? + 𝑚$ 𝑔 = 𝑚$ 𝑎5$
+
+N
+
+linear acceleration of 𝐶$
+Robotics 2
+
+5
+
+Newton-Euler equations
+link 𝑖
+
+𝜔$
+
+TORQUES
+
+𝜏$ torque applied
+
+from link (𝑖 − 1) on link 𝑖
+
+𝜏$
+
+𝜏$>? torque applied
+
+from link 𝑖 on link (𝑖 + 1)
+
+𝑓$ × 𝑟$B?,5$ torque due to 𝑓$ w.r.t. 𝐶$
+
+𝑓$
+
+−𝑓$>? × 𝑟$,5$ torque due to −𝑓$>? w.r.t. 𝐶$
+Euler equation
+
+-2
+
+𝑧$
+
+𝑧$B?
+
+𝑟$B?,5$
+
+.𝑂
+
+$B?
+
+axis 𝑖
+(𝑞$ )
+
+gravity force gives
+no torque at 𝐶$
+
+𝑟$,5$
+
+.
+
+𝑪𝒊
+
+𝑓$>?
+
+𝑂$
+
+axis 𝑖 + 1
+(𝑞$>? )
+all vectors expressed in
+the same RF (RF𝑖 !!)
+
+𝜏$ − 𝜏$>? + 𝑓$ × 𝑟$B?,5$ −𝑓$>? × 𝑟$,5$ = 𝐼$ 𝜔̇ $ + 𝜔$ × 𝐼$ 𝜔$
+Robotics 2
+
+𝜏$>?
+
+angular acceleration of body 𝑖
+
+E
+6
+
+Forward recursion
+Computing velocities and accelerations
+• “moving frames” algorithm (as for velocities in Lagrange)
+• wherever there is no leading superscript, it is the same as the subscript
+𝜔$ = 𝑖 𝜔$
+• for simplicity, only revolute joints
+(see textbook for the more general treatment)
+initializations
+
+𝜔!
+
+𝜔̇ !
+
+AR
+
+𝑎! − 0𝑔
+
+the gravity force term can be skipped in Newton equation, if added here
+Robotics 2
+
+7
+
+Backward recursion
+Computing forces and torques
+from 𝑁$
+
+to 𝑁$B?
+
+eliminated, if inserted
+in forward recursion (𝑖 =0)
+
+initializations
+𝑓M>?
+
+F/TR
+
+ri,ci)
+from 𝐸$
+
+𝜏M>?
+
+ri,ci
+
+to 𝐸$B?
+
+at each step of this recursion, we have two vector equations (𝑁𝑖 + 𝐸𝑖 ) at the
+joint providing 𝑓$ and 𝜏$ : these contain ALSO the reaction forces/torques
+at the joint axis ⇒ they should be “projected” next along/around this axis
+FP
+generalized forces
+(in rhs of Euler-Lagrange eqs)
+Robotics 2
+
+for prismatic joint
+for revolute joint
+add here dissipative terms
+(here viscous friction only)
+
+𝑁 scalar
+equations
+at the end
+
+8
+
+Comments on Newton-Euler method
+n
+
+the previous forward/backward recursive formulas can
+be evaluated in symbolic or numeric form
+n
+
+n
+
+Robotics 2
+
+symbolic
+n substituting expressions in a recursive way
+n at the end, a closed-form dynamic model is obtained, which
+is identical to the one obtained using Euler-Lagrange (or any
+other) method
+n there is no special convenience in using N-E in this way
+numeric
+n substituting numeric values (numbers!) at each step
+n computational complexity of each step remains constant ⇒
+grows in a linear fashion with the number 𝑁 of joints (𝑂(𝑁))
+n strongly recommended for real-time use, especially when the
+number 𝑁 of joints is large
+9
+
+Newton-Euler algorithm
+
+efficient computational scheme for inverse dynamics
+numeric steps
+at every instant 𝑡
+
+(at robot base)
+AR
+
+FP
+, 𝑎5?
+
+F/TR
+outputs
+
+inputs
+,𝑎5MB?
+AR
+
+FP
+, 𝑎5M
+
+Robotics 2
+
+F/TR
+(force/torque exchange
+environment/E-E)
+
+10
+
+Matlab (or C) script
+general routine 𝑁𝐸S (arg1, arg2, arg3)
+n
+
+data file (of a specific robot)
+n
+n
+n
+
+n
+
+input
+n
+n
+
+n
+
+number 𝑁 and types σ = 0,1 M of joints (revolute/prismatic)
+table of DH kinematic parameters
+list of ALL dynamic parameters of the links (and of the motors)
+vector parameter 𝛼 = 0𝑔, 0 (presence or absence of gravity)
+three ordered vector arguments
+n typically, samples of joint position, velocity, acceleration
+taken from a desired trajectory
+
+output
+n
+n
+
+Robotics 2
+
+generalized force 𝑢 for the complete inverse dynamics
+… or single terms of the dynamic model
+11
+
+Examples of output
+n
+
+complete inverse dynamics
+
+𝑢 = 𝑁𝐸 !Y (𝑞𝑑, 𝑞̇ ] , 𝑞̈ ] ) = 𝑀(𝑞] )𝑞̈ ] + 𝑐(𝑞] , 𝑞̇ ] ) + 𝑔(𝑞] ) = 𝑢]
+n
+
+gravity terms
+𝑢 = 𝑁𝐸 !Y (𝑞, 0, 0) = 𝑔(𝑞)
+
+n
+
+centrifugal and Coriolis terms
+𝑢 = 𝑁𝐸! (𝑞, 𝑞,̇ 0) = 𝑐(𝑞, 𝑞)
+̇
+
+n
+
+𝑖-th column of the inertia matrix
+𝑢 = 𝑁𝐸! (𝑞, 0, 𝑒$ ) = 𝑀$ (𝑞)
+
+n
+
+𝑒$ = 𝑖 -th column
+
+of identity matrix
+
+generalized momentum
+𝑢 = 𝑁𝐸! 𝑞, 0, 𝑞̇ = 𝑀 𝑞 𝑞̇ = 𝑝
+
+Robotics 2
+
+12
+
+Inverse dynamics of a 2R planar robot
+
+desired (smooth) joint motion:
+quintic polynomials for 𝑞? , 𝑞_ with
+⇔
+zero vel/acc boundary conditions
+o
+o
+o
+o
+from (90 , -180 ) to (0 , 90 ) in 𝑇 = 1 s
+Robotics 2
+
+13
+
+Inverse dynamics of a 2R planar robot
+
+zero
+initial torques =
+free equilibrium
+configuration
++
+zero initial
+accelerations
+
+final torques
+
+𝑢? ≠ 0, 𝑢_ = 0
+
+balance
+link weights
+o
+o
+in final (0 , 90 )
+configuration
+
+motion in vertical plane (under gravity)
+both links are thin rods of uniform mass 𝑚? = 10 kg, 𝑚_ = 5 kg
+Robotics 2
+
+14
+
+Inverse dynamics of a 2R planar robot
+
+torque contributions at the two joints for the desired motion
+= total,
+= inertial
+= Coriolis/centrifugal,
+= gravitational
+Robotics 2
+
+15
+
+Use of NE routine for simulation
+direct dynamics
+
+n
+
+numerical integration, at current state (𝑞, 𝑞̇ ), of
+𝑞̈ = 𝑀 B? (𝑞)[𝑢 – (𝑐(𝑞, 𝑞)
+̇ + 𝑔(𝑞))] = 𝑀 B? (𝑞)[𝑢 – 𝑛(𝑞, 𝑞)]
+̇
+
+n
+
+Coriolis, centrifugal, and gravity terms
+𝑛 = 𝑁𝐸 !Y (𝑞, 𝑞,̇ 0)
+
+n
+
+complexity
+
+𝑖-th column of the inertia matrix, for 𝑖 = 1, . . , 𝑁
+𝑂(𝑁 _ )
+
+𝑀$ = 𝑁𝐸! (𝑞, 0, 𝑒$ )
+n
+
+numerical inversion of inertia matrix
+𝐼𝑛𝑣𝑀 = inv(𝑀)
+
+n
+
+𝑂(𝑁)
+
+𝑂(𝑁 l )
+
+but with small coefficient
+
+given 𝑢, integrate acceleration computed as
+𝑞̈ = 𝐼𝑛𝑣𝑀 ∗ [𝑢 – 𝑛]
+
+Robotics 2
+
+new state (𝑞, 𝑞̇ )
+and repeat over time ...
+16
+
+

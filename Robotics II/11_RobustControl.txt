@@ -1,0 +1,1073 @@
+Robotics 2
+
+Robust Trajectory Control
+Prof. Alessandro De Luca
+
+Problem formulation
+
+
+given the real robot, modeled by
+
+
+
+assuming an estimated feedback linearization control
+
+
+
+we would like to design
+
+
+
+so as to obtain
+
+asymptotic stability of the closed-loop system
+the best possible trajectory tracking performance
+
+
+
+the linear feedback choice is not enough...
+
+
+
+questions:
+
+
+
+Robotics 2
+
+which should be the conditions on the estimates?
+can we guarantee stability/performance, based on known
+bounds on the uncertainties?
+2
+
+Closed-loop equations
+
+
+-1
+
+under uncertain conditions (estimated ≠ real dynamic
+coefficients), feedback linearization is only approximate
+and the closed-loop equations are still nonlinear
+
+where
+
+Robotics 2
+
+depends on the amount of uncertainty
+
+3
+
+Closed-loop equations
+
+
+
+
+-2
+
+closed-loop state equations are written as
+
+closed-loop error equations with respect to a desired
+are rewritten as
+note that errors
+are defined here
+with opposite
+signs w.r.t. usual
+
+⇒
+Robotics 2
+
+4
+
+Solution approach
+
+
+add an external robust control term/loop
+
+
+
+
+
+
+
+based on computable bounds on the uncertainties
+
+based on the theory of guaranteed stability for
+nonlinear uncertain system
+Lyapunov-based analysis
+a discontinuous control law will result
+
+
+
+Robotics 2
+
+difficult to implement because of chattering effects
+smoothed version with only uniformly ultimate
+boundedness (u.u.b. stability) of the tracking error
+
+5
+
+Working assumptions
+1. bound on the desired trajectory
+2. bound on the estimate of the robot inertia matrix
+with
+
+, holding for all configurations
+
+3. bound on the estimate of nonlinear dynamic terms
+with a known function
+
+
+Robotics 2
+
+, bounded for all
+
+as a general rule, exploiting the model structure (e.g., its
+linear parameterization) may lead to more stringent bounds
+6
+
+Bound on the inertia matrix
+
+
+
+
+assumption 2. can always be satisfied, knowing some upper and
+lower bounds (that always exist due to the positive definiteness)
+on the inverse of the inertia matrix
+it is then sufficient to choose as estimate
+with
+
+
+
+in fact, using the SVD factorization of the inverse inertia matrix, it
+can be shown that (see Appendix A)
+
+Robotics 2
+
+7
+
+Control design – step 1
+
+
+linear control law with an added robust term
+where the PD gains are diagonal and positive matrices
+
+
+
+we obtain
+being
+where
+and
+
+Robotics 2
+
+has all eigenvalues with negative real part,
+
+8
+
+Control design – step 2
+
+
+
+
+(same) bound on nonlinear terms and added robust term
+we can use the previous data and implicitly define the
+bound
+from
+
+yielding the well-defined (since
+possibly time-varying function
+
+Robotics 2
+
+), limited and
+
+9
+
+Control design – step 3
+
+
+solve an associated (linear) Lyapunov equation, for any
+given symmetric
+matrix
+finding the unique (symmetric) solution matrix
+
+
+
+finally, define the discontinuous robust term as
+
+that also satisfies, by its own structure,
+Robotics 2
+
+10
+
+Solving the Lyapunov equation
+
+
+
+in general, using lyap in Matlab (only once, in advance)
+closed-form solution in an interesting scalar case (one
+robot joint/link), to get a “feeling”...
+
+choose, e.g.,
+
+⇒ find
+
+⇒
+so that (also in the n-dof case)
+Robotics 2
+
+11
+
+Stability analysis
+Theorem 1
+
+Defining
+, the presented robust control law
+with the discontinuous term is such that
+along
+the trajectories of the closed-loop error system
+Proof
+
+if
+
+⇒
+
+if
+
+⇒
+
+note: because of the discontinuity
+we cannot directly conclude on the
+(global) asymptotic stability of e=0
+
+Robotics 2
+
+⇒
+⇒
+12
+
+A smoother robust controller
+
+
+for any given (small)
+robust term as
+
+, define the continuous
+
+Theorem 2
+
+With the above continuous robust control law, any solution
+, with
+, of the closed-loop error system is
+uniformly ultimately bounded with respect to a suitable set
+(a neighborhood of the origin)
+Proof in Appendix B
+Robotics 2
+
+13
+
+Case study: Single-link under gravity
+model
+
+(no friction)
+
+error equations
+
+known bounds for control design
+
+Robotics 2
+
+14
+
+Calculations for robust control
+% real robot
+I=5; mgd=7;
+% initial robot state
+th0=0;thp0=0;
+% range of uncertainties
+I_min=5; I_max=10;
+mgd_min=5;mgd_max=7;
+% linear tracking stabilizer gains
+kp=25; kd=10; % two poles in -5
+% robust control part
+% Lyapunov matrix P and b^T P term
+A=[0 1; -kp -kd];
+q=1; Q=q*eye(2);
+P=lyap(A',Q); % solve A'*P+P*A+Q=0
+b=[0 1];
+bP=b*P; % =[0.02 0.052]
+Robotics 2
+
+% bounding dynamic terms
+% inertia
+m=1/I_max; M=1/I_min;
+c=(M+m)/2;
+alpha=(M-m)/(M+m);
+Ihat=1/c; % =6.6667
+% nonlinear terms (only gravity)
+Mphi=M*(mgd_max-mgd_min);
+mgdhat=5;
+% overall bounding
+rho0=Mphi/(1-alpha) % =0.6
+rho1=alpha/(1-alpha) % =0.5
+% smoothed version
+epsilon=5*10^-4;
+
+red values are used in Simulink
+15
+
+Results
+
+first trajectory – feedback linearization, no robust loop
+0.04
+
+10
+
+0.02
+
+5
+
+0
+torque (Nm)
+
+position error (rad)
+
+0
+
+−0.02
+
+−0.04
+
+−5
+
+−10
+−0.06
+
+position error
+
+−0.08
+
+−0.1
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+control torques
+
+−15
+
+30
+
+−20
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+0.2
+0.15
+
+velocity error (rad/s)
+
+0.1
+0.05
+
+non-zero initial error
+on velocity
+
+0
+−0.05
+−0.1
+
+velocity error
+
+−0.15
+−0.2
+
+Robotics 2
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+16
+
+Results
+
+first trajectory – discontinuous robust control
+0.04
+
+10
+
+0.02
+
+5
+
+0
+torque (Nm)
+
+position error (rad)
+
+0
+
+−0.02
+
+−0.04
+
+−5
+
+−10
+−0.06
+
+position error
+
+−0.08
+
+−0.1
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+control torques
+
+−15
+
+30
+
+−20
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+0.2
+0.15
+
+velocity error (rad/s)
+
+0.1
+0.05
+0
+−0.05
+−0.1
+
+velocity error
+
+−0.15
+−0.2
+
+Robotics 2
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+position and velocity errors
+are largely reduced,
+but control chattering
+at high frequency
+(when error is close to zero)
+17
+
+Results
+
+first trajectory – smoothed robust control
+0.04
+
+10
+
+0.02
+
+5
+
+0
+torque (Nm)
+
+position error (rad)
+
+0
+
+−0.02
+
+−0.04
+
+−5
+
+−10
+−0.06
+
+position error
+
+−0.08
+
+−0.1
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+control torques
+
+−15
+
+30
+
+−20
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+0.2
+0.15
+
+velocity error (rad/s)
+
+0.1
+
+position and velocity errors
+are similarly reduced,
+without control chattering
+
+0.05
+0
+−0.05
+−0.1
+
+velocity error
+
+−0.15
+−0.2
+
+Robotics 2
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+(using here
+
+)
+
+30
+
+18
+
+Results
+
+second trajectory – fbk linearization, no robust loop
+0.03
+
+20
+15
+
+0.02
+
+5
+torque (Nm)
+
+position error (rad)
+
+10
+0.01
+
+0
+
+0
+−5
+
+−0.01
+−10
+−0.02
+
+−0.03
+
+position error
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+0.08
+0.06
+
+velocity error (rad/s)
+
+0.04
+0.02
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+zero initial tracking error
+(matching state conditions)
+
+0
+−0.02
+−0.04
+−0.06
+
+velocity error
+
+−0.08
+
+Robotics 2
+
+−20
+
+bang-bang acceleration profile
+at 1 rad/s frequency and
+with Qmax = 1 rad/s2
+
+0.1
+
+−0.1
+
+control torques
+
+−15
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+19
+
+Results
+
+second trajectory – discontinuous robust control
+0.03
+
+20
+15
+
+0.02
+
+5
+torque (Nm)
+
+position error (rad)
+
+10
+0.01
+
+0
+
+0
+−5
+
+−0.01
+−10
+
+position error
+
+−0.02
+
+−0.03
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+control torques
+
+−15
+
+30
+
+−20
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+0.1
+
+bang-bang acceleration profile
+
+0.08
+0.06
+
+velocity error (rad/s)
+
+0.04
+
+position and velocity errors
+again largely reduced,
+but control chattering
+and larger effort
+
+0.02
+0
+−0.02
+−0.04
+
+velocity error
+
+−0.06
+−0.08
+−0.1
+
+Robotics 2
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+20
+
+Results
+
+second trajectory – smoothed robust control
+0.03
+
+20
+15
+
+0.02
+
+5
+torque (Nm)
+
+position error (rad)
+
+10
+0.01
+
+0
+
+0
+−5
+
+−0.01
+−10
+
+position error
+
+−0.02
+
+−0.03
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+0.1
+
+0.06
+
+velocity error (rad/s)
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+position and velocity errors
+are further reduced,
+without control chattering
+and same control effort as
+without robustifying term
+
+0.04
+0.02
+0
+−0.02
+−0.04
+
+velocity error
+
+−0.06
+−0.08
+
+Robotics 2
+
+−20
+
+bang-bang acceleration profile
+
+0.08
+
+−0.1
+
+control torques
+
+−15
+
+0
+
+5
+
+10
+
+15
+time (s)
+
+20
+
+25
+
+30
+
+(using here
+
+)
+21
+
+Appendix A
+
+Proof of bounds on the inertia matrix
+
+
+the SVD factorization of the (symmetric) inverse inertia matrix is
+
+so that, with the choice made for its estimate, it follows that
+
+Robotics 2
+
+22
+
+Appendix B
+
+Proof of Theorem 2
+
+
+
+
+setting
+law it is
+
+, note that for the robust term in the control
+
+defining as before
+
+, we have
+
+having used the chain of inequalities
+
+
+
+if
+
+, the rest of the proof is the same as in Theorem 1
+
+%
+Robotics 2
+
+23
+
+Appendix B
+
+Proof of Theorem 2 (cont)
+
+
+if
+
+, the second term in the derivative of
+
+
+
+with a maximum value
+therefore, it is
+
+is
+
+attained for
+
+provided that
+
+
+
+if
+is the smallest level set of
+(an ellipsoid) containing
+the hyper-sphere of radius , then
+and u.u.b. is obtained for
+
+Robotics 2
+
+(an upper bound for the time needed to reach
+
+can be given)
+
+24
+
+

@@ -1,0 +1,836 @@
+Robotics II
+January 11, 2018
+Exercise 1
+The RP planar robot in Fig. 1, with coordinates q = (q1 , q2 ) and parameters m2 , dc2 , I1 and I2
+defined therein, should execute a task defined by a time-varying trajectory yd (t) ∈ R for the height
+of its end-effector.
+
+y
+
+q2
+m2,I2
+
+䎩!
+
+P
+
+yd(t)
+
+q1
+
+xr1
+
+M
+
+I1
+
+!"
+
+B
+F (θ –V1)
+
+Yψ + W
+
+Gψ
+
+F
+
+R
+
+dc2
+
+θ relevant parameters and variables.
+Figure 1: A RP planar robot with the
+m k
+Assuming as input command the jointr velocity q̇ ∈ R2 , determine the explicitψexpressions of the
+kinematic control laws that execute the task in nominal conditions, recover exponentially from any
+F (θ –V1)
+task error, and
+2
+
+• minimize 12 kq̇k : which is the theoretical
+(a) pitfall of this solution? (b)
+1 T
+• minimize the weighted norm 2 q̇ W q̇, with constant W = diag{w1 , w2 } > 0; what happens
+for very large ratios w
+limit → ∞);
+and for
+w2 /w1 →governor.
+∞?
+1 /w2 (in
+FIGURE
+10 the
+A free-body
+diagram
+of Jenkin’s
+The friction
+o -1Vq̇1T) M
+• minimize the kinetic torque
+energy FT(i=
+(q)
+q̇,
+being
+M
+(q)
+>
+0
+the
+robot inertia
+matrix.
+acting on the friction ring is obtained
+by lineariza2
+tion about a constant speed V1 .
+Exercise 2
+θ
+
+g0
+
+L
+
+#"
+φ
+
+#"
+
+m
+
+m
+
+!"
+Is
+FIGURE 11 The centrifugal pieces (that is, flyballs) of Foucault’s
+Figure 2: The Boulton-Watt
+governor
+a scheme
+definition
+parameters
+and variables.
+A and
+governor.
+is the
+momentwith
+of inertia
+of a of
+revolving
+apparatus
+for
+i motion, and B is the moment of inertia of flyballs for z motion.
+Figure 2 shows a picture and a simplified scheme of the famous Boulton-Watt centrifugal governor,
+a system invented to regulate the rotational speed of a steam engine by a mechanical leverage
+in Figure
+11,under
+Maxwell
+expressed
+the equations
+of here
+(feedback) opening a valveshown
+that provides
+steam
+pressure
+to the engine.
+We consider
+o
+only the so-called open-loopmotion
+dynamicusing
+behavior
+of
+the
+system,
+under
+the
+action
+of
+an
+external
+torque
+the angular momentum A i ,
+τ ∈ R applied to the main rotating shaft.
+
+uid governor. The speed of a drive shaft S
+to the depth of immersion of a rotating cup
+haft by a screw and a spring E. For overthe cup C falls behind that of the shaft S.
+the thread, the cup C is immersed deeper
+mping at a higher rate and exerting an inrque on the drive shaft. [Reproduced with
+
+1
+
+d ^ A io h = L,
+dt
+
+(13)
+
+!"#$#% i %&'%("#%)*+,#%-.%$#/-,0(&-*%)1-0(%("#%/#$(&2),%)3&'4%
+A%&'%("#%5-5#*(%-.%&*#$(&)%-.%)%$#/-,/&*+%)66)$)(0'%.-$% i %
+5-(&-*4%)*7% L %&'%("#%(-(),%(-$80#%)2(&*+%-*%("#%)3&'9%:#(% B%
+1#%("#%5-5#*(%-.%&*#$(&)%-.%("#%.,;1),,'%&*% Figure 11%.-$% z %
+5-(&-*9%<"#*4%("#%'05%-.%("#%=&*#(&2%)*7%6-(#*(&),%#*#$+&#'%
+-.%>-02)0,(?'%+-/#$*-$%&'
+
+Assume that:
+• the main shaft has an inertia Is around its rotation axis
+• the two balls have identical mass m that is concentrated at the end of a link of length L
+• the links and all other linkages have negligible masses
+• a viscous friction torque with coefficient fv > 0 is acting on the main shaft
+• all other frictional effects are negligible.
+Derive the complete dynamic model of this system using a Lagrangian formalism. Assuming
+knowledge of the geometric parameter L, provide a linear parametrization of the dynamics in
+terms of its dynamic coefficients. Find the value of the constant torque τΩ to be applied for
+sustaining a steady-state rotation at a given angular speed Ω > 0. Finally, design a nonlinear
+feedback for τ so as to achieve partial feedback linearization of the system, i.e., exact linearization
+by feedback of only part of the closed-loop dynamics, in this case of one of the two coordinates.
+Exercise 3
+Consider the design of impedance control laws and force control laws for the 1-dof example, shown
+in Fig. 3, namely a single mass m that moves on a frictionless horizontal plane under the action of
+a commanded force f ∈ R and of a contact force fc ∈ R.
+
+Figure 3: A mass m subject to a commanded force f and a contact force fc .
+In particular:
+• The impedance controllers should work with a generic time-varying, smooth position reference
+xd (t), either with or without the use of a load cell that can measure the contact force fc .
+Illustrate the properties of the obtained closed-loop systems.
+• What happens when xd (t) degenerates to a constant? What happens during free motion,
+when fc = 0?
+• For m = 5 [kg], design the control parameters of the impedance law so that the dynamics
+of the position error e = xd − x in the closed-loop system is characterized by a pair of
+asymptotically stable complex poles with natural frequency ωn = 10 [rad/s] and critical
+damping ratio ζ = 0.7071.
+• On the other hand, the force controllers should be able to regulate the (measured) contact
+force fc to a constant value fd , using any combination of desired force feedforward and force
+error feedback. Illustrate the properties of the obtained closed-loop systems.
+• What happens during free motion, when fc = 0 and a constant contact force fd is desired?
+[150 minutes; open books]
+
+2
+
+Solution
+January 11, 2018
+Exercise 1
+The problem deals with kinematic redundancy since the RP robot has n = 2 joints and the required
+task is scalar m = 1. The task output function and its Jacobian are
+y(q) = q2 sin q1 ,
+
+J (q) =
+
+∂y(q)
+=
+∂q
+
+q2 cos q1
+
+sin q1
+
+
+
+.
+
+(1)
+
+The 1 × 2 task Jacobian loses rank (vanishes) iff q1 = {0, π} and q2 = 0 simultaneously.
+The minimization of the squared norm of q̇ is achieved by the use of the pseudoinverse of the
+task Jacobian. Out of singularities, J # = J T (J J T )−1 and the kinematic control law takes the
+expression
+
+
+q2 c1
+1
+#
+(ẏd + k(yd − q2 sin q1 )) ,
+(2)
+q̇ = J (q) (ẏd + k(yd − y(q))) = 2
+s1 + q22 c21
+s1
+where k > 0 is a control gain that guarantees exponential recovery from transient errors, i.e.,
+ė(t) = −ke(t), with e = yd − q2 sin q1 6= 0, during task execution. The pitfall of (2) is that
+the norm kq̇k involves mixed angular (the revolute joint velocity q̇1 ) and linear (the prismatic
+joint velocity q̇2 ) quantities, so its straight minimization is ill-defined conceptually. In fact, the
+denominator in (2) contains the sum of an non-dimensional term (s21 ) and of a term with (squared)
+length units. Stated differently, changing the representing units (e.g., from 1 m to 100 cm) will
+change the ‘optimal’ solution.
+The minimization of the weighted norm 12 q̇ T W q̇, leading to weighted pseudoinversion of the task
+Jacobian, may solve this theoretical issue. In particular, the units of the (positive) elements in
+the diagonal of W can be used to make terms non-dimensional (e.g., by choosing w1 in (squared)
+−1 T
+length units). Out of singularities, J #
+J (J W −1 J T )−1 and the kinematic control law
+W = W
+takes the expression
+ q2 c1 
+1
+ w1 
+q̇ = J #
+(3)
+ (ẏd + k(yd − q2 sin q1 )) ,
+W (q) (ẏd + k(yd − y(q))) = 2 2
+2  s
+1
+q2 c1
+s1
++
+w2
+w1
+w2
+with k > 0 as before. Indeed, different values of the weights w1 and w2 will lead to different joint
+velocity solutions. It is easy to verify that is the relative ratio between w1 and w2 that really
+matters. For very large ratios w1 /w2 , the cost of moving the (revolute) joint 1 will be dominant
+and therefore the solution (3) will tend to minimize its motion while performing the task. In the
+limit, when w1 → ∞, it follows from (3) that q̇1 → 0, while q̇2 ∝ 1/s1 : therefore, executing the task
+will become more and more problematic as the second link gets closer to the horizontal. Similarly,
+for w2 /w1 → ∞ the second (prismatic) joint will be very expensive to move, while q̇1 ∝ 1/q2 c1 :
+the control effort will increase dramatically when the second link is close to being vertical (c1 ' 0)
+and/or fully retracted (q2 ' 0).
+For the third objective, we need first to derive the inertia matrix of the RP robot. From the
+expression of the kinetic energy T = T1 + T2 , with
+
+ 2
+
+1
+d (q2 − dc2 ) cos q1
+1
+1
+1
+1
+2
++ I2 q̇12 =
+I2 + m2 (q2 − dc2 )2 q̇12 + m2 q̇22 ,
+T1 = I1 q̇1 , T2 = m2
+2
+2
+dt (q2 − dc2 ) sin q1
+2
+2
+2
+3
+
+we obtain a diagonal inertia matrix as
+
+I1 + I2 + m2 (q2 − dc2 )2
+M (q) =
+0
+
+0
+m2
+
+
+
+
+=
+
+m11 (q2 )
+0
+0
+m22
+
+
+.
+
+(4)
+
+The minimization of the kinetic energy T is then a special case of a weighted pseudoinversion of
+the task Jacobian, with one weight being configuration dependent. Thus, out of singularities, the
+inertia-weighted kinematic control law takes the expression
+ q2 c1 
+q̇ = J #
+M (q) (ẏd + k(yd − y(q))) =
+
+1
+ m11 (q2 ) 
+
+ (ẏd + k(yd − q2 sin q1 )) .
+s1
+q22 c21
+s21
++
+m22
+m11 (q2 ) m22
+
+(5)
+
+Note that the two addends in the first denominator have both consistent units of [kg−1 ].
+Exercise 2
+Let q = (θ, φ). Following a Lagrangian approach, under the given assumptions, we compute the
+kinetic energy T = Ts + 2Tm for the main shaft and the two equal balls. We have
+
+
+1
+1
+Tm = mL2 φ̇2 + θ̇2 sin2 φ ,
+Ts = Is θ̇2 ,
+2
+2
+and thus the diagonal inertia matrix
+
+M (q) =
+
+Is + 2mL2 sin2 φ
+0
+
+0
+2mL2
+
+
+.
+
+(6)
+
+Using the Christoffel symbols, the Coriolis and centrifugal terms are easily computed from (6) as
+!
+!
+4mL2 sin φ cos φ θ̇ φ̇
+2 θ̇ φ̇
+2
+c(q, q̇) =
+= mL sin(2φ)
+(7)
+−2mL2 sin φ cos φ θ̇2
+− θ̇2
+For the potential energy due to gravity, U = Us + 2Um , we have (up to a constant)
+Us = 0,
+and thus
+
+g(q) =
+
+∂U (q)
+∂q
+
+Um = −mg0 L cos φ,
+T
+
+
+=
+
+0
+2mg0 L sin φ
+
+
+.
+
+Including also viscous friction on the main shaft, the dynamic equations are
+
+Is + 2mL2 sin2 φ θ̈ + 4mL2 sin φ cos φ θ̇ φ̇ + fv θ̇ = τ
+2mL2 φ̈ − 2mL2 sin φ cos φ θ̇2 + 2mg0 L sin φ = 0.
+
+(8)
+
+(9)
+
+Assuming knowledge of the geometric parameter L, equation (9) can be expressed in the linearly
+parametrized form
+
+
+! Is
+ 
+2
+2
+2
+θ̇ 
+θ̈
+2L sin φ θ̈ + 2L sin(2φ) θ̇ φ̇
+τ
+
+,
+(10)
+ m  = Y (q, q̇, q̈) π =
+2
+2
+2
+0
+0 2L φ̈ − L sin(2φ) θ̇ + 2g0 L sin φ 0
+fv
+4
+
+with the vector π ∈ R3 of dynamic coefficients.
+In a steady-state equilibrium with constant angular velocity θ̇ = Ω > 0, we have θ̈ = 0 and
+φ̈ = φ̇ = 0. This yields from (9)
+τΩ = fv Ω,
+
+L sin φ cos φ Ω2 + g0 sin φ = 0
+
+⇒
+
+cos φe =
+
+g0
+.
+L Ω2
+
+(11)
+
+The input torque τΩ has to compensate just for the energy loss due to friction, in order to keep a
+uniform motion via constant angular velocity. Moreover, the equilibrium angle φe results from the
+balance of the gravity force and the centrifugal force. Its value increases (in the range (0, π/2))
+together with Ω.
+Finally, by applying the nonlinear feedback law
+
+τ = Is + 2mL2 sin2 φ a + 4mL2 sin φ cos φ θ̇ φ̇ + fv θ̇
+
+(12)
+
+where a ∈ R is the new control input (an acceleration), system (9) is transformed into
+θ̈ = a
+g0
+φ̈ − sin φ cos φ θ̇ +
+sin φ = 0.
+L
+2
+
+(13)
+
+The dynamics of θ is now exactly linear (a double integrator), while partial control of the motion of
+2
+R
+φ can be achieved only through the centrifugal term in the second equation, being θ̇2 =
+a dt .
+Exercise 3
+The dynamic equation of the system in Fig. 3 is
+mẍ = f + fc .
+
+(14)
+
+Impedance control. The so-called inverse dynamics control law becomes in this simple case
+f = ma − fc ,
+
+(15)
+
+and transforms system (14) into the double integrator
+ẍ = a.
+
+(16)
+
+The auxiliary input a has to be designed so that the controlled mass m, under the action of the
+contact force fc , matches the behavior of an impedance model characterized by a desired (apparent)
+mass md > 0, desired damping kd > 0, and desired stiffness kp > 0, all acting with respect to a
+smooth motion reference xd (t), or
+md (ẍ − ẍd ) + kd (ẋ − ẋd ) + kp (x − xd ) = fc .
+
+(17)
+
+Equating ẍ in (16) and in the reference behavior (17), solving for a and substituting in (15) yields
+the control force
+
+
+m
+m
+(ẍd + kd (ẋd − ẋ) + kp (xd − x)) +
+− 1 fc .
+(18)
+f=
+md
+md
+The feedback law (18) requires in general a measure of the contact force fc .
+5
+
+In the reference model (17), the position error e = xd − x does not converge to zero if there is
+a contact force fc . Otherwise, e will asymptotically go to zero —indeed exponentially, in view of
+the linearity of the system dynamics. In particular, for kd2 < 4kp md , the obtained second-order
+linear system (17) is characterized by a pair of asymptotically stable complex poles with natural
+frequency and damping ratio given by
+r
+kp
+kd
+,
+ζ= p
+.
+(19)
+ωn =
+md
+2 kp md
+Reducing the desired mass md , for given values of stiffness and damping, will increase both the
+natural frequency ωn and the damping ratio ζ, and thus improve transients. On the other hand,
+for a given mass md , an increase of the stiffness kp should be accompanied by an increase of
+the damping kd in order to prevent more oscillatory transients. If the desired mass equals the
+natural (original) mass, i.e., md = m, a measure of the contact force fc is no longer needed in the
+impedance controller (18).
+√
+Wishing to achieve ωn = 10 and ζ = 0.7071 = 1/ 2, equations (19) provide
+√
+for any md > 0.
+(20)
+kp = 100 md ,
+kd = 10 2 md ,
+Being m = 5 [kg], if we take in particular md = m = 5, we obtain as gains
+√
+kp = 500,
+kd = 50 2 = 70.71,
+
+(21)
+
+and a measure of fc will not be needed.
+In regulation tasks (with xd (t) = xd = constant), by choosing again md = m, the control law 18)
+collapses to just a PD action on the position error e,
+f = kp (xd − x) − kd ẋ.
+
+(22)
+
+This scheme is also called compliance control, since the main design parameter left is the desired
+stiffness kp . Also in this case, the system will converge to x = xd if (and only if) there is no contact
+force. With fc 6= 0 but constant, the position xe 6= xd that satisfies
+kp (xd − xe ) + fc = 0
+
+⇒
+
+xe = xd +
+
+fc
+kp
+
+(23)
+
+will be an asyptotically (exponentially) stable closed-loop equilibrium, as can be possibly checked
+with the Lyapunov candidate V = 21 mẋ2 + 21 kp (x − xe )2 ≥ 0 (using in this case LaSalle theorem
+for the analysis).
+Force control. If we desire to regulate explicitly the contact force to a desired constant value fd ,
+it is necessary to build a force error ef = fd − fc into the control law. After using (15), define the
+auxiliary input a as
+1
+a=
+(kf (fd − fc ) − kd ẋ) ,
+(24)
+md
+with force error gain kf > 0 and velocity damping coefficient kd > 0. The associated control force
+is then
+m
+f=
+(kf (fd − fc ) − kd ẋ) − fc .
+(25)
+md
+A contact force measure is needed in this case, even if we choose md = m. The closed-loop system
+becomes
+md ẍ + kd ẋ = kf (fd − fc ).
+(26)
+6
+
+During free motion, i.e., as long as fc = 0, the mass will eventually move at the constant speed
+ẋe = kf fd /kd . Therefore, the gain kd can be tuned so as to keep this speed low (say, during an
+approaching phase before contacting a hard environment).
+An analysis of the general behavior of system (26) for fc 6= 0 is impossible without assigning a
+model that describes the source of the contact force fc . Even if we can measure it, as assumed
+when designing (25), we do not know the evolution of this disturbance nor can impose a desired
+behavior to it. Should the force error ef converge to zero at steady state, it follows from eq. (26)
+that also the mass velocity ẋ would go to zero. However, the position xe reached at the equilibrium
+would depend on the actual history of the external contact force (see an example in Appendix).
+Assume then that contact forces are generated by a compliant environment with stiffness kc > 0,
+placed beyond the (undeformed) position x = xc > 0. Then, the model for the reaction force of
+the environment is
+(
+−kc (x − xc ),
+for x ≥ xc ,
+fe =
+(27)
+0,
+else.
+During contact, the force applied to the mass is fc = −fe . Thus, from (26) and (27) it follows
+md ẍ + kd ẋ = kf (fd − kc (x − xc ))
+
+⇒
+
+md ẍ + kd ẋ + kf kc x = kf (fd + kc xc ) .
+
+(28)
+
+The steady-state position reached by the second-order asymptotically stable system (28) in response
+to the (positive) step input kf (fd + kc xc ) and the associated steady-state contact force will be
+xe = xc +
+
+fd
+kc
+
+⇒
+
+
+
+fc = −fe = kc (xe − xc ) = fd .
+
+(29)
+
+A slight variant of the force control law (25) is obtained by replacing the cancelation of the actual
+contact force in (15) by a compensation/feedforward of the desired contact force, i.e., f = ma − fd .
+Using again (24), we obtain
+f=
+
+m
+(kf (fd − fc ) − kd ẋ) − fd ,
+md
+
+(30)
+
+and, as a result, the closed-loop system
+
+md 
+md ẍ + kd ẋ = kf −
+(fd − fc ).
+m
+Using the contact force model (27) leads finally to
+
+
+md 
+md 
+md ẍ + kd ẋ + kf −
+kc x = kf −
+(fd + kc xc ) .
+m
+m
+
+(31)
+
+(32)
+
+It is immediate to see that the analysis of (32) can be completed as for (28), provided that the
+slightly more restrictive design condition kf > md /m > 0 is satisfied. Under this hypothesis, the
+steady-state conditions for the asymptotically stable system (32) are the same given in (29).
+∗∗∗∗∗
+
+7
+
+Appendix (extra material to Exercise 3)
+Consider a scheme for the contact force generation modeled by
+f˙c = α(fd − fc ),
+
+with α > 0,
+
+(33)
+
+and assume, e.g., fc (0) = fc0 > fd (the initial contact force is larger than the one desired). Then
+fc (t) = fd − (fd − fc0 ) exp−αt
+
+and ef (t) = fd − fc (t) = (fd − fc0 ) exp−αt = ef 0 exp−αt . (34)
+
+Assuming x(0) = ẋ(0) = 0 and discarding the special case α = kd /md , the solution of (26) can be
+found by Laplace techniques and is given by the following position trajectory
+
+
+k
+kf ef 0
+kf ef 0
+md
+1
+− md t
+−αt
+x(t) =
++
+exp d − exp
+,
+(35)
+kd α
+kd − α m d kd
+α
+and associated velocity
+ẋ(t) =
+
+kf ef 0
+kd − α m d
+
+
+
+k
+
+− md t
+
+exp−αt − exp
+
+
+.
+
+d
+
+(36)
+
+It follows from (35) that, at steady state,
+kf ef 0
+,
+kd α
+
+xe = lim x(t) =
+t→∞
+
+(37)
+
+which shows an explicit dependence on the parameter α of the contact force model (33). Figure 4
+shows two possible evolutions of the applied force error term kf (fd − fc ) (in blue) and of the
+resulting mass position x (in green), for α = 2 and α = 3, with the other parameters being
+fd = 3 [N], fc0 = 2 [N] (and thus, ef = fd − fc0 = 1 [N]), kf = 1.4, md = 1 [kg], and kd = 1 [kg/s].
+response for alfa = 2, fc0 = 2, fd = 3, kf = 1.4, md = 1, kd = 1
+
+1.4
+
+==>
+
+xe =0.7
+
+==>
+
+xe =0.46667
+
+1.2
+
+scaled force error [N] and position [m]
+
+scaled force error [N] and position [m]
+
+1.2
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+response for alfa = 3, fc0 = 2, fd = 3, kf = 1.4, md = 1, kd = 1
+
+1.4
+
+1
+
+0.8
+
+0.6
+
+0.4
+
+0.2
+
+0
+
+1
+
+2
+
+3
+time [s]
+
+4
+
+5
+
+0
+
+6
+
+0
+
+1
+
+2
+
+3
+time [s]
+
+4
+
+5
+
+6
+
+Figure 4: Simulation results of (26) of a controlled mass md subject to the contact force fc in (34),
+for α = 2 [left] and α = 3 [right]. The plots are the position x (shown in green) and the force error
+term kf (fd − fc ) = kf ef (in blue). The reached position xe is the one computed in (37).
+∗∗∗∗∗
+
+8
+
+

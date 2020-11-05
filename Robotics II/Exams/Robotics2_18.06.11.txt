@@ -1,0 +1,835 @@
+Robotics II
+June 11, 2018
+Exercise 1
+The dynamic model of the planar RP robot in Fig. 1 moving in a vertical plane can be written in
+the usual form as
+M (q)q̈ + c(q, q̇) + g(q) = τ .
+(1)
+• Define two different matrices S 1 (q, q̇) and S 2 (q, q̇) that factorize the Coriolis and centrifugal
+terms (i.e., yielding S i (q, q̇)q̇ = c(q, q̇), for i = 1, 2), such that Ṁ − 2S 1 is skew-symmetric,
+while Ṁ − 2S 2 is not.
+• Give the explicit symbolic expressions of the terms appearing in the definition of the momentumbased residual vector r ∈ R2 that allows detection and isolation of collisions.
+
+y
+
+dc2
+
+䎩!
+
+• Are there situations in which collision forces F K ∈ R2 in the plane of motion lead to poor or
+no detection, or to incorrect isolation of the involved link? Discuss the issue.
+
+m2, I2
+
+q2
+
+g0
+
+m1, I1
+
+䎩!
+
+dc1
+
+q1
+
+l1
+
+x
+
+Figure 1: A planar RP robot, with the definition of joint variables and parameters.
+
+Exercise 2
+Consider an actuated pendulum with a link of (known) length l that moves without friction in the
+vertical plane. The pendulum is driven by a DC motor at the base and carries a heavy and unknown
+payload. Assume that the motor inertia and the mass and inertia of the link are negligible with
+respect to the payload, which should be seen as a concentrated mass m at the tip of the pendulum.
+The drive gain ki of the current-to-torque relation τ = ki im of the motor is unknown, and only
+the motor current im can be commanded.
+Design an adaptive control law for im that achieves global asymptotic tracking of a smooth desired
+trajectory θd (t) for the joint angle θ of the pendulum. Provide a (sketch of) proof of your result.
+
+1
+
+Exercise 3
+With reference to Fig. 2, a mass m > 0 moves under the action of a control force F , in the presence
+of viscous friction with coefficient d > 0, and interacts with a stiff environment. We would like to
+regulate the contact force Fc to a constant desired value Fd > 0. The contact force is measured by
+a load cell of stiffness ks > 0, i.e., Fc = ks x where x = 0 corresponds to the initial contact position
+with the environment. Consider a class of control laws of the form
+F = αkf (Fd − Fc ) + βFd ,
+
+(2)
+
+where kf > 0, and with:
+1. (α, β) = (0, 1) [pure feedforward];
+2. (α, β) = (1, 0) [pure proportional feedback];
+3. (α, β) = (1, 1) [combined feedback/feedforward].
+• For each of the three above control cases, check the system equilibrium and verify its stability
+properties, giving a proof of your statements (e.g., via Lyapunov/LaSalle, or using Laplace
+analysis in view of the linearity of the system) and briefly discussing the benefits and limitations
+of each law.
+• How robust are these results with respect to uncertainty in the knowledge of the physical
+parameters m. d, and ks ?
+• Explain what happens under the action of the above control laws when there is no environment
+present (Fc ≡ 0). Would the system reach some form of steady state?
+
+x
+F
+
+ks
+m
+d
+
+Figure 2: A mass in contact through a load cell with a stiff environment.
+
+[240 minutes; open books, but no computer or smartphone]
+
+2
+
+Solution
+June 11, 2018
+Exercise 1
+For later use, we derive the terms in the dynamic model (1) following a Lagrangian approach. The
+kinetic energy of the first link is
+1
+T1 = (I1 + m1 d2c1 )q̇12 .
+2
+The position and velocity of the center of mass of the second link are, respectively,
+
+
+
+
+l1 cos q1 − (q2 − dc2 ) sin q1
+− sin q1 (l1 q̇1 + q̇2 ) − (q2 − dc2 ) cos q1 q̇1
+pc2 =
+, v c2 = ṗc2 =
+.
+l1 sin q1 + (q2 − dc2 ) cos q1
+cos q1 (l1 q̇1 + q̇2 ) − (q2 − dc2 ) sin q1 q̇1
+Therefore, the kinetic energy of the second link is
+T2 =
+
+1
+1
+1
+1
+2
+I2 q̇12 + m2 kv c2 k = (I2 + m2 (q2 − dc2 )2 )q̇12 + m2 (l1 q̇1 + q̇2 )2 .
+2
+2
+2
+2
+
+The kinetic energy of the system is
+T = T1 + T2 =
+
+1 T
+q̇ M (q)q̇,
+2
+
+with inertia matrix
+M (q) =
+
+I1 + m1 d2c1 + I2 + m2 l12 + m2 (q2 − dc2 )2
+
+m 2 l1
+
+m2 l1
+
+m2
+
+!
+.
+
+The generallzed momentum of the robot is then
+p = M (q)q̇ =
+
+!
+
+I1 + m1 d2c1 + I2 + m2 (q2 − dc2 )2 q̇1 + m2 l1 (l1 q̇1 + q̇2 )
+m2 (l1 q̇1 + q̇2 )
+
+.
+
+(3)
+
+The Coriolis and centrifugal terms c(q, q̇) are derived using the Christoffel symbols, i.e., for each
+component
+!
+
+T
+1 ∂mi (q)
+∂mi (q)
+∂M (q)
+T
+ci (q, q̇) = q̇ C i (q)q̇,
+C i (q) =
++
+−
+, i = 1, 2,
+2
+∂q
+∂q
+∂q i
+being mi the ith column of the inertia matrix M . We obtain
+
+
+0
+m2 (q2 − dc2 )
+C 1 (q) =
+⇒
+c1 (q, q̇) = 2m2 (q2 − dc2 )q̇1 q̇2
+m2 (q2 − dc2 )
+0
+
+C 2 (q) =
+
+−m2 (q2 − dc2 ) 0
+0
+0
+
+
+⇒
+
+c2 (q, q̇) = −m2 (q2 − dc2 )q̇12 ,
+
+and thus
+c(q, q̇) =
+
+2m2 (q2 − dc2 )q̇1 q̇2
+−m2 (q2 − dc2 )q̇12
+3
+
+!
+.
+
+The potential energy of the robot is
+U = U1 + U2 = m1 g0 pc1,y + m2 g0 pc2,y = m1 g0 dc1 sin q1 + m2 g0 (l1 sin q1 + (q2 − dc2 ) cos q1 ) ,
+with g0 = 9.81 [m/s2 ]. The associated gravity vector is
+
+T 
+
+g0 ((m1 dc1 + m2 l1 ) cos q1 − m2 (q2 − dc2 ) sin q1 )
+∂U (q)
+g(q) =
+=
+,
+∂q
+m2 g0 cos q1
+
+(4)
+
+As for the factorizations of the Coriolis and centrifugal terms, using again the definition of Christoffel symbols, we compute
+!
+!
+q̇ T C 1 (q)
+m2 (q2 − dc2 )q̇2 m2 (q2 − dc2 )q̇1
+S 1 (q, q̇) =
+=
+,
+(5)
+−m2 (q2 − dc2 )q̇1
+0
+q̇ T C 2 (q)
+which guarantees the skew-symmetry of the matrix
+!
+2m2 (q2 − dc2 )q̇2 0
+2m2 (q2 − dc2 )q̇2
+Ṁ − 2S 1 =
+−
+0
+0
+−2m2 (q2 − dc2 )q̇1
+!
+0
+−2m2 (q2 − dc2 )q̇1
+=
+.
+2m2 (q2 − dc2 )q̇1
+0
+
+2m2 (q2 − dc2 )q̇1
+
+!
+
+0
+
+On the other hand, the alternative choice
+S 2 (q, q̇) =
+
+0
+
+2m2 (q2 − dc2 )q̇1
+
+−m2 (q2 − dc2 )q̇1
+
+0
+
+!
+,
+
+which produces another feasible factorization S 2 (q, q̇)q̇ = c(q, q̇), leads to the matrix
+!
+2m2 (q2 − dc2 )q̇2 −4m2 (q2 − dc2 )q̇1
+Ṁ − 2S 2 =
+2m2 (q2 − dc2 )q̇1
+0
+that is clearly not skew symmetric. This implies, e.g., that matrix S 2 cannot be used in the
+definition of the residual vector r for collision detection and isolation.
+The definition of the residual is
+
+
+Z t
+
+r(t) = K I p(t) −
+τ + S T(q, q̇)q̇ − g(q) + r ds − p(0) ,
+K I > 0,
+(6)
+0
+
+where p = M q̇ is given by (3), p(0) = 0 iff q̇(0) = 0 (the robot starts at rest), g is given by (4),
+and matrix S should factorize the Coriolis and centrifugal terms so that Ṁ −2S is skew symmetric.
+Choosing in particular S = S 1 in (5), we have in this case
+!
+!
+!
+m2 (q2 − dc2 )q̇2 −m2 (q2 − dc2 )q̇1
+q̇1
+0
+T
+S (q, q̇)q̇ =
+=
+.
+m2 (q2 − dc2 )q̇1
+0
+q̇2
+m2 (q2 − dc2 )q̇12
+The residual r in (6) will be affected by a non-zero contact force F K ∈ R2 lying in the plane
+(x, y) and acting on one of the robot links through the joint torque τ K = J TK (q)F K , except for
+some singular cases. Essentially, these are directions along which the contact point cannot be given
+by means of q̇ a linear velocity in the plane of motion. In the following, we distinguish between
+collisions on the first or on the second link (see Fig. 3).
+4
+
+• Collision on link 1. The position of the contact point along the first link and the associated
+contact Jacobian are
+
+
+
+
+cos q1
+− sin q1 0
+pK1 = ρ1
+, with ρ1 ∈ [0, l1 ] ⇒ J K1 =
+,
+sin q1
+cos q1 0
+and thus collision is not detected when
+
+
+cos q1
+F K1 = α
+, for arbitrary α = kF K1 k
+sin q1
+
+⇒
+
+J TK1 F K1 = 0,
+
+namely, when the contact force is aligned with the first link (Fig. 3a). The closer is the alignment
+of F K1 with the axis of link 1, the poorer will be the detection.
+• Collision on link 2. The position of the contact point along the second link is1
+
+
+
+
+l1 cos q1 − (q2 − ρ2 ) sin q1
+l1
+pK2 =
+= Rot2×2 (q1 )
+, with ρ2 ∈ [0, l2,max ]
+l1 sin q1 + (q2 − ρ2 ) cos q1
+q 2 − ρ2
+and the associated contact Jacobian is
+
+
+− (l1 sin q1 + (q2 − ρ2 ) cos q1 ) − sin q1
+⇒ J K2 =
+,
+l1 cos q1 − (q2 − ρ2 ) sin q1
+cos q1
+Thus, collision is not detected when ρ2 = q2 and
+
+
+cos q1
+F K2 = α
+, for arbitrary α = ± kF K2 k
+sin q1
+
+⇒
+
+det J K2 = ρ2 − q2 .
+
+J TK2|q
+
+2 =ρ2
+
+F K2 = 0,
+
+namely, when the contact occurs at the second joint location and the force is orthogonal to the
+second link (Fig. 3b). On the other hand, we obtain still detection but wrong isolation when
+the contact force is orthogonal to the second link, as before, and the contact point is not along
+the first link axis (ρ2 6= q2 ). In this case (see Fig. 3c), we would have
+
+ 
+  
+cos q1
+α (q2 − ρ2 )
+∗
+r ' τ K2 = J TK2 F K2 = α · J TK2
+=
+=
+,
+sin q1
+0
+0
+indicating incorrectly that a collision occurred on link 1, rather than on link 2. Finally, if
+
+
+l1 cos q1 − (q2 − ρ2 ) sin q1
+F 0K2 = β
+, for arbitrary β 6= 0,
+l1 sin q1 + (q2 − ρ2 ) cos q1
+namely, when the line of action of the contact force passes through the axis of joint 1, we obtain
+(see Fig. 3d)
+
+  
+0
+0
+r ' τ 0K2 = J TK2 F 0K2 =
+=
+,
+β(q2 − ρ2 )
+∗
+indicating correctly that the collision is on link 2 (the largest index with a non-zero component
+in r), although the first component of the residual is vanishing (r1 = 0).
+1 We
+
+assume that the prismatic joint has a maximum excursion of q2 ∈ [0, l2,max ].
+
+5
+
+y
+
+y
+q2
+# &
+" K1 = % 00(
+$ '
+
+!2
+
+q2 = !2
+
+# 0&
+" K2 = % 0(
+$ '
+
+FK1
+
+FK2
+
+!1
+
+q1
+
+!
+
+l1
+
+y
+
+q1
+
+!
+
+x
+
+l1
+
+(a)
+FK2
+
+!2
+
+x
+
+(b)
+F !K2
+
+y
+
+!2
+
+q2
+
+$ 0'
+#"K2 = & )
+% *(
+
+q2
+# &
+" K2 = % *0(
+$ '
+!
+
+q1
+!
+
+l1
+
+q1
+
+x
+
+(c)
+
+l1
+
+(d)
+
+x
+
+Figure 3: Possible collision situations leading to no detection or wrong isolation: (a) no detection
+of a contact force on link 1; (b) no detection of a contact force on link 2; (c) wrong isolation of a
+contact force on link 2; (d) isolation of a contact force on link 2, despite the residual at joint 1 is
+not being affected.
+Exercise 2
+Define as coordinate of the pendulum link its angle θ from the downward vertical (positive if
+counterclockwise). Under the simplifying assumptions made, the Lagrangian dynamics of the
+actuated pendulum is computed from the kinetic and potential energy
+T =
+
+1 2 2
+ml θ̇ ,
+2
+
+U = −mg0 l cos θ,
+
+as
+ml2 θ̈ + mg0 l sin θ = τ = ki im ,
+
+(7)
+
+where the drive gain of the DC motor has been included. The unknowns in (7) are the payload
+(concentrated) mass m and the drive gain ki . Dividing by ki > 0, this equation can be rewritten
+in the standard linearly parametrized form (and without unknown parameters affecting the input)
+
+m
+m
+m 2
+l θ̈ +
+g0 l sin θ = l2 θ̈ + g0 l sin θ
+= Y (θ, θ̈) a = im ,
+(8)
+ki
+ki
+ki
+being a = m/ki > 0 the only dynamic coefficient that matters (p = 1). We note that a plays
+the role of a scaled mechanical inertia. Being the motor current im the input to the system, it is
+easy to derive from eq. (8) an adaptive control law for trajectory tracking that mimics the classical
+
+6
+
+one derived when the input is directly the motor torque τ . Given a twice-differentiable desired
+trajectory θd (t) for the joint variable, define such adaptive law as
+im = Y (θ, θ̈r ) â + kp e + kd ė,
+â˙ = γ Y (θ, θ̈r ) (θ̇r − θ̇),
+
+kp > 0, kd > 0,
+
+e = θd − θ,
+
+γ > 0,
+
+θ̇r − θ̇ = ė + λe,
+
+θ̇r = θ̇d + λe = θ̇d +
+
+kp
+e,
+kd
+(9)
+
+with
+
+
+\
+m
+â =
+∈ R.
+ki
+
+2
+
+Y (θ, θ̈r ) = l θ̈r + g0 l sin θ,
+
+The global asymptotic tracking of the smooth trajectory θd (t) can be proven by following the same
+arguments as in the classical case, i.e., via a Lyapunov candidate and the use of Barbalat lemma
+and LaSalle theorem. However, one should carefully define the candidate by considering the scaled
+mechanical inertia of the system. Therefore, noting the absence of dissipative terms, define the
+candidate function
+1
+1 2
+1 ml2
+(θ̇r − θ̇)2 + R e2 +
+ã ≥ 0,
+V =
+2 ki
+2
+2γ
+with R = 2kp > 0 and ã = a − â. We have that V = 0 iff e = ė = ã = 0. For the closed-loop
+system (8–9), we can write
+
+
+2
+
+Y (θ, θ̈) a = l θ̈ + g0 l sin θ
+
+m
+ki
+
+
+
+2
+
+= l θ̈r + g0 l sin θ
+
+
+
+\
+m
+ki
+
++ kp e + kd ė = Y (θ, θ̈r ) â + kp e + kd ė.
+
+Subtracting both sides of this equality from Y (θ, θ̈r ) a, one obtains
+Y (θ, θ̈r ) a−Y (θ, θ̈) a =
+
+
+
+ml2
+(θ̈r − θ̈) = l2 θ̈r + g0 l sin θ ã−kp e−kd ė = Y (θ, θ̈r ) ã−kp e−kd ė. (10)
+ki
+
+Using (10), the time derivative of V computed along the trajectories of the closed-loop system (8–9)
+is evaluated as
+ml2
+1
+(θ̈r − θ̈) (θ̇r − θ̇) + 2kp e ė − ã â˙
+ki
+γ
+
+
+1
+= Y (θ, θ̈r ) ã − kp e − kd ė (θ̇r − θ̇) + 2kp e ė − γ Y (θ, θ̈r ) ã (θ̇r − θ̇)
+γ
+kp
+= − (kp e + kd ė) (ė + e) + 2kp e ė
+kd
+2
+kp 2
+e ≤ 0.
+= − kd ė2 −
+kd
+
+V̇ =
+
+The rest of the proof is completed just like in the classical case.
+Exercise 3
+The dynamic model of the system in Fig. 2 is
+mẍ = F − Fc − dẋ,
+with all non-conservative forces performing work on x on the right-hand side. Since Fc = ks x (as
+the single compliant element in the contact), this equation can be rewritten as
+mẍ + dẋ + ks x = F,
+7
+
+(11)
+
+with all physical coefficients being positive. Applying the class of force control laws (2) yields
+mẍ + dẋ + ks x = αkf (Fd − Fc ) + βFd = αkf (Fd − ks x) + βFd .
+
+(12)
+
+At the equilibrium, ẋ = ẍ = 0, we have
+ks x = αkf (Fd − ks x) + βFd ,
+which is solved for a position x = xe and an associated contact force Fc = Fe = ks xe as
+xe =
+
+β + αkf
+Fd ,
+ks (1 + αkf )
+
+Fe =
+
+β + αkf
+Fd
+1 + αkf
+
+⇒
+
+ef = Fd − Fe =
+
+1−β
+Fd .
+1 + αkf
+
+(13)
+
+Therefore, the correct desired contact force Fd is obtained at the equilibrium if and only if β = 1
+(presence of the constant feedforward), no matter if α = 0 (no feedback) or α = 1 (combined
+situation). In such case, it is in fact
+xe =
+
+1
+Fd ,
+ks
+
+⇒
+
+Fe = Fd
+
+ef = 0.
+
+(14)
+
+On the other hand, for β = 0 and α = 1 (pure proportional feedback), we have at the equilibrium
+xe =
+
+kf
+Fd ,
+ks (1 + kf )
+
+Fe =
+
+kf
+Fd
+1 + kf
+
+⇒
+
+ef =
+
+1
+Fd ,
+1 + kf
+
+(15)
+
+which shows that only for kf → ∞ (or, for large proportional gains) we can drive the force error
+to zero (or, below a given tolerance).
+Indeed, we need to show that the above equilibria are asymptotically stable. In view of the linearity
+of the system, whenever this property holds, the equilibrium will also be a global, exponentially
+stable one.
+Consider first the case of a pure feedforward command F = Fd (α = 0, β = 1). The system
+dynamics is
+mẍ + dẋ + ks x = Fd
+In order to study the asymptotic stability of the equilibrium (14), we choose as Lyapunov candidate
+1
+1
+mẋ2 + ks (x − xe )2 ≥ 0
+2
+2
+Its time derivative is evaluated on the controlled system as
+V1 =
+
+(16)
+
+V̇1 = mẋẍ + ks (x − xe )ẋ = ẋ(−dẋ − ks xe + Fd ) = −dẋ2 ≤ 0.
+We have V̇1 = 0 if and only if ẋ = 0. The system behaves then as mẍ = Fd − ks x, showing that
+there will be an acceleration iff the contact force Fc = ks x is different from the desired one. By
+LaSalle theorem, we conclude the asymptotic stability of the equilibrium state x = xe , ẋ = 0.
+Stated differently, by pushing constantly on the mass with the desired force Fd > 0, a steady
+state is reached with the desired contact force (thanks to the asymptotic stability of the original
+open-loop system). However, the transient behavior will be specified only by the actual physical
+mass m, sensor stiffness ks , and viscous (damping) coefficient d. Moreover, the pure feedforward
+scheme is highly sensitive to unmodeled disturbance forces acting on the system.
+Consider now the case of a pure proportional feedback of the force error, namely F = kf (Fd − Fc )
+(α = 1, β = 0). The closed-loop system is then
+mẍ + dẋ + ks x = kf (Fd − Fc ) = kf (Fd − ks x)
+8
+
+⇒
+
+mẍ + dẋ + ks (1 + kf )x = kf Fd
+
+In order to study the asymptotic stability of the (incorrect) equilibrium (15), we choose as Lyapunov
+candidate
+1
+1
+(17)
+V2 = mẋ2 + ks (1 + kf )(x − xe )2 ≥ 0.
+2
+2
+Its time derivative, evaluated along the trajectories of the closed-loop system, is
+V̇2 = mẋẍ+ks (1+kf )(x−xe )ẋ = ẋ (−dẋ − ks (1 + kf )x + kf Fd + ks (1 + kf )(x − xe )) = −dẋ2 ≤ 0,
+where we replaced the expression of xe in (15) in order to simplify terms. The conclusion about
+asymptotic stability follows from a LaSalle analysis similar to the previous case. Indeed, the
+steady-state force error ef 6= 0 can be decreased by increasing kf , modifying accordingly the
+transient behavior. However, when increasing kf the system response will become faster but soon
+underdamped. As a matter of fact, a useful additional damping action of the form −dc ẋ, with
+dc > 0, is actually missing in the considered control law.
+On the other hand, when combining the feedforward and feedback actions in the control law
+(α = β = 1), the steady-state error will vanish without the need of increasing the feedback gain
+kf . As a result, this can be tuned so as to obtain the best transient behavior and possibly reduce
+the effects of extra disturbing forces. The analysis of the asymptotic stability of xe in (14) can be
+conducted as before, using the same Lyapunov candidate V2 in (17).
+For those more acquainted with Laplace transformation methods in linear control systems, it is
+worth mentioning that the above stability analyses could have been conducted more easily (and
+quickly) by looking at the location of poles (with Routh criterion, or even with simpler methods)
+of suitable transfer functions in the Laplace domain s, both for the open-loop system
+ks
+Fc (s)
+=
+,
+2
+F (s)
+ms + ds + ks
+and for the closed-loop system, e.g., under combined feedback/feedforward
+Fc (s)
+ks (1 + kf )
+=
+.
+2
+Fd (s)
+ms + ds + ks (1 + kf )
+We note also that all the obtained stability results are completely independent from the parameters
+m, d, and ks (as long as they remain physically meaningful, i.e., positive). These quantities were
+invoked in the analysis, but are never used for force control design, which inherits therefore some
+intrinsic robustness. Nonetheless, the values of these parameters will affect the quality of the
+transient behavior in response to reference values Fd .
+At last, when Fc = 0 (no interaction with the environment), all controllers will behave in a similar
+way. We would have in that case
+
+[pure feedforward]
+
+ Fd
+kf Fd
+[pure proportional feedback]
+mẍ + dẋ = F =
+(18)
+
+
+(1 + kf )Fd [combined feedback/feedforward]
+and the mass would always reach a constant steady-state velocity (with ẍ = 0) equal to
+ẋss =
+
+F
+d
+
+with the constant F as specified in (18).
+∗∗∗∗∗
+9
+
+

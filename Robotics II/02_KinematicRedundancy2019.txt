@@ -1,0 +1,2663 @@
+Robotics 2
+
+Robots with
+kinematic redundancy
+Prof. Alessandro De Luca
+
+Redundant robots
+n
+
+direct kinematics of the task r = f(q)
+
+f: Q ® R
+joint space (dim Q = N)
+n
+
+task space (dim R = M)
+
+a robot is (kinematically) redundant for the task if N > M
+(more degrees of freedom than strictly needed for executing the task)
+
+n
+
+n
+
+r may contain the position and/or the orientation of the
+end-effector or, more in general, be any parameterization
+of the task (even not in the Cartesian workspace)
+“redundancy” of a robot is thus a relative concept, i.e., it
+holds with respect to a given task
+
+Robotics 2
+
+2
+
+Some tasks and their dimensions
+TASKS [for the end-effector (E-E)]
+n
+n
+n
+n
+n
+
+dimension M
+
+position in the plane
+position in 3D space
+orientation in the plane
+pointing in 3D space
+position and orientation in 3D space
+
+2
+3
+1
+2
+6
+
+a planar robot with N=3 joints is redundant for the task
+of positioning its E-E in the plane (M=2), but NOT for the
+task of positioning AND orienting the E-E in the plane (M=3)
+
+Robotics 2
+
+3
+
+Typical cases of redundant robots
+n
+
+6R robot mounted on a linear track/rail
+n
+
+n
+
+for positioning and orienting its end-effector in 3D space
+
+6-dof robot used for arc welding tasks
+n
+
+task does not prescribe the final roll angle of the welding gun
+
+n
+
+manipulator on a mobile base
+dexterous robot hands
+team of cooperating manipulators (or mobile robots)
+humanoid robots ...
+
+n
+
+“kinematic” redundancy is not the only type…
+
+n
+n
+n
+
+n
+n
+
+Robotics 2
+
+redundancy of components (actuators, sensors)
+redundancy in the control/supervision architecture
+4
+
+Uses of robot redundancy
+n
+n
+n
+n
+n
+n
+n
+n
+n
+
+avoid collision with obstacles (in Cartesian space) …
+… or kinematic singularities (in joint space)
+stay within the admissible joint ranges
+increase manipulability in specified directions
+uniformly distribute/limit joint velocities and/or accelerations
+minimize energy consumption or needed motion torques
+optimize execution time
+increase dependability with respect to faults
+...
+all objectives should be
+quantitatively “measurable”
+
+Robotics 2
+
+5
+
+DLR robots: LWR-III and Justin
+
+Justin two-arm upper-body humanoid:
+43R actuated =
+*)
+two
+arms
+(2×7)
++
+torso
+(3
+7R LWR-III lightweight manipulator:
+elastic joints (HD), joint torque sensing, + head (2) + two hands (2×12),
+45 kg weight
+13.5 kg weight = payload!!
+Robotics 2
+
+* = one joint is dependent on the motion of the other two
+
+6
+
+Justin carrying a trailer
+video
+
+motion planning for DLR Justin robot in the configuration space,
+avoiding Cartesian obstacles and using robot redundancy
+Robotics 2
+
+7
+
+Dual-arm redundancy
+video
+
+DIS, Uni Napoli
+two 6R Comau robots, one mounted on a linear track (+1P)
+coordinated 6D motion using the null-space of the robot on the right (N-M=1)
+Robotics 2
+
+8
+
+Motion cueing from redundancy
+video
+
+Max Planck Institute for Biological Cybernetics, Tübingen
+a 6R KUKA KR500 mounted on a linear track (+1P) with a sliding cabin (+1R),
+used as an emulation platform for dynamic human perception (N-M=2)
+Robotics 2
+
+9
+
+Self-motion
+video
+
+video
+
+Nakamura’s Lab, Uni Tokyo
+8R Dexter: self-motion with
+constant 6D pose of E-E (N-M=2)
+Robotics 2
+
+6R robot with spherical shoulder
+in compliant tasks for the
+Cartesian E-E position (N-M=3)
+10
+
+Obstacle avoidance
+video
+
+6R planar arm moving on a given geometric path for the E-E (N-M=4)
+Robotics 2
+
+11
+
+Mobile manipulators
+Nu available commands < N generalized coordinates!!
+video
+
+Unicycle + 2R planar arm (N=5, Nu=4):
+E-E trajectory control on a circle,
+with pointing task for first link (Nu-M=1)
+
+Robotics 2
+
+video
+
+Magellan + 3R arm (N=6, Nu=5):
+E-E trajectory control on a circle,
+with E-E pointing task (Nu-M=0!!)
+
+12
+
+Humanoid robots – HRP2
+a hyper-redundant system, but with a few non-actuated dofs (at the base!)
+
+built by Kawada Industries, Inc. for the Humanoid Robotics Project (HRP)
+sponsored by the Japanese Ministry of Economy, Trade, and Industry
+Robotics 2
+
+13
+
+HRP2 humanoid robot in action
+video
+
+whole body motion/navigation avoiding obstacles
+
+JRL CNRS-AIST Joint Research Lab, Toulouse-Tsukuba
+E. Yoshida, C. Esteves, T. Sakaguchi, J.-P. Laumond, and K. Yokoi
+“Smooth collision avoidance: Practical issues in dynamic humanoid motion”
+IEEE Int. Conf. on Intelligent Robotics and Systems, 2006
+Robotics 2
+
+14
+
+Disadvantages of redundancy
+n
+
+potential benefits should be traded off against
+n
+
+n
+
+a greater structural complexity of construction
+n
+
+mechanical (more links, transmissions, ...)
+
+n
+
+more actuators, sensors, ...
+
+n
+
+costs
+
+more complicated algorithms for inverse kinematics
+and motion control
+
+Robotics 2
+
+15
+
+Inverse kinematics problem
+n
+
+find q(t) that realizes the task: f(q(t)) = r(t) (at all times t)
+
+n
+
+infinite solutions exist when the robot is redundant
+(even for r(t) = r = constant)
+N=3>2=M
+
+n
+
+the robot arm may have “internal displacements” that are
+unobservable at the task level (e.g., not contributing to E-E motion)
+n
+
+n
+
+n
+
+r = constant
+E-E position
+
+these joint displacements can be chosen so as to improve/optimize
+in some way the behavior of the robotic system
+
+self-motion: an arm reconfiguration in the joint space that
+does not change/affect the value of the task variables r
+solutions are mainly sought at differential level (e.g., velocity)
+
+Robotics 2
+
+16
+
+Redundancy resolution
+
+via optimization of an objective function
+
+.
+
+n
+
+Local
+
+n
+
+given r(t) and q(t), t = kTs
+optimization of
+
+!(#, #)
+̇
+
+Global
+
+given r(t), t Î [t0, t0+T], q(t0)
+()*+
+optimization of ∫(
+!(#, #),̇
+)
+
+ON-LINE
+
+q(t), t Î [t0, t0 + T]
+discrete-time form
+
+Robotics 2
+
+relatively EASY
+(a LQ problem)
+
+OFF-LINE
+quite DIFFICULT
+(nonlinear TPBV problems arise)
+
+17
+
+Local resolution methods
+three classes of methods for solving '̇ = #($)$̇
+1
+n
+
+Jacobian-based methods (here, analytic Jacobian in general!)
+among the infinite solutions, one is chosen, e.g., that minimizes a
+suitable (possibly weighted) norm
+
+2
+n
+
+null-space methods
+a term is added to the previous solution so as not to affect execution
+of the task trajectory, i.e., belonging to the null-space !(# $ )
+
+3
+n
+
+task augmentation methods
+redundancy is reduced/eliminated by adding S ≤ N-M further auxiliary
+tasks (when S = N-M, the problem has been “squared”)
+
+Robotics 2
+
+18
+
+1
+
+Jacobian-based methods
+
+we look for a solution to "̇ = $ % %̇ in the form
+$=
+
+&
+'
+
+%̇ = ( % "̇
+
+(=
+
+'
+&
+
+minimum requirement for (: $ % ( % $ % = $(%)
+(
+( = generalized inverse of $)
+
+∀"̇ ∈ ℛ($ % )
+
+$ % ((%)"̇ = $ % ( % $ % %̇ = $ % %̇ = "̇
+
+example:
+/0
+$
+if $ = $, $- , det($, ) ¹ 0, one such generalized inverse of $ is (. = ,
+0
+(actually, this is a stronger right-inverse)
+Robotics 2
+
+19
+
+Pseudoinverse
+(̇ = !# (()*̇
+n
+
+n
+
+... a very common choice: / = !#
+
+!# always exists, and is the unique matrix satisfying
+!# ! !# = !#
+! !# ! = !
+$
+$
+#
+#
+#
+! ! = !# !
+!!
+=!!
+if ! is full (row) rank, !# = !$ ! !$ %& ; else, it is computed
+numerically using the SVD (Singular Value Decomposition) of !
+(pinv of Matlab)
+
+n
+
+n
+
+the pseudo-inverse joint velocity is the only that minimizes the
+norm (̇ ) = (̇ $ (̇ among all joint velocities that minimize the
+task error norm *̇ − !(()(̇ )
+if the task is feasible (*̇ = ℛ !(() ), there will be no task error
+
+Robotics 2
+
+20
+
+Weighted pseudoinverse
+#
+*̇ = !"
+* 1̇
+
+#
+another choice: . = !"
+
+n
+
+#
+if ! is full (row) rank, !"
+= % &' !( !% &' !(
+
+n
+
+the solution *̇ minimizes the weighted norm
+*̇
+
+n
+
+n
+
+2
+"
+
+= *̇ ( % *̇
+
+&'
+
+% > 0, symmetric
+(often diagonal)
+
+large weight %+ ⇒ small *̇ - (e.g., weights can be
+
+chosen proportionally to the inverse of the joint ranges)
+it is NOT a “pseudoinverse” (4th relation does not hold ...)
+but shares similar properties
+
+Robotics 2
+
+21
+
+Singular Value Decomposition (SVD)
+n
+
+the SVD routine of Matlab applied to ! provides two orthonormal
+matrices "#×# and %&×& , and a matrix Σ#×& of the form
++2
++2 ≥ +3 ≥ ⋯ ≥ +; > 0
++3
++;=2 = ⋯ = +# = 0
+Σ=
+0#×(&7#)
+⋱
+singular values of !
++#
+where ( = rank(!) ≤ ), so that their product is
+
+! = "Σ% 1
+n
+
+n
+
+the columns of " are eigenvectors of ! !* (associated to its nonnegative eigenvalues +,2), the columns of % are eigenvectors of !*!
+the last . − ( columns of % are a basis for the null space of !
+
+!>? = +? @? (i = 1, ⋯ , ()
+Robotics 2
+
+!>? = 0 (i = ρ + 1, ⋯ , .)
+22
+
+Computation of pseudoinverses
+n
+
+show that the pseudoinverse of ! is equal to
+
+!=
+
+/Σ1 2
+
+!#
+
+⇒
+
+=
+
+1Σ# /2
+
+=
+
+⋱
+
+1
+47
+
+0(897)×(897)
+_______________________________
+0(<98)×8
+
+for any rank " of !
+n
+
+Σ#
+
+1
+45
+
+#
+show that matrix !#
+appears when solving the constrained linearquadratic (LQ) optimization problem (with % > 0, symmetric, and
+assuming ! of full rank)
+
+5
+min @
+
+Ḃ
+
+@
+#
+
+s.t.
+
+! B Ḃ − Ḋ = 0
+
+and that the pseudoinverse is a particular case for % = )
+n
+
+show that a weighted pseudoinverse of J can be computed by
+SVD/pinv as
+#
+!#
+= % 95/@ pinv(!+,- )
+!EFG = !% 95/@
+
+Robotics 2
+
+23
+
+Singularity robustness
+
+applies equally to
+square and non-square
+matrices
+
+unconstrained
+minimization
+of a suitable
+objective function
+
+SOLUTION
+n
+
+Damped Least Squares (DLS)
+
+min = /̇
+<̇
+
+>?
+=@
+
+/̇
+
+@
+
++
+
+B
+‖Ḋ
+@
+
+−
+
+!/‖
+̇ @
+
+/̇ = !FGH / Ḋ = !I ! !I + ,@ JK
+
+compromise between
+large joint velocity
+and task accuracy
+
+LB
+
+Ḋ
+
+induces a robust behavior when crossing singularities, but in its basic
+version gives always a task error Ṁ = , @ ! !I + , @ JK LB Ḋ (as in the N=M case)
+n
+
+thus, !"#$ is not a generalized inverse %
+
+n
+
+using SVD: ! = ' Σ )* ⇒ !FGH = )ΣFGH ' I , ΣFGH =
+
+n
+
+n
+
+NOPQ
+
+3R
+3R@ + ,R@
+
+0(KLS)×(KLS)
+6×6
+____________________________________
+0(ULK)×S 0(ULK)×(KLS)
+
+choice of a variable damping factor ,2(/) ≥ 0, as a function of the
+minimum singular 34(/) value of ! ≅ measure of distance to singularity
+numerical filtering: introduces damping only/mostly in non-feasible
+directions for the task (see Maciejewski and Klein, J of Rob Syst, 1988)
+
+Robotics 2
+
+24
+
+Behavior of DLS solution
+a. comparison of joint velocity norm with
+PINV (pseudoinverse) or DLS solutions
+• in a direction of a singular vector !, when
+the associated singular value " ⟶ 0
+• PINV goes to infinity (and then is 0 at " = 0)
+• DLS peaks a value of 1/2) at " = ) (and then
+smoothly goes to 0...)
+b. graphical interpretation of “damping” effect (here * = + = 2, for simplicity)
+one equality
+constraint
+minimum norm
+solution
+
+Robotics 2
+
+two equality
+constraints
+
+exact (unique)
+solution
+
+two (almost dependent)
+equality constraints
+
+approximate
+(damped) solution
+
+)1
+,(/)
+̇ =
+/̇
+2
+
+exact (ill-conditioned)
+solution
+
+1
+
+1
++ 3̇ − 5/̇
+2
+
+1
+
+25
+
+Numerical example of DLS solution
+planar 2R arm, unit links, close to (stretched) singular configuration !1 = 45°, !2 = 1.5° )
+!̇ 567 =
+
+.472
+.055
+
+(4 2 = 10-3)
+
+!̇ 567 =
+
+.133
+.066
+
+−1/ 2
+1/ 2
+∈ ℛ(.) even
+@singularity!
+
+(4 2 = 10)
+
+1̇ =
+
+(∞ ← µ )
+
+→
+(µ
+0)
+
+1
+!̇ ∗ =
+−1
+
+>
+
+==
+
+4
+!̇
+2
+
+Robotics 2
+
+>
+
++
+
+1
+1̇ − .!̇
+2
+
+µ2
+>
+
+0
+
+iso-level
+curves of H
+
+!̇ ∗
+
+1
+=
+−1
+
+exact
+solution
+(µ=0)
+
+10-4
+
+10-3
+
+10-2
+
+10
+
+‖!‖
+̇ √2
+‖A‖
+̇
+0
+
+.8954
+
+.4755
+
+.4467
+
+.1490
+
+6.6⋅10-3
+
+1.4⋅10-2
+
+1.6⋅10-2
+
+.6668
+
+Hmin
+
+7.7⋅10-5
+
+2.2⋅10-4
+
+1.2⋅10-3
+
+3.4⋅10-1
+
+0
+
+26
+
+Limits of Jacobian-based methods
+n
+
+no guarantee that singularities are globally avoided during
+task execution
+n
+
+n
+
+despite joint velocities are kept to a minimum, this is only a local
+property and “avalanche” phenomena may occur
+
+typically lead to non-repeatable motion in the joint space
+n
+
+cyclic motions in task space do not map to cyclic motions in joint space
+after
+1 tour
+
+qfin ¹ qin
+
+qin = q(0)
+*
+
+! " = !(0) + ( + ! , .̇ , /,
+Robotics 2
+
+)
+
+27
+
+Drift with Jacobian pseudoinverse
+n
+n
+
+n
+
+a 7R KUKA LWR4 robot moves in the vicinity of a human operator
+we command a cyclic Cartesian path (only in position, M=3), to be
+repeated several times using the pseudoinverse solution
+(unexpected) collision of a link occurs during the third cycle ...
+video
+
+Robotics 2
+
+28
+
+Null-space methods
+
+2
+
+general solution of #'̇ = )̇
+#
+
+'̇ = # )̇ +
+a particular solution
+(here, the pseudoinverse)
+in ℛ(#$)
+
+all solutions of the associated
+* − # # '̇ 1
+homogeneous equation #'̇ = 0
+(self-motions)
+“orthogonal” projection
+of '̇ 0 in 3(#)
+properties of
+
+#
+
+projector [* – ## #]
+
+• symmetric
+• idempotent: * – ## #
+
+-
+
+= * – ## #
+
+• * – ## # # = * – ## #
+• ## )̇ is orthogonal to [* – ## #]'̇ 1
+even more in general…
+
+'̇ = 67 )̇ + * − 6- # '̇ 1
+
+67 , 62 generalized
+inverses of #
+( #6: # = #)
+
+... but with less nice properties!
+Robotics 2
+
+how do we choose '̇ 0?
+29
+
+Geometric view on Jacobian null space
+in the space of velocity commands
+
+...its projection
+in the
+null space
+
+minimum norm
+solution
+
+0
+
+final
+solution
+
+.
+
+final
+solution
+(closest
+to
+)
+
+generic/preferred
+joint velocity...
+
+null space
+correction
+subspace
+!(J)
+
+0
+a correction is added to the original pseudoinverse (minimum norm) solution
+i) which is in the null space of the Jacobian
+ii) and possibly satisfies additional criteria or objectives
+Robotics 2
+
+30
+
+Linear-Quadratic Optimization
+generalities
+
+1
+min 0 % = % − %4 5 ! % − %4
+/
+2
+(×*
+
+s.t. $ % = '
+
+@ %, + = 0 % + +5 ($% − ')
+necessary
+conditions
++
+sufficient
+condition
+for a minimum
+
+% ∈ ℝ8
+! > 0 (symmetric)
+' ∈ ℝ9
+rank $ = =($) = (
+Lagrangian (with multipliers +)
+
+F@ 5
+% = %4 − ! CD $5 +
+∇/ @ =
+= ! % − %4 + $ 5 + = 0
+F%
+$%4 − $! CD $5 + − ' = 0
+∇G @ = $% − ' = 0
+∇H/ @ = ! > 0
+
++ = $! CD $5
+
+CD
+
+$%4 − '
+
+% = %4 − ! CD$5 $! CD$5
+
+CD
+
+$%4 − '
+
+(×( invertible
+Robotics 2
+
+31
+
+Linear-Quadratic Optimization
+application to robot redundancy resolution
+
+PROBLEM
+
+SOLUTION
+
+1
+min / &̇ = &̇ − &̇ ' 3 4 &̇ − &̇ '
+.̇
+2
+s.t. #&̇ = *̇
+&̇ = &̇ ' − 4 56 #3 #4 56 #3
+
+56
+
+&̇ ' is a
+“privileged”
+joint velocity
+
+#&̇ ' − *̇
+
+#
+#7
+
+#
+#
+&̇ = #7
+*̇ + : − #7
+# &̇ '
+minimum weighted norm
+solution (for &̇ ' = 0)
+Robotics 2
+
+“projection” matrix in
+the null-space !(#)
+32
+
+Projected Gradient (PG)
+"̇ = 9# (̇ + < − 9# 9 "̇ #
+the choice "̇ # = ∇& ' " ® differentiable objective function
+realizes one step of a constrained optimization algorithm
+while executing the time-varying task ((*)
+the robot tries to increase the value of '(")
+"3
+projected
+gradient
+
+"
+/&
+"1
+
+Robotics 2
+
+∇& '
+
+for a fixed (8: /&
+
+= {" ∈ ℝ3 : 5 " = (̅ }
+
+⇒ "̇ = < − 9# 9 ∇& '
+"- 3-dimensional
+
+< − 9# 9 ∇& ' = 0
+is a necessary condition
+of constrained optimality
+
+33
+
+Typical objective functions H(q)
+n
+
+manipulability
+
+(maximize the “distance” from singularities)
+
+(+,- (") =
+n
+
+joint range
+
+": ∈ "A,: , "?,:
+"?,: + "A,:
+"D: =
+2
+n
+
+(minimize the “distance” from the mid points of the joint ranges)
+=
+
+1
+": − ">:
+(3,-45 (") =
+9
+28
+"?,: − "A,:
+
+Robotics 2
+
+B
+
+"̇ # = − ∇' ((")
+
+:;<
+
+obstacle avoidance
+also known as
+“clearance”
+
+det 1(")12 (")
+
+(maximize the minimum distance to Cartesian obstacles)
+
+(FGH (") =
+
+min
+
+L ∈ 3FGFM
+N ∈ FGHM,OP5H
+
+Q " −R
+
+B
+
+potential difficulties due
+to non-differentiability
+(this is a max-min problem)
+
+34
+
+Singularities of planar 3R arm
+the robot is redundant
+for a positioning task
+in the plane (' = 2)
+
+$ ! =
+
+sin- !-
+
++
+
+sin- !/
+
+unconstrained
+maxima of
+$(!)
+
+it is not $ man
+but has the same minima
+
+iso-level curves of $(!)
+
+p
+
+$(!)
+!3
+
+p
+-p
+
+!2
+!3
+
+p -p
+
+links of equal (unit) length
+Robotics 2
+
+!3
+
+-p
+-p
+
+!2
+
+!2
+
+p
+
+independent from !1!
+35
+
+Minimum distance computation
+in human-robot interaction
+
+LWR4 robot with
+a finite number of
+control points !(#)
+(8, including the E-E)
+
+a Kinect sensor monitors
+the workspace giving the
+depth of points % on
+obstacles that are fixed
+or moving (like humans)
+
+distances in 3D (and then the clearance)
+are computed in this case as
+
+min
+
+) ∈ +,-./,0 1,2-.3
+4 ∈ 5678- 9,:;
+
+Robotics 2
+
+< = −?
+
+@
+
+36
+
+Comments on null-space methods
+n
+
+n
+
+the projection matrix (" – $# $) has dimension '×', but only rank ' − *
+(if $ is full rank *), with some waste of information
+actual (efficient) evaluation of the solution
+
+,̇ = $# .̇ + " − $# $ ,̇ 0 = ,̇ 0 + $# .̇ − $,̇ 0
+but the pseudoinverse is needed anyway, and this is computationally
+intensive (SVD in the general case)
+n
+
+n
+
+in principle, the complexity of a redundancy resolution method should
+depend only from the redundancy degree '– *
+a constrained optimization method is available, which is known to be
+more efficient than the projected gradient (PG) —at least when the
+Jacobian has full rank …
+
+Robotics 2
+
+37
+
+Decomposition of joint space
+n
+
+if r ! " = $, there exists a decomposition of the set of joints
+(possibly, after a reordering)
+$×$
+
+"1
+"= "
+2
+n
+
+$
+-−$
+
+3&
+such that !1 (") =
+is nonsingular
+3"1
+
+from the implicit function theorem, there exists then a function %
+& "' , ") = *
+3%
+3&
+=−
+with
+3"2
+3"1
+
+n
+
+n
+
+"' = %(*, ") )
+45
+
+3&
+= −!145 (")!2 (")
+3"2
+
+the - − $ variables ") can be selected independently (e.g., they are
+used for optimizing an objective function /("), “reduced” via the use
+of g to a function of ") only)
+"' = %(*, ") ) are then chosen so as to correctly execute the task
+
+Robotics 2
+
+38
+
+Reduced Gradient (RG)
+n
+n
+
+!(#) = !(#&, #( ) = !()(*, #( ), #+) = !′(#+), with * at current value
+the Reduced Gradient (w.r.t. #+ only, but still keeping the effects
+of this choice into account) is
+3
+
+∇12
+n
+
+algorithm
+
+!3
+
+= −
+
+789: 7( ;
+3
+
+<=9> ∇1 !
+
+(≠ ∇12 ! !!)
+
+#̇ ( = ∇12 !3
+78 #̇ 8 + 7( #̇ ( = *̇
+
+∇12 ! = 0
+
+is a “compact”
+(i.e., - − / dimensional)
+necessary condition
+of constrained optimality
+
+step in the gradient direction of
+the reduced (- − /)-dim space
+satisfaction of the /-dim
+task constraints
+
+#̇ 8 = 789: *̇ − 7( #̇ (
+Robotics 2
+
+39
+
+Comparison between PG and RG
+n
+
+Projected Gradient (PG)
++̇ = !# #̇ + . − !# ! ∇0 1
+
+n
+
+Reduced Gradient (RG)
+34
+34 !
++̇ "
+!
+−!
+" 2
++̇ =
+= " #̇ +
++̇ 2
+0
+.
+
+n
+
+n
+
+n
+
+− !"34 !2
+
+6
+
+. ∇0 1
+
+RG is analytically simpler and numerically faster than PG, but
+requires the search for a non-singular minor (!" ) of the robot
+Jacobian
+if # = cost & $ − & = 1 ⇒ same (unique) direction for +,̇ but RG
+has automatically a larger optimization step size
+else ⇒ RG and PG methods provide always different evolutions
+
+Robotics 2
+
+40
+
+Analytic comparison
+PPR robot
+
+l
+q3
+q1
+
+RG:
+
+q2
+
+PG:
+
+Robotics 2
+
+always < 1!!
+
+41
+
+Joint range limits
+
+⇔
+
+−90° ≤ +, ≤ 90°
+absolute ⇔ relative
+coordinates
+
+−90° ≤ !, − !,-. ≤ 90°
+
+task:
+E-E linear path
+from S to G
+
+S
+
+G
+!2
+
+initial configuration
+
+!4
+
+!1
+
+numerical comparison among pseudoinverse (PS),
+projected gradient (PG), and reduced gradient (RG) methods
+Robotics 2
+
+42
+
+Numerical results
+
+minimizing distance from mid joint range
+
+joint 1
+
+joint 3
+
+joint 2
+
+joint 4
+
+upper
+limit
+
+steps of numerical simulation
+Robotics 2
+
+43
+
+Numerical results
+obstacle avoidance
+
+reduced gradient
+pseudoinverse %̇ = '# "̇
+
+"̇
+
+"̇
+
+fixed
+obstacle
+
+$̅
+
+constrained maximization of
+3
+
+) % = $̅ *+, %- − / 40 *+, %- − %0
+012
+
+Robotics 2
+
+44
+
+Numerical results
+
+self-motion for escaping singularities
+-
+
+(optimal)
+
+max & ' =
+
+) sin1
+*+,
+
+'*2, − '*
+
+this function is actually NOT
+the manipulability index,
+but has the same minima (= 0)
+
+!º0
+
+steps of numerical simulation
+
+RG is faster than PG
+(keeping the same accuracy on !)
+Robotics 2
+
+45
+
+3
+n
+
+Task augmentation methods
+
+an auxiliary task is added (task augmentation)
+*
+
+!" ($) = '
+
+*
+
++−-
+
+corresponding to some desirable feature for the solution
+2
+!($)
+21 = ' =
+!" ($)
+n
+
+(($)
+21̇ =
+$̇ = (1 ($)$̇
+(" ($)
+
+a solution is chosen still in the form
+
+()
+
+-+*
+
++
+
+$̇ = 01 ($)21̇
+or adding a term in the null space of the augmented
+Jacobian ()
+Robotics 2
+
+46
+
+Augmenting the task …
+n
+
+advantage: better shaping of the inverse kinematic solution
+
+n
+
+disadvantage: algorithmic singularities are introduced when
+r(") = %
+
+r("& ) = '
+
+but
+
+r("( ) < % + '
+
+it should always be ℛ " ∩ ℛ "& = ∅
+
+difficult to be obtained globally!
+rows of " AND rows of "+
+are all together linearly independent
+
+Robotics 2
+
+47
+
+Augmented task
+example
+
+!(#)
+% = 4, ) = 2
+
+absolute joint coordinates
+
++, (-) = -. = p/2
+
+(0 = 1)
+
+last link to be held vertical
+Robotics 2
+
+48
+
+Extended Jacobian (! = #-$)
+n
+
+square %&: in the absence of algorithmic singularities, we can choose
+
++̇ = %012 (+)30̇
+n
+
+the scheme is then repeatable
+n
+
+n
+
+n
+
+provided no singularities are encountered during a complete task cycle*
+
+when the # − $ conditions () (+) = 0 correspond to necessary (and
+sufficient) conditions for constrained optimality of a given objective
+function .(+) (see RG method, slide #39), this scheme guarantees that
+constrained optimality is locally preserved during task execution
+in the vicinity of algorithmic singularities, the execution of both the
+original task as well as the auxiliary task(s) are affected by errors
+(when using a DLS inversion)
+
+• there exists an unexpected phenomenon in some 3R manipulators having “generic” kinematics: the robot may sometimes perform a pose
+change after a full cycle, even if no singularity has been encountered during motion (see J. Burdick, Mech. Mach. Theory, 30(1), 1995)
+
+Robotics 2
+
+49
+
+Extended Jacobian
+example
+
+MACRO-MICRO manipulator
+!(#)
+%(#)
+
+& = 4, * = 2
+
+!̇ = -(./ , … , .1 ).̇
+%̇ = -2 (./ , .3 ).̇
+
+∗ ∗
+-4 =
+∗ 0
+
+Robotics 2
+
+4×4
+
+50
+
+Task Priority
+if the original (primary) task %"̇ = '" ()))̇ has higher priority
+than the auxiliary (secondary) task %#̇ = '# ()))̇
+n
+
+we first address the task with highest priority
+
+)̇ = '"# %"̇ + - − '"# '" !"
+n
+
+and then choose !" so as to satisfy, if possible, also the secondary
+(lower priority) task
+%#̇ = '# )̇ = '# '"# %"̇ + '# - − '"# '" !" = '# '"# %"̇ + '# /" !"
+the general solution for !" takes the usual form
+
+!" = '# /"
+
+#
+
+%#̇ − '# '"# %"̇ + - − '# /"
+
+#
+
+'# /"
+
+!#
+
+!# is available for execution of further tasks of lower (ordered) priorities
+Robotics 2
+
+51
+
+Task Priority
+
+(continue)
+
+§ substituting the expression of !" in $̇
+
+$̇ = '"# )"̇ + +" ', +"
++ /+ # = /+ #
+when matrix + is
+idempotent and symmetric
+
+#
+
+),̇ − ', '"# )"̇ + +" . − ', +"
+
+= ', +"
+
+#
+
+#
+
+', +"
+
+!,
+
+possibly = 0
+
+§ main advantage: highest priority task is ideally no longer affected
+by algorithmic singularities (error is restricted only to secondary task)
+
+task 1: follow —
+
+WITHOUT
+task priority
+
+WITH
+task priority
+
+task 2: vertical
+third link
+
+Robotics 2
+
+52
+
+A general task priority formulation
+n
+
+n
+
+n
+
+consider a large number ! of tasks to be executed at best and with
+strict priorities by a robotic system having many dofs
+everything should run efficiently in real time, with possible addition,
+deletion, swap, or reordering of tasks
+a recursive formulation that reduces computations is convenient
+
+"-th task
+
+projector in the null-space of "-th task
+
+(
+
+)
+
+even larger!
+projector in the null-space of the
+augmented Jacobian of the first " tasks
+
+stack of first " tasks
+
+Robotics 2
+
+augmented Jacobian
+of first " tasks
+
+53
+
+Recursive solution with priorities
+n
+
+-1
+
+start with the first task and reformulate the problem so as to provide
+always a “solution”, at least in terms of minimum error norm
+
+Robotics 2
+
+54
+
+Recursive solution with priorities
+
+prioritized solution
+up to task ! − 1
+
+-2
+
+set of all solutions up to task ! − 1
+
+LQ problem
+for !-th task
+initialization
+
+recursive formula
+(Siciliano, Slotine:
+ICAR 1991)
+
+prioritized
+solution
+up to task !
+
+correction needed when
+the solution up to task ! − 1
+is not satisfying also task !
+
+over the steps, the search set
+is progressively reduced
+
+Robotics 2
+
+55
+
+Recursive solution with priorities
+properties and implementation
+
+n
+
+the solution considering the first ! tasks with their priority
+satisfies also (“does not perturb”) the previous ! − 1 tasks
+since
+=
+(Maciejewski, Klein: IJRR 1985): check the four defining properties of a pseudoinverse
+
+n
+
+recursive expression also for the null-space projector
+
+(Baerlocher, Boulic: IROS 1998): for the proof, see Appendix A
+n
+
+when the !-th task is (close to be) incompatible with the previous ones
+(algorithmic singularity), use “DLS” instead of “#” in !-th solution...
+
+Robotics 2
+
+56
+
+A list of extensions
+(some still on-going research)
+
+n
+
+up to now, only “basic” redundancy resolution schemes
+n
+
+defined at first-order differential level (velocity)
+n it is possible to work in acceleration
+n
+n
+
+n
+
+n
+
+n
+
+seen within a planning, not a control perspective
+n take into account and recover errors in task execution by
+using kinematic control schemes
+applied to robot manipulators with fixed base
+n extend to wheeled mobile manipulators
+tasks specified only by equality constraints
+n add also linear inequalities in a complete QP formulation
+n
+
+n
+
+Robotics 2
+
+useful for obtaining smoother motion
+allows including the consideration of dynamics
+
+in particular for humanoid robots in multiple complex tasks
+
+consider hard limits in joint/command space
+57
+
+Resolution at acceleration level
++ = -(")
+n
+
++̇ = 0(")"̇
+
+̇ "̇
++̈ = 0 " "̈ + 0(")
+
+rewritten in the form
+̇ "̇ ≜ 4̈
+0 " "̈ = +̈ − 0(")
+to be chosen
+
+n
+
+given
+(at time !)
+
+known ", "̇
+(at time !)
+
+the problem is formally equivalent to the previous one,
+with acceleration in place of velocity commands
+for instance, in the null-space method
+"̈ = 0# " 4̈ + 6 − 0# " 0(") "̈ 7
+solution with minimum
+acceleration norm "̈ &
+
+Robotics 2
+
+= ∇9 : − '( "̇
+
+needed
+to damp/stabilize
+self-motions
+in the null space
+('( > 0)
+58
+
+Dynamic redundancy resolution
+as Linear-Quadratic optimization problems
+
+n
+
+dynamic model of a robot manipulator (more later!)
+* # #̈ + - #, #̇ = /
+0(#)#̈ = 1̈ (= 2̈ − 0 ̇ # #)
+̇
+
+!×! symmetric inertia matrix,
+positive definite for all #
+
+input torque vector
+(provided by the motors)
+
+Coriolis/centrifugal vector $(#, #)
+̇
++ gravity vector )(#)
+n
+
+*-dimensional
+acceleration task
+
+.
+
+typical dynamic objectives to be locally minimized at (q,q)
+1
+45 #̈ =
+/
+2
+
+1 9 8
+1 9
+9
+= #̈ * # #̈ + - #, #̇ * # #̈ + - #, #̇ - #, #̇
+2
+2
+minimum torque norm
+1
+1 9 =8
+8
+48 #̈ =
+/ : ;< = / * # /
+2
+2
+1 9
+1 9
+9
+=5
+= #̈ #̈ + - #, #̇ * (#)#̈ + - #, #̇ * =8 (#)- #, #̇
+2
+2
+minimum torque (squared inverse inertia weighted) norm
+
+Robotics 2
+
+8
+
+59
+
+Three dynamic solutions
+n
+
+1
+&
+2
+
+by applying the general formula for LQ optimization problems(°),
+check that the following closed-form expressions are obtained
+(°) in slide
+(in the assumption of full rank Jacobian !)
+#31
+
+minimum torque solution
+3
+
+&' = ! $ )*'($)
+
+#
+
+-̈ − !̇ $ $̇ + ! $ )*' $ 1($, $)
+̇
+
+• good for short trajectories (in fact, it is still only a “local” solution!)
+• for longer trajectories it may lead to a torque “explosion” (whipping effect)
+1
+&
+2
+
+minimum (squared inverse inertia weighted) torque solution
+3
+89:
+
+&3 = )($)!#($) -̈ − !̇ $ $̇ + ! $ )*' $ 1($, $)
+̇
+• good performance in general, to be preferred
+
+minimum (simple inverse inertia weighted) norm of the torque ...
+a solution with leading !"($) term: what is its physical interpretation?
+1
+&
+2
+
+3
+89;
+
+Robotics 2
+
+&4 = !5 ($) ! $ )*'($)!5 ($)
+
+*'
+
+-̈ − !̇ $ $̇ + ! $ )*' $ 1($, $)
+̇
+60
+
+Kinematic control
+n
+
+given a desired !-dimensional task "# (%), in order to recover
+a task error ' = "# – " due to initial mismatch or due to
+n
+n
+n
+
+disturbances
+inherent linearization error in using the Jacobian (first-order motion)
+discrete-time implementation
+
+we need to “close” a feedback loop on task execution, by
+replacing (with diagonal matrix gains * > 0 or *- , */ > 0)
+"̇
+
+"#̇ + * "# − "
+
+"̈
+
+"#̈ + */ "#̇ − "̇ + *- "# − "
+
+in velocity-based...
+…in acceleration-based methods
+
+where " = 0 1 , "̇ = 3(1)1̇
+Robotics 2
+
+61
+
+Mobile manipulators
+n
+n
+
+coordinates: !" of the base and !# of the manipulator
+differential map: from available commands $" on the mobile
+base and $# on the manipulator to task output velocity
+% = ' ! ∈ ℝ*
+!#
+
+(task output, e.g.,
+the E-E pose)
+
+kinematic
+model of the
+wheeled base
+(with
+nonholonomic
+1(!" )$" constraints)
+
+!"
+!̇ " =
+.
+!= ! ∈ℝ
+!̇ # = $#
+#
+!"
+Robotics 2
+
+$"
+$ = $ ∈ ℝ./
+#
+
++, ≤ +
+62
+
+Mobile manipulator Jacobian
+/ = 1 - = 1(-3 , -5 )
+71(-)
+71(-)
+/̇ =
+-̇ 3 +
+-̇ 5 = (3 - -̇ 3 + (5 - -̇ 5
+7-3
+7-5
+= (3 - 9(-3 ).3 + (5 - .5 = (3 (-)9(-3 ) (5 (-)
+= (*++ - .
+n
+
+.3
+.5
+
+Nonholonomic Mobile Manipulator (NMM)
+Jacobian (!×#$ )
+
+… most previous results follow by just replacing
+( ⟹ (*++
+
+-̇ ⟹ .
+
+(redundancy if #$ − ! > 0)
+
+namely, the
+available velocity commands
+Robotics 2
+
+63
+
+Mobile manipulators
+video
+
+Automatica Fair 2008
+video
+
+wheeled Justin: base with centered
+E-E trajectory control on a line (!) − - = 2) steering wheels (! = 3 + 4×2, !) = 8)
+car-like+2R planar arm (! = 6, !) = 4):
+with maximization of ./00 manipulability
+
+Robotics 2
+
+“dancing” in controlled
+but otherwise passive mode
+
+64
+
+Mobile manipulators
+
+issues in acceleration control with steering wheels
+n
+n
+
+velocity commands of steering wheels do not affect the task velocity
+solution: at the task acceleration level, using mixed commands
+n here 5: joint (3) and base linear (1) accelerations + steering velocity (1)
+video
+
+video
+
+without null-space stabilizing term
+
+with null-space stabilizing term
+
+car-like (rear-drive speed + front steering) + 3R arm (! = 7, !% = 5):
+Robotics 2
+
+E-E trajectory control on a circle (!% − ( = 2)
+
+65
+
+Quadratic Programming (QP)
+with equality and inequality constraints
+
+n
+
+minimize a quadratic objective function (typically positive definite, like when
+using norms of vectors) subject to linear equality and inequality constraints,
+all expressed in terms of joint velocity commands
+
+solution set, with only equality constraints
+
+within a given convex set
+
+QP complete formulation
+solution set, with only inequality constraints
+
+(non-negative) slack variables
+
+Robotics 2
+
+(possibly, also with prioritization
+of constraints)
+
+66
+
+Equality and inequality linear constraints
+higher priority ≻ lower priority
+feasible convex area
+(from inequalities)
+
+NO exact
+solution here
+
+active
+inequality
+constraint
+inequality
+
+inequality
+constraint
+
+solution if
+ineq ➁ ≻ ineq
+
+①
+
+①
+
+solution if
+ineq ① ≻ ineq ➁
+minimum norm
+solution
+
+feasible convex area
+equality
+constraint
+
+any priority order
+gives the same
+final solution
+
+equality
+(top priority)
+inequality ➁
+... equality ≻ inequalities
+
+set of possible
+minimum error
+solutions if ...
+
+equality
+inequality ➁
+... inequalities ≻ equality
+
+inequality ➀
+
+NO exact
+solution here
+
+inequality ➂
+feasible convex area
+
+Robotics 2
+
+67
+
+Equality and Inequality Tasks
+for the high-dof humanoid robot HRP2
+
+n
+
+a systematic task priority approach, with several simultaneous tasks
+
+video
+
+in any order of priority
+• avoid the obstacle
+• gaze at the object
+• reach the object
+• ...
+while keeping balance!
+
+IEEE Int. Conf. on Robotics and Automation (ICRA) 2009
+Robotics 2
+
+all subtasks are locally
+expressed by linear
+equalities or inequalities
+(possibly relaxed
+when needed)
+on joint velocities
+68
+
+Inclusion of hard limits in joint space
+Saturation in the Null Space (SNS) method
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+robot has “limited” capabilities: hard limits on joint ranges and/or on joint
+motion or commands (max velocity, acceleration, torque)
+represented as box inequalities that can never be violated (at most, active
+constraints or saturated commands) – kept separated from “stack” of tasks
+(equality) tasks are usually executed in full (with priorities, if desired), but
+can be relaxed (scaled) in case of need (i.e., when robot capabilities are used
+at their limits)
+saturate one overdriven joint command at a time, until a feasible and better
+performing solution is found ⇒ Saturation in the Null Space = SNS
+on-line decision: which joint commands to saturate and how, so that this
+does not affect task execution
+for tasks that are (certainly) not feasible, SNS embeds the selection of a task
+scaling factor that preserves task direction with minimal scaling
+
+Robotics 2
+
+scaling
+factor
+
+diagonal
+0/1 matrix
+
+contains
+saturated
+joint
+velocities
+69
+
+Geometric view on SNS operation
+in the space of velocity commands
+NO exact
+solution here
+
+=
+
+=
+
+hard bounds
+(box inequality constraints)
+
+hard bounds
+(box inequality constraints)
+
+the total correction to the original pseudoinverse solution
+is always in the null space of the Jacobian (up to task scaling, if present)
+Robotics 2
+
+70
+
+Illustrative example
+
+-1
+
+consider a 4R robot with equal links of unitary length
+task: end-effector Cartesian position
+manipulator configuration
+differential map
+
+task Jacobian
+
+desired Cartesian velocity
+commanded joint velocity
+
+velocity limits
+Robotics 2
+
+71
+
+Illustrative example
+
+-2
+
+current configuration
+associated Jacobian
+desired end-effector velocity
+
+2.0
+
+-2.0
+
+direct (velocity =) task scaling?
+
+saturating only the most violating velocity?
+
+Robotics 2
+
+72
+
+Joint velocity bounds
+joint velocity bounds
+
+joint space
+limits
+
+conversion: control sampling (piece-wise constant velocity commands) + max feasible velocities
+and decelerations to stay/stop within the joint range
+
+smooth velocity bound “anticipates” the reaching of a hard limit
+
+Robotics 2
+
+73
+
+SNS at velocity level
+Algorithm 1
+
+initialization
+W : diagonal matrix with (j,j) element
+= 1 if joint j is enabled
+= 0 if joint j is disabled
+: vector with saturated velocities
+in correspondence of disabled joints
+s : current task scale factor
+s*: largest task scale factor so far
+
+Robotics 2
+
+74
+
+SNS at velocity level
+Algorithm 1
+
+compute the joint velocity with
+initialized values
+
+check the joint velocity bounds
+compute the task scaling factor
+and the most critical joint
+if a larger task scaling factor is
+obtained save the current solution
+disable the most critical joint by
+forcing it at its saturated velocity
+
+Robotics 2
+
+75
+
+SNS at velocity level
+Algorithm 1
+
+check if the task can be
+accomplished with the remaining
+enabled joints
+if NOT use the parameters that
+allow the largest task scaling
+factor and exit
+repeat until no joint limit is
+exceeded
+Robotics 2
+
+76
+
+Task scaling factor
+Algorithm 2
+
+yields the best task scaling factor
+for the most critical joint in the
+current joint velocity solution
+
+Robotics 2
+
+77
+
+Simulation results
+7-dof KUKA LWR IV
+
+[deg]
+[deg/s]
+[deg/s]
+[ms]
+
+Robotics 2
+
+78
+
+Simulation results
+for increasing V
+requested task
+move the end-effector through six
+desired Cartesian positions along
+linear paths with constant speed V
+Neglecting
+Constraint
+
+task redundancy degree = 7 – 3 = 4
+Task
+Scaling
+
+robot starts at the configuration
+[deg]
+
+SNS
+approach
+
+Robotics 2
+
+79
+
+Experimental results
+KUKA LWR IV with hard joint-space limits
+
+Robotics 2
+
+IEEE Transactions on Robotics 2015
+
+video
+
+80
+
+Variations of the SNS method
+SNS at the acceleration command level + consideration of multiple tasks with priority
+
+Robotics 2
+
+IEEE IROS 2012
+
+video
+
+81
+
+Global solution for repeatable motion
+video (IEEE ICRA 2013)
+n
+
+n
+
+n
+
+for cyclic tasks: a “bidirectional”
+probabilistic search in the reduced
+space of extra degrees of freedom
+(dimension ! − #)
+including also collision avoidance
+(or other task constraints)
+
+experiment with KUKA LWR4 at
+DIAG Robotics Lab (Dec 2012)
+video
+
+Robotics 2
+
+82
+
+Bibliography
+n
+n
+n
+
+n
+
+n
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+-1
+
+R. Cline, “Representations for the generalized inverse of a partitioned matrix,” J. SIAM, pp. 588-600, 1964
+T.L. Boullion, P. L. Odell, Generalized Inverse Matrices, Wiley-Interscience, 1971
+A. Maciejewski, C. Klein, “Obstacle avoidance for kinematically redundant manipulators in dynamically
+varying environments,” Int. J. of Robotics Research, vol. 4, no. 3, pp. 109-117, 1985
+A. Maciejewski, C. Klein, “Numerical filtering for the operation of robotic manipulators through
+kinematically singular configurations,” J. of Robotic Systems, vol. 5, no. 6, pp. 527-552, 1988
+Y. Nakamura, Advanced Robotics: Redundancy and Optimization, Addison-Wesley, 1991
+B. Siciliano, J.J. Slotine, “A general framework for managing multiple tasks in highly redundant robotic
+systems,” 5th Int. Conf. on Advanced Robotics, pp. 1211-1216, 1991
+P. Baerlocher, R. Boulic, “Task-priority formulations for the kinematic control of highly redundant articulated
+structures”, IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 323-329, 1998
+P. Baerlocher, R. Boulic, “An inverse kinematic architecture enforcing an arbitrary number of strict priority
+levels,” The Visual Computer, vol. 6, no. 20, pp. 402-417, 2004
+A. Escande, N. Mansard, P.-B. Wieber, “Fast resolution of hierarchized inverse kinematics with inequality
+constraints,” IEEE Int. Conf. on Robotics and Automation, pp. 3733-3738, 2010
+O. Kanoun, F. Lamiraux, P.-B. Wieber, “Kinematic control of redundant manipulators: Generalizing the taskpriority framework to inequality task,” IEEE Trans. on Robotics, vol. 27, no. 4, pp. 785-792, 2011
+A. Escande, N. Mansard, P.-B. Wieber, “Hierarchical quadratic programming,”
+http://hal.archives-ouvertes.fr/hal-00751924 (including software), 26 Dec 2012
+
+Robotics 2
+
+83
+
+Bibliography
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+-2
+
+A. De Luca, G. Oriolo, “The reduced gradient method for solving redundancy in robot arms,” Robotersysteme,
+vol. 7, no. 2, pp. 117-122, 1991
+A. De Luca, G. Oriolo, B. Siciliano, “Robot redundancy resolution at the acceleration level,” Laboratory Robotics
+and Automation, vol. 4, no. 2, pp. 97-106, 1992
+A. De Luca, L. Lanari, G. Oriolo, “Control of redundant robots on cyclic trajectories,” IEEE Int. Conf. on
+Robotics and Automation, pp. 500-506, 1992
+A. De Luca, G. Oriolo, “Reconfiguration of redundant robots under kinematic inversion,” Advanced Robotics,
+vol. 10, n. 3, pp. 249-263, 1996
+A. De Luca, G. Oriolo, P. Robuffo Giordano, “Kinematic control of nonholonomic mobile manipulators in the
+presence of steering wheels,” IEEE Int. Conf. on Robotics and Automation, pp. 1792-1798, 2010
+F. Flacco, A. De Luca, O. Khatib, “Motion control of redundant robots under joint constraints: Saturation in the
+null space,” IEEE Int. Conf. on Robotics and Automation, pp. 285-292, 2012
+F. Flacco, A. De Luca, O. Khatib, “Prioritized multi-task motion control of redundant robots under hard joint
+constraints,” IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 3970-3977, 2012
+F. Flacco, A. De Luca, “Optimal redundancy resolution with task scaling under hard bounds in the robot joint
+space,” IEEE Int. Conf. on Robotics and Automation, pp. 3969-3975, 2013
+F. Flacco, A. De Luca, "Fast redundancy resolution for high-dimensional robots executing prioritized tasks
+under hard bounds in the joint space,” IEEE/RSJ Int. Conf. on Intelligent Robots and Systems, pp. 2500-2506,
+2013
+F. Flacco, A. De Luca, O. Khatib, “Control of redundant robots under hard joint constraints: Saturation in the
+null space,” IEEE Transactions on Robotics, vol. 31, no. 3, pp. 637-654, 2015
+M. Cefalo, G. Oriolo, M. Vendittelli, "Planning safe cyclic motions under repetitive task constraints,” IEEE Int.
+Conf. on Robotics and Automation, pp. 3807-3812, 2013
+
+Robotics 2
+
+84
+
+Appendix A - Recursive Task Priority
+proof of recursive expression for null-space projector
+
+n
+
+proof based on a result on pseudoinversion of partitioned matrices (Cline: J. SIAM 1964)
+
+n
+
+(i)
+n
+
+(i) + (ii) ⇒ Q.E.D.
+
+n
+
+if k-th task is scalar
+=
+
+n
+
+(ii)
+(Greville formula)
+
+Robotics 2
+
+85
+
+

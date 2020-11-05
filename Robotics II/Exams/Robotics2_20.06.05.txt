@@ -1,0 +1,505 @@
+                                            Robotics 2
+                               Remote Exam – June 5, 2020
+
+Exercise #1
+A 3R planar robot is subject to hard joint velocity limits |q̇i | ≤ Vi , for i = 1, 2, 3, with V1 = 1,
+V2 = 1.5, and V2 = 2 [rad/s]. At the current configuration, its task Jacobian is given by
+
+                                        −1        −1      −0.5
+                                                                  
+                               J=
+                                      −0.366 −0.866 −0.866
+                                                      T
+and the task requires a Cartesian velocity v = 2 1        [m/s]. Apply the SNS algorithm to find a
+feasible solution q̇ ∈ R3 with the least possible norm, including task scaling if needed.
+
+Exercise #2
+Determine all the conditions on the constant parameters a, b, c and d, under which the following
+(linear) equations can be considered the dynamic model of an actual 2-dof robot:
+
+                             M q̈ + g = u,           with        q ∈ R2 , u ∈ R2 ,
+
+where                                                                      
+                                            a    b                        0
+                                 M=                      ,       g=                .
+                                            b    c                        d
+Any guess about which type of robot this could be? Suppose now that only one generalized
+coordinate is actuated by a command ua ∈ R, while the other is passive. Which component of u
+should be actuated in order to guarantee the existence of an equilibrium? If we choose a value
+ua > 0, what would be the instantaneous acceleration of the other (passive) coordinate?
+
+Exercise #3
+Consider the RP robot in Fig. 1, moving in a vertical plane. The prismatic joint has a limited
+range d ≤ q2 ≤ L. Derive the gravity term g(q) in the dynamic model and find the expression (in
+symbolic form) of a constant α > 0 that bounds k∂g(q)/∂qk for all q within the robot workspace.
+
+
+                                                                       y0
+
+
+                                   d     ⊕           q2
+                                                                              g0
+                                        m1
+
+
+                                            q1               ⊕
+                                                     m2
+                                   x0
+
+
+        Figure 1: A RP robot, with associated coordinates q and relevant dynamic data.
+
+
+
+                                                         1
+Exercise #4
+The Cartesian robot in Fig. 2 has the two links respectively of mass m1 and m2 , and carries a
+payload mp . It moves under gravity and has relevant viscous friction at both joints. In the absence
+of a priori information on the dynamic parameters, design an adaptive control law yielding global
+asymptotic stabilization of the tracking error for a desired trajectory q d (t).
+
+
+                                yw                      mp        g0
+
+                                                       ⊕ m2
+
+
+                                         m1                q2
+                                         ⊕
+                                                                   xw
+                                         q1
+
+                        Figure 2: A Cartesian robot moving under gravity.
+
+
+Exercise #5
+A robot should close a door by firmly grasping its handle, pushing the door to the final position,
+and then turning the handle to prepare the door locking. This interaction task is sketched in
+Fig. 3. Write down the natural and artificial constraints, defining a suitable task frame. Propose
+a time behavior for the hybrid references so as to cover the pushing phase and the final locking of
+the door. As usual in planning of hybrid force-velocity tasks, neglect any friction or environment
+compliance.
+
+
+
+                z0                                                                     zh
+
+
+
+                                                                                             xh
+
+
+
+                                              y0
+    x0
+
+ Figure 3: The task of closing a door [left], with handle motion for the final door locking [right].
+
+
+
+                                                   2
+Exercise #6
+With reference to Fig. 4, a planar 2R robot with links of unitary length (in [m]) is in the configu-
+                         T                                        T
+ration q = π/2 −π/2          [rad] and with a velocity q̇ = 0 π/4      [rad/s] when a collision occurs.
+Detail and comment the detection and isolation properties of the energy-based and momentum-
+                                                                                                 T
+based methods for the three cases of collision with the shown impact forces: i) F c1 = −1 0         [N]
+                                        T                                     T
+at the end-effector; ii) F c2 = 0 −1       [N] at the elbow; iii) F c3 = 0 1      [N] at the midpoint
+of the second link.
+
+                                  y0
+                                             q2 = -p/2
+                  Fc2 = (0 -1)T
+
+                                                                  Fc1 = (-1 0)T
+                         𝑞̇ 2 = p/4
+                                                  Fc3 = (0 1)T
+
+                                           q1 = p/2
+
+                                                                    x0
+
+                      Figure 4: Three cases of collision for a 2R planar robot.
+
+
+
+                                                           [180 minutes (3 hours); open books]
+
+
+
+
+                                                  3
+                                                Solution
+                                                June 5, 2020
+
+Exercise #1
+The SNS algorithm at the velocity level starts with checking whether the minimum norm solution
+is feasible with respect to the joint velocity bounds. Using the pseudoinverse of the Jacobian J
+and the Cartesian velocity v, we compute
+                                                              
+                        −1.1333 0.9309                 −1.3358         < −V1 = −1 !!
+                 #                           2
+q̇ 0 = q̇ P S = J v =  −0.2124 −0.3136            =  −0.7383  ⇐ ∈ [−V2 , V2 ] = [−1.5, 1.5]
+                                                               
+                                                 1
+                         0.6914 −1.2345                   0.1482         ∈ [−V3 , V3 ] = [−2, 2]
+
+Therefore, we saturate the first joint velocity at its overdriven limit, q̇1 = −V1 = −1 [rad/s], and
+recompute the task velocity v 1 that needs to be executed with the remaining two joints,
+                                                              −1
+                                                                                  
+                                                   2                               1
+           v 1 = v − J 1 q̇0,1 = v − J 1 (−V1 ) =       −             (−1) =             ,
+                                                   1        −0.366               0.634
+
+where by J i , i = 1, 2, 3, we denote the columns of the Jacobian J . We rewrite then the reduced
+problem as
+                                −1       −0.5
+                                                                 
+                                                               q̇2
+ J (−1) := J 2 J 3 =                             , q̇ (−1) :=            ⇒      J (−1) q̇ (−1) = v 1 ,
+                             −0.8660 −0.8660                    q̇3
+
+At this stage, the reduced solution is uniquely determined as
+                                   −2 1.1547                   −1.2679
+                                                                
+            q̇1,1                                      1
+   q̇ 1 =           = J −1  v
+                        (−1) 1 =                            =            ⇐ both feasible!
+            q̇1,2                   2 −2.3094        0.634     0.5359
+
+Recombining the joint velocity vector, we have the (minimum norm) feasible solution
+                                                       
+                                      q̇0,1         −1
+                             q̇ ∗ =  q̇1,1  =  −1.2679  [rad/s],
+                                                       
+                                      q̇1,2       0.5359
+
+and we can check that is satisfies indeed J q̇ ∗ = v. Thus, task scaling is not needed here.
+
+Exercise #2
+In order to be the dynamic model of an actual 2-dof robot, the only condition is on the parameters
+a and c, which need to guarantee the positive definiteness of the inertia matrix M . Thus
+                      
+                  a b
+          M=             >0       ⇐⇒        a > 0, det M = ac − b2 > 0 ⇒ c > 0.
+                   b c
+
+Being the inertia constant, there are no Coriolis and centrifugal effects. Also, friction is neglected.
+The 2-dof robot could be a planar arm with two prismatic joints (2P), whose axes are twisted by
+an angle α1 6= 0. Moreover, in order to include a constant gravity term only on the second joint,
+the plane of motion is vertical and the first prismatic joint horizontal. We would have then for the
+kinetic and potential energy
+                       1          1
+       T = T1 + T2 =     m1 q̇12 + m2 (q̇12 + q̇22 + 2 cos α1 q̇1 q̇2 ),   U = U2 = m2 g0 q2 sin α1 ,
+                       2          2
+
+                                                       4
+where m1 > 0 and m2 > 0 are the masses of the two links, so that the inertia matrix and the
+gravity vector for this 2P robot are
+                                                                           
+                 a b          m1 + m2 m2 cos α1             0             0
+         M=              =                        ,  g=         =                   ,
+                 b c          m2 cos α1 m2                  d        m2 g0 sin α1
+
+with det M = m1 m2 + m22 (1 − cos α1 ) > 0. Note that the coefficient b = m2 cos α1 could be
+positive or negative (depending on the twist angle |α1 | < π/2 or, respectively, > π/2). Same for
+d = m2 g0 sin α1 (depending on the sign of α1 ).
+Looking now at the equilibrium condition (i.e., q̈ = 0) in the underactuated case, it is evident that
+the second joint has to be the actuated one,
+                                                               
+                                                     0          0
+                               g=u        ⇒               =         .
+                                                     d         ua
+The equilibrium force at the second joint is ua = d (= m2 g0 sin α1 ), the same for all equilibrium
+configurations q e ∈ R2 . When choosing a value ua > 0, the instantaneous acceleration q̈1 of the
+first (passive) joint is obtained from
+                                             c −b                                −b
+                                                                             
+            q̈1                        1                   0              1
+     q̈ =         = M −1 (u − g) =                                 =                  (ua − d),
+            q̈2                      det M −b a         ua − d         ac − b2   a
+
+and thus q̈1 = b(d − ua )/(ac − b2 ). Being the determinant of M positive, the sign of q̈1 will depend
+on the sign of the product b(d − ua ). For instance, when b > 0 and for a large ua > |d|, the
+acceleration of the first (passive) joint will be negative. On the other hand, the acceleration of the
+second (actuated) joint will always be positive, as soon as the control force overcomes the gravity
+term (ua > |d|).
+
+Exercise #3
+From Fig. 1, we have for the potential energy due to gravity
+                         U (q) = U1 (q1 ) + U2 (q) = −m1 g0 d cos q1 − m2 g0 q2 cos q1 .
+Therefore, using the compact notation for trigonometric quantities, we have
+                                                                   
+                                   ∂U (q)      (m1 d + m2 q2 )g0 s1
+                           g(q) =         =                           ,
+                                    ∂q              −m2 g0 c1
+and then the symmetric matrix (representing the Hessian of U (q))
+                                                                      
+                             ∂g(q)       (m1 d + m2 q2 )g0 c1 m2 g0 s1
+                     A(q) =         =                                    .
+                               ∂q              m2 g0 s1          0
+This matrix is not definite in sign. Therefore, in order to evaluate its norm, we have to use the
+general form                               r                   
+                                 kA(q)k = λmax AT(q)A(q) ,
+
+and compute the real eigenvalues of the positive semi-definite, symmetric matrix1
+                                        2             2
+                                                                                   ! 
+                 ((m1 d + m2 q2 )g0 c1 ) + (m2 g0 s1 ) m2 (m1 d + m2 q2 )g02 s1 c1
+                                                                                                   
+   T                                                                                   a1     a2
+ A (q)A(q) =                              2                              2          =                  .
+                       m2 (m1 d + m2 q2 )g0 s1 c1             (m2 g0 s1 )              a2     a3
+  1 We   have a1 > 0, a3 ≥ 0, and thus a1 + a3 > 0. Also, a1 a3 − a22 ≥ 0.
+
+
+                                                          5
+From
+                                   λ − a1                     −a2
+                                                                    
+        det λI − AT(q)A(q) = det                                           = λ2 − (a1 + a3 )λ + (a1 a3 − a22 ),
+                                    −a2                      λ − a3
+
+we obtain the maximum (real and positive) eigenvalue as
+                              p                                          p
+     
+        T
+                 a +a
+                     1    3     (a1 + a3 )2 − 4(a1 a3 − a22 )   a1 + a3 + (a1 − a3 )2 + 4a22
+λmax A (q)A(q) =            +                                 =                              > 0.
+                       2                    2                              2
+Substituting the expressions of the ai ’s, we get
+                  
+ λmax AT(q)A(q)
+                                                                                                           
+   1
+                                                 q
+                              2               2                         2                        2        2
+ =     ((m1 d + m2 q2 )g0 c1 ) + 2 (m2 g0 s1 ) + ((m1 d + m2 q2 )g0 c1 ) + 4 (m2 (m1 d + m2 q2 )g0 s1 c1 )
+   2
+                                                                                         
+   1
+                                                                  q
+                              2               2                     2                   2
+ =     ((m1 d + m2 q2 )g0 c1 ) + 2 (m2 g0 s1 ) + (m1 d + m2 q2 )g0 c1 + 4 (m2 g0 s1 c1 ) .
+   2
+
+This expression can be upper bounded in different ways, using also the upper limit for the prismatic
+joint q2 ≤ L. Replacing for instance c1 → 1, s1 → 1, and q2 = L, we finally obtain the upper
+bound                                   r                   
+                                    kA(q)k =              λmax AT(q)A(q) ≤ α
+
+with2                 r
+                1
+                                                                                            q
+                                              2                  2
+            α= √         ((m1 d + m2 L)g0 ) + 2 (m2 g0 ) + (m1 d + m2 L)g0                      1 + 4m22 g02 > 0.
+                 2
+This constant is used, e.g., in the proof of the global asymptotic stability of a PD control law with
+gravity compensation g(q d ), in which the minimum (positive) value K P,m of the diagonal matrix
+of proportional gains K P should satisfy K P,m > α.
+
+Exercise #4
+The dynamic model of the Cartesian robot in Fig. 2 is very simple (in fact, this robot has a linear
+and decoupled dynamics). We have
+                              1          1
+                                m1 q̇12 + (m2 + mp ) q̇12 + q̇22 ,
+                                                                
+    T = T1 + T2 + Tp =                                                         U = U2 + Up = (m2 + mp )g0 q2 ,
+                              2          2
+and thus, from the Euler-Lagrange equations, considering also the presence of viscous friction
+
+                                              M q̈ + g + F v q̇ = u,                                                          (1)
+
+with
+                                                                                                                 
+                 m1 + m2 + mp           0                                 0                               fv1    0
+        M=                                            ,    g=                           ,   Fv =                          .
+                      0              m2 + mp                         (m2 + mp )g0                          0    fv2
+   2 One may notice that there is a unit inconsistency of the terms in the expression of α. In fact, we are taking the
+
+norm of a matrix A(q) that has elements expressed in different units. This happens because the robot has joints
+of different nature (revolute and prismatic): the gravity vector g(q) has the first component expressed in [Nm] (a
+torque) and the second one in [N] (a force).
+
+
+
+
+                                                             6
+The dynamic model (1) can be linearly re-parametrized as
+
+                                                      Y (q̇, q̈) a = u                                                     (2)
+
+with                                                                                                            
+                                                                                           m1 + m2 + mp
+                                                                 
+                                     q̈1       0      q̇1    0                              m2 + mp             
+                  Y (q̇, q̈) =                                        ,           a=                            .
+                                                                                                                
+                                      0    q̈2 + g0    0    q̇2                                fv1              
+                                                                                                fv2
+The adaptive control law for tracking a desired trajectory q d (t) (at least twice differentiable w.r.t.
+time) is
+                       u = Y (q̇ r , q̈ r ) â + K P e + K D ė, K P , K D > 0,
+                                                                                                    (3)
+                       ˙ = ΓY (q̇ , q̈ ) (q̇ − q̇) , Γ > 0,
+                       â       T
+                                      r      r   r
+
+with e = q d − q, ė = q̇ d − q̇, q̇ r = q̇ d + Λe, and q̈ r = q̈ d + Λė (Λ = K P K −1
+                                                                                     D > 0), and where
+                                                                            
+                                                    q̈r1     0      q̇r1 0
+                               Y (q̇ r , q̈ r ) =                              .
+                                                      0 q̈r2 + g0 0 q̇r2
+
+The gain matrices K P , K D , and Γ are taken diagonal. We additionally remark the following.
+
+   • The problem is fully decoupled into parallel subproblems for each of the two prismatic joints.
+     Consider for instance the first joint. From eqs. (1), (2), and (3), we have for the closed-loop
+     system
+                     (m1 + m2 + mp )q̈1 + fv1 q̇1 = u1 ,
+                                                            u1 = â1 q̈r1 + â3 q̇r1 + kp1 e1 + kd1 ė1 ,
+                                                            â˙ 1 = γ1 q̈r1 (q̇r1 − q̇1 ),
+                                                            â˙ 3 = γ3 q̇r1 (q̇r1 − q̇1 ),
+                                                                          kP 1                            kP 1
+       with e1 = qd1 − q1 , ė1 = q̇d1 − q̇1 , q̇r1 = q̇d1 +              kD1    e1 , and q̈r1 = q̈d1 +   kD1    ė1 .
+   • Despite the linear dynamics of the considered robot, the closed-loop system is indeed still
+     nonlinear because of the interplay between the robot state x = (q, q̇) ∈ R4 and the state
+     â ∈ R4 of the adaptive controller.
+
+Exercise #5
+With reference to Fig. 5, where a possible task frame is defined, the xt and z t axes of the task
+frame have been chosen to coincide with the homologous ones at the door handle. The natural
+constraints are the following:
+
+                 vx = 0,         vz = 0,          ωx = 0,             ωz = 0,              fy = 0,        µy = 0.
+
+In these constraints, we neglect any friction effect and mass/inertia or compliance of the environ-
+ment (which is thus assumed to be purely geometric). The complementary artificial constraints
+are chosen then as:
+
+           fx = 0,       fz = 0,            µx = 0,         µz = 0,                vy = vd,y (t),         ωy = ωd,y (t).
+
+The first four (zero) values for forces and moments that are assigned as references to the hybrid
+task controller reflect the desire to limit the mechanical stress on the door handle grasped by the
+
+
+                                                                  7
+robot end-effector. The last two time-varying references are used instead to specify the way feasible
+motions are handled during the task of closing a door. While moving the door, we set ωd,y = 0 (no
+motion around the rotation axis y h = y t of the door handle). On the other hand, the time law
+vd,y (t) will define the way the door closing should be performed, e.g., with a trapezoidal profile for
+a rest-to-rest motion from the initial position (door open) to the desired approach position (door
+nearly closed), using a fast or slow cruise speed. When the approach position is reached, the linear
+motion is ended (vd,y = 0) and ωd,y (t) is used to turn the handle, preparing it for the final phase
+of door locking. Note finally that when the door touches the door frame on the wall, the contact
+situation changes and, accordingly, also the definition of natural and artificial constraints.
+
+
+
+                z0                                                                         zh
+                                                                                     zt
+                                                                                              xt
+                             zt
+                                           yt                                                    xh
+                                                                       wd,y(t)
+                                           vd,y(t)
+                                      xt
+
+                                                y0
+    x0
+
+Figure 5: Two views of the task frame assignment for closing a door, with associated time-varying
+specification of two artificial constraints.
+
+
+Exercise #6
+The energy-based method fails to detect a collision when q̇ = 0 or, more in general, when the
+colliding force F c is orthogonal to               v c of the contact point. In fact, in this case we
+                                       the velocity
+                           T
+have v Tc F c = (J c (q)q̇) F c = q̇ T J Tc (q)F c = q̇ T τ c = 0, thus not exciting the scalar residual σ.
+                                                 T
+In the given configuration q = π/2 −π/2              of the planar 2R robot, we verify this condition for
+the three considered cases:
+                    −1 0                                                                 −1
+                                                                                          
+                                 0             0
+v c1 = J c1 q̇ =                        =            [m/s] ⇒ v Tc1 F c1 = 0 π/4                    = 0;
+                     1 1        π/4           π/4                                             0
+
+                    −1 0
+                                                                                
+                                 0                          T
+                                                                                 0
+v c2 = J c2 q̇ =                        =0        ⇒       v c2 F c2 = 0 0              = 0;
+                     0 0        π/4                                              −1
+
+                    −1 0
+                                                                                   
+                                    0            0                                      0
+v c3 = J c3 q̇ =                           =            [m/s] ⇒ v Tc3 F c3 = 0 π/8              = π/8 [Nm].
+                    0.5 0.5       π/4          π/8                                         1
+
+Therefore, only in the third case we are able to detect the occurrence of a collision with the
+energy-based method.
+
+
+                                                     8
+As for the momentum-based method, a collision is detected (and possibly isolated) provided
+                                                                                        n       F c is
+                                                                                                o
+                                                                                           T
+not in the null space of the transpose of the contact Jacobian J c . In fact, if F c ∈ N J c (q) the
+contact force is balanced by the reaction of the rigid robot structure, yielding τ c = J Tc (q)F c = 0
+and thus not exciting the residual vector r. We verify next if the detection condition holds for the
+three considered cases, drawing also conclusions on the isolation property. For the tip contact on
+link 2:
+                    −1 1                          −1
+                                                                                   
+   n
+       T
+         o                                                   n
+                                                                T
+                                                                  o
+                                                                               T            1
+ N J c1 = N                    = ∅ ⇒ F c1 =              6∈ N J c1 , τ c1 = J c1 F c1 =         [Nm].
+                     0 1                           0                                        0
+
+Therefore, this collision will be detected with the momentum-based method (contrary to what
+happens with the energy-based method). However, the second component r2 of the residual vector
+will be unaffected (being τc1,2 = 0), leading to the wrong conclusion that the contact occurred on
+link 1. Indeed, this is a singular situation for the isolation property (the contact force vector F c1
+passes through the axis of joint 2). For the contact at the robot elbow:
+
+                     −1 0
+                                                           
+    n    o                              0                      0         n    o
+ N J Tc2 = N                     =α            ⇒ F c2 =             ∈ N J Tc2 , τ c2 = J Tc2 F c2 = 0.
+                      0 0               1                     −1
+
+Therefore, also the momentum-based method is not able to detect this collision. In fact, the contact
+force vector F c2 passes through both joint axes and is balanced entirely by the internal reaction
+force of the robot structure. Finally, for the contact at the midpoint of link 2:
+
+                    −1 0.5
+                                                                                         
+   n    o                                           0         n    o                        0.5
+N J Tc3 = N                      = ∅ ⇒ F c3 =            6∈ N J Tc3 , τ c3 = J Tc3 F c3 =         [Nm].
+                     0 0.5                          1                                       0.5
+
+Therefore, the momentum-based method detects the collision and also correctly isolates the contact
+as occurring on the second link.
+
+
+                                              ∗∗∗∗∗
+
+
+
+
+                                                  9
+

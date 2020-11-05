@@ -1,0 +1,46 @@
+Robotics II
+April 2, 2014
+Exercise 1
+The Justin upper-body robot by DLR (Fig. 1) is made of a 3-dof torso (with coordinates q T ∈ R3 ),
+carrying two identical 7-dof structures as left (q L ∈ R7 ) and right (q R ∈ R7 ) arms. Neglecting the
+T
+anthropomorphic hands, there is a total of 17 joints (all revolute), with q = q TT q TL q TR ∈ R17 .
+Let the desired Cartesian motion (in position and orientation) of the end-effectors of the left and
+right robot arms be independently specified as r L,d (t) ∈ R6 and r R,d (t) ∈ R6 , respectively.
+
+Figure 1: Justin upper-body robot: A 3-dof torso with two 7-dof arms
+• Define a kinematic control law for the joint velocity q̇ of the robot that is able to accomplish
+the whole task, recovering also from any possible initial errors at the Cartesian level.
+• Is it possible to shape the joint solution so that motion of the torso is reduced (i.e., most
+of the task is executed by the two arms only)? And by blocking completely the dofs of the
+torso? Discuss qualitatively the nature of possible singularities that can be encountered with
+the proposed control strategies, and how to avoid them or milden their effects.
+Exercise 2
+The 3R robot in Fig. 2 is placed on a horizontal plane. The three links have unitary length,
+uniform mass distribution, and their masses are m1 , m2 , and m3 . With the robot at rest, a force
+F is applied to the tip as illustrated.
+
+y0
+A
+..
+
+p
+
+F
+
+B
+
+C
+D
+
+x0
+
+Figure 2: A planar 3R arm with a force applied at the end effector
+• Will the robot end effector accelerate like in case A, B, or C? Motivate your answer.
+• Determine the symbolic expression of the end-effector acceleration p̈ in terms of the dynamic
+coefficients of the robot model.
+• By considering a special distribution of link masses and inertias, would it be possible to
+obtain an end-effector acceleration like in case D? Motivate your answer.
+[180 minutes; open books]
+
+

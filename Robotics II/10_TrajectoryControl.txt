@@ -1,0 +1,1006 @@
+Robotics 2
+
+Trajectory Tracking Control
+Prof. Alessandro De Luca
+
+Inverse dynamics control
+given the robot dynamic model
+
+𝑀 𝑞 𝑞̈ + 𝑛 𝑞, 𝑞̇ = 𝑢
+𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + friction model
+and a twice-differentiable desired trajectory for 𝑡 ∈ [0, 𝑇]
+
+𝑞, 𝑡
+
+→ 𝑞̇ , 𝑡 , 𝑞̈ , (𝑡)
+
+applying the feedforward torque in nominal conditions
+
+𝑢, = 𝑀 𝑞, 𝑞̈ , + 𝑛(𝑞, , 𝑞̇ , )
+yields exact reproduction of the desired motion, provided
+that 𝑞(0) = 𝑞, (0), 𝑞(0)
+̇
+= 𝑞̇ , (0) (initial matched state)
+Robotics 2
+
+2
+
+In practice ...
+a number of differences from the nominal condition
+n
+n
+n
+
+n
+n
+
+initial state is “not matched” to the desired trajectory 𝑞, (𝑡)
+disturbances on the actuators, truncation errors on data, …
+inaccurate knowledge of robot dynamic parameters (link
+masses, inertias, center of mass positions)
+unknown value of the carried payload
+presence of unmodeled dynamics (complex friction
+phenomena, transmission elasticity, …)
+
+Robotics 2
+
+3
+
+Introducing feedback
+6 𝑞, 𝑞̈ , + 𝑛(𝑞
+𝑢7 , = 𝑀
+7 , , 𝑞̇ , )
+note:
+
+6 𝑛7 estimates of terms
+with 𝑀,
+(or coefficients) in the dynamic model
+
+8 ; (𝑞, , 𝑞̇ , , 𝑞̈ , )]
+𝑢7 , can be computed off line [e.g., by 𝑁𝐸
+
+feedback is introduced to make the control scheme more robust
+different possible implementations depending on
+amount of computational load share
+§ OFF LINE (
+
+open loop)
+
+§ ON LINE (
+
+closed loop)
+
+two-step control design:
+1. compensation (feedforward) or cancellation (feedback) of nonlinearities
+2. synthesis of a linear control law stabilizing the trajectory error to zero
+Robotics 2
+
+4
+
+A series of trajectory controllers
+1. inverse dynamics compensation (FFW) + PD
+
+𝑢 = 𝑢7 , + 𝐾? 𝑞, − 𝑞 + 𝐾@ (𝑞̇ , − 𝑞)
+̇
+
+typically, only local
+stabilization of
+trajectory error
+𝑒(𝑡) = 𝑞, (𝑡) − 𝑞(𝑡)
+
+2. inverse dynamics compensation (FFW) + variable PD
+
+6 𝑞, 𝐾? 𝑞, − 𝑞 + 𝐾@ (𝑞̇ , − 𝑞)
+𝑢 = 𝑢7 , + 𝑀
+̇
+3. feedback linearization (FBL) + [PD+FFW] = “COMPUTED TORQUE”
+
+6 𝑞 𝑞̈ , + 𝐾? 𝑞, − 𝑞 + 𝐾@ (𝑞̇ , − 𝑞)
+𝑢=𝑀
+̇ + 𝑛(𝑞,
+7 𝑞)
+̇
+4. feedback linearization (FBL) + [PID+FFW]
+6 𝑞
+𝑢=𝑀
+
+𝑞̈ , + 𝐾? 𝑞, − 𝑞 + 𝐾@ 𝑞̇ , − 𝑞̇ + 𝐾A B 𝑞, − 𝑞 𝑑𝑡 + 𝑛(𝑞,
+7 𝑞)
+̇
+
+more robust to uncertainties, but also more complex to implement in real time
+Robotics 2
+
+5
+
+Feedback linearization control
+ROBOT (or its DYNAMIC MODEL)
+
+𝑞̈ , + 𝐾@ 𝑞̇ ,
++ 𝐾? 𝑞,
+
+𝑎 6
+𝑀(𝑞)
+
++
+_
+
++
+
+𝑢
+
++
+_
+
++
+
+𝑀 DE (𝑞)
+
+𝑞̈
+
+𝑞̇
+
+𝑞
+
+𝑛(𝑞, 𝑞)
+̇
+symmetric and
+positive definite
+matrices 𝐾? , 𝐾@
+
+in nominal
+conditions
+6 = 𝑀, 𝑛7 = 𝑛)
+(𝑀
+
+𝑛(𝑞,
+7 𝑞)
+̇
+𝐾@
+𝐾?
+
+𝑀 𝑞 𝑞̈ + 𝑛 𝑞, 𝑞̇ = 𝑢 = 𝑀 𝑞 𝑎 + 𝑛 𝑞, 𝑞̇
+nonlinear robot dynamics
+
+nonlinear control law
+
+global asymptotic
+𝑎 = 𝑞̈ , + 𝐾@ 𝑞̇ , − 𝑞̇ + 𝐾? 𝑞, − 𝑞
+stabilization
+Robotics 2
+
+𝑞̈ = 𝑎
+linear and
+decoupled
+system
+6
+
+Interpretation in the linear domain
+𝑞̈ , + 𝐾@ 𝑞̇ , + 𝐾? 𝑞,
+> 0, diagonal
+
+𝑎 = 𝑞̈
+
++
+
+𝑞
+
+𝑞̇
+
+_
+
+𝐾@
+
+𝐾?
+
+under feedback linearization control, the robot has a dynamic behavior that is
+invariant, linear and decoupled in its whole workspace (∀(𝑞, 𝑞)
+̇ )
+
+linearity
+
+a unitary mass (𝑚 = 1) in the joint space !!
+
+error transients 𝑒I = 𝑞,I − 𝑞I → 0 exponentially, prescribed by 𝐾?I , 𝐾@I choice
+
+decoupling
+each joint coordinate 𝑞I evolves independently from the others, forced by 𝑎I
+Robotics 2
+
+𝑒̈ + 𝐾@ 𝑒̇ + 𝐾? 𝑒 = 0 ⟺ 𝑒̈I +𝐾@I 𝑒İ + 𝐾?I 𝑒I = 0
+
+7
+
+Addition of an integral term: PID
+whiteboard…
+
+𝑞̈ , + 𝐾@ 𝑞̇ , + 𝐾? 𝑞,
+𝑞, +
+𝑒
+𝐾A
+_
+⇒ 𝐾?I > 0, 𝐾@I > 0,
+0 < 𝐾AI < 𝐾?I 𝐾@I
+
++
++
+
++
+_
+
+𝑎 = 𝑞̈
+
+𝑞̇
+
+𝐾@
+
+> 0,
+diagonal
+
+𝐾?
+
+𝑞̈ = 𝑎 = 𝑞̈ , + 𝐾@ 𝑞̇ , − 𝑞̇ + 𝐾? 𝑞, − 𝑞 + 𝐾A B 𝑞, − 𝑞 𝑑𝜏
+⇒ 𝑒I = 𝑞,I − 𝑞I (𝑖 = 1, . . , 𝑁)
+
+(1)
+
+𝑞
+
+𝑒 = 𝑞, − 𝑞
+
+⇒ 𝑒̈I + 𝐾@I 𝑒̇I + 𝐾?I 𝑒I + 𝐾?I B 𝑒I 𝑑𝜏 = 0
+
+(2)
+
+1
+⇒(6)
+𝑒I 𝑠 = 0 3
+1
+𝐾?I
+exponential
+(3)
+𝑠
+2
+𝐾@I
+𝐾AI
+stability
+T
+R
+⇒
+(𝐾
+𝐾
+−
+𝐾
+)/𝐾
+⇒
+𝑠 + 𝐾@I 𝑠 + 𝐾?I 𝑠 + 𝐾AI 𝑒I 𝑠 = 0
+1
+𝑠×
+@I ?I
+AI
+@I
+conditions by
+(5)
+(4)
+
+ℒ[𝑒I 𝑡 ] ⇒ 𝑠 R + 𝐾@I 𝑠 + 𝐾?I + 𝐾AI
+
+0
+
+Robotics 2
+
+𝐾AI
+
+Routh criterion
+8
+
+Remarks
+n
+
+desired joint trajectory can be generated from Cartesian data
+𝑝̈, 𝑡 , 𝑝̇, 0 , 𝑝, (0)
+
+𝑞̇ , (0)
+𝑞̈ , (𝑡)
+
+𝑞, (0)
+𝑞̇ , (𝑡)
+
+𝑞, (𝑡)
+
+𝑞, 0 = 𝑓 DE 𝑝, 0
+𝑞̇ , 0 = 𝐽DE 𝑞, 0 𝑝̇, 0
+̇ , )𝑞̇ ,
+𝑞̈ , 𝑡 = 𝐽DE 𝑞, 𝑝̈, 𝑡 − 𝐽(𝑞
+
+n
+
+8 𝛼 (𝑞, 𝑞,̇ 𝑎)
+real-time computation by Newton-Euler algo: 𝑢YZ[ = 𝑁𝐸
+
+n
+
+simulation of feedback linearization control
+𝑞, 𝑡 , 𝑞̇ , 𝑡 ,
+𝑞̈ , 𝑡
+
+true parameters 𝜋
+
+feedback
+linearization
+
+robot
+
+𝑞
+𝑞̇
+
+estimated parameters 𝜋7
+
+Hint: there is no use in simulating this control law in ideal case (𝜋7 = 𝜋 ); robot behavior
+will be identical to the linear and decoupled case of stabilized double integrators!!
+Robotics 2
+
+9
+
+Further comments
+n
+
+choice of the diagonal elements of 𝐾𝑃, 𝐾@ (and 𝐾𝐼 )
+n
+
+for shaping the error transients, with an eye to motor saturations...
+
+𝑒(𝑡) = 𝑞, (𝑡) − 𝑞(𝑡)
+
+n
+
+parametric identification
+n
+
+n
+
+critically damped transient
+
+𝑡
+
+to be done in advance, using the property of linearity in the dynamic
+coefficients of the robot dynamic model
+
+choice of the sampling time of a digital implementation
+n
+
+n
+
+𝑒(0)
+
+compromise between computational time and tracking accuracy,
+typically 𝑇c = 0.5 ÷ 10 ms
+
+exact linearization by (state) feedback is a general technique
+of nonlinear control theory
+n
+n
+
+can be used for robots with elastic joints, wheeled mobile robots, ...
+non-robotics applications: satellites, induction motors, helicopters, ...
+
+Robotics 2
+
+10
+
+Another example of feedback linearization design
+n
+
+dynamic model of robots with elastic joints
+n
+n
+n
+n
+
+𝑞 = link position
+2𝑁 generalized
+coordinates (𝑞, 𝜃)
+𝜃 = motor position (after reduction gears)
+𝐵h = diagonal matrix (> 0) of inertia of the (balanced) motors
+𝐾 = diagonal matrix (> 0) of (finite) stiffness of the joints
+
+4𝑁 state
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + 𝐾 𝑞 − 𝜃 = 0
+̇
+𝐵h 𝜃̈ + 𝐾 𝜃 − 𝑞 = 𝑢
+𝑥 = (𝑞, 𝜃, 𝑞,̇ 𝜃)
+variables
+
+n
+
+(1)
+(2)
+
+is there a control law that achieves exact linearization via feedback?
+
+𝑢 = 𝛼 𝑞, 𝜃, 𝑞,̇ 𝜃̇ + 𝛽 𝑞, 𝜃, 𝑞,̇ 𝜃̇ 𝑎
+linear and decoupled system:
+𝑑l 𝑞I
+𝑁 chains of 4 integrators
+YES and it yields
+= 𝑎I , 𝑖 = 1, . . , 𝑁
+l
+(to be stabilized by linear
+𝑑𝑡
+control design)
+
+Hint: differentiate (1) w.r.t. time until motor acceleration 𝜃̈ appears;
+substitute this from (2); choose 𝑢 so as to cancel all nonlinearities …
+Robotics 2
+
+11
+
+Alternative global trajectory controller
+𝑢 = 𝑀 𝑞 𝑞̈ , + 𝑆 𝑞, 𝑞̇ 𝑞̇ , + 𝑔 𝑞 + 𝐹o 𝑞̇ , + 𝐾? 𝑒 + 𝐾@ 𝑒̇
+SPECIAL factorization such that
+𝑀̇ − 2𝑆 is skew-symmetric
+n
+n
+n
+
+global asymptotic stability of 𝑒, 𝑒̇ = (0,0) (trajectory tracking)
+proven by Lyapunov+Barbalat+LaSalle
+does not produce a complete cancellation of nonlinearities
+n
+
+n
+
+n
+n
+
+symmetric and
+positive definite matrices
+
+the 𝑞̇ and 𝑞̈ that appear linearly in the model are evaluated on the
+desired trajectory
+
+does not induce a linear and decoupled behavior of the
+trajectory error 𝑒 𝑡 = 𝑞, (𝑡) − 𝑞(𝑡) in the closed-loop system
+lends itself more easily to an adaptive version
+cannot be computed directly by the standard NE algorithm...
+
+Robotics 2
+
+12
+
+Analysis of asymptotic stability
+of the trajectory error - 1
+
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 + 𝐹o 𝑞̇ = 𝑢 robot dynamics (including friction)
+control law 𝑢 = 𝑀 𝑞 𝑞̈ , + 𝑆 𝑞, 𝑞̇ 𝑞̇ , + 𝑔 𝑞 + 𝐹o 𝑞̇ , + 𝐾? 𝑒 + 𝐾@ 𝑒̇
+n
+
+n
+
+Lyapunov candidate and its time derivative
+
+1 q
+1 q
+1 q
+̇
+𝑉 = 𝑒̇ 𝑀 𝑞 𝑒̇ + 𝑒 𝐾? 𝑒 ≥ 0 ⇒ 𝑉 = 𝑒̇ 𝑀̇ 𝑞 𝑒̇ + 𝑒̇ q 𝑀 𝑞 𝑒̈ + 𝑒 q 𝐾? 𝑒̇
+2
+2
+2
+the closed-loop system equations yield
+
+𝑀 𝑞 𝑒̈ = −𝑆 𝑞, 𝑞̇ 𝑒̇ − 𝐾@ + 𝐹o 𝑒̇ − 𝐾? 𝑒
+n
+
+substituting and using the skew-symmetric property
+
+𝑉̇ = −𝑒̇ q 𝐾@ + 𝐹o 𝑒̇ ≤ 0
+n
+
+𝑉̇ = 0 ⇔ 𝑒̇ = 0
+
+since the system is time-varying (due to 𝑞, (𝑡)), direct application
+⇒ go to
+of LaSalle theorem is NOT allowed ⇒ use Barbalat lemma…
+slide 10 in
+
+𝑞 = 𝑞, 𝑡 − 𝑒, 𝑞̇ = 𝑞̇ , 𝑡 − 𝑒̇ ⇒ 𝑉 = 𝑉 𝑒, 𝑒,̇ 𝑡 = 𝑉(𝑥, 𝑡)
+Robotics 2
+
+error state 𝑥
+
+block 8
+
+13
+
+Analysis of asymptotic stability
+of the trajectory error - 2
+
+n
+
+since i) 𝑉 is lower bounded and ii) 𝑉̇ ≤ 0, we can check condition iii)
+in order to apply Barbalat lemma
+
+𝑉̈ = −2𝑒̇ q (𝐾@ + 𝐹o )𝑒̈
+
+... is this bounded?
+
+n
+
+from i) + ii), 𝑉 is bounded ⇒ 𝑒 and 𝑒̇ are bounded
+
+n
+
+assume that the desired trajectory has bounded velocity 𝑞̇ ,
+
+n
+
+using the following two properties of dynamic model terms
+
+0 < 𝑚 ≤ 𝑀DE(𝑞) ≤ 𝑀 < ∞
+
+⇒
+
+𝑞̇ is
+bounded
+
+𝑆(𝑞, 𝑞)
+̇ ≤ 𝛼v 𝑞̇
+
+then also 𝑒̈ will be bounded (in norm) since
+
+𝑒̈ = −𝑀DE (𝑞) 𝑆 𝑞, 𝑞̇ 𝑒̇ + 𝐾? 𝑒 + (𝐾@ + 𝐹o )𝑒̇
+bounded
+in norm by 𝑀
+
+bounded bounded
+
+bounded
+in norm by 𝛼v 𝑞̇
+
+Robotics 2
+
+bounded
+
+lim 𝑉̇ 𝑡 = 0
+⇒ z→{
+
+bounded
+
+14
+
+Analysis of asymptotic stability
+of the trajectory error – end of proof
+
+n
+
+we can now conclude by proceeding as in LaSalle theorem
+
+𝑉̇ = 0 ⇔ 𝑒̇ = 0
+n
+
+the closed-loop dynamics in this situation is
+
+𝑀 𝑞 𝑒̈ = −𝐾? 𝑒
+⟹
+
+𝑒̈ = 0 ⇔ 𝑒 = 0
+
+(𝑒, 𝑒)̇ = (0, 0)
+is the largest
+invariant set in 𝑉̇ = 0
+(global) asymptotic tracking
+will be achieved
+
+Robotics 2
+
+15
+
+Regulation as a special case
+n
+
+n
+
+what happens to the control laws designed for trajectory
+tracking when 𝑞𝑑 is constant? are there simplifications?
+feedback linearization
+
+𝑢 = 𝑀 𝑞 𝐾? 𝑞, − 𝑞 − 𝐾@ 𝑞̇ + 𝑐 𝑞, 𝑞̇ + 𝑔(𝑞)
+n
+n
+
+n
+
+no special simplifications
+however, this is a solution to the regulation problem with
+exponential stability (and decoupled transients at each joint!)
+
+alternative global controller
+
+𝑢 = 𝐾? (𝑞, − 𝑞) − 𝐾@ 𝑞̇ + 𝑔 𝑞
+n
+
+Robotics 2
+
+we recover the PD + gravity cancellation control law!!
+
+16
+
+Trajectory execution without a model
+n
+
+n
+
+is it possible to accurately reproduce a desired smooth jointspace reference trajectory with reduced or no information on
+the robot dynamic model?
+this is feasible in case of repetitive motion tasks over a finite
+interval of time
+n
+
+n
+
+n
+
+n
+
+trials are performed iteratively, storing the trajectory error
+information of the current execution [𝑘-th iteration] and
+processing it off line before the next trial [(𝑘 + 1)-iteration] starts
+the robot should be reinitialized in the same initial position at the
+beginning of each trial
+the control law is made of a non-model based part (typically, a
+decentralized PD law) + a time-varying feedforward which is
+updated at every trial
+
+this scheme is called iterative trajectory learning
+
+Robotics 2
+
+17
+
+Scheme of iterative trajectory learning
+n
+
+control design can be illustrated on a SISO linear system
+in the Laplace domain
+“plug-in” signal:
+𝑣E (𝑡) ≡ 0 at
+first (𝑘 = 1) iteration
+𝑪(𝒔)
+
+𝑦(𝑠)
+𝑃 𝑠 𝐶(𝑠)
+𝑊 𝑠 =
+=
+𝑦, (𝑠) 1 + 𝑃 𝑠 𝐶(𝑠)
+
+𝑷(𝒔)
+
+closed-loop system without learning
+(𝐶(𝑠) is, e.g., a PD control law)
+
+𝑢„ 𝑠 = 𝑢„… 𝑠 + 𝑣„ 𝑠 = 𝐶 𝑠 𝑒„ 𝑠 + 𝑣„ 𝑠 control law at iteration 𝑘
+𝑃(𝑠)
+𝑦„ 𝑠 = 𝑊 𝑠 𝑦, 𝑠 +
+𝑣„ 𝑠
+1 + 𝑃 𝑠 𝐶(𝑠)
+Robotics 2
+
+system output at iteration 𝑘
+18
+
+Background math on feedback loops
+whiteboard…
+
+n
+
+algebraic manipulations on block diagram signals in the Laplace domain:
+𝑥 𝑠 = ℒ 𝑥(𝑡) , 𝑥 = 𝑦, , 𝑦, 𝑢 … , 𝑣, 𝑒 ⇒ 𝑦, , 𝑦„ , 𝑢„… , 𝑣„ , 𝑒„ , with transfer functions
+𝑦 𝑠 = 𝑃 𝑠 𝑢 𝑠 = 𝑃 𝑠 𝑣 𝑠 + 𝑢… 𝑠
+=𝑃 𝑠 𝑣 𝑠 +𝑃 𝑠 𝐶 𝑠 𝑒 𝑠
+= 𝑃 𝑠 𝑣 𝑠 + 𝑃 𝑠 𝐶 𝑠 𝑦, 𝑠 − 𝑦(𝑠)
+
+𝑪(𝒔)
+
+⇒
+
+𝑦 𝑠 =
+
+⇒ (1 + 𝑃 𝑠 𝐶 𝑠 ) 𝑦 𝑠 =
+
+𝑷(𝒔)
+
+= 𝑃 𝑠 𝑣 𝑠 + 𝑃 𝑠 𝐶 𝑠 𝑦, 𝑠
+
+𝑃 𝑠 𝐶 𝑠
+𝑃 𝑠
+𝑦, 𝑠 +
+𝑣 𝑠 = 𝑊 𝑠 𝑦, 𝑠 + 𝑊ˆ 𝑠 𝑣(𝑠)
+1+𝑃 𝑠 𝐶 𝑠
+1+𝑃 𝑠 𝐶 𝑠
+
+§ feedback control law at iteration 𝑘
+𝑢„… 𝑠 = 𝐶 𝑠 𝑦, 𝑠 − 𝑦„ 𝑠
+
+⇒
+
+= 𝐶 𝑠 𝑦, 𝑠 − 𝑃 𝑠 𝐶(𝑠) 𝑣„ 𝑠 + 𝑢„… 𝑠
+𝐶 𝑠
+𝑃 𝑠 𝐶 𝑠
+…
+𝑢„ 𝑠 =
+𝑦 𝑠 −
+𝑣 𝑠 = 𝑊c 𝑠 𝑦, 𝑠 − 𝑊 𝑠 𝑣„ 𝑠
+1+𝑃 𝑠 𝐶 𝑠 ,
+1+𝑃 𝑠 𝐶 𝑠 „
+
+§ error at iteration 𝑘
+𝑒„ 𝑠 = 𝑦, 𝑠 − 𝑦„ 𝑠 = 𝑦, 𝑠 − 𝑊 𝑠 𝑦, 𝑠 + 𝑊ˆ 𝑠 𝑣„ 𝑠
+Robotics 2
+
+= 1 − 𝑊 𝑠 𝑦, 𝑠 − 𝑊ˆ 𝑠 𝑣„ 𝑠
+
+𝑊‰ (𝑠) = 1/(1 + 𝑃 𝑠 𝐶 𝑠 )
+
+19
+
+Learning update law
+n
+
+the update of the feedforward term is designed as
+
+𝑣„‹E 𝑠 = 𝛼(𝑠)𝑢„… 𝑠 + 𝛽(𝑠)𝑣„ 𝑠
+
+with 𝛼 and 𝛽 suitable filters
+(also non-causal, of the FIR type)
+
+𝛼 𝑠 𝐶 𝑠
+recursive expression
+𝑣„‹E 𝑠 =
+𝑦, 𝑠 + (𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 )𝑣„ (𝑠)
+of feedforward term
+1+𝑃 𝑠 𝐶 𝑠
+1−𝛽 𝑠
+recursive expression
+𝑒
+𝑠 =
+𝑦, 𝑠 + 𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 𝑒„ (𝑠)
+of error 𝑒 = 𝑦, − 𝑦 „‹E
+1+𝑃 𝑠 𝐶 𝑠
+n
+
+if a contraction condition can be enforced
+𝛽 𝑠 − 𝛼 𝑠 𝑊(𝑠) < 1 (for all 𝑠 = 𝑗𝜔 frequencies such that ...)
+then convergence is obtained for 𝑘 → ∞
+
+𝑣{
+
+𝑦, 𝑠
+𝛼 𝑠 𝑊 𝑠
+𝑠 =
+𝑃(𝑠) 1 − 𝛽 𝑠 + 𝛼 𝑠 𝑊 𝑠
+
+Robotics 2
+
+𝑒{
+
+𝑦, 𝑠
+1−𝛽 𝑠
+𝑠 =
+1 + 𝑃 𝑠 𝐶(𝑠) 1 − 𝛽 𝑠 + 𝛼 𝑠 𝑊 𝑠
+20
+
+Proof of recursive updates
+whiteboard…
+
+§ recursive expression for the feedworward 𝑣„
+𝑣„‹E 𝑠 = 𝛼 𝑠 𝑢„… 𝑠 + 𝛽 𝑠 𝑣„ 𝑠 = 𝛼 𝑠 𝐶 𝑠 𝑒„ 𝑠 + 𝛽 𝑠 𝑣„ 𝑠
+= 𝛼 𝑠 𝐶 𝑠 𝑊‰ (𝑠)𝑦, 𝑠 − 𝑊ˆ 𝑠 𝑣„ 𝑠 + 𝛽 𝑠 𝑣„ 𝑠
+𝛼 𝑠 𝐶 𝑠
+=
+𝑦 𝑠 + (𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 ) 𝑣„ (𝑠)
+1+𝑃 𝑠 𝐶 𝑠 ,
+§ recursive expression for the error 𝑒„
+𝑒„ 𝑠 = 𝑦, 𝑠 − 𝑦„ 𝑠 = 𝑦, 𝑠 − 𝑃(𝑠)(𝑣„ 𝑠 + 𝑢„… 𝑠 )
+1
+𝑦, 𝑠 − 𝑒„ 𝑠 − 𝑢„… 𝑠
+⇒ 𝑣„ 𝑠 =
+𝑃 𝑠
+…
+𝑦„‹E 𝑠 = 𝑃 𝑠 𝑣„‹E 𝑠 + 𝑢„‹E
+𝑠
+
+𝑒„‹E
+
+…
+= 𝑃 𝑠 𝛼 𝑠 𝑢„… 𝑠 + 𝛽 𝑠 𝑣„ 𝑠 + 𝑢„‹E
+𝑠
+1
+= 𝑃 𝑠 𝛼 𝑠 𝐶 𝑠 𝑒„ 𝑠 + 𝛽 𝑠
+𝑦 𝑠 − 𝑒„ 𝑠 − 𝛽 𝑠 𝐶 𝑠 𝑒„ 𝑠 + 𝐶 𝑠 𝑒„‹E (𝑠)
+𝑃(𝑠) ,
+𝑠 = 𝑦, 𝑠 − 𝑦„‹E 𝑠
+
+= (1 − 𝛽 𝑠 ) 𝑦, 𝑠 −
+
+⇒ 𝑒„‹E
+Robotics 2
+
+𝛼 𝑠 − 𝛽 𝑠 𝑃 𝑠 𝐶 𝑠 − 𝛽 𝑠 𝑒„ 𝑠 − 𝑃 𝑠 𝐶(𝑠)𝑒„‹E 𝑠
+
+1−𝛽 𝑠
+𝑠 =
+𝑦 𝑠 + 𝛽 𝑠 −𝛼 𝑠 𝑊 𝑠
+1+𝑃 𝑠 𝐶 𝑠 ,
+
+𝑒„ (𝑠)
+21
+
+Proof of convergence
+whiteboard…
+
+from recursive expressions
+𝛼 𝑠 𝐶 𝑠
+𝑣„‹E 𝑠 =
+𝑦 𝑠 + (𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 ) 𝑣„ (𝑠)
+1+𝑃 𝑠 𝐶 𝑠 ,
+1−𝛽 𝑠
+𝑒„‹E 𝑠 =
+𝑦, 𝑠 + 𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 𝑒„ (𝑠)
+1+𝑃 𝑠 𝐶 𝑠
+compute variations from 𝑘 to 𝑘 + 1 (repetitive term in trajectory 𝑦, vanishes!)
+∆𝑣„‹E 𝑠 = 𝑣„‹E 𝑠 − 𝑣„ 𝑠 = (𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 ) ∆𝑣„ (𝑠)
+∆𝑒„‹E 𝑠 = 𝑒„‹E 𝑠 − 𝑒„ 𝑠 = 𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠
+
+∆𝑒„ (𝑠)
+
+by contraction mapping condition 𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 < 1 ⇒ 𝑣„ → 𝑣{ , 𝑒„ → 𝑒{
+𝛼 𝑠 𝐶 𝑠
+𝑣{ 𝑠 =
+𝑦 𝑠 + (𝛽 𝑠 − 𝛼 𝑠 𝑊 𝑠 ) 𝑣{ (𝑠)
+1+𝑃 𝑠 𝐶 𝑠 ,
+𝑒{
+
+⇒
+
+𝑣{
+
+Robotics 2
+
+1−𝛽 𝑠
+𝑠 =
+𝑦 𝑠 + 𝛽 𝑠 −𝛼 𝑠 𝑊 𝑠
+1+𝑃 𝑠 𝐶 𝑠 ,
+
+𝑦, 𝑠
+𝛼 𝑠 𝑊 𝑠
+𝑠 =
+𝑃(𝑠) 1 − 𝛽 𝑠 + 𝛼 𝑠 𝑊 𝑠
+
+𝑒{
+
+𝑒{ (𝑠)
+
+𝑦, 𝑠
+1−𝛽 𝑠
+𝑠 =
+1 + 𝑃 𝑠 𝐶(𝑠) 1 − 𝛽 𝑠 + 𝛼 𝑠 𝑊 𝑠
+22
+
+Comments on convergence
+n
+
+if the choice 𝛽 = 1 allows to satisfy the contraction condition, then
+convergence to zero tracking error is obtained
+
+𝑒{(𝑠) = 0
+and the inverse dynamics command has been learned
+
+𝑦, (𝑠)
+𝑣{(𝑠) =
+𝑝(𝑠)
+n
+n
+
+n
+
+in particular, for
+
+α 𝑠 = 1/𝑤(𝑠) convergence would be in 1 iteration only!
+
+the use of filter β(𝑠) ≠ 1 allows to obtain convergence (but with residual
+tracking error) even in presence of unmodeled high-frequency dynamics
+the two filters can be designed from very poor
+information on system dynamics, using classic
+tools (e.g., Nyquist plots)
+
+Robotics 2
+
+23
+
+Application to robots
+n
+
+for 𝑁-dof robots modeled as
+
+𝐵h + 𝑀(𝑞) 𝑞̈ + 𝐹o + 𝑆(𝑞, 𝑞)
+̇ 𝑞̇ + 𝑔 𝑞 = 𝑢
+we choose as (initial = pre-learning) control law
+
+𝑢 = 𝑢… = 𝐾? 𝑞, − 𝑞 + 𝐾@ 𝑞̇ , − 𝑞̇ + 𝑔7 𝑞
+and design the learning filters (at each joint) using
+the linear approximation
+𝑞I (𝑠)
+𝐾@I 𝑠 + 𝐾?I
+𝑖 = 1, ⋯ , 𝑁
+𝑊I 𝑠 =
+=
+R
+𝑞,I (𝑠) 𝐵“h 𝑠 + 𝐹“oI + 𝐾@I 𝑠 + 𝐾?I
+n
+
+initialization of feedforward uses the best estimates
+6 , ) 𝑞̈ , + 𝐹“o + 𝑆(𝑞
+” , , 𝑞̇ , ) 𝑞̇ , + 𝑔7 𝑞,
+𝑣E = 𝐵“h + 𝑀(𝑞
+or simply 𝑣E = 0 (in the worst case) at first trial 𝑘 = 1
+
+Robotics 2
+
+24
+
+Experimental set-up
+n
+
+joints 2 and 3 of 6R MIMO CRF robot prototype @DIS
+
+≈ 90% gravity
+balanced
+through springs
+
+160o
+50o/s
+
+high level of
+dry friction
+Harmonic Drives
+transmissions
+with ratio 160:1
+
+desired velocity/position for both joints
+
+DC motors with
+current amplifiers
+
+DSP 𝑇𝑐 = 400µs
+D/A = 12 bit
+R/D = 16 bit/2𝜋
+A/D = 11 bit/(rad/s)
+
+Robotics 2
+
+resolvers and
+tachometers
+
+De Luca, Paesano, Ulivi: IEEE Trans Ind Elect, 1992
+
+25
+
+Experimental results
+
+Robotics 2
+
+feedforward 𝑣𝑘 for 𝑘 = 3, 6, 12 (zero at 𝑘 = 1)
+
+feedback 𝑢„… for 𝑘 = 1, 3, 6, 12
+
+joint 3
+
+joint 2
+
+error for 𝑘 = 1, 3, 6, 12
+
+26
+
+

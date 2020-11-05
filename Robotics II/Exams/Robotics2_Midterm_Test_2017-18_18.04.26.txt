@@ -1,0 +1,1559 @@
+Robotics 2
+Midterm test in classroom – April 26, 2018
+Exercise 1
+Consider the 4-dof planar robot in Fig. 1. The robot has the first two joints prismatic and the last
+two joints revolute, and moves in a vertical plane.
+• Using the generalized coordinates q ∈ R4 and the dynamic parameters defined in Fig. 1,
+determine the symbolic expression of the dynamic model of this robot using a Lagrangian
+formulation and considering also the presence of viscous friction at the joints.
+• Assume that all kinematic parameters as well as the acceleration of gravity (g0 = 9.81) are
+known. Provide a linear parameterization of the obtained dynamic model in the form
+Y (q, q̇, q̈) a = u,
+
+(1)
+
+where u ∈ R4 is the generalized force provided by the motors at the joints, and the vector of
+dynamic coefficients a ∈ Rp has the minimum possible dimension p.
+y
+m4,I4
+
+q4
+
+䎩!
+
+g0
+
+d4
+m3,I3
+
+q3
+
+䎩!
+l3
+
+d3
+d2
+m2,I2
+
+䎩!
+
+q1
+
+q2
+
+m1,I1
+
+䎩!
+
+x
+d1
+
+Figure 1: A 4-dof planar 2P2R robot, with associated coordinates q and dynamic data.
+Exercise 2
+A 2-dof robot has the inertia matrix
+
+a1 + 2a2 cos q2
+B(q) =
+a3 + a2 cos q2
+
+a3 + a2 cos q2
+a3
+
+
+.
+
+(2)
+
+• Find two matrices S 1 (q, q̇) and S 2 (q, q̇) factorizing the Coriolis and centrifugal terms c(q.q̇)
+(i.e., S i (q, q̇)q̇ = c(q, q̇), for i = 1, 2), such that Ḃ − 2S 1 is skew-symmetric, while Ḃ − 2S 2
+is not.
+• Assume that the robot is on a horizontal plane. The second joint should be moved along a
+cubic trajectory by an angle ∆q2 from rest to rest in a given time T > 0, while the first link is
+kept still. Provide the symbolic expression of the torque τ (0) ∈ R2 that needs to be applied
+at initial time t = 0 in order to start correctly the execution of this motion.
+• Give the value of τ (0) for the following numerical data
+π
+π
+a1 = 17, a2 = 5, a3 = 3, q2 (0) = − , ∆q2 = , T = 2 s,
+2
+2
+and explain the physical meaning of the signs of its two components.
+
+1
+
+Exercise 3
+Having defined a n-dimensional vector q of generalized coordinates, the dynamic model of a rigid
+robot in a Lagrangian formulation is obtained writing the Euler-Lagrange equations for L = T −U ,
+where T is the kinetic energy and U is the potential energy of the robot. In the frictionless case,
+the model takes the usual second-order differential expression
+B(q)q̈ + c(q, q̇) + g(q) = u.
+
+(3)
+
+On the other hand, one can also rely on the use of the total energy of a robot, H = T + U , the
+so-called Hamiltonian of the system. Using the generalized momentum p = B(q)q̇ ∈ Rn , prove
+that the (first-order) dynamic equations of the robot in a state-space format can be written in the
+so-called Hamiltonian form
+  
+
+ 
+
+q̇
+O
+In
+∇q H
+O
+=
++
+u,
+(4)
+ṗ
+−I n O
+∇p H
+In
+T
+
+where I n is the n × n identity matrix and ∇x H = (∂H/∂x) is a n-dimensional (column) vector.
+Exercise 4
+Consider the PPR planar robot in Fig. 2 and the coordinates q ∈ R3 given therein. The length of
+the third link is l > 0. Assume that the Cartesian task to be performed by this robot is defined in
+terms of the position p ∈ R2 of its end effector. Denote the associated task Jacobian as J (q).
+
+y
+
+p
+
+l
+
+q3
+q1
+
+q2
+x
+
+Figure 2: A 3-dof planar PPR robot, with associated coordinates q.
+2
+
+• Find the joint velocity q̇ that minimizes 12 kq̇k while realizing a desired task velocity ṗ. When
+the linear quantities in the problem are first expressed in [m] and [m/s] units and then in [cm]
+and [cm/s] units, the solution does not remain the same. Why? Illustrate this by computing
+the numerical solution with the following data: l = 0.5 [m] = 50 [cm], q3 = π/6 [rad],
+ṗ = (−1 1)T [m/s] = (−100 100)T [cm/s].
+• With a weighted pseudoinverse solution, may the above issue be resolved using a suitable
+diagonal weighting matrix W > 0? Illustrate your conclusion by reconsidering the same
+numerical example of the previous item. Provide also an interpretation of the role of weighting.
+• Using again another weighted pseudoinverse, show than it is possible to realize a generic
+Cartesian task velocity ṗ by moving almost only the first two joints of the PPR robot. Illustrate
+this on the same previous numerical example.
+[270 minutes (4.5 hours); open books, but no computer or smartphone]
+2
+
+Solution
+April 26, 2018
+Exercise 1
+Kinetic energy
+First two links:
+T1 =
+
+1
+m1 q̇12 ,
+2
+
+Third link:
+
+ 
+
+pc3,x
+q1 + d3 cos q3
+pc3 =
+=
+pc3,y
+q2 + d3 sin q3
+⇒
+
+T3 =
+
+T2 =
+
+
+1
+m1 q̇12 + q̇22 .
+2
+
+
+⇒
+
+v c3 = ṗc3 =
+
+q̇1 − d3 sin q3 q̇3
+q̇2 + d3 cos q3 q̇3
+
+
+,
+
+ω3 = q̇3
+
+ 1
+1
+m3 q̇12 + q̇22 + d23 q̇32 + 2d3 q̇3 (q̇2 cos q3 − q̇1 sin q3 ) + I3 q̇32 .
+2
+2
+
+Fourth link:
+
+
+pc4
+⇒
+⇒
+
+T4 =
+
+v c4
+
+ 
+
+pc4,x
+q1 + l3 cos q3 + d4 cos(q3 + q4 )
+=
+=
+pc4,y
+q2 + l3 sin q3 + d4 sin(q3 + q4 )
+
+
+q̇1 − l3 sin q3 q̇3 − d4 sin(q3 + q4 )(q̇3 + q̇4 )
+= ṗc4 =
+,
+q̇2 + l3 cos q3 q̇3 + d4 cos(q3 + q4 )(q̇3 + q̇4 )
+
+ω4 = q̇3 + q̇4
+
+1  2
+2
+m4 q̇1 + q̇22 + l32 q̇32 + d24 (q̇3 + q̇4 ) + 2l3 q̇3 (q̇2 cos q3 − q̇1 sin q3 ) + 2l3 d4 cos q4 q̇3 (q̇3 + q̇4 )
+2
+
+2
++ 2d4 (q̇3 + q̇4 ) (q̇2 cos(q3 + q4 ) − q̇1 sin(q3 + q4 )) + 21 I4 (q̇3 + q̇4 ) .
+
+Robot inertia matrix
+From
+T =
+
+4
+X
+
+4
+
+Ti =
+
+i=1
+
+4
+
+1 T
+1 XX
+q̇ B(q)q̇ =
+bij (q) q̇i q̇j ,
+2
+2 i=1 j=1
+
+we obtain the elements bij = bji of the symmetric inertia matrix B(q) as
+b11 = m1 + m2 + m3 + m4
+b12 = 0
+b13 = − (m3 d3 + m4 l3 ) sin q3 − m4 d4 sin(q3 + q4 )
+b14 = −m4 d4 sin(q3 + q4 )
+b22 = m2 + m3 + m4
+b23 = (m3 d3 + m4 l3 ) cos q3 + m4 d4 cos(q3 + q4 )
+b24 = m4 d4 cos(q3 + q4 )
+b33 = I3 + m3 d23 + I4 + m4 d24 + m4 l32 + 2m4 d4 l3 cos q4
+b34 = I4 + m4 d24 + m4 d4 l3 cos q4
+b44 = I4 + m4 d24 .
+Note that the inertia matrix is only a function of q3 and q4 .
+3
+
+Minimal parametrization of the inertia matrix
+We can collect the dynamic parameters appearing in the robot inertia matrix into 6 dynamic
+coefficients, which are defined as follows:
+a1 = m1 + m2 + m3 + m4
+a2 = m2 + m3 + m4
+a3 = I3 + m3 d23 + I4 + m4 d24 + m4 l32
+a4 = I4 + m4 d24
+
+(5)
+
+a5 = m4 d4
+a6 = m3 d3 + m4 l3 .
+As a result, the inertia matrix B(q) takes the more compact, linearly parametrized form
+
+
+a1
+0
+−a6 s3 − a5 s34
+−a5 s34
+
+
+0
+a2
+a6 c3 + a5 c34
+a5 c34
+
+
+B(q) = 
+,
+ −a6 s3 − a5 s34 a6 c3 + a5 c34 a3 + 2a5 l3 c4 a4 + a5 l3 c4 
+−a5 s34
+a5 c34
+a4 + a5 l3 c4
+a4
+
+(6)
+
+where the shorthand notation for trigonometric functions was used (e.g., s34 = sin(q3 + q4 )).
+Indeed, l3 could also be incorporated into the coefficient a6 , but this would lead, as we shall see,
+to an additional dynamic coefficient in the definition of the gravity terms.
+Coriolis and centrifugal terms
+Defining by bi the ith column of the inertia matrix B(q), we compute the components of the
+Coriolis and centrifugal vector c(q, q̇) using the Christoffel symbols:
+!
+
+T
+1 ∂bi
+∂bi
+∂B
+T
+ci (q, q̇) = q̇ C i (q)q̇,
+C i (q) =
++
+−
+,
+i = 1, . . . , 4.
+2 ∂q
+∂q
+∂qi
+This is tedious, but straightforward. For the four components we obtain:
+
+
+ 
+
+0 0
+0
+0
+0 0
+0
+0
+
+
+  0 0
+
+0
+0
+0
+0
+1
+
+
+ 
+ 0 0
+C 1 (q) = 
++
+ − O
+2  0 0 −a6 c3 − a5 c34 −a5 c34   0 0 −a6 c3 − a5 c34 −a5 c34 
+
+0 0
+−a5 c34
+−a5 c34
+0 0
+−a5 c34
+−a5 c34
+
+
+0 0
+0
+0
+ 0 0
+
+0
+0
+
+
+2
+=
+ ⇒ c1 (q, q̇) = −a5 c34 (q̇3 + q̇4 ) − a6 c3 q̇32
+ 0 0 −a6 c3 − a5 c34 −a5 c34 
+0 0
+−a5 c34
+−a5 c34
+
+ 
+
+
+0 0
+0
+0
+0 0
+0
+0
+
+  0 0
+
+
+0
+0
+0
+0
+1
+ 0 0
+ 
+
+
+C 2 (q) = 
++
+ − O
+2  0 0 −a6 s3 − a5 s34 −a5 s34   0 0 −a6 s3 − a5 s34 −a5 s34 
+
+0 0
+−a5 s34
+−a5 s34
+0 0
+−a5 s34
+−a5 s34
+
+
+0 0
+0
+0
+ 0 0
+
+0
+0
+
+
+2
+=
+ ⇒ c2 (q, q̇) = −a5 s34 (q̇3 + q̇4 ) − a6 s3 q̇32
+ 0 0 −a6 s3 − a5 s34 −a5 s34 
+0 0
+−a5 s34
+−a5 s34
+4
+
+
+C 3 (q) =
+
+0
+0
+0
+0
+
+
+
+1
+
+
+2 
+
+0
+0
+0
+0
+
+
+
++
+
+
+
+
+−
+
+
+
+
+
+=
+
+
+0 0
+0 0
+0 0
+0 0
+
+
+C 4 (q) =
+
+
+1
+
+
+2 
+
+0
+0
+0
+0
+
+
+−a6 c3 − a5 c34
+−a6 s3 − a5 s34
+0
+0
+
+
+
+=
+
+
+0 0
+0 0
+0 0
+0 0
+
+
+
+
+
+
+0
+0
+−a6 c3 − a5 c34
+−a5 c34
+
+0
+0
+−a6 s3 − a5 s34
+−a5 s34
+
+0
+0
+0
+−2a5 l3 s4
+
+0
+0
+−a6 c3 − a5 c34
+−a5 c34
+
+0
+0
+−a6 s3 − a5 s34
+−a5 s34
+
+−a6 c3 − a5 c34
+−a6 s3 − a5 s34
+0
+0
+
+0
+0
+0
+−a5 l3 s4
+0
+0
+0
+0
+
+0
+0
+−a5 l3 s4
+−a5 l3 s4
+
+−a5 c34
+−a5 s34
+0
+0
+
+0
+
+0
+
+−
+ −a5 c34
+−a5 c34
+
+
+
+
+−a5 c34
+−a5 s34
+−2a5 l3 s4
+−a5 l3 s4
+
+0
+0
+a5 l3 s4
+0
+
+0
+0
+0
+0
+
+
+
+
+
+
+
+−a5 c34
+−a5 s34
+0
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+−a5 c34
+−a5 s34
+−a5 l3 s4
+0
+
+0
+0
+−a5 s34
+−a5 s34
+
+0
+0
+0
+−a5 l3 s4
+
+⇒
+
+
+
+c3 (q, q̇) = −a5 l3 s4 q̇4 (2q̇3 + q̇4 )
+
+
+
+ 
+ 
++
+ 
+
+−a5 c34
+−a5 s34
+−2a5 l3 s4
+−a5 l3 s4
+
+0
+0
+−a5 c34
+−a5 c34
+−a5 c34
+−a5 s34
+−a5 l3 s4
+0
+
+0
+0
+−a5 s34
+−a5 s34
+
+
+0
+0
+0
+−a5 l3 s4
+
+0
+0
+0
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+⇒
+
+c4 (q, q̇) = a5 l3 s4 q̇32 .
+
+Summarizing, we have a very short final expression:
+
+2
+−a5 c34 (q̇3 + q̇4 ) − a6 c3 q̇32
+
+2
+ −a5 s34 (q̇3 + q̇4 ) − a6 s3 q̇32
+c(q, q̇) = 
+
+−a5 l3 s4 q̇4 (2q̇3 + q̇4 )
+a5 l3 s4 q̇32
+
+
+
+
+.
+
+
+Potential energy and gravity terms
+U1 = 0,
+
+U2 = m2 g0 (q2 − d2 ),
+
+U3 = m3 g0 pc3,y = m3 g0 (q2 + d3 sin q3 ) ,
+
+U4 = m4 g0 pc4,y = m4 g0 (q2 + l3 sin q3 + d4 sin(q3 + q4 ))
+5
+
+[all defined up to a constant].
+
+(7)
+
+From U =
+
+P4
+1
+
+Ui , we have
+
+
+
+g(q) =
+
+∂U
+∂q
+
+T
+
+
+
+0
+
+
+(m2 + m3 + m4 ) g0
+
+=
+ (m3 d3 + m4 l3 ) g0 c3 + m4 d4 g0 c34
+m4 d4 g0 c34
+
+
+
+ 
+ 
+=
+ 
+
+0
+a2 g0
+a6 g0 c3 + a5 g0 c34
+a5 g0 c34
+
+
+
+
+,
+
+
+(8)
+
+where the three previously defined dynamic coefficents a2 , a5 , and a6 have been used.
+Complete dynamic model with viscous friction
+Using the expressions eqs. (6), (7), and (8), and considering the presence of viscous friction acting
+at the individual joints, we have
+
+
+fv1 q̇1
+ f q̇ 
+ v2 2 
+(9)
+B(q)q̈ + c(q, q̇) + g(q) + 
+ = u.
+ fv3 q̇3 
+fv4 q̇4
+By defining the four more dynamic coefficients
+a7 = fv1 ,
+
+a8 = fv2 ,
+
+a9 = fv3 ,
+
+a10 = fv4 ,
+
+we conclude that the robot dynamic model depends linearly on a total of p = 10 dynamic coefficients, which can be organized in the vector a ∈ R10 . This is also the minimal number of
+coefficients in the present case.
+Linear parametrization
+The robot dynamic model (9) can be expressed in the linearly parametrized form
+Y (q, q̇.q̈) a = u
+where the 4 × 10 matrix Y is given by
+
+0
+0
+0
+q̈1
+ 0
+0
+q̈2 + g0
+0
+
+Y =
+q̈3
+q̈4
+0
+ 0
+q̈3 + q̈4
+0
+0
+0
+
+Y5
+
+Y6
+
+q̇1
+0
+0
+0
+
+0
+q̇2
+0
+0
+
+0
+0
+q̇3
+0
+
+The expressions of the fifth and sixth columns of this matrix are
+
+
+2
+−s34 (q̈3 + q̈4 ) − c34 (q̇3 + q̇4 )
+
+
+2
+c34 (q̈3 + q̈4 ) − s34 (q̇3 + q̇4 )
+
+
+Y5=
+
+ l3 c4 (2q̈3 + q̈4 ) + c34 (q̈2 + g0 ) − s34 q̈1 − l3 s4 q̇4 (2q̇3 + q̇4 ) 
+l3 c4 q̈3 + c34 (q̈2 + g0 ) − s34 q̈1 + l3 s4 q̇32
+and
+
+
+−s3 q̈3 − c3 q̇32
+
+
+c3 q̈3 − s3 q̇32
+
+
+Y6=
+.
+ c3 (q̈2 + g0 ) − s3 q̈1 
+0
+
+
+6
+
+0
+0
+0
+q̇4
+
+
+
+
+.
+
+
+(10)
+
+Exercise 2
+From the inertia matrix (2) of the robot, the matrices of Christoffel symbols are computed as
+
+
+
+
+0
+−a2 sin q2
+a2 sin q2 0
+C 1 (q) =
+,
+C 2 (q) =
+,
+(11)
+−a2 sin q2 −a2 sin q2
+0
+0
+leading to the Coriolis and centrifugal terms
+! 
+
+q̇ T C 1 (q) q̇
+−a2 sin q2 2q̇1 q̇2 + q̇22
+.
+c(q, q̇) =
+=
+a2 sin q2 q̇12
+q̇ T C 2 (q) q̇
+Moreover, the time derivative of the inertia matrix is
+
+
+−2a2 sin q2 q̇2 −a2 sin q2 q̇2
+Ḃ =
+.
+−a2 sin q2 q̇2
+0
+
+(12)
+
+(13)
+
+A factorization S(q.q̇)q̇ of (12) that satisfies the skew-symmetry of Ḃ − 2S is found using directly
+the matrices (11) of Christoffel symbols. It is easy to check that the matrix
+! 
+
+−a2 sin q2 q̇2 −a2 sin q2 (q̇1 + q̇2 )
+q̇ T C 1 (q)
+(14)
+=
+S 1 (q, q̇) =
+a2 sin q2 q̇1
+0
+q̇ T C 2 (q)
+provides
+
+Ḃ − 2S 1 =
+
+0
+a2 sin q2 (2q̇1 + q̇2 )
+−a2 sin q2 (2q̇1 + q̇2 )
+0
+
+
+,
+
+satisfying the desired skew-symmetric property. On the other hand, a feasible factorization that
+uses the matrix
+
+
+−2a2 sin q2 q̇2 −a2 sin q2 q̇2
+S 2 (q, q̇) =
+(15)
+a2 sin q2 q̇1
+0
+provides
+
+Ḃ − 2S 2 =
+
+2a2 sin q2 q̇2
+a2 sin q2 q̇2
+−a2 sin q2 (2q̇1 + q̇2 )
+0
+
+
+,
+
+which is clearly not a skew-symmetric matrix.
+For the second part of the exercise, we need to solve a simple inverse dynamics problem. Since
+the robot moves on a horizontal plane, we have g(q) ≡ 0. Moreover, the desired motion starts at
+t = 0 with zero joint velocity, so that c(q(0), q̇(0)) = 0 as well. Finally, the first link should not
+move, so that q̈1 ≡ 0. The dynamic equations at the initial instant become then
+
+
+0
+B(q(0))
+= τ (0).
+q̈2 (0)
+Since the second joint should perform a rest-to-rest motion of ∆q2 in time T with a cubic trajectory,
+we have
+ 2
+ 3 !
+t
+t
+6∆q2
+q2 (t) = q2 (0) + ∆q2 3
+−2
+⇒ q̈2 (0) =
+.
+T
+T
+T2
+Therefore, the required initial torque at the two joints is
+
+
+a3 + a2 cos q2 (0) 6∆q2
+τ (0) =
+.
+T2
+a3
+7
+
+(16)
+
+Replacing the given numerical data in (16), we obtain
+
+
+7.0686
+τ (0) =
+[Nm].
+7.0686
+Since a3 > 0 (always), the torque at the second joint will have the same sign of the desired
+displacement/acceleration of that joint. In the present case, also the first torque is positive (and
+equal to the second one, being cos q2 (0) = 0). This positive (counterclockwise) torque is needed to
+contrast the clockwise motion that the first link would otherwise have, due to the inertial coupling
+with the instantaneous acceleration of the second link.
+Exercise 3
+In a Lagrangian formulation, we have
+L(q, q̇) = T (q, q̇) − U (q) =
+
+1 T
+q̇ B(q)q̇ − U (q)
+2
+
+and thus
+
+T 
+T
+
+ 
+T
+∂L
+1
+∂U
+d ∂L
+T ∂B
+−
+= B(q)q̈ + Ḃ(q)q̇ − col q̇
+q̇ +
+= B(q)q̈ +c(q, q̇)+g(q) = u,
+dt ∂ q̇
+∂q
+2
+∂qi
+∂q
+(17)
+where
+( "
+# )
+
+
+T
+T
+
+
+1
+∂bi
+∂B
+1
+∂U
+T ∂B
+T ∂bi
+c(q, q̇) = Ḃ(q)q̇ − col q̇
++
+−
+,
+q̇ = col q̇
+q̇ , g(q) =
+2
+∂qi
+2
+∂q
+∂q
+∂qi
+∂q
+being x = col{xi } a n-dimensional column vector with xi as the ith component, for i = 1, . . . , n.
+Since q̇ = B −1(q)p, it is easy to see that the Hamiltonian can be rewritten as a function of the
+generalized coordinates q and the generalized momentum p only:
+H(q, p) = T (q, p) + U (q) =
+
+1 T −1
+p B (q)p + U (q).
+2
+
+We compute then the partial derivatives
+
+
+∂H
+∂p
+
+T
+
+
+
+∂H
+∂q
+
+T
+
+∇p H =
+∇q H =
+
+= ∇p T = B −1(q)p,
+
+
+1
+∂B −1
+= ∇q T + ∇q U = col pT
+p + g(q).
+2
+∂qi
+
+(18)
+
+Differentiating w.r.t. time p = B(q)q̇ and using (17), it is
+
+
+
+
+1
+∂B
+1
+∂B −1
+ṗ = B(q)q̈ + Ḃ(q)q̇ = u + col q̇ T
+q̇ − g(q) = u + col pT B −1
+B p − g(q). (19)
+2
+∂qi
+2
+∂qi
+Moreover, from the identity
+B(q)B
+
+−1
+
+(q) = I
+
+⇒
+
+
+∂
+B(q)B −1 (q) =
+∂qi
+
+
+
+8
+
+
+
+
+∂
+∂ −1
+−1
+B(q) B (q) + B(q)
+B (q) = O,
+∂qi
+∂qi
+
+we obtain the general property
+∂B −1
+∂B −1
+= −B −1
+B .
+∂qi
+∂qi
+
+(20)
+
+Replacing (20) in (19) leads to
+
+−1 
+1
+T ∂B
+ṗ = u − col p
+p − g(q).
+2
+∂qi
+As a result, using also eq. (18) one can write
+q̇ = B −1(q)p = ∇p H
+
+
+
+
+∂B −1
+1
+col pT
+p + g(q) + u = − ∇q H + u,
+ṗ = −
+2
+∂qi
+which can be immediately rearranged in the form of the stated equations (4).
+Exercise 4
+The task Jacobian of the planar PPR robot is given by
+
+
+1 0 −l sin q3
+J (q) =
+,
+0 1
+l cos q3
+
+(21)
+
+with
+ṗ = J (q)q̇,
+
+ṗ ∈ R2 ,
+
+q̇ ∈ R3 .
+
+Clearly, the Jacobian (21) is always of maximum rank ρ = 2. Therefore, the minimum norm joint
+velocity that realizes a desired ṗ is provided by
+q̇ = J # (q)ṗ,
+where the pseudoinverse matrix takes the explicit expression
+
+1 + l2 cos2 q3
+
+−1
+1  2
+#
+T
+T
+J (q) = J (q) J (q)J (q)
+=
+ l sin q3 cos q3
+1 + l2
+−l sin q3
+
+(22)
+
+
+l2 sin q3 cos q3
+
+1 + l2 sin2 q3  ,
+l cos q3
+
+(23)
+
+being det(J J T ) = 1 + l2 . When looking at the elements of the matrix in (23), it is easy to realize
+that there is a problem of unit inconsistency. In particular, the expression of the determinant of
+J J T consists of the sum of a non-dimensional quantity and of one having dimension of length to
+the square. As a matter of fact, the robot has joints of different nature. Therefore, the norm kq̇k
+has mixed expressions and its minimization leads in general to different solutions, depending on
+the units chosen for the linear and the angular quantities.
+For illustration, if we evaluate the solution (22) with the given numerical data using [m] as linear
+unit,
+
+
+−1
+l = 0.5 [m],
+q3 = π/6 [rad],
+ṗ =
+[m/s],
+1
+we obtain
+
+
+
+
+
+
+0.95
+0.0866 
+
+−0.8634
+[m/s]
+
+ −1
+
+
+0.85 
+q̇ =  0.0866
+=  0.7634  [m/s] .
+1
+−0.2 0.3464
+0.5464
+[rad/s]
+9
+
+(24)
+
+Instead, when using [cm] as the linear unit,
+
+l = 50 [cm],
+
+q3 = π/6 [rad],
+
+ṗ =
+
+−100
+100
+
+
+[cm/s],
+
+we obtain
+
+
+
+
+
+
+
+0.7501 0.4328 
+
+−31.72
+[cm/s]
+−0.3172
+[m/s]
+
+ −100
+
+
+
+
+q̇ =  0.4328 0.2503 
+=  −18.25  [cm/s] =  −0.1825  [m/s] ,
+100
+−0.01 0.0173
+2.731
+[rad/s]
+2.731
+[rad/s]
+
+(25)
+
+which is completely different (in all components) with respect to (24).
+Consider now the use of a weighted pseudoinverse to define a solution as
+q̇ = J #
+W (q)ṗ,
+
+(26)
+
+where, being the task Jacobian always of full rank, we can use the explicit expression
+
+−1
+−1 T
+−1 T
+J#
+(q)
+=
+W
+J
+(q)
+J
+(q)W
+J
+(q)
+.
+W
+
+(27)
+
+Since the issue here is the different nature of the first two joints (prismatic) with respect to the last
+one (revolute), it makes sense to focus our attention to a diagonal weighting matrix of the form
+
+
+1
+
+
+1
+with w > 0.
+(28)
+W =
+,
+w
+When computing the inverse matrix in (27), one gets
+
+l2
+l2
+2
+sin q3 cos q3
+
+−1  1 + sin q3
+w
+w
+J (q)W −1 J T (q)
+=
+ 2
+l
+l2
+sin q3 cos q3 1 + cos2 q3
+w
+w
+
+
+
+
+
+
+and
+
+
+
+l2
+det J W −1 J T = 1 + .
+w
+
+Therefore, the choice w = l2 in (28) would eliminate the presence of terms with dimensional units
+in this key expression (in particular, the determinant would become equal to 2). In fact, with this
+choice the final expression of such a properly weighted pseudoinverse is
+
+
+1 + cos2 q3 sin q3 cos q3
+2
+
+1
+ sin q3 cos q3 1 + sin q3  .
+J#
+(q)
+=
+(29)
+W
+
+
+2
+sin q3
+cos q3
+−
+l
+l
+Evaluating the solution (26) with w = l2 in the previous numerical example, and using [m] as
+linear unit,
+
+
+−1
+l = 0.5 [m],
+q3 = π/6 [rad],
+ṗ =
+[m/s],
+1
+we obtain
+
+
+
+0.875
+
+q̇ =  0.2165
+−0.5
+
+
+
+
+0.2165 
+
+−0.6585
+[m/s]
+ −1
+
+
+0.625 
+=  0.4085  [m/s] .
+1
+0.866
+1.366
+[rad/s]
+10
+
+(30)
+
+When using [cm] as the linear unit,
+
+l = 50 [cm],
+
+q3 = π/6 [rad],
+
+ṗ =
+
+−100
+100
+
+
+[cm/s],
+
+we obtain in this case
+
+
+
+
+
+
+0.875 0.2165 
+
+−65.8484
+[cm/s]
+−0.6585
+[m/s]
+
+ −100
+
+
+
+
+q̇ =  0.2165 0.625 
+=  −40.8494  [cm/s] =  0.4085  [m/s] , (31)
+100
+−0.005 0.0087
+1.366
+[rad/s]
+1.366
+[rad/s]
+which is exactly the solution (30) already obtained with the other linear units.
+The role of the suitable weighting w = l2 on the velocity of the third joint can be given the following
+interpretation. The general solution (26) minimizes the objective
+H=
+
+
+ 1 2
+1
+1
+1 2
+2
+2
+q̇1 + q̇22 + (lq̇3 ) ,
+kq̇kW = q̇ T W q̇ =
+q̇1 + q̇22 + wq̇32 =
+2
+2
+2
+2
+
+subject to the task constraint J (q)q̇ = ṗ. Therefore, this (unique!) weight will equalize the cost for
+a Cartesian displacement of the robot end-effector of a given length, no matter if this is achieved
+by one of the two prismatic joints or by the third revolute joint. Stated differently, a linear path
+achieved by translating along the first or second prismatic joint at 1 [m/s] for 1 second will cost in
+the objective function H the same as an arc of a circle of radius l achieved by rotating the third
+joint at 1/l [rad/s] for 1 second.
+On the other hand, selecting a very large weight w  1 in (28) will penalize the motion of the
+third (revolute) joint with respect to the prismatic ones. The PPR robot will then try to achieve
+the desired Cartesian velocity moving mainly the first two joints. For instance, using w = 1000 in
+the previous numerical example (and using [m] for the linear units) provides
+
+
+
+
+[m/s]
+
+−0.9998
+0.9999 0.0001 
+
+ −1
+
+
+(32)
+=  0.9997  [m/s] ,
+q̇ =  0.0001 0.9998 
+1
+[rad/s]
+0.0007
+−0.0002 0.0004
+namely a velocity that involves in practice only the first two prismatic joints.
+∗∗∗∗∗
+
+11
+
+

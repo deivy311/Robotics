@@ -1,0 +1,578 @@
+Robotics II
+July 11, 2016
+Exercise 1
+
+y0
+
+䎩
+䎩
+
+q2
+
+q1
+x0
+
+Figure 1: A 2R planar robot moving on a horizontal plane.
+Derive the inertia matrix B(q) of a planar 2R robot using the absolute coordinates q = (q1 , q2 )
+defined in Fig. 1. Will Coriolis and/or centrifugal terms be present in the quadratic velocity term
+c(q, q̇) of the dynamic model? Why? In the absence of dissipative effects, what is the relation
+between the input torques u acting in this case on the right-hand side of the Euler-Lagrange
+equations and the torques uθ = (uθ1 , uθ2 ) produced by two motors, one for each joint, directly
+connected to the respective joint axes?
+Exercise 2
+
+Figure 2: A peg with a square section entering a hole with little or no clearance.
+For the task of inserting a peg with a square section into a square hole, as depicted in Fig. 2,
+define i) a suitable task frame, ii) the natural constraints imposed by the geometry of the rigid
+and frictionless environment on the generalized (i.e., linear and angular) motion/force quantities
+expressed in this task frame, and iii) the virtual constraints that can be taken as reference values
+by a hybrid force-velocity control law for the smooth execution of the task.
+
+1
+
+Exercise 3
+For the peg-in-hole task considered in Exercise 2, consider the problem of regulating the contact
+force in one direction against a side of the hole. The hole has now a compliant behavior, as modeled
+by a spring of stiffness ke > 0. With reference to Fig. 3, which displays a horizontal section of the
+peg in contact with one side of the hole, let m > 0 be the mass of the peg and d > 0 the position
+of the undeformed contact along the tx direction.
+
+d
+u
+
+ke
+
+0
+m
+
+tx
+
+Figure 3: Interaction with a compliant environment at one side of the peg-in-hole of Fig 2.
+Design two controllers for the scalar command u such that the contact force Fc is regulated to a
+desired value Fd > 0, with an asymptotically stable transient behavior. In particular:
+• suppose first that no force sensing is available and design a compliance control law;
+• introduce an ideal force sensor (e.g., on the peg surface) and design a force control law;
+• discuss robustness of the two designs w.r.t. uncertainties in the knowledge of ke , d and m.
+[210 minutes; open books]
+
+2
+
+Solution
+July 11, 2016
+
+Exercise 1
+To obtain the robot dynamic model terms, we follow a Lagrangian approach. Since the robot
+motion occurs at constant potential energy (on a horizontal plane), we need only to compute the
+kinetic energy T = T1 + T2 . For link i, i = 1, 2, let mi be its mass, di the distance of its center of
+mass from the axis of joint i, and Ii the baricentral inertia of the link around an axis normal to
+the plane of motion. For the first link, it is
+T1 =
+
+1
+(I1 + m1 d21 ) q̇12 .
+2
+
+For the second link, the position of the center of mass when using the absolute coordinates is
+
+
+`1 cos q1 + d2 cos q2
+pc2 =
+,
+`1 sin q1 + d2 sin q2
+where `1 is the length of link 1. Thus, its velocity is
+
+
+−`1 sin q1 q̇1 − d2 sin q2 q̇2
+v c2 = ṗc2 =
+,
+`1 cos q1 q̇1 + d2 cos q2 q̇2
+and its squared norm becomes
+kv c2 k2 = v Tc2 v c2 = `21 q̇12 + d22 q̇22 + 2`1 d2 cos(q2 − q1 ) q̇1 q̇2 .
+The (scalar) angular velocity of link 2 is simply q̇2 . As a result,
+T2 =
+
+
+
+1
+m2 `21 q̇12 + I2 + m2 d22 q̇22 + 2m2 `1 d2 cos(q2 − q1 ) q̇1 q̇2 .
+2
+
+Therefore,
+1
+T = q̇ T
+2
+
+I1 + m1 d21 + m2 `21
+
+m2 `1 d2 cos(q2 − q1 )
+
+m2 `1 d2 cos(q2 − q1 )
+
+I2 + m2 d22
+
+!
+q̇ =
+
+1 T
+q̇ B(q)q̇.
+2
+
+Defining for compactness the following dynamic coefficients
+a1 = I1 + m1 d21 + m2 `21 ,
+
+a2 = I2 + m2 d22 ,
+
+a3 = m2 `1 d2 ,
+
+we can rewrite the inertia matrix as
+B(q) =
+
+a1
+
+a3 cos(q2 − q1 )
+
+a3 cos(q2 − q1 )
+
+a2
+
+For the (quadratic) velocity terms in the dynamic model, we have
+
+
+c1 (q, q̇)
+c(q, q̇) =
+,
+ci (q, q̇) = q̇ T C i (q)q̇,
+c2 (q, q̇)
+3
+
+!
+.
+
+i = 1, 2,
+
+where
+1
+C i (q) =
+2
+
+(
+)
+
+T
+∂B(q)
+∂bi (q)
+∂bi (q)
+−
++
+,
+∂q
+∂q
+∂qi
+
+i = 1, 2.
+
+Computing
+1
+C 1 (q) =
+2
+
+(
+
+0
+
+!
+
+0
+
+a3 sin(q2 − q1 ) −a3 sin(q2 − q1 )
+−
+
+C 2 (q) = · · · =
+
+0
+
+a3 sin(q2 − q1 )
+
+a3 sin(q2 − q1 )
+
+0
+
+a3 sin(q2 − q1 )
+
+0
+
+0
+
+0
+
++
+
+0
+
+a3 sin(q2 − q1 )
+
+0
+
+−a3 sin(q2 − q1 )
+
+!)
+=
+
+!
+
+0
+
+0
+
+0
+
+−a3 sin(q2 − q1 )
+
+!
+,
+
+!
+,
+
+we finally obtain
+
+c(q, q̇) =
+
+−a3 sin(q2 − q1 ) q̇22
+a3 sin(q2 − q1 ) q̇12
+
+
+.
+
+There are no Coriolis, but only centrifugal terms in the dynamic equations. This is due to the
+choice of absolute coordinates, so that a motion of q1 only, with q2 kept constant, will not change
+the orientation of link 2.
+Moreover, the transformation from relative joint coordinates θ (those of a classical DH convention)
+to absolute joint coordinates q is
+
+ 
+
+
+
+q1
+θ1
+1 0
+q=
+=
+⇒
+q̇ =
+θ̇ = T θ̇.
+q2
+θ1 + θ2
+1 1
+Therefore, due to the principle of virtual works, the mapping between the generalized forces u
+performing work on q̇ and the generalized forces uθ performing work on θ̇ is given by
+
+
+
+
+
+
+
+
+uθ1
+u1 + u2
+u1
+uθ1 − uθ2
+T
+−T
+uθ =
+=T u=
+⇔
+u=
+= T uθ =
+.
+uθ2
+u2
+u2
+uθ2
+The robot dynamic model written in the q coordinates and driven by the motor torques uθ is
+B(q)q̈ + c(q, q̇) = u = T −T uθ .
+
+Exercise 2
+With reference to the task frame shown in Fig. 4, the natural (geometric) contraints and the virtual
+constraints in the peg-hole frictionless interaction are respectively
+ t
+ t
+vx = 0
+Fx = Fxd
+
+
+
+
+ t
+ t
+
+
+vy = 0
+Fy = Fyd
+
+
+
+
+ t
+ t
+
+
+ωx = 0
+Mx = Mxd
+natural:
+virtual:
+t
+t
+
+
+ ωy = 0
+ My = Myd
+
+
+
+
+t
+
+
+ ωz = 0
+ t Mz = Mzd
+
+
+ t
+ t
+Fz = 0
+vz = vzd > 0.
+4
+
+tx
+ty
+
+tz
+
+Figure 4: The task frame used in the definition of natural and virtual constraints for hybrid
+force/motion analysis and control.
+Except for the last virtual constraint, which specifies the desired positive speed of insertion of the
+peg in the hole, all the desired interaction forces and moments can be set to zero, if a smooth
+behavior is to be realized with minimum mechanical stress on the peg. On the other hand, if
+a firm contact needs to be maintained with one side of the hole (e.g., in the presence of some
+uncertain clearance), then the choice of a positive value for Fxd and/or Fyd would be useful (this
+is the situation considered, e.g., in Exercise 3).
+Exercise 3
+Let x be the position along tx of the peg side that undergoes contact with the hole side. We assume
+that the peg is already in contact (x ≥ d). The dynamic model of the peg-environment interaction
+is then
+mẍ + ke (x − d) = u,
+whereas the contact force applied by the peg to the hole side is
+Fc = ke (x − d),
+
+for x ≥ d
+
+Instead, when x < d (no contact) then Fc = 0.
+If we want to have Fc = Fd at the closed-loop equilibrium, we need to drive the mass m to a
+position xd computed as follows:
+Fc = ke (x − d)|x=xd = Fd
+
+⇒
+
+xd = d +
+
+1
+Fd .
+ke
+
+(1)
+
+However, a simple compliance control law of the PD type
+u = kp (xd − x) − kd ẋ,
+
+with kp > 0 and kd > 0,
+
+(2)
+
+will have a closed-loop equilibrium x = xE that does not provide the desired contact force Fd at
+steady state. In fact, the unique equilibrium xE (> d) will be the solution of
+ke (x − d)|x=xE = kp (xd − x)|x=xE
+
+⇒
+
+xE =
+
+5
+
+kp
+ke d + kp xd
+=d+
+Fd 6= xd ,
+ke + kp
+ke (ke + kp )
+
+where (1) has been used. Accordingly, the steady-state contact force is
+FE = ke (xE − d) =
+
+kp
+Fd ,
+ke + kp
+
+which is never equal to the desired one, even for arbitrary large but finite values of kp .
+A better control design is achieved by adding to the law (2) a term that nominally cancels the
+interaction force, i.e.,
+u = kp (xd − x) − kd ẋ + ke (x − d),
+
+with kp > 0 and kd > 0.
+
+(3)
+
+When in contact, the associated closed-loop equation is
+mẍ + kd ẋ + kp x = kp xd ,
+which is an asymptotically stable system driven by the constant signal kp xd , converging at steady
+state to the desired position x = xd , thus with Fc = Fd .
+Unfortunately, an uncertain value of the environment stiffness (which appears twice in the control
+law, namely in the definition of xd in (1) and in the term compensating the interaction force in (3))
+would lead to a residual force error at steady state. In practice, we can implement only
+u = kp (x̂d − x) − kd ẋ + k̂e (x − d),
+
+with kp > 0 and kd > 0.
+
+(4)
+
+where k̂e is an estimate of ke and x̂d = d + (Fd /k̂e ). For the time being, assume that d is accurately
+known, so that the last term in (4) is present only when x ≥ d (otherwise is zero). When in contact,
+the closed-loop equation becomes
+
+
+
+
+
+
+kp
+Fd .
+mẍ + kd ẋ + kp + ke − k̂e x = kp x̂d + ke − k̂e d = kp + ke − k̂e d +
+k̂e
+
+(5)
+
+Provided that the proportional gain kp in the control law (4) is sufficiently large, i.e.,
+kp ≥ α > ke − k̂e ≥ 0,
+
+(6)
+
+it is easy to see that system (5) will remain asymptotically stable. Its position and contact force
+converge respectively to
+!
+ 
+kp
+ke
+kp
+ Fd
+xE = d + 
+and
+FE =
+Fd 6= Fd .
+k̂e
+kp + ke − k̂e
+k̂e kp + ke − k̂e
+The last formula shows that by increasing kp → ∞ (i.e., to very large values), one can certainly
+neglect the effect of the estimation error ke − k̂e , but still not the error due to the scaling factor
+ke /k̂e 6= 1.
+The analysis of the case when the position d of the environment is not accurately known is more
+complex. Again, the estimate dˆ enters twice in place of d within the control law (4), explicitly in
+the last term and implicitly through the definition of xd . Not having an accurate estimate of d
+ˆ possibly in an inconsistent way
+may lead to a wrong activation/deactivation of the term k̂e (x − d),
+with respect to the true contact/no contact situation. A chattering behavior may thus result in
+the proximity of the contact point. While a more detailed analysis of such a situation is possible,
+this is out of our scope here.
+6
+
+On the other hand, the above control laws are fully independent from the knowledge of the mass
+value m, which only affects the behavior of the system during transient phases.
+Let us turn the attention to the case when a force sensor is available, whose measure Fm ideally
+provides the contact force, or
+
+ke (x − d), x ≥ d,
+Fm = Fc =
+0,
+x < d.
+Then, we can implement a force control law of the form
+u = Fd + kf (Fd − Fm ) − kd ẋ,
+
+with kf > 0 and kd > 0.
+
+(7)
+
+with a constant feedforward, a term proportional to the force error, and a velocity damping term
+(as before). When in contact, the resulting closed-loop equation is
+mẍ + kd ẋ + (1 + kf ) ke (x − d) = (1 + kf ) Fd .
+
+(8)
+
+Equation (8) represents again an asymptotically stable system, whose position and contact force
+converge to their desired values, i.e.,
+xE = xd = d +
+
+1
+Fd
+ke
+
+and
+
+FE = Fd .
+
+Note that the same control law (7) can be applied also during a phase of no contact (when Fm = 0).
+In that case, the closed-loop equation takes the form
+mẍ + kd ẋ = (1 + kf ) Fd ,
+and the (approaching) velocity of the peg will converge to the constant value
+ẋE =
+
+1 + kf
+Fd > 0,
+kd
+
+and proceed in this way until contact is established.
+An alternative to the addition of the constant force feedforward Fd in (7) is the use of a PI control
+law on the force error ef = Fd − Fm (with Fm = Fc ), still complemented by a velocity damping
+term, i.e.,
+Z t
+u(t) = kf (Fd −Fm (t))+ki
+(Fd −Fm (τ ))dτ −kd ẋ(t), with kd > 0, ki > 0, and (at least) kf > 0.
+0
+
+(9)
+It can be shown that the control scheme obtained by using (9) is equivalent to closing in a unitary
+feedback loop the transfer function
+G(s) =
+
+ke (kf s + ki )
+Fm (s)
+=
+,
+ef (s)
+s (ms2 + kd s + ke )
+
+(10)
+
+yielding the closed-loop system W (s) = Fm (s)/Fd (s) = G(s)/(1 + G(s)). The denominator of
+W (s) is
+den W (s) = ms3 + kd s2 + (1 + kf )ke s + ki ke
+and, by the Routh criterion, its roots are all in the open left-hand side of the complex plane if and
+only if
+ki
+− 1.
+kd > 0,
+ki > 0,
+kf > m
+kd
+7
+
+Under these conditions, the closed-loop system is asymptotically stable and the force error ef will
+converge to zero.
+As a matter of fact, both force control laws (7) and (9) achieve always their target, without the
+need to know any of the parameters ke , m, or d. The cost of including a force sensor is paid back
+by the achieved robustness of the control laws that can be designed with the force measurements.
+∗∗∗∗∗
+
+8
+
+

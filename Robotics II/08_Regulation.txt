@@ -1,0 +1,1347 @@
+Robotics 2
+
+Position Regulation
+(with an introduction to stability)
+Prof. Alessandro De Luca
+
+Equilibrium states of a robot
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢
+
+𝑞
+𝑥#
+𝑥 = 𝑥 = 𝑞̇
+$
+
+𝑥$
+𝑥̇ #
+𝑥̇ =
+= −𝑀/# (𝑥 ) 𝑐 𝑥 , 𝑥 + 𝑔(𝑥 )
+𝑥̇ $
+#
+# $
+#
+
+0
++
+𝑢
+𝑀/# (𝑥# )
+
+= 𝑓 𝑥 + 𝐺 𝑥# 𝑢
+𝑥5 unforced equilibrium
+
+(𝑢 = 0)
+
+𝑥5 forced equilibrium
+
+(𝑢 = 𝑢(𝑥))
+
+𝑓 𝑥5 = 0
+𝑓 𝑥5 + 𝐺 𝑥5,$ 𝑢(𝑥5 ) = 0
+
+all equilibrium states of mechanical
+systems have zero velocity!
+Robotics 2
+
+𝑥5,$ = 0
+𝑔 𝑥5,# = 0
+𝑥5,$ = 0
+𝑢 𝑥5 = 𝑔 𝑥5,#
+
+joint torques must balance gravity
+at the equilibrium!
+2
+
+Stability of dynamical systems
+definitions - 1
+
+𝑥̇ = 𝑓(𝑥)
+
+e.g., a closed-loop system
+(under feedback control)
+
+𝑥5 equilibrium: 𝑓(𝑥5 ) = 0
+
+(sometimes we consider as equilibrium state
+𝑥5 = 0, e.g., when using errors as variables)
+
+stability of 𝑥5
+∀𝜀 > 0, ∃𝛿; > 0: 𝑥 𝑡> − 𝑥5 < 𝛿; ⟹ 𝑥 𝑡 − 𝑥5 < 𝜀, ∀𝑡 ≥ 𝑡>
+asymptotic stability of 𝑥5
+
+stability +
+
+∃𝛿 > 0: 𝑥 𝑡> − 𝑥5 < 𝛿 ⟹ 𝑥 𝑡 − 𝑥5 → 0, for 𝑡 → ∞
+asymptotic stability may become global (∀𝛿 > 0, finite)
+note: these are definitions of stability “in the sense of Lyapunov”
+Robotics 2
+
+3
+
+Stability vs. asymptotic stability
+whiteboard…
+
+𝑥5
+
+𝛿;
+
+𝜀
+
+𝑥5
+
+𝑥5
+
+𝑥5
+𝑥(𝑡> )
+
+∀𝜀 > 0
+
+∃𝛿; > 0
+
+𝑥 𝑡> − 𝑥5 < 𝛿;
+
+𝑥(𝑡> )
+
+⟹ 𝑥 𝑡 − 𝑥5 < 𝜀, ∀𝑡 ≥ 𝑡>
+
+equilibrium state 𝑥5 is stable
+
++
+
+𝑥5
+𝛿
+
+∃𝛿 > 0
+Robotics 2
+
+𝑥5
+𝑥(𝑡> )
+
+𝑥 𝑡> − 𝑥5 < 𝛿
+
+𝑥5
+𝑥(𝑡> )
+
+⟹ 𝑥 𝑡 − 𝑥5 → 0, for 𝑡 → ∞
+
+equilibrium state 𝑥5 is asymptotically stable
+
+4
+
+Stability of dynamical systems
+definitions - 2
+
+exponential stability of 𝑥5
+
+exponential rate 𝜆
+
+∃𝛿, 𝑐, 𝜆 > 0: 𝑥 𝑡> − 𝑥5 < 𝛿 ⟹ 𝑥 𝑡 − 𝑥5 ≤ 𝑐𝑒 /M N/NO 𝑥 𝑡> − 𝑥5
+§ allows to estimate the time needed to ”approximately” converge: for 𝑐 = 1,
+in 𝑡 − 𝑡> = 3 × the time constant 𝜏 = 1/𝜆, the initial error is reduced to 5%
+§ typically, this is a local property only (within some maximum finite radius 𝛿 )
+⇒ such “domain of attraction” is hard to be estimated accurately
+
+“practical” stability of a set 𝑆
+∃𝑇 𝑥 𝑡> , 𝑆 ∈ ℝ: 𝑥 𝑡 ∈ 𝑆, ∀𝑡 ≥ 𝑡> + 𝑇 𝑥 𝑡> , 𝑆
+a finite time
+
+also known as u.u.b. stability
+⇒ trajectories 𝑥(𝑡) are “ultimately uniformly bounded” (use in robust control)
+Robotics 2
+
+5
+
+The need for analysis and criteria
+whiteboard…
+
+a nonlinear system 𝑥̇ = 𝑓 𝑥 in ℝ$
+
+𝑥̇ # = 1 − 𝑥#U
+T
+𝑥̇ $ = 𝑥# − 𝑥$$
+
+two equilibria 𝑓 𝑥5 = 0
+
+𝑥5V = 1, 1 , 𝑥5VV = 1, −1
+
+to assess (asymptotic) stability [or not]
+of equilibria, do we need to compute
+all system trajectories, starting from all
+possible initial states 𝑥(𝑡> )?
+
+1.5
+
+1
+
+0.5
+
+x2
+
+rather, we may be able to just look at
+the time evolution of a scalar function 𝑉,
+evaluated analytically along the state
+trajectories of the system (even in ℝX !)
+Robotics 2
+
+asymptotically stable 𝑥5V
+
+𝑥(𝑡> )
+
+0
+
+-0.5
+
+𝑥(𝑡> )
+
+-1
+
+-1.5
+-1
+
+unstable 𝑥5VV
+-0.5
+
+0
+
+0.5
+
+1
+
+1.5
+
+x1
+
+6
+
+Stability of dynamical systems
+results - 1
+
+Lyapunov candidate 𝑉 𝑥 : ℝX ⟶ ℝ such that
+𝑉 𝑥5 = 0, 𝑉 𝑥 > 0, ∀𝑥 ≠ 𝑥5
+
+positive
+definite
+function
+
+#
+
+typically quadratic (e.g., (𝑥 − 𝑥5 )Y 𝑃(𝑥 − 𝑥5 ) with level surfaces = ellipsoids)
+$
+
+may also be a local candidate only (∀𝑥 ≠ 𝑥5 : 𝑥 − 𝑥5 < 𝛿)
+sufficient condition of stability
+
+̇
+∃𝑉 candidate: 𝑉(𝑥)
+≤ 0, along the trajectories of 𝑥̇ = 𝑓(𝑥)
+sufficient condition of asymptotic stability
+
+∃𝑉 candidate: 𝑉̇ 𝑥 < 0, along the trajectories of 𝑥̇ = 𝑓(𝑥)
+
+negative
+semi-definite
+function
+negative
+definite
+function
+
+sufficient condition of instability
+
+∃𝑉 candidate: 𝑉̇ 𝑥 > 0, along the trajectories of 𝑥̇ = 𝑓(𝑥)
+Robotics 2
+
+7
+
+Stability of dynamical systems
+results - 2
+
+sufficient condition of u.u.b. stability of a set 𝑆
+
+∃𝑉 candidate: i) 𝑆 is a level set of 𝑉 for a given 𝑐>
+
+𝑆 = 𝑆 𝑐> = 𝑥 ∈ ℝX : 𝑉(𝑥) ≤ 𝑐>
+
+ii) 𝑉̇ 𝑥 < 0 along trajectories of 𝑥̇ = 𝑓 𝑥 , 𝑥 ∉ 𝑆
+LaSalle Theorem
+if ∃𝑉 candidate: 𝑉̇ 𝑥 ≤ 0 along the trajectories of 𝑥̇ = 𝑓(𝑥)
+then system trajectories asymptotically converge to the
+
+̇
+largest invariant set ℳ ⊆ 𝑆 = 𝑥 ∈ ℝX : 𝑉(𝑥)
+=0
+ℳ is invariant if 𝑥 𝑡> ∈ ℳ ⟹ 𝑥 𝑡 ∈ ℳ, ∀𝑡 ≥ 𝑡>
+Corollary
+
+ℳ ≡ 𝑥5
+Robotics 2
+
+asymptotic stability
+8
+
+Bird-eye view on Lyapunov analysis
+whiteboard…
+
+a mass 𝑚 at the end of an unforced (passive) pendulum of length 𝑙
+𝑥̇ # = 𝑥$
+𝑥 = 𝑥# , 𝑥$
+𝑚𝑙 $ 𝜃̈ + 𝑏 𝜃̇ + 𝑚𝑙𝑔> sin 𝜃 = 0
+
+⇒
+
+lower equilibrium at 𝜃5 = 0
+
+⇒
+
+̇ ∈ ℝ$
+= (𝜃, 𝜃)
+
+𝑔>
+𝑏
+𝑥̇ $ = −
+sin 𝑥# −
+𝑥
+𝑙
+𝑚𝑙 $ $
+
+4
+3
+
+3
+2
+
+2
+
+𝑥5 = 𝟎
+
+dtheta
+
+dtheta
+
+phase
+plane
+
+1
+
+1
+
+0
+
+-1
+
+𝑥5 = 𝟎
+0
+
+-1
+
+-2
+
+level
+sets of
+
+-3
+
+-4
+-4
+
+-3
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+-2
+
+𝑉
+
+-3
+
+4
+
+1
+𝑉 = 𝐸 = 𝑚𝑙 $ 𝜃̇ $ + 𝑚𝑙𝑔> (1 − cos 𝜃) ≥ 0
+2
+𝑉̇ = 𝜃̇ 𝑚𝑙 $ 𝜃̈ + 𝑚𝑙𝑔> sin 𝜃 = −𝑏 𝜃̇ $ ≤ 0
+
+Robotics 2
+
+-2
+
+-1
+
+0
+
+1
+
+2
+
+3
+
+theta
+
+theta
+
+⇒ use LaSalle: 𝑉̇ = 0 ⇔ 𝜃̇ = 0 ⇒ 𝜃̈ = −
+
+-3
+
+𝑉 = 0 ⇔ 𝑥5 = 𝜃5 , 𝜃̇5 = (0,0)
+
+⇒
+nO
+o
+
+⇒
+
+stability of equilibrium 𝑥5 = 0
+(… at least!)
+
+sin 𝜃 ≠ 0 unless 𝜃 = 𝜃5 = 0 (or 𝜋 !)
+local asymptotic stability
+
+9
+
+Stability of dynamical systems
+results - 3
+
+§ previous results are also valid for periodic time-varying systems
+
+𝑥̇ = 𝑓 𝑥, 𝑡 = 𝑓 𝑥, 𝑡 + 𝑇t ⇒ 𝑉 𝑥, 𝑡 = 𝑉 𝑥, 𝑡 + 𝑇t
+§ for general time-varying systems (e.g., in robot trajectory tracking control)
+
+𝑥̇ = 𝑓(𝑥, 𝑡)
+
+Barbalat Lemma
+if i) a function 𝑉 𝑥, 𝑡 is lower bounded
+ii) 𝑉̇ 𝑥, 𝑡 ≤ 0
+then ⇒ ∃ lim 𝑉 𝑥, 𝑡 (but this does not imply that lim 𝑉̇ 𝑥, 𝑡 = 0)
+N→s
+
+if in addition iii) 𝑉̈ 𝑥, 𝑡 is bounded
+
+N→s
+
+then ⇒ lim 𝑉̇ 𝑥, 𝑡 = 0
+N→s
+
+Corollary
+if a Lyapunov candidate 𝑉(𝑥, 𝑡) satisfies Barbalat Lemma along the
+trajectories of 𝑥̇ = 𝑓(𝑥, 𝑡), then the conclusions of LaSalle Theorem hold
+Robotics 2
+
+10
+
+Stability of linear systems
+time-invariant case
+
+𝑥̇ = 𝐴𝑥
+I.
+
+𝑥5 = 0 is always an equilibrium state
+
+asymptotic stability
+
+II. global asymptotic stability
+III. exponential stability
+
+IV. 𝜎(𝐴) ⊂ ℂ/ (all eigenvalues of 𝐴 have negative real part)
+V.
+
+∀𝑄 > 0 (positive definite), ∃! 𝑃 > 0: 𝐴Y 𝑃 + 𝑃𝐴 = −𝑄
+Lyapunov equation
+
+# Y
+𝑥
+𝑃𝑥
+$
+
+is a Lyapunov candidate
+
+ALL EQUIVALENT !!
+if 𝑥5 = 0 is an asymptotically stable equilibrium,
+then it is necessarily the unique equilibrium
+Robotics 2
+
+11
+
+Stability of the linear approximation
+|}
+̇
+Let ∆𝑥 = 𝑥 − 𝑥5 and let ∆𝑥 =
+|
+𝑥 − 𝑥5 = 𝐴 ∆𝑥 be the
+|~ ~€~•
+
+linear approximation of 𝑥̇ = 𝑓(𝑥) around the equilibrium 𝑥5
+
+𝐴 asymptotically stable (𝜎(𝐴) ⊂ ℂ/)
+
+the original nonlinear system is
+exponentially stable at the origin
+this is only a local result
+(used also to estimate the domain of attraction)
+Robotics 2
+
+12
+
+PD control
+
+(proportional + derivative action on the error)
+robot 𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢
+goal: asymptotic stabilization (= regulation)
+of the closed-loop equilibrium state
+
+𝑞 = 𝑞| , 𝑞̇ = 0
+possibly obtained from kinematic inversion: 𝑞| = 𝑓 /#(𝑟| )
+
+control law 𝑢 = 𝐾ƒ 𝑞| − 𝑞 − 𝐾„ 𝑞̇
+
+𝐾ƒ > 0, 𝐾„ > 0 (positive definite), symmetric
+Robotics 2
+
+13
+
+Asymptotic stability with PD control
+Theorem 1
+In the absence of gravity (𝑔(𝑞) = 0), the robot state (𝑞| , 0) under
+the given PD joint control law is globally asymptotically stable
+Proof
+
+let 𝑒 = 𝑞| − 𝑞
+1 Y
+1 Y
+Lyapunov candidate 𝑉 = 𝑞̇ 𝑀 𝑞 𝑞̇ + 𝑒 𝐾ƒ 𝑒 ≥ 0
+2
+2
+
+(𝑞| constant)
+𝑉 = 0 ⇔ 𝑒 = 𝑒̇ = 0
+
+#
+#
+𝑉̇ = 𝑞̇ Y 𝑀 𝑞̈ + 𝑞̇ Y 𝑀̇ 𝑞̇ − 𝑒 Y 𝐾ƒ 𝑞̇ = 𝑞̇ Y 𝑢 − 𝑆 𝑞̇ + 𝑀̇ 𝑞̇ − 𝑒 Y 𝐾ƒ 𝑞̇
+$
+
+$
+
+= 0, due to energy conservation
+
+= 𝑞̇ Y 𝐾ƒ 𝑒 − 𝑞̇ Y 𝐾„ 𝑞̇ − 𝑒 Y 𝐾ƒ 𝑞̇ = −𝑞̇ Y 𝐾„ 𝑞̇ ≤ 0
+up to here, we proved
+stability only
+Robotics 2
+
+but
+
+(𝐾„ > 0, symmetric)
+
+𝑉̇ = 0 ⇔ 𝑞̇ = 0
+
+continues ...
+14
+
+Asymptotic stability with PD control
+LaSalle
+
+𝑉̇ = 0 ⇔ 𝑞̇ = 0
+
+𝑞̇ = 0
+
+system trajectories converge to the largest
+invariant set of states ℳ where 𝑞̇ ≡ 0
+(that is 𝑞̇ = 𝑞̈ = 0)
+
+𝑀 𝑞 𝑞̈ = 𝐾ƒ 𝑒
+
+𝑞̈ = 𝑀/# (𝑞)𝐾ƒ 𝑒
+
+closed-loop dynamics
+
+invertible
+
+𝑞̇ = 0, 𝑞̈ = 0 ⇔ 𝑒 = 0
+the only invariant state in 𝑉̇ = 0 is given by 𝑞 = 𝑞| , 𝑞̇ = 0
+note: typically, 𝐾ƒ = diag 𝑘ƒŠ , 𝐾„ = diag 𝑘„Š ,
+decentralized linear control (local to each joint)
+Robotics 2
+
+15
+
+Mechanical interpretation
+n
+
+for diagonal positive definite gain matrices 𝐾ƒ and 𝐾„ (thus, with
+positive diagonal elements), such values correspond to stiffness of
+“virtual” springs and viscosity of “virtual” dampers placed at the joints
+stiffness 𝑘ƒŠ > 0
+viscosity 𝑘„Š > 0
+
+desired
+configuration 𝑞|
+
+Robotics 2
+
+𝑞| (single components
+
+are defined relative
+to the previous link!!)
+
+current
+configuration 𝑞
+
+16
+
+Plot of the Lyapunov function 𝑉
+n
+
+𝑉
+𝑉(0)
+
+time evolution of the Lyapunov candidate
+𝑉(0) = ½ 𝑒 Y (0)𝐾ƒ 𝑒(0)
+
+if the robot starts from rest
+
+𝑉̇ = 0
+
+(isolated) instants of global “motion inversion”
+(𝑞̇ = 0, but 𝑞̈ ≠ 0!)
+Robotics 2
+
+𝑡
+
+0
+
+17
+
+Comments on PD control
+n
+
+-1
+
+choice of control gains affects robot evolution during transients and
+practical settling times
+n hard to define values that are “optimal” in the whole workspace
+“full” 𝐾ƒ and 𝐾„ gain matrices allow to assign desired eigenvalues
+to the linear approximation of the robot dynamics around the final
+desired state (𝑞| , 0)
+when (joint) viscous friction is present, the derivative term in the
+control law is not strictly necessary
+n
+
+n
+
+n
+
+n
+
+−𝐹• 𝑞̇ in the robot model acts similarly to −𝐾„ 𝑞̇ in the control law,
+
+but the latter can be modulated at will
+in the absence of tachometers, the actual realization of the derivative
+term in the feedback law requires some processing of joint position
+data measured by digital encoders (or analog resolvers/potentiometers)
+
+Robotics 2
+
+18
+
+Comments on PD control
+n
+
+-2
+
+analog or digital implementation of derivative action in the control law
+when only position is measured at the joints (e.g., through encoders)
+
+continuous-time
+control law (design)
+representation in
+the Laplace domain
+
+𝑢 𝑡 = 𝐾ƒ 𝑒 𝑡 + 𝐾„ 𝑒(𝑡)
+̇
+𝑢 𝑠 = 𝐾ƒ + 𝐾„ 𝑠 𝑒(𝑠)
+not realizable as such
+(non-proper transfer function)
+
+transformation in
+the Zeta-domain
+
+1 − 𝑧 /#
+(e.g., via backward 𝑢 𝑧 = 𝐾ƒ + 𝐾„
+𝑇•
+differentiation rule on
+
+Robotics 2
+
+𝐾„ 𝑠
+𝑢 𝑠 = 𝐾ƒ +
+𝑒(𝑠)
+1 + 𝜏𝑠
+derivative action limited
+in bandwidth (up to ω ≤ 1/𝜏)
+
+𝑒(𝑧)
+
+samples, every 𝑇• sec)
+
+discrete-time
+implementations
+
+𝑒 = 𝑞| − 𝑞, 𝑒̇ = −𝑞̇
+
+𝑒’ − 𝑒’/#
+𝑢’ = 𝐾ƒ 𝑒’ + 𝐾„
+𝑇•
+both realizable
+
+𝑢 𝑧 =
+
+1 − 𝑧 /#
+𝑇•
+𝐾ƒ + 𝐾„
+1 − 𝑧 /#
+1+𝜏
+𝑇•
+
+𝑢’ = 𝐾ƒ 𝑒’ +
++
+
+𝑒(𝑧)
+
+𝐾„
+𝑒’ − 𝑒’/#
+𝜏 + 𝑇•
+
+𝜏
+(𝑢’/# − 𝐾ƒ 𝑒’/# )
+𝜏 + 𝑇•
+
+19
+
+Inclusion of gravity
+n
+
+in the presence of gravity, the same previous arguments
+(and proof) show that the control law
+𝑢 = 𝐾ƒ 𝑞| − 𝑞 − 𝐾„ 𝑞̇ + 𝑔(𝑞)
+𝐾ƒ > 0, 𝐾„ > 0
+will make the equilibrium state (𝑞| , 0) globally
+asymptotically stable (nonlinear cancellation of gravity)
+
+§ if gravity is not cancelled or only approximately cancelled
+𝑢 = 𝐾ƒ 𝑞| − 𝑞 − 𝐾„ 𝑞̇ + 𝑔(𝑞)
+”
+𝑔(𝑞)
+”
+≠ 𝑔(𝑞)
+it is 𝑞 → 𝑞∗ ≠ 𝑞| , 𝑞̇ → 0, with steady-state position error
+n
+
+𝑞 ∗ is not unique in general, except when 𝐾ƒ is chosen large enough
+
+n
+
+explanation in terms of linear systems: there is no integral action before
+the point of access of the constant “disturbance” acting on the system
+
+Robotics 2
+
+20
+
+PD control +
+constant gravity compensation
+since 𝑔(𝑞) contains only trigonometric and/or linear terms in 𝑞,
+the following structural property holds
+
+𝜕$𝑈
+𝜕𝑔
+∃𝛼 > 0:
+=
+≤ 𝛼, ∀𝑞
+$
+𝜕𝑞
+𝜕𝑞
+
+finite
+consequence
+note:
+
+induced
+norm of
+a matrix
+
+𝑔 𝑞 − 𝑔(𝑞| ) ≤ 𝛼 𝑞 − 𝑞|
+𝐴 = 𝜆•–— 𝐴Y 𝐴 ≜ 𝐴™ ≥ 𝐴š ≜ 𝜆•›œ(𝐴Y 𝐴)
+
+LINEAR CONTROL law
+𝑢 = 𝐾ƒ 𝑞| − 𝑞 − 𝐾„ 𝑞̇ + 𝑔(𝑞| )
+
+𝐾ƒ , 𝐾„ > 0
+symmetric
+
+linear feedback + constant feedforward
+Robotics 2
+
+21
+
+PD control + constant gravity compensation
+stability analysis
+
+Theorem 2
+If 𝐾ƒ,š > 𝛼 , the state (𝑞| , 0) of the robot under joint-space PD control
++ constant gravity compensation at 𝑞| is globally asymptotically stable
+
+Proof
+1.
+
+(𝑞| , 0) is the unique closed-loop equilibrium state
+
+in fact, for 𝑞̇ = 0 and 𝑞̈ = 0, it is 𝐾ƒ 𝑒 = 𝑔(𝑞) − 𝑔(𝑞| )
+which can hold only for 𝑞 = 𝑞| , because when 𝑞 ≠ 𝑞|
+
+𝐾ƒ 𝑒 ≥ 𝐾ƒ,š 𝑒 > 𝛼 𝑒 ≥ 𝑔 𝑞 − 𝑔(𝑞| )
+
+Robotics 2
+
+22
+
+PD control + constant gravity compensation
+stability analysis
+
+with 𝑒 = 𝑞| − 𝑞, 𝑔 𝑞 =
+𝑉=
+
+1 Y
+1
+𝑞̇ 𝑀 𝑞 𝑞̇ + 𝑒 Y 𝐾ƒ 𝑒 + 𝑈 𝑞 − 𝑈 𝑞| + 𝑒 Y 𝑔(𝑞| )
+2
+2
+
+𝑉 is convex in 𝑞̇ and 𝑒, and zero only for 𝑒 = 𝑞̇ = 0
+
+2.
+
+• Y
+¢̇
+£•
+
+¢̇ £
+Y
+•|¤¥O
+̇
+5
+£•
+̇
+|¤¥O
+5£
+
+Robotics 2
+
+¡ Y
+, consider as Lyapunov candidate
+¢
+
+= 𝑀 𝑞 𝑞̇ = 0 only for 𝑞̇ = 0
+=𝑀 𝑞 >0
+
+global minimum
+of 𝑉 ≥ 0
+
+¡ Y
+¢
+
+= 𝐾ƒ 𝑒 −
+= 𝐾ƒ +
+
+(𝑞| , 0) is a
+
++ 𝑔 𝑞| = 𝐾ƒ 𝑒 + 𝑔 𝑞| − 𝑔 𝑞 = 0
+only for 𝑞 = 𝑞|
+𝜕𝑒 ⁄𝜕𝑞 = −𝐼
+
+£¡
+
+¢£
+
+> 0, since 𝐾ƒ = 𝐾ƒ,™ ≥ 𝐾ƒ,š > 𝛼
+23
+
+PD control + constant gravity compensation
+stability analysis
+
+differentiating
+
+1 Y
+1 Y
+𝑉 = 𝑞̇ 𝑀 𝑞 𝑞̇ + 𝑒 𝐾ƒ 𝑒 + 𝑈 𝑞 − 𝑈 𝑞| + 𝑒 Y 𝑔(𝑞| )
+2
+2
+
+1
+𝜕𝑈(𝑞)
+Y
+Y
+̇
+̇
+𝑉 = 𝑞̇ 𝑀(𝑞)𝑞̈ + 𝑀(𝑞)𝑞̇ − 𝑒 𝐾ƒ 𝑞̇ +
+𝑞̇ − 𝑞̇ Y 𝑔(𝑞| )
+2
+𝜕𝑞
+1
+Y
+̇
+= 𝑞̇ 𝑢 − 𝑆(𝑞, 𝑞)
+̇ 𝑞̇ + 𝑀(𝑞)
+𝑞̇ − 𝑔(𝑞) − 𝑒 Y 𝐾ƒ 𝑞̇ + 𝑞̇ Y 𝑔 𝑞 − 𝑔(𝑞| )
+2
+=0
+
+= 𝑞̇ Y 𝐾ƒ 𝑒 − 𝑞̇ Y 𝐾„ 𝑞̇ + 𝑞̇ Y 𝑔 𝑞| − 𝑔(𝑞) − 𝑒 Y 𝐾ƒ 𝑞̇ + 𝑞̇ Y 𝑔 𝑞 − 𝑔(𝑞| )
+= −𝑞̇ Y 𝐾„ 𝑞̇ ≤ 0
+for 𝑉̇ = 0 (⇔ 𝑞̇ = 0), we have in the closed-loop system
+𝑀 𝑞 𝑞̈ + 𝑔 𝑞 = 𝐾ƒ 𝑒 + 𝑔(𝑞| )
+𝑞̈ = 𝑀 /# 𝑞 𝐾ƒ 𝑒 + 𝑔 𝑞| − 𝑔 𝑞
+
+=0⇔𝑒=0
+
+by LaSalle Theorem, the thesis follows
+Robotics 2
+
+24
+
+Example of a single-link robot
+stability analysis
+
+task: regulate the link position to the upward equilibrium
+
+𝜃| = 𝜋 → 𝑔 𝜃| = 0
+PD control + constant gravity compensation (here, zero!)
+
+𝑢 = 𝑘ƒ 𝜋 − 𝜃 − 𝑘„ 𝜃̇
+by Theorem 2, it is sufficient (here, also necessary*) to choose
+
+𝐼𝜃̈ + 𝑚𝑔> 𝑑 sin 𝜃 = 𝑢
+
+𝑘ƒ > 𝛼 = 𝑚𝑔> 𝑑, 𝑘„ > 0
+single
+minimum
+in 𝜃| = 𝜋
+
+two local minima
+
+𝑘ƒ
+©𝑚𝑔 𝑑 = 0.5
+>
+
+𝑘ƒ
+©𝑚𝑔 𝑑 = 1
+>
+
+plots of 𝑉(𝜃) (for 𝜃̇ = 0)
+Robotics 2
+
+𝑘ƒ
+©𝑚𝑔 𝑑 = 5
+>
+* by a local analysis of the
+linear approximation at 𝜋
+
+rad
+
+25
+
+Example of a single-link robot
+simulations with data: 𝐼 = 0.9333, 𝑚𝑔>𝑑 = 19.62 (= 𝛼)
+𝜃| = 90° → 𝑔 𝜃| = 𝑚𝑔> 𝑑
+low P gain: 𝑘ƒ = 16, 𝑘„ = 8
+
+error
+
+velocity
+
+position
+
+𝜃| = 180° → 𝑔 𝜃| = 0
+sufficient P gain: 𝑘ƒ = 36, 𝑘„ = 12
+low P gain: 𝑘ƒ = 16, 𝑘„ = 8
+
+zero final error
+
+control
+
+large initial torque
+
+Robotics 2
+
+o
+
+60 residual error
+
+small initial torque
+
+no residual error!
+
+even smaller initial torque
+
+26
+
+Approximate gravity compensation
+the approximate control law
+
+𝑢 = 𝐾ƒ 𝑞| − 𝑞 − 𝐾„ 𝑞̇ + 𝑔(𝑞
+” |)
+leads, under similar hypotheses, to a closed-loop equilibrium 𝑞∗
+§ its uniqueness is not guaranteed (unless 𝐾ƒ is large enough)
+§ for 𝐾ƒ → ∞, one has 𝑞∗ → 𝑞|
+
+Conclusion: In the presence of gravity, the previous regulation control laws
+require an accurate knowledge of the gravity term in the dynamic model
+in order to guarantee the zeroing of the position error
+(since we can only use “finite” control gains ⇒ in practice, not too large)
+
+Robotics 2
+
+27
+
+PID control
+n
+
+n
+
+in linear systems, the addition of an integral control action is used
+to eliminate a constant error in the step response at steady state
+in robots, a PID may be used to recover such a position error due
+to an incomplete (or absent) gravity compensation/cancellation
+N
+
+the control law 𝑢 𝑡 = 𝐾ƒ 𝑞| − 𝑞(𝑡) + 𝐾± ² 𝑞| − 𝑞(𝜏) 𝑑𝜏 − 𝐾„ 𝑞(𝑡)
+̇
+>
+
+n
+n
+
+is independent from any robot dynamic model term
+if the desired closed-loop equilibrium is asymptotically stable under
+PID control, the integral term is “loaded” at steady state to the value
+s
+
+𝐾± ²
+
+>
+
+n
+
+𝑞| − 𝑞(𝜏) 𝑑𝜏 = 𝑔(𝑞| )
+
+however, one can show only local asymptotic stability of this law, i.e.,
+for 𝑞(0) ∈ Δ(𝑞| ), under complex conditions on 𝐾ƒ , 𝐾± , 𝐾„ and 𝑒(0)
+
+Robotics 2
+
+28
+
+Linear example with PID control
+whiteboard…
+
+𝑚𝑞̈ + 𝑚𝑔> = 𝐹
+
+𝑔> > 0
+𝑚
+
+𝑞
+
+(no friction)
+
+𝑒 𝑡 = 𝑞| − 𝑞 𝑡
+𝑒̇ 𝑡 = −𝑞̇ 𝑡
+
+𝐹 = 𝑘ƒ 𝑞| − 𝑞 − 𝑘„ 𝑞̇
+(PD ⇒ steady-state error 𝑒 = 𝑞| − 𝑞
+³ , with 𝑞³ =
+
+𝐹
+
+𝐹 = 𝑘ƒ 𝑞| − 𝑞 − 𝑘„ 𝑞̇ + 𝑚𝑔>
+
+šnO
+𝑞| − ’ )
+´
+
+(PD + gravity cancellation ⇒ regulation ∀𝑘ƒ > 0, 𝑘„ > 0)
+N
+
+𝐹 = 𝑘ƒ 𝑞| − 𝑞 − 𝑘„ 𝑞̇ + 𝑘± ² 𝑞| − 𝑞(𝜏) 𝑑𝜏
+>
+
+(PID ⇒ regulation ∀𝑘± > 0, 𝑘„ > 0, 𝑘ƒ >
+
+š’µ
+’¶
+
+> 0)
+
+Laplace domain analysis: 𝑒 𝑠 = ℒ[𝑒 𝑡 ], 𝑑 𝑠 = ℒ[𝑚𝑔>] + Routh criterion
+
+𝑒(𝑠)
+𝑠
+= 𝑊| 𝑠 =
+𝑑(𝑠)
+𝑚𝑠 U + 𝑘„ 𝑠 $ + 𝑘ƒ 𝑠 + 𝑘±
+Robotics 2
+
+3
+2
+1 (𝑘„ 𝑘ƒ
+0
+
+𝑚
+𝑘ƒ
+𝑘„
+𝑘±
+− 𝑚𝑘± )/𝑘„
+𝑘±
+
+29
+
+Saturated PID control
+§ more in general, one can prove global asymptotic stability of (𝑞| , 0),
+under lower bound limitations for 𝐾ƒ , 𝐾± , 𝐾„ (depending on suitable
+“bounds” on the terms in the dynamic model), for a nonlinear PID law
+N
+
+𝑢 𝑡 = 𝐾ƒ 𝑞| − 𝑞(𝑡) + 𝐾± ² Φ 𝑞| − 𝑞(𝜏) 𝑑𝜏 − 𝐾„ 𝑞̇
+>
+
+where Φ(𝑞| − 𝑞) is a saturation-type function, such as
+
+sin 𝑥 ,
+Φ 𝑥 = ¾ 1,
+−1,
+
+𝑥 ≤ 𝜋/2
+𝑥 > 𝜋/2
+𝑥 < −𝜋/2
+
+or
+
+𝑒 ~ − 𝑒 /~
+Φ 𝑥 = tanh 𝑥 = ~
+𝑒 + 𝑒 /~
+
+(see paper by R. Kelly, IEEE TAC, 1998; available as extra material on the course web)
+Robotics 2
+
+30
+
+Limits of robot regulation controllers
+n
+
+n
+
+response times needed for reaching the desired steady state are not
+easily predictable in advance
+n depend heavily on robot dynamics, on PD/PID gains, on the required
+total displacement, and on the interested area of robot workspace
+n integral term (when present) needs some time to “unload” itself from
+the error history accumulated during transients
+n large initial errors are stored in the integral term
+n anti-windup schemes stop the integration when commands saturate
+n … an intuitive explanation for the success of “saturated” PID law
+control efforts in the few first instants of motion typically exceed by far
+those required at steady state
+n especially for high positional gains
+n may lead to saturation (hard nonlinearity) of robot actuators
+
+Robotics 2
+
+31
+
+Regulation in industrial robots
+n
+
+in industrial robots, the planner generates a reference trajectory 𝑞¿ (𝑡)
+even when the task requires only positioning/regulation of the robot
+n
+n
+
+“smooth” enough, with a user-defined transfer time 𝑇
+reference trajectory interpolates initial and final desired position
+
+𝑞¿ (0) = 𝑞(0)
+n
+
+𝑞¿ (𝑡 ≥ 𝑇) = 𝑞|
+
+𝑞¿ (𝑡) is used within a control law of the form
+
+𝑢 = 𝐾ƒ 𝑞¿ (𝑡) − 𝑞 + 𝐾„ 𝑞̇ ¿ (𝑡) − 𝑞̇ + 𝑔(𝑞)
+
+e.g., PD with
+gravity
+cancellation
+
+often neglected
+n
+n
+
+n
+
+Robotics 2
+
+in this way, the position error is initially zero
+robot motion stays only “in the vicinity” of the reference trajectory
+until 𝑡 = 𝑇, typically with small position errors (gains can be larger!)
+final regulation is only a “local” problem (𝑒 𝑇 = 𝑞| − 𝑞(𝑇) is small)
+32
+
+Qualitative comparison
+no saturation of commands: in principle, much larger gains can be used
+better prediction of settling times: local exponential convergence (designed
+on the linear approximation of the robot dynamics around (𝑞| , 0))
+“fine tuning” of control gains is easier, but still a tedious and delicate task
+
+n
+n
+
+n
+
+step 𝑢(0)
+variation
+of desired
+position
+
+𝑞𝑑
+
+𝑢| = 𝑔(𝑞| )
+
+𝑞(0)
+
+joint variables
+𝑞𝑑
+
+timevarying
+position
+reference
+
+𝑞¿ (𝑡) 𝑢(0)
+
+𝑞(0)
+
+control commands
+
+𝑢| = 𝑔(𝑞| )
+
+𝑇 = planned
+final time
+
+Robotics 2
+
+33
+
+Quantitative comparison
+planar 2R arm
+
+robot data: links are uniform thin rods
+no gravity (horizontal plane)
+rest-to-rest motion task:
+𝑞(0) = (0, 0) (straight) → 𝑞| = (𝜋/3, 𝜋/2)
+interpolating trajectory: cubic polynomials
+three case studies
+a) low gains (overdamped) 𝐾ƒ = diag 80, 40 , 𝐾„ = diag 60, 30
+vs interpolating trajectory in 𝑇 = 2 s
+b) medium gains (very overdamped) 𝐾ƒ = diag 200, 100 , 𝐾„ = diag 200, 100
+vs interpolating trajectory in 𝑇 = 2 s
+c) high gains 𝐾ƒ = diag 1250, 180 , 𝐾„ = diag 200, 70
+vs interpolating trajectory in 𝑇 = 1 s, with torque saturation 𝑢#,•–— = 30 Nm,
+𝑢$,•–— = 10 Nm
+Robotics 2
+
+34
+
+Comparison on a planar 2R arm – case a
+
+PD with low gains
+𝐾ƒ = diag 80, 40
+𝐾„ = diag 60, 30
+(overdamped)
+a reduction of the
+peak control effort
+by a factor of 100
+on joint 1 &
+by a factor of 30
+on joint 2
+PD with same gains
+on interpolating
+trajectory of 𝑇 = 2 s
+
+Robotics 2
+
+max torques
+of 7 and 2.3 Nm
+
+35
+
+Comparison on a planar 2R arm – case b
+
+PD with medium gains
+𝐾ƒ = diag 200, 100
+𝐾„ = diag 200, 100
+(very overdamped)
+
+PD with same gains
+on interpolating
+trajectory of 𝑇 = 2 s
+
+Robotics 2
+
+even stronger
+peak reduction,
+with similar total
+control effort,
+plus improved
+tracking of
+reference trajectory
+on both joints
+max torques
+of 7.5 and 2.4 Nm
+
+36
+
+Comparison on a planar 2R arm – case c
+
+PD with high gains
+𝐾ƒ = diag 1250, 180
+𝐾„ = diag 200, 70
+
+torque saturation
+𝑢#,•–— = 30 Nm
+𝑢$,•–— = 10 Nm
+
+PD with same gains
+on interpolating
+trajectory of 𝑇 = 1 s
+
+Robotics 2
+
+position overshoot
+and long saturations
+are avoided,
+with very good
+tracking of the
+faster reference
+trajectory
+max torques
+of 30 and 9.5 Nm
+
+37
+
+

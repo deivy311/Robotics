@@ -1,0 +1,824 @@
+
+Exercise  #1
+
+Robotics  2
+
+Remote  Exam  –  July  15,  2020
+
+Consider the 4-dof robot in Fig. 1, made by a 3R planar arm mounted on a rail.  
+The robot has
+the  last  three  links  of  equal  length  `.   The  generalized  coordinates  
+q      R4   to  be  used  are  also
+shown.  Determine the inertia matrix M (q) of the dynamic model of this robot 
+(if needed, define
+symbolically any missing parameters).
+
+yw                                                                       P
+
+m₄,I₄  ⊕
+
+
+m₂,I₂
+
+⊕
+
+⊕
+
+q2      m ,I
+
+q₃            q4
+
+3     3
+
+q1                                     h
+
+                               ⊕   m₁
+
+xw
+
+Figure 1:  A 4-dof planar robot with generalized coordinates q and relevant 
+parameters.
+
+Exercise  #2
+
+For the same robot in Fig. 1, assume ` = h = 1 [m] and consider the following 
+tasks, to be executed
+using a kinematic control scheme with joint velocity commands q˙  ∈ R4.
+
+Task  1.  Trace  with  the  end-effector  counterclockwise  a  circle  of  
+radius  R =  3  [m],  centered  at
+
+C = (7, 0), starting from point P ₀ = (10, 0) and with constant speed v = 1 
+[m/s].
+
+Task  2.  Keep the second link always horizontal (q₂(t) = 0).
+
+Define  the  augmented  Jacobian  JA(q)  for  both  tasks  1  and  2.   Choose  
+a  suitable  initial  robot
+configuration  so  as  to  stay  at  time  t =  0  in  P ₀  and  compute  there 
+ the  minimum  joint  velocity
+norm solution that realizes both tasks simultaneously.  Determine the first 
+point P s on the circular
+path where an algorithmic singularity of JA(q) necessarily occurs.  In that 
+situation, compute the
+minimum joint velocity norm solution that realizes the first task only.  Will 
+the execution of the
+second task be relaxed or not?
+
+Exercise  #3
+
+A 6-dof robot should hold firmly with its three-fingered gripper a cylindric 
+payload, and move it
+along a desired path on a frictionless plane with one of its bases in full 
+contact with the plane, as
+shown in Fig. 2.  Define an associated task frame where the natural (geometric) 
+constraints and
+the artificial (control) constraints of this hybrid task can be defined and 
+realized in a decoupled
+way.  Where reasonable, provide also values for the control references.
+
+Figure 2:  The hybrid task of moving along a path a cylinder in contact with a 
+planar surface.
+
+
+Exercise  #4
+
+During  the  accurate  execution  of  a  smooth  joint  trajectory  qd(t)  
+lasting  T  =  3  [s]  with  the  2R
+planar robot shown in Fig. 3 moving under gravity, the maximum torques of the 
+two joints exceed
+at some instants their bounds, as given by |τi| ≤ τmₐₓ,i, i = 1, 2.  We have in 
+particular
+
+τ₁(t₁) =  max  τ₁(t) = 140 > 100 = τmₐₓ,₁,       τ₂(t₂) =  max  τ₂(t) = 25 > 20 
+= τmₐₓ,₂        [Nm].
+
+t∈[0,T ]                                                                        
+                            t∈[0,T ]
+
+The robot links have equal length ` = 0.5 [m] and equal, uniformly distributed 
+mass m = 5 [kg].
+
+The robot configurations at the time instants t = t₁ and t = t₂ are
+
+q(t ) =   π/4    0  T ,           q(t ) =   −π/4    3π/4  T           [rad].
+
+In  order  to  recover  motion  feasibility,  a  uniform  trajectory  scaling  
+is  used.   What  will  be  the
+minimum  feasible  motion  time  T ⁰ =  kT  thus  obtained?   What  are  the  
+values  of  the  new  joint
+torques τ₁(kt₁) and τ₂(kt₂)?
+
+y0
+
+⊕
+
+⊕
+
+g0
+
+x0
+
+Figure 3:  A 2R robot moving under gravity.  Joint variables are defined by the 
+D-H convention.
+
+Exercise  #5
+
+Consider  again  the  2R robot  in  Fig.  3,  with  the  same  definition  of  
+joint  variables  and  using  the
+same  kinematic  and  dynamic  parameters.   The  robot  is  initially  at  
+rest  at  t =  0  in  q(0)  =  q₀.
+Provide  the  explicit  expressions  of  all  terms  in  the  following  three  
+feedback  control  laws,  each
+achieving its own objective.
+
+a.  Global exponential stabilization of the state (q, q˙ ) = (qd, 0),  with 
+decoupled transient evolu-
+tions of the position errors ei(t) = qd,i−qi(t), i = 1, 2, of the form e₁(t) = 
+e₁(0) (1 + 5t) exp(−5t)
+and e₂(t) = e₂(0) (2 exp(−5t) − exp(−10t)).
+
+b.  Global  asymptotic  stabilization  of  the  state  (q, q˙ ) = (qd, 0),  
+without  knowledge  of  the  robot
+inertia matrix.
+
+c.  Exponential stabilization of the end-effector position p = pd      R2  with 
+zero velocity p˙  = 0, up
+to kinematic singularities.
+
+[180  minutes  (3  hours);  open  books]
+
+
+Solution
+
+July 15, 2020
+
+Exercise  #1
+
+Note first that we are using the absolute angles w.r.t. to the x₀-axis for the 
+orientation of the second
+to the fourth link (thus, not the Denavit-Hartenberg relative angles).  Also, 
+denote by dci > 0 the
+distance of the center of mass of link i from joint i, for i = 2, 3, 4.  The 
+individual contributions to
+the kinetic energy of this 4-dof planar robot are computed as follows.
+
+T₁ =  ¹ m₁q˙²
+
+2          1
+
+
+pc2
+
+=     q₁ + dc₂ cos q₂                           v
+
+dc1 sin q2                                   c2
+
+=     q˙₁ − dc₂ sin q₂ q˙₂
+
+dc₂ cos q₂ q˙₂
+
+T₂ =  ¹ I₂q˙² + ¹ m₂  q˙² + d²  q˙² − 2dc₂ sin q₂ q˙₁q˙₂ 
+
+
+pc3
+
+=     q₁ + ` cos q₂ + dc₃ cos q₃                           v
+
+` sin q₂ + dc₃ sin q₃                         ᶜ³
+
+=     q˙₁ − ` sin q₂ q˙₂ − dc₃ sin q₃ q˙₃
+
+` cos q₂ q˙₂ + dc₃ cos q₃ q˙₃
+
+T₃ =  ¹ I₃q˙² + ¹ m₃  q˙² + `² q˙² + d²  q˙² − 2` sin q₂ q˙₁q˙₂ − 2dc₃ sin q₃ 
+q˙₁q˙₃ + 2dc₃` cos(q₃ − q₂) q˙₂q˙₃ 
+
+
+pc4
+
+=     q₁ + `(cos q₂ + cos q₃) + dc₄ cos q₄                  v
+
+`(sin q₂ + sin q₃) + dc₄ sin q₄                   ᶜ⁴
+
+=     q˙₁ − `(sin q₂ q˙₂ + sin q₃ q˙₃) − dc₄ sin q₄ q˙₄
+
+`(cos q₂ q˙₂ + cos q₃ q˙₃) + dc₄ cos q₄ q˙₄
+
+T₄ =  ¹ I₄q˙² + ¹ m₄  q˙² + `²(q˙² + q˙² + 2 cos(q₃ − q₂) q˙₂q˙₃) + d²  q˙²
+
+−2`(sin q₂ q˙₂ + sin q₃ q˙₃)q˙₁ − 2dc₄ sin q₄ q˙₁q˙₄ + 2dc₄`(cos(q₄ − q₂) q˙₂ + 
+cos(q₄ − q₃) q˙₃) q˙₄) .
+
+From
+
+4                                                           4       4
+
+
+T = X T  =  1 q˙ T M (q)q˙  =  1 X X M
+
+	
+
+(q) q˙ q˙  ,
+
+the elements M ij = M ji of the 4 × 4 symmetric inertia matrix M (q) of this 
+robot are
+
+M ₁₁ = m₁ + m₂ + m₃ + m₄
+
+M ₁₂ = −(m₂dc₂ + (m₃ + m₄)`) sin q₂
+
+M ₁₃ = −(m₃dc₃ + m₄`) sin q₃
+
+M ₁₄ = −m₄dc₄ sin q₄
+
+M ₂₂ = I₂ + m₂d²  + (m₃ + m₄)`²
+
+M ₂₃ = (m₃dc₃ + m₄`)` cos(q₃ − q₂)
+
+M ₂₄ = m₄dc₄` cos(q₄ − q₂)
+
+M ₃₃ = I₃ + m₃d²  + m₄`²
+
+M ₃₄ = m₄dc₄` cos(q₄ − q₃)
+
+M ₄₄ = I₄ + m₄d²  .
+
+Exercise  #2
+
+The kinematics of the first task of dimension m₁ = 2 is given by
+
+
+r   = p =     q₁ + `(cos q₂ + cos q₃ + cos q₄)     = f
+
+¹                  h + `(sin q₂ + sin q₃ + sin q₄)
+
+1(q),
+
+
+
+with Jacobian
+
+J  (q) =  ∂f 1(q)  =   1    −` sin q₂    −` sin q₃    −` sin q₄   ,
+
+while the kinematics of the second task of dimension m₂ = 1 is given just by
+
+r₂ = q₂ = f₂(q),
+
+
+with Jacobian
+
+J₂
+
+The augmented Jacobian is then
+
+=  ∂f2(q)  =    0    1    0    0    ,
+
+∂q
+
+
+  J₁(q)  
+
+ 1    −` sin q₂    −` sin q₃    −` sin q₄ 
+
+	
+
+
+JA(q) =        J
+
+0     ` cos q₂       ` cos q₃       ` cos q₄
+
+It is easy to verify that JA(q) is singular, i.e., rank (JA(q)) < 3 = mA(= m₁ + 
+m₂), if and only if
+
+cos q₃ = cos q₄ = 0.  This happens when the third and fourth link are aligned 
+(or folded) along the
+
+yw  direction.
+
+With reference to Fig. 4, the augmented task requires
+
+ cos vt                                − sin vt  
+
+	
+
+
+r₁d(t) = C + R 
+
+vt
+
+sin
+
+R
+
+     ⇒
+
+r˙ ₁d(t) = v 
+
+vt
+
+cos
+
+R
+
+
+with r₁d
+
+(0) = P
+
+₀, r˙
+
+(0) =   0    v  T  and kr˙    (t)k = v, as well as
+
+1d
+
+
+r₂d(t) = 0     ⇒
+
+r˙₂d = 0.
+
+Setting  now  `  =  h  =  1,  in  order  to  be  consistent  with  the  
+augmented  task  at  the  initial  time
+t = 0,  there will be multiple robot configurations (q₁, q₃, q₄) that satisfy 
+the desired end-effector
+positioning with q₂ = 0 (second link horizontal and pointing to the right):
+
+  q₁ + 1 + cos q₃ + cos q₄   =   10   = P
+
+
+yw
+
+q₁ = 8
+
+C
+
+R = 3
+
+ℓ = 1         q3  = 0
+
+q₂ = 0
+
+h = 1
+
+q₄ = - 2
+
+v
+
+•
+
+P0                       xw
+
+Ps
+
+•
+
+v
+
+q₄ = 2
+
+q₃ = 2
+
+q  = 6                    q₂ = 0
+
+C
+
+R = 3
+
+xw
+
+P0
+
+Figure 4:  The 4-dof planar robot in the initial configuration q₀  [left] and 
+in the singular configu-
+ration qs  [right] for the two tasks of tracing the circle with its end 
+effector (task 1) while keeping
+the second link horizontal (task 2).
+
+
+A simple choice is to pick q₁ = 8 [m], q₃ = 0, q₄ = −π/2 [rad], as in Fig. 4 
+[left].  The configuration
+
+q    =  q(0)  =    8    0    0    −π/2  T   is  not  singular.   Accordingly,  
+any  augmented  task  velocity
+
+r˙ d ∈ R3  can  be  instantaneously  realized  (actually  in  a  infinite  
+number  of  ways).  The  minimum
+
+norm joint velocity solution is obtained using pseudoinversion (J# = JT (JAJT 
+)−¹):
+
+A          A            A
+
+
+ 1    0    0    1 # 0 
+
+		 
+
+ 0.5    0     0
+
+  0 
+
+ 0 
+
+
+q˙   = J#(q  )r˙
+
+(0) =  0    1    1    0 
+
+ 1  = 
+
+0     0     1
+
+  1  =      .
+
+	
+
+As  a  result,  only  the  third  joint  moves,  rotating  counterclockwise.   
+As  shown  in  Fig.  4  [right],
+the  first  point  on  the  circle  where  the  augmented  task  necessarily  
+encounters  a  singularity  is  at
+P    s = (Cₓ, Cy + R) = (7, 3).  The robot arrives there at some instant t = ts 
+> 0 and can satisfy the
+
+positional/orientation tasks in only one configuration qs  = q(t ) =   6    0   
+ π/2    π/2    ,  which
+
+T
+
+is indeed singular.  Note that this is a true algorithmic  singularity, since 
+both tasks are full rank
+(rank (J₁(qs))  =  2,  rank (J₂)  =  1)  but  rank (JA(qs))  =  2  <  3  =  mA. 
+  Indeed,  one  can  still
+compute the pseudoinverse solution, which provides
+
+
+ 1    0    −1    −1 # −1 
+
+		  
+
+   0.3333       0       0
+
+ −1 
+
+ −1 
+
+	
+
+
+q˙   = J#(q  )r˙
+
+(t ) =  0    1     0       0
+
+    0
+
+ = 
+
+0          0.5    0.5
+
+
+
+ =            .
+
+The prismatic joint retracts,  while joints 3 and 4 will rotate 
+counterclockwise.  When evaluating
+the execution of the augmented task with this joint velocity, we find
+
+
+ 1    0    −1    −1 
+
+ −1 
+
+	
+
+ −1 
+
+
+JA(qs)q˙ s
+
+=      0    1     0       0
+
+0    1     0       0
+
+ · 3 
+
+1    = 
+
+0    = r˙
+
+d(ts)!
+
+Thus, the entire velocity task is still satisfied.  In fact, despite the loss 
+of rank of the augmented
+Jacobian, it is easy to see that r˙ d(ts)          JA(qs)  .  The pseudoinverse 
+joint velocity returns then
+the  exact solution also in this case.  We note finally that the robot will not 
+be able to trace the
+entire circle, being the lower part outside its workspace.
+
+Exercise  #3
+
+With reference to Fig. 5, we define the task frame with axis zt normal to the 
+plane of motion and
+passing through the center of the cylinder base, and axis xt tangential to the 
+path on the plane.
+
+The natural constraints are then
+
+fₓ = 0,       fy = 0,       vz = 0,       ωₓ = 0,       ωy = 0,       µz = 0,
+
+in which we neglected any friction effect at the contact.  The complementary 
+artificial constraints
+are
+
+vₓ = vₓ,d(t) > 0,       vy = 0,       fz = fz,d     0,       µₓ = 0,       µy = 
+0,       ωz = ωz,d.
+
+The value of the velocity vy  (normal to the path) is chosen to be zero, 
+signifying that the robot
+end-effector/payload should strictly follow the path on the plane.  A non-zero 
+fz,d can be chosen
+
+
+zt
+
+xt
+
+Figure 5:  The task frame assignment for the contact motion of a cylinder 
+following a path on a
+frictionless plane.
+
+so as to enforce full surface contact with the base,  despite of the presence 
+of friction (and other
+disturbances) in the real world.  The two reaction torques µₓ and µy are set to 
+zero, in order not
+to stress the object while in contact.  Finally, ωz,d can be set to zero or 
+not, depending on whether
+the cylinder should keep its orientation or rotate around its major axis while 
+the center of its base
+is following the path traced on the plane.
+
+Exercise  #4
+
+In this exercise,  we just need to derive the gravity term in the dynamic model 
+of the 2R planar
+robot.   No  information  is  required  in  fact  on  the  inertial  terms.   
+Using  the  Denavit-Hartenberg
+coordinates, the q = 0 configuration will correspond to the robot arm being 
+stretched downward
+along      the x₀-axis, the configuration of minimum potential energy.  
+Therefore, being m₁ = m₂ = m
+and dc₁ = dc₂ = `/2, the potential energy due to gravity is
+
+U = U₁ + U₂ = −m₁g₀ dc₁ cos q₁ − m₂g₀ (` cos q₁ + dc₂ cos(q₁ + q₂))
+
+= −mg `   3 cos q  + 1 cos(q  + q )  ,
+
+
+and so
+
+  ∂U (q)  T
+
+ mg `   3 sin q
+
+	
+
+1
+
++    sin(q₁
+
++ q₂)  
+
+g₁(q) !
+
+
+g(q) =
+
+∂q
+
+= 
+
+2
+
+`
+mg₀ 2
+
+2
+
+sin(q₁ + q₂)
+
+ =
+
+g₂(q)
+
+.            (1)
+
+Setting m = 5 [kg],  ` = 0.5 [m] and g₀  = 9.81 [m/s²],  by evaluating (1) at  
+q(t₁) = (π/4, 0) and
+
+q(t₂) = (−π/4, 3π/4) we obtain the gravity torques at the two joints
+
+g₁(q(t₁)) = 34.6836  [Nm]        and        g₂(q(t₂)) = 12.2625  [Nm].
+
+The uniform time scaling factor k > 1 needed to recover feasibility of the 
+entire motion is computed
+from                                                                            
+                                                  
+
+
+k  =      τ₁(t₁) − g₁(q(t₁))
+
+τmₐₓ,₁ − g₁(q(t₁))
+
+as
+
+= 1.2698,       k₂
+
+=      τ₂(t₂) − g₂(q(t₂))
+
+τmₐₓ,₂ − g₂(q(t₂))
+
+= 1.2830,
+
+k = max{k₁, k₂} = 1.2830 (= k₂).
+
+
+Thus, the second joint is the one with higher relative violation of the torque 
+limit (once gravity is
+removed).  The motion time is then increased from T = 3 [s] to the new value T 
+⁰ = kT = 3.8491 [s],
+which is the minimum feasible one under uniform time scaling.  The values of 
+the new joint torques
+(expressed in [Nm]) at the scaled instants t⁰1  = kt₁ and t⁰2  = kt₂ are 
+computed as
+
+τ (t⁰ ) =  τ1(t1) − g1(q(t1)) + g (q(t ) = 98.6589 < 100 = τ        ,
+
+
+1    1                            k2                            1          1
+
+max,1
+
+τ (t⁰ ) =  τ2(t2) − g2(q(t2)) + g (q(t ) = 20 = τ        .
+
+
+2    2                            k2
+
+2          2                         max,2
+
+As expected, the second joint torque will be in saturation at the scaled 
+instant t⁰2.
+
+Exercise  #5
+
+The three requested motion tasks are all regulation problems.  The dynamic 
+terms needed for the
+various feedback control laws are listed first.  We make reference to the 2R 
+robot in Fig. 3, with
+the same definition of joint variables and using the same parameters.  The 
+inertia matrix is
+
+M (q) =     a₁ + 2a₂ cos q₂    a₃ + a₂ cos q₂     ,
+a₃ + a₂ cos q₂              a₃
+
+with a₁ = I₁ + I₂ + ³ m`², a₂ =  ¹ m`², a₃ = I₂ + ¹ m`².  The Coriolis and 
+centrifugal terms are
+
+2                            2                                       4
+
+c(q, q˙ ) =     −a₂ sin q₂(q˙₂ + 2q˙₁)q˙₂     .
+
+a₂ sin q₂q˙²
+
+The gravity vector has been already computed in Exercise #4, and is rewritten 
+here as
+
+g(q) =     a₄ sin q₁ + a₅ sin(q₁ + q₂)
+
+a₅ sin(q₁ + q₂)
+
+with a₄  =  ¹ mg₀`,  a₅  =  ¹ mg₀`.  From the direct kinematics p = f (q),  the 
+robot Jacobian that
+
+2                                2
+
+maps the joint velocity q˙  ∈ R2  to the velocity p˙  ∈ R2  of the end effector 
+is
+
+J(q) =  ∂f (q)  =   −`(sin q₁ + sin(q₁ + q₂))    −` sin(q₁ + q₂)   .
+
+Finally, we shall need also the time derivative of the Jacobian matrix, namely
+
+J˙ (q) =     −` (cos q₁ q˙₁ + cos(q₁ + q₂) (q˙₁ + q˙₂))    −` cos(q₁ + q₂) (q˙₁ 
++ q˙₂)     .
+
+−` (sin q₁ q˙₁ + sin(q₁ + q₂) (q˙₁ + q˙₂))    −` sin(q₁ + q₂) (q˙₁ + q˙₂)
+
+a.  Global exponential stabilization of the state (q, q˙ ) = (qd, 0),  with 
+decoupled transient evolu-
+tions of the position errors ei(t) = qd,i−qi(t), i = 1, 2, of the form e₁(t) = 
+e₁(0) (1 + 5t) exp(−5t)
+and e₂(t) = e₂(0) (2 exp(−5t) − exp(−10t)).
+
+This is obtained by feedback linearization control in the joint space:
+
+u = M (q)a + c(q, q˙ ) + g(q),    with  a = −KD q˙ + KP (qd − q),
+
+with  KP  >  0  and  KD  >  0  and  both  diagonal.   The  desired  error  
+transients  are  obtained  by
+choosing suitable gains in the linear and decoupled second-order dynamics
+
+e¨i + KD,ie˙i + KP,iei = 0,       i = 1, 2,                                     
+  (2)
+
+
+for the two position errors ei(t) = qd,i   qi(t).  For joint 1, substitute 
+e₁(t) = e₁(0) (1 + 5t) exp(   5t)
+and its first and second time derivatives in (2):
+
+e₁(0) (−25 + 125t) exp(−5t) − KD,₁ e₁(0) 25t exp(−5t) + KP,₁ e₁(0) (1 + 5t) 
+exp(−5t) = 0.
+
+Since e₁(0) exp(−5t) =6   0 for any finite t ≥ 0, this common factor can be 
+eliminated so as to obtain
+(−25 + 125t) − 25KD,₁t + (1 + 5t) KP,₁ = 0.
+
+By the principle of polynomial identity (w.r.t. the powers of t), this implies
+
+125 − 25 KD,₁ + 5 KP,₁ = 0,    −25 + KP,₁ = 0         ⇒       KP,₁ = 25, KD,₁ = 
+10.
+
+Moreover, transforming eq. (2) for i = 1 in the Laplace domain and using these 
+values leads to
+
+s² + 25s + 10  e₁(s) = (s + 5)²e₁(s) = 0,
+
+namely, the error dynamics at the first joint is characterized by two real and 
+coincident negative
+eigenvalues in −5.
+
+We proceed similarly for joint 2.  Substitute  e₂(t) = e₂(0) (2 exp(   5t)     
+exp(   10t)) and its  first
+and second time derivatives in (2):
+
+e₂(0) (50 exp(−5t) − 100 exp(−10t)) + KD,₂ e₂(0) (−10 exp(−5t) + 10 exp(−10t))
+
++ KP,₂ e₂(0) (2 exp(−5t) − exp(−10t)) = 0.
+
+Being e₂(0) 6= 0, in order for this expression to vanish identically at all 
+times t ≥ 0, we should zero
+the coefficients multiplying the two different exponentials exp(−5t) and 
+exp(−10t).  This yields
+
+50 − 10 KD,₂ + 2 KP,₂ = 0,    −100 + 10 KD,₂ − KP,₂ = 0         ⇒       KP,₂ = 
+50, KD,₂ = 15.
+
+Moreover, transforming eq. (2) for i = 2 in the Laplace domain and using these 
+values leads to
+
+s² + 15s + 50  e₂(s) = (s + 5)(s + 10) e₂(s) = 0,
+
+namely,  the error dynamics at the second joint has two real and distinct 
+negative eigenvalues in
+
+−5 and −10.
+
+b.  Global  asymptotic  stabilization  of  the  state  (q, q˙ ) = (qd, 0),  
+without  knowledge  of  the  robot
+inertia matrix.
+
+This  can  be  obtained  by  multiple  choices,  the  most  common  being  a  
+PD  control  with  gravity
+cancellation
+
+u = KP (qd − q) − KD q˙ + g(q),
+
+with  symmetric  KP  >  0  and  KD  >  0,  typically  chosen  diagonal.   In  
+alternative,  one  can  use
+gravity compensation
+
+u = KP (qd − q) − KD q˙ + g(qd)
+
+further requiring that the minimum eigenvalue of KP  is larger than a finite 
+upper bound α > 0
+on the norm of the Hessian ∂²U (q)/∂q² of the gravitational potential energy U 
+.
+
+
+c.  Exponential stabilization of the end-effector position p = pd      R2  with 
+zero velocity p˙  = 0, up
+to kinematic singularities.
+
+In this case, we require a feedback linearization control in the Cartesian 
+space:
+
+u = M (q)J−¹(q)  a − J˙ (q)q˙   + c(q, q˙ ) + g(q),
+
+
+with
+
+a = −KD p˙ + KP (pd − p) = −KD J(q)q˙ + KP (pd − f (q))
+
+and where KP > 0 and KD > 0 are both chosen diagonal.
+
+∗ ∗ ∗ ∗ ∗
+

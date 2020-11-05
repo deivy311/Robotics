@@ -1,0 +1,762 @@
+                                          Robotics 2
+                         Remote Midterm Test – April 15, 2020
+
+The test has the form of a Questionnaire. Please answer with texts and formulas and write clearly.
+You may also use the ‘Reply Sheet’ in the Exam.net environment to type in some answers. Take
+pictures of each page of your handwritten answers and upload them in the system before submitting.
+Try to follow the same order of the questions. Number your replies accordingly.
+
+Question #1
+When and why is it convenient to choose a two-stage calibration procedure for the uncertain
+Denavit-Hartenberg parameters in the kinematic model of a manipulator?
+
+Question #2
+The position p ∈ R3 of the origin On of the last frame of a n-dof serial manipulator is computed
+in homogeneous coordinates through the direct kinematics as
+                                                                   
+                        p      0   1      i−1       n−2      n−1       0
+                            = A1 A2 . . . Ai . . .     An−1     An        ,
+                        1                                              1
+
+where 4 × 4 Denavit-Hartenberg homogeneous transformation matrices are used. Suppose that the
+only uncertainty in the kinematic model is on the value of the twist angle αi of the ith homogeneous
+matrix around its nominal value αinom = π/2. Write the expression of the 3 × 1 regressor matrix Φ
+in the basic equation ∆p = Φ ∆αi that is used for calibration at a generic configuration q ∈ Rn .
+
+Question #3
+The differential kinematics of a 3-dof robot performing a two-dimensional task x is expressed by
+J (q)q̇ = ẋ. Suppose that, in a given configuration q ∈ R3 , we have the following values for the
+task Jacobian J and the desired task velocity ẋ:
+                                                             
+                                      3    1 2                  2
+                              J=                    ,   ẋ =       .
+                                     1.5 0.5 1                  1
+
+Find the joint velocity q̇ ∗ of minimum norm that realizes at best the desired instantaneous task.
+Does the task velocity error vanish or not? Find another q̇ 0 6= q̇ ∗ providing the same task velocity
+error and show that kq̇ ∗ k < q̇ 0 .
+
+Question #4
+A 3R planar robot with links of unitary length moving in a vertical plane has to perform two
+tasks: i) follow a trajectory with its end-effector position, and ii) keep its last link upwards. At
+                     T                                                                 T
+q = π/4 0 π/4            [rad], the desired end-effector linear velocity is v p = 2 −1      [m/s]. Does
+there exist a joint velocity q̇ ∈ R3 that executes both tasks simultaneously? If not, find a joint
+velocity q̇ T P with the Task Priority method, giving higher priority to the last link orientation task.
+
+Question #5
+A 3R planar robot is moving on a horizontal plane. At a given instant of time t, the robot is in
+                                       T                                               T
+the configuration q(t) = 0 π/2 π/4        [rad], with velocity q̇(t) = π/2 −π/4 π/8        [rad/s].
+                                            T
+If the applied torque is u(t) = 1.5 0 −4        [Nm], will the instantaneous total energy E of the
+robot increase, stay the same, or decrease? And what about the Lagrangian function L?
+
+
+                                                   1
+Question #6
+Given the inertia matrix of a 2R polar robot
+                                     a1 + a2 sin2 q2 + a3 cos2 q2 0
+                                                                    
+                          M (q) =                                      ,
+                                                  0               a4
+
+find two factorizations of the associated Coriolis/centrifugal terms c(q, q̇) = S 0(q, q̇)q̇ = S 00(q, q̇)q̇
+such that the matrix Ṁ − 2S 0 is skew symmetric, while the matrix Ṁ − 2S 00 is not.
+
+Question #7
+Consider the PPR planar robot in the figure below. Using the coordinates q ∈ R3 and the dynamic
+parameters defined therein, determine the expression of the robot inertia matrix M (q). Provide
+then a linear parametrization only of the inertial terms in the dynamic model, i.e., such that
+                                        M (q)q̈ = Y M (q, q̈) aM ,
+where the 3 × p regressor matrix Y M and the vector of dynamic coefficients aM ∈ Rp have the
+least possible dimension p.
+
+                                         yw
+                                                                  l3
+
+                                                                  dc3   ⊕ m ,I
+                                                                           3 3
+                                                     m2
+                                                                         q3
+                                                          ⊕
+
+
+
+
+                                                     q2
+                                       q1     ⊕ m1
+
+
+                                                                              xw
+
+
+
+Question #8
+Provide the inertia matrix M p (p) of the robot considered in Question #7 when using for the
+                                                                       T
+Lagrangian dynamic modeling the new set of coordinates p = x y α          ∈ R3 , where (x, y) are
+the components of the Cartesian position of the robot end-effector in world coordinates and α is
+the angle of the last link w.r.t. the xw axis of the world frame.
+
+Question #9
+A single link moving under gravity is modeled by the differential equation I θ̈ + mg0 d sin θ = u,
+with m = 3 [kg], d = 0.5 [m], I = 1 [kgm2 ], and g0 = 9.81 [m/s2 ]. The motor torque is bounded
+by |u| ≤ U = 25 [Nm]. The desired task is a rest-to-rest swing-up maneuver from θ(0) = 0 to
+θ(T ) = π [rad] in T = 1 [s], to be done with a bang-bang acceleration profile. Is the torque bound
+satisfied? If not, find the minimum uniform time scaling to execute the task in a feasible way.
+
+Question #10
+Assume that we have available the Newton-Euler routine NEα (arg1 , arg2 , arg3 ), equipped with the
+kinematic and dynamic data of a n-dof serial manipulator. How can we compute the kinetic energy
+T in a generic state (q, q̇) of this robot by just one call of this routine and one scalar product?
+
+                                                                         [180 minutes (3 hours); open books]
+
+
+                                                              2
+                                              Solution
+                                             April 15, 2020
+
+
+Question #1
+When and why is it convenient to choose a two-stage calibration procedure for the uncertain
+Denavit-Hartenberg parameters in the kinematic model of a manipulator?
+Reply #1
+When it is expected that subsets of Denavit-Hartenberg parameters will have a very different
+uncertainty range (some with large, some with small uncertainty), the calibration procedure is
+performed in a first stage only for the set of parameters with large uncertainty, holding the others
+at their nominal values. In a second stage, calibration is completed for all parameters at the same
+time. In this stage, one starts with the nominal values for the original parameters with small
+uncertainty and with the updated values for those that have been partially calibrated in the first
+stage (and thus have now also a small residual uncertainty). This two-stage procedure improves
+the accuracy of the pseudoinverse solution of the regressor equation by equalizing the numerical
+conditioning of the regressor matrix. Normalizing a set of equations in this way is very common
+in optimization and in engineering practice.                                                      
+
+Question #2
+The position p ∈ R3 of the origin On of the last frame of a n-dof serial manipulator is computed
+in homogeneous coordinates through the direct kinematics as
+                                                                     
+                        p                                              0
+                            = 0A1 1A2 . . . i−1Ai . . . n−2An−1 n−1An     ,
+                        1                                              1
+
+where 4 × 4 Denavit-Hartenberg homogeneous transformation matrices are used. Suppose that the
+only uncertainty in the kinematic model is on the value of the twist angle αi of the ith homogeneous
+matrix around its nominal value αinom = π/2. Write the expression of the 3 × 1 regressor matrix
+Φ in the basic equation ∆p = Φ ∆αi that is used for calibration at a generic configuration q ∈ Rn .
+Reply #2
+We need to evaluate the sensitivity of p ∈ R3 with respect to the single scalar parameter αi ,
+which appears only in the ith Denavit-Hartenberg (DH) homogeneous transformation matrix i−1Ai .
+Therefore, by rewriting the direct kinematics in compact form, we have
+                                     ∂p
+                                                          
+                                                    ∂ i−1Ai i
+                                                                   
+                        ∂phom                 0                     0
+                               =  ∂αi  = Ai−1                An      ,
+                         ∂αi                           ∂αi          1
+                                      0
+
+where the sensitivity of the i-th DH matrix is
+                                                                                          
+                                   cos θi − sin θi cos αi       sin θi sin αi   ai cos θi
+                 i−1
+              ∂     Ai        ∂    sin θi    cos θi cos αi − cos θi sin αi      ai sin θi 
+                          =                                                               
+                 ∂αi        ∂αi  0               sin αi             cos αi         di     
+                                      0             0                  0             1
+                                                                          
+                                0   sin θi sin αi      sin θi cos αi     0
+                             0 − cos θi sin αi − cos θi cos αi 0 
+                          =                                               .
+                            0         cos αi            − sin αi        0
+                                0         0                  0           0
+
+                                                     3
+The first-order Taylor expansion of the direct kinematics around the nominal value of αi is
+
+              ∂phom
+     pnom
+      hom +                        (αi − αinom )
+               ∂αi    αi =αnom
+                           i
+                                                                                                    
+                                                      i−1                                                             
+                                                  ∂     Ai                                                         0
+                   = 0Anom
+                       i−1
+                           i−1Anom
+                                i   +                                             (αi − αinom ) iAnom
+                                                                                                   n                       .
+                                                      ∂αi                                                          1
+                                                                    DHi =DHinom
+
+Eliminating the nominal identities on the left and right side, we obtain the regressor matrix Φ
+(actually, a vector here) as
+                                                 i−1
+                                                                                            
+                           Φ                  ∂      Ai                                   0
+                                   =   Anom
+                                       0
+                                        i−1                                   Anom
+                                                                              i
+                                                                               n                  ,
+                           0                       ∂αi                                    1
+                                                                DHi =DHinom
+                                                                             
+Being αinom = π/2, the evaluation of the           sensitivity matrix ∂ i−1Ai /∂αi in nominal conditions
+yields
+
+                                                                                       sin θinom
+                                                                                                                  
+         0  sin θi sin αi   sin θi cos αi             0                        0                           0       0
+        0 − cos θi sin αi − cos θi cos αi            0                     0       − cos θinom          0       0
+                                                                          =                                       .
+       0      cos αi         − sin αi                0                     0            0              −1       0
+         0        0               0                   0     DHi =DHinom
+                                                                               0           0               0       0
+
+Finally, the regressor equation is
+                                                   Φ ∆αi = ∆p,
+with ∆αi = αi − αinom ∈ R and ∆p ∈ R3 being the end-effector position error measured in a
+generic experiment.                                                                    
+
+Question #3
+The differential kinematics of a 3-dof robot performing a two-dimensional task x is expressed by
+J (q)q̇ = ẋ. Suppose that, in a given configuration q ∈ R3 , we have the following values for the
+task Jacobian J and the desired task velocity ẋ:
+                                                             
+                                      3    1 2                  2
+                              J=                    ,    ẋ =      .
+                                     1.5 0.5 1                  1
+
+Find the joint velocity q̇ ∗ of minimum norm that realizes at best the desired instantaneous task.
+Does the task velocity error vanish or not? Find another q̇ 0 6= q̇ ∗ providing the same task velocity
+error and show that kq̇ ∗ k < q̇ 0 .
+Reply #3
+It is easy to see that rank(J ) = 1, but also that ẋ ∈ range{J } so that we can find (∞2 !) solutions
+to this underdetermined system of linear equations. The minimum norm solution q̇ ∗ is the one
+based on the pseudoinverse of J , i.e., q̇ P S = J # ẋ, and will yield in this case zero task velocity
+error (i.e., ẋ − J q̇ P S = 0). Since we can discard one of the two equations in J q̇ = ẋ (because of
+their linear dependence and consistency), the pseudoinverse solution is easily computed from
+                                                                                             
+                                                                  3           3/7          0.4286
+                                                             1  
+  J1 q̇ = 3 1 2 q̇ = 2 = ẋ1 ⇒ q̇ P S = J1# ẋ1 =
+                        
+                                                                  1 · 2 =  1/7  =  0.1429  .
+                                                            14
+                                                                  2           2/7          0.2857
+
+
+                                                            4
+Another solution is found by simple inspection. For instance, being the third column of J equal
+                                       T
+to ẋ, the joint velocity q̇ 0 = 0 0 1    is also a solution. Indeed, kq̇ P S k = 0.5345 < 1 = q̇ 0 . 
+
+
+Question #4
+A 3R planar robot with links of unitary length moving in a vertical plane has to perform two
+tasks: i) follow a trajectory with its end-effector position, and ii) keep its last link upwards. At
+                      T                                                                T
+q = π/4 0 π/4            [rad], the desired end-effector linear velocity is v p = 2 −1     [m/s]. Does
+there exist a joint velocity q̇ ∈ R3 that executes both tasks simultaneously? If not, find a joint
+velocity q̇ T P with the Task Priority method, giving higher priority to the last link orientation task.
+Reply #4
+Since
+                                                                                                          
+                                                             cos q1 + cos(q1 + q2 ) + cos(q1 + q2 + q3 )
+     α = f1 (q) = q1 + q2 + q3 ,         p = f 2 (q) =                                                         ,
+                                                             sin q1 + sin(q1 + q2 ) + sin(q1 + q2 + q3 )
+
+the two Jacobians of the link orientation task and, respectively, of the position task are
+                                                                                          
+                                             − (s1 + s12 + s123 ) − (s12 + s123 ) −s123
+       J1 = 1 1 1 ,               J 2 (q) =                                                  ,
+                                                c1 + c12 + c123      c12 + c123     c123
+
+with the usual shorthand notation for trigonometric quantities (e.g., s12 = sin q1 + sin(q1 + q2 )).
+                     T
+At q = π/4 0 π/4 , the orientation of the third link is already upwards (α = π/2), and this
+would means that no task velocity is needed for keeping the correct link orientation, or vα = 0.
+The complete task Jacobian matrix and the associated task velocity vector are thus
+                                                                                      
+                         1         1       1                                    0
+             J1                                                v 1        v α
+      J=          =  −2.4142 −1.7071 −1  ,           v=            =          =  2 .
+             J2                                               v2          vp
+                        1.4142    0.7071     0                                       −1
+
+The Jacobian J is singular (the sum of its rows is zero), while v 6∈ range{J } (in fact, the sum of the
+scalar components of v is 1). This means that the two tasks are in conflict and cannot be executed
+simultaneously without an error. If attempting a solution with, for instance, the pseudoinverse of
+J (rather than with the forbidden inverse), we would get
+                                                                                    
+                               −0.8873                                         0.3333
+            q̇ P S = J # v =  −0.1111  ⇒ ev,P S = v − J # q̇ P S =  0.3333  ,
+                                0.6650                                         0.3333
+
+spamming equally the error on all components of both velocity tasks. Instead, consider the Task
+Priority (TP) method for the two tasks, each with its assigned priority. For the highest priority
+task, we have
+                                                                                         
+           1                                      2/3 −1/3 −1/3                  2 −1 −1
+       1                                                                 1
+J#1 =      1       ⇒       P 1 = I − J#
+                                      1 J1 =
+                                              −1/3       2/3 −1/3  =  −1 2 −1 
+       3                                                                   3
+           1                                    −1/3 −1/3        2/3            −1 −1 2
+
+Considering that v1 = 0, the TP method simplifies to
+                                                                       
+                                                  #                                   #
+                    q̇ T P = J #
+                               1 v 1 + (J 2 P 1 )     v 2 − J 2 J #
+                                                                  1 v 1   = (J 2 P 1 ) v 2 ,
+
+
+
+                                                         5
+yielding
+                                                        #
+                                                −1 −1
+                                                     2            
+               −2.4142       −1.7071   1         1             2
+ q̇ T P   =                                   ·   2 −1
+                                                     −1   
+               1.4142         0.7071   0         3             −1
+                                                  −1 2
+                                                     −1
+                                                                                    
+                                     #         −0.3536 0.3536            −1.0607
+                  −0.7071   0 0.7071       2                           2
+          =                                     =     0      0            =     0   .
+                  0.7071    0 −0.7071      −1                          −1
+                                                    0.3536 −0.3536              1.0607
+Thus, joints 1 and 3 will move with the same speed but in opposite directions so as to satisfy the
+first task, pushing the error only to the second task. In fact, we have
+                                                                  
+                                                                0
+                                 ev,T P = v − J # q̇ T P = −  0.5  ,
+                                                               0.5
+with ev1 ,T P = 0. Note, however, that the TP method leads to a larger norm of the error on the
+linear velocity task than the PS method: kev2 ,T P k = 0.7071 > 0.4243 = kev2 ,P S k.        
+
+Question #5
+A 3R planar robot is moving on a horizontal plane. At a given instant of time t, the robot is in
+                                       T                                                T
+the configuration q(t) = 0 π/2 π/4         [rad], with velocity q̇(t) = π/2 −π/4 π/8        [rad/s].
+                                             T
+If the applied torque is u(t) = 1.5 0 −4         [Nm], will the instantaneous total energy E of the
+robot increase, stay the same, or decrease? And what about the Lagrangian function L?
+Reply #5
+Since the robot moves with constant potential energy U , we have U̇ = 0. Then, the instantaneous
+variation Ė of the total energy E = T + U and the instantaneous variation L̇ of the Lagrangian
+function L = T − U will be the same. At the time instant t, we have
+                                                                        
+                                                                     1.5
+                                                                 T
+        Ė(t) = L̇(t) (= Ṫ (t)) = q̇ T(t)u(t) = π/2 −π/4 π/8
+                                                               
+                                                                    0  = 0.7854 > 0.
+                                                                     −4
+Thus, the total energy of the robot and its Lagrangian will instantaneously increase.                     
+
+Question #6
+Given the inertia matrix of a 2R polar robot
+                                     a1 + a2 sin2 q2 + a3 cos2 q2 0
+                                                                    
+                          M (q) =                                      ,
+                                                  0               a4
+
+find two factorizations of the associated Coriolis/centrifugal terms c(q, q̇) = S 0(q, q̇)q̇ = S 00(q, q̇)q̇
+such that the matrix Ṁ − 2S 0 is skew symmetric, while the matrix Ṁ − 2S 00 is not.
+Reply #6
+We compute the velocity terms using the matrices C i of Christoffel’s symbols. These are also
+helpful for defining a factorization that satisfies the requested skew-symmetric property. For the
+components of vector c(q, q̇), we have:
+                                                                 T          !
+                    T                     1 ∂M i (q)     ∂M i (q)      ∂M (q)
+     ci (q, q̇) = q̇ C i (q)q̇, C i (q) =            +               −          , for i = 1, 2,
+                                          2   ∂q            ∂q           ∂q i
+
+
+                                                          6
+being M i the ith column of the inertia matrix M . We obtain
+
+                                                2(a2 − a3 ) sin q2 cos q2
+                                                                         
+                    1             0
+          C 1 (q) =
+                    2 2(a2 − a3 ) sin q2 cos q2            0
+
+                                                                 1
+                                                                         − a3 ) sin(2q2 )
+                                                                                                
+                                       0                         2 (a2
+                    =        1
+                             2 (a2 − a3 ) sin(2q2 )                         0
+
+                                    2(a2 − a3 ) sin q2 cos q2                                 − 21 (a2 − a3 ) sin(2q2 ) 0
+                                                                                                                              
+                            1                                                 0
+             C 2 (q) = −                                                              =                                              ,
+                            2                  0                              0                          0              0
+
+leading to                                                                                                       !
+                                                                             (a2 − a3 ) sin(2q2 )q̇1 q̇2
+                                                            
+                                                c1 (q, q̇)
+                            c(q, q̇) =                            =                                                  .
+                                                c2 (q, q̇)                   − 21 (a2 − a3 ) sin(2q2 )q̇12
+We need at this point the time derivative of the inertia matrix, i.e.,
+                                                                  !
+                                        (a2 − a3 ) sin(2q2 )q̇2 0
+                               Ṁ =                                 .
+                                                  0             0
+
+A factorization S 0 that satisfies the skew-symmetric property is then given by
+                                    !                                                              !
+                                           1                            1
+          0            q̇ T C 1 (q)        2 (a2 − a3 ) sin(2q2 ) q̇2   2 (a2 − a3 ) sin(2q2 ) q̇1
+         S (q, q̇) =                  =                                                              ,
+                       q̇ T C 2 (q)       − 21 (a2 − a3 ) sin(2q2 ) q̇1            0
+
+being c(q, q̇) = S 0(q, q̇)q̇ and
+                                                                                                                         !
+                                    0
+                                                             0                        −(a2 − a3 ) sin(2q2 ) q̇1
+                    Ṁ − 2S =                                                                                                .
+                                             (a2 − a3 ) sin(2q2 ) q̇1                                0
+
+A possible factorization S 00 that, on the contrary, fails to satisfy the skew-symmetric property is
+                                                                           !
+                               00
+                                            (a2 − a3 ) sin(2q2 ) q̇2     0
+                             S (q, q̇) =                                     .
+                                           − 12 (a2 − a3 ) sin(2q2 ) q̇1 0
+
+In fact, one can verify that c(q, q̇) = S 00(q, q̇)q̇, but the matrix
+                                                                                                         !
+                                                             −(a2 − a3 ) sin(2q2 )q̇1                0
+                                        Ṁ − 2S 00 =                                                         ,
+                                                                 (a2 − a3 ) sin(2q2 ) q̇1            0
+
+is not skew-symmetric.                                                                                                                   
+
+
+Question #7
+Consider the PPR planar robot in the figure below. Using the coordinates q ∈ R3 and the dynamic
+parameters defined therein, determine the expression of the robot inertia matrix M (q). Provide
+then a linear parametrization only of the inertial terms in the dynamic model, i.e., such that
+
+                                                   M (q)q̈ = Y M (q, q̈) aM ,
+
+
+                                                                         7
+where the 3 × p regressor matrix Y M and the vector of dynamic coefficients aM ∈ Rp have the least
+possible dimension p.
+Reply #7
+The first two simple contributions to the robot kinetic energy are
+                                    1                                        1
+                                      m1 q̇12                                  m2 q̇12 + q̇22 .
+                                                                                             
+                             T1 =                  and                T2 =
+                                    2                                        2
+
+                                           yw
+                                                                    l3
+
+                                                                    dc3   ⊕ m ,I
+                                                                             3 3
+                                                       m2
+                                                            ⊕              q3
+                                                       q2
+                                          q1    ⊕ m1
+
+
+                                                                                xw
+
+
+
+For T3 , we compute first (in the plane)
+                                                                           
+             q2 + dc3 cos q3                             q̇2 − dc3 sin q3 q̇3
+   pc3 =                          ⇒      v c3 = ṗc3 =
+             q1 + dc3 sin q3                             q̇1 + dc3 cos q3 q̇3
+                                                        2
+                                      ⇒         kv c3 k = q̇12 + q̇22 + d2c3 q̇32 + 2dc3 (cos q3 q̇1 − sin q3 q̇2 ) q̇3
+
+and then
+                     1 2 1
+                       I3 q̇3 + m3 q̇12 + q̇22 + d2c3 q̇32 + 2dc3 (cos q3 q̇1 − sin q3 q̇2 ) q̇3 .
+                                                                                                
+                 T3 =
+                     2         2
+The total kinetic energy of the robot is thus
+                                                                                                          
+                                                m1 + m2 + m3                  0             m3 dc3 cos q3
+                       1               1 
+ T = T1 + T2 + T3 = q̇ T M (q)q̇ = q̇ T                   0             m2 + m3           −m3 dc3 sin q3  q̇.
+                                                                                                           
+                       2               2
+                                                  m3 dc3 cos q3       −m3 dc3 sin q3          I3 + m3 d2c3
+
+By introducing a vector aM ∈ R4 of dynamic coefficients, the inertia matrix can be rewritten as
+                                 
+           a1        m1 + m2 + m3
+                                                                                           
+                                                              a1         0       a4 cos q3
+         a2          m2 + m3     
+ aM =   a3  =  I3 + m3 d2c3  ⇒ M (q) =                  0         a2       −a4 sin q3  .
+                                                                                        
+
+           a4            m3 dc3                           a4 cos q3 −a4 sin q3       a3
+
+Clearly, p = 4 is the minimum number of dynamic coefficients for this robot. The linear parametriza-
+tion of the inertial terms is
+                                                                
+                                                               a1
+                        
+                          q̈1 0 0          cos q3 q̈3
+                                                             a2 
+             M (q)q̈ =  0 q̈2 0          − sin q3 q̈3       a3  = Y M (q, q̈) aM .             
+                        
+                                                                
+                           0 0 q̈3 cos q3 q̈1 − sin q3 q̈2     a4
+
+
+                                                                8
+Question #8
+Provide the inertia matrix M p (p) of the robot considered in Question #7 when using for the
+                                                                       T
+Lagrangian dynamic modeling the new set of coordinates p = x y α          ∈ R3 , where (x, y) are
+the components of the Cartesian position of the robot end-effector in world coordinates and α is
+the angle of the last link w.r.t. the xw axis of the world frame.
+Reply #8
+The change of coordinates
+                                                       
+                                   x       q2 + l3 cos q3
+                             p =  y  =  q1 + l3 sin q3  = f (q)
+                                   α             q3
+
+represents the desire to use Cartesian variables for describing the dynamics of a PPR robot. The
+change of coordinates is here a diffeomorphism (i.e., a differentiable mapping with a unique and
+differentiable inverse) in R2 × SO(1). Its inverse is
+                                                                  
+                                                    p2 − l3 sin p3
+                                 q = f −1 (p) =  p1 − l3 cos p3  ,
+                                                         p3
+
+while the Jacobian matrix of   the transformation (and its inverse) takes the form
+                                                                                     
+                          0     1 −l3 sin q3                             0 1 −l3 cos q3
+               ∂f (q) 
+       J (q) =       = 1        0 l3 cos q3        ⇒       J −1 (q) =  1 0 l3 sin q3  .
+                ∂q
+                          0     0      1                                 0 0       1
+
+The inertia matrix of the PPR robot in the new coordinates is obtained as
+                                                        
+                           M p (p) = J −T(q)M (q)J −1 (q)       −1
+                                                               q=f   (p)
+
+in which all quantities have been already defined.                                                 
+Additional remark: Further elaboration of the above expression is straightforward but lengthy
+(and beyond the scope of the present question). Nonetheless, using the Matlab Symbolic Toolbox,
+it can be shown that the explicit expression of M p as a function of p only can be rewritten as
+                                                                               
+                                ap2           0             −ap4 sin p3
+               M p (p) =        0          ap1              ap5 cos p3         ,
+                                                                               
+                                                                        2   2
+                           −ap4 sin p3 ap5 cos p3 ap3 + (ap1 − ap2 ) l3 cos p3
+
+where a new set of dynamic coefficients ap ∈ R5 has been introduced for compactness, defined in
+terms of the dynamic coefficients a ∈ R4 already present in M (q). These new dynamic coefficients
+are                                                          
+                                                  a1
+                                        
+                                                 a2          
+                                                              
+                                                   2
+                                   ap =  a3 + a2 l3 − 2a4 l3 
+                                        
+                                                              .
+                                              a4 − a2 l3     
+                                               a4 − a1 l3
+Indeed, note that the 5 coefficients in ap are not a minimal dynamic set: they can be expressed in
+fact as linear combinations of the 4 coefficients in a, provided that the length l3 of the third link
+(a kinematic quantity) is known.
+
+
+                                                 9
+Question #9
+A single link moving under gravity is modeled by the differential equation I θ̈ + mg0 d sin θ = u,
+with m = 3 [kg], d = 0.5 [m], I = 1 [kgm2 ], and g0 = 9.81 [m/s2 ]. The motor torque is bounded
+by |u| ≤ U = 25 [Nm]. The desired task is a rest-to-rest swing-up maneuver from θ(0) = 0 to
+θ(T ) = π [rad] in T = 1 [s], to be done with a bang-bang acceleration profile. Is the torque bound
+satisfied? If not, find the minimum uniform time scaling to execute the task in a feasible way.
+Reply #9
+We start by determining the value A of the piecewise constant (bang-bang) acceleration profile
+requested for executing the desired trajectory, given ∆θ = θ(T ) − θ(0) = π and T = 1. Starting
+at rest, the velocity θ̇ will grow linearly up to the midtime t = T /2, reaching a value V = A · T /2,
+and then returning linearly to zero at t = T . The area underlying the triangular velocity profile is
+equal to the angular displacement ∆θ. Thus,
+                      Z T
+                                   V ·T     A · T2                  4∆θ
+               ∆θ =        θ̇ dτ =       =             ⇒       A = 2 = 4π [rad/s2 ].
+                        0            2        4                      T
+
+The inertial term in the dynamic model will have a constant value ui = I θ̈(t) = IA = 4π in the
+first half of the motion, t ∈ [0, T /2], until the link reaches the midpoint ∆/2 = Π/2 of the motion
+trajectory; during the second half, t ∈ (T /2, T ], this inertial term will have the same amplitude but
+a negative sign. On the other hand, the gravitational torque ug = mg0 d sin θ(t) = 14.715 sin θ(t)
+will grow from zero to its maximum at t = T /2, when θ(T /2) = ∆θ/2 = π/2 and ug,max = 14.7150,
+and return then symmetrically to zero. As a result, the maximum (positive) torque requested by
+the desired trajectory is attained at t = T /2 = 1 [s] and is equal to umax = ui +ug,max = 27.2814 >
+25 = U [Nm], exceeding so the motor torque bound. The original trajectory is unfeasible. We need
+then to uniformly slow down motion by a factor k > 1, in order to reduce the inertial acceleration
+component of the inverse dynamics torque (the gravitational torque ug is unaffected by any time
+scaling). Since the inertial torque scales with k 2 (quadratically), the minimum scaling factor k is
+computed as
+                           ( s                     )         ( r             )
+                                   umax − ug,max                       4π
+                  k = max 1,                          = max 1,                 = 1.1054.
+                                     U − ug,max                      10.2850
+
+The new motion time will be Ts = kT = 1.1054 [s] and the peak of the total torque will be again
+assumed at t = Ts /2, where θ(Ts /2) = π/2. Without the need of a new inverse dynamics analysis,
+this is computed as
+             umax − ug,max           ui
+  umax,s =                 + ug,max = 2 + ug,max = (U − ug,max ) + ug,max = U = 25 [Nm].             
+                  k2                 k
+
+Additional material: Plots of the relevant quantities obtained using Matlab are reported at the
+end for the original trajectory (Figure 1) and for the scaled, feasible one (Figure 2).
+
+Question #10
+Assume that we have available the Newton-Euler routine NEα (arg1 , arg2 , arg3 ), equipped with the
+kinematic and dynamic data of a n-dof serial manipulator. How can we compute the kinetic energy
+T in a generic state (q, q̇) of this robot by just one call of this routine and one scalar product?
+Reply #10
+We compute first the Newton-Euler routine output y = 12 M (q)q̇ = NE0 q, 0, 12 q̇ and then
+                                                                                           
+
+obtain the result with a scalar product: q̇ T y = 12 q̇ T M (q)q̇ = T (q, q̇).                      
+
+
+                                                  10
+                                                        Delta=3.1416 [rad], V=6.2832 [rad/s], A=         12.5664 [rad/s 2], T=1 [s]                                    total torque (umax =27.2814, U=25) [red] and gravity torque [blue]; motion time T=1 [s]
+                                              3
+                                                                                                                                                                  30
+                   theta [rad]
+
+
+
+
+                                              2
+
+                                              1
+                                                                                                                                                                  20
+
+                                              0
+                                                  0   0.1     0.2      0.3         0.4     0.5         0.6        0.7     0.8      0.9       1
+                                                                                                                                                                  10
+                   dtheta/dt [rad/s]
+
+
+
+
+                                              6
+
+
+
+
+                                                                                                                                                      u [Nm]
+                                              4                                                                                                                    0
+                                              2
+
+                                              0
+                                                  0   0.1     0.2      0.3         0.4     0.5         0.6        0.7     0.8      0.9       1                 -10
+d 2theta/dt 2 [rad/s 2]
+
+
+
+
+                                   10
+                                                                                                                                                               -20
+                                              0
+
+
+                            -10                                                                                                                                -30
+
+                                                  0   0.1     0.2      0.3         0.4     0.5         0.6        0.7     0.8      0.9       1                         0         0.1     0.2      0.3     0.4      0.5           0.6   0.7         0.8   0.9   1
+                                                                                         time [s]                                                                                                               time [s]
+
+
+                                              Figure 1: Position, velocity and acceleration profiles [left] and total and gravitational torques [right]
+                                              for the original unfeasible trajectory with T = 1 [s].
+
+                          Delta=3.1416 [rad], scaled V=5.6843 [rad/s], scaled A=                             10.285 [rad/s 2], scaled Ts=1.1054 [s]                        total scaled torque [red] and gravity torque [blue]; scaled motion time Ts=1.1054 [s]
+                                              3                                                                                                                    30
+                          theta [rad]
+
+
+
+
+                                              2
+
+                                                                                                                                                                   20
+                                              1
+
+                                              0
+                                                  0          0.2             0.4                 0.6                0.8               1
+                                                                                                                                                                   10
+                          dtheta/dt [rad/s]
+
+
+
+
+                                              6
+                                                                                                                                                         u [Nm]
+
+
+
+
+                                              4                                                                                                                        0
+
+                                              2
+
+                                              0
+                                                  0          0.2             0.4                 0.6                0.8               1                           -10
+    d 2theta/dt 2 [rad/s 2]
+
+
+
+
+                                       10
+                                                                                                                                                                  -20
+                                              0
+
+
+                                -10
+                                                                                                                                                                  -30
+                                                  0          0.2             0.4                 0.6                0.8               1                                    0             0.2            0.4                0.6               0.8           1
+                                                                                         time [s]                                                                                                                 time [s]
+
+
+                                              Figure 2: Position, velocity and acceleration profiles [left] and total and gravitational torques [right]
+                                              for the scaled feasible trajectory with Ts = 1.1054 [s].
+
+
+                                                                                                                                           ∗∗∗∗∗
+
+
+
+
+                                                                                                                                                 11
+

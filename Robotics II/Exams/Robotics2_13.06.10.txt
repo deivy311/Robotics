@@ -1,0 +1,59 @@
+Robotics II
+June 10, 2013
+Table 1 contains the Denavit-Hartenberg parameters of a robot with four revolute joints.
+i
+1
+2
+3
+4
+
+αi
+π
+2
+π
+2
+π
+−
+2
+
+ai
+
+di
+
+θi
+
+0
+
+0
+
+θ1
+
+0
+
+0
+
+θ2
+
+0
+
+d3
+
+θ3
+
+0
+
+a4
+
+0
+
+θ4
+
+Table 1: Denavit-Hartenberg parameters of a 4R robot
+
+1. Use the recursive algorithm based on moving frames to determine the kinetic energy of the
+robot. Make reasonable assumptions in order to simplify the inertial properties of the links
+(e.g., each link has a uniformly distributed mass, etc.)
+2. Determine the robot inertia matrix. Find a minimal linear parameterization for this matrix.
+[120 minutes; open books]
+
+

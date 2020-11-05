@@ -1,0 +1,45 @@
+Robotics II
+September 22, 2014
+Exercise 1
+The actuation device shown in Fig. 1 is a servomechanism with a DC motor coupled to a rotating
+load through a flexible transmission.
+
+䙵!
+
+䙶!
+
+䙷!
+
+䙸!
+
+䙹!
+
+Figure 1: A 1-dof actuation device with flexible transmission
+• Explain the role to each component numbered (from 1 to 5) in the figure.
+• Using an energy (Lagrangian) approach, derive a dynamic model of the system that is appropriate for trajectory planning, motion control, and simulation. Assume that the flexible
+transmission can be modeled as a visco-elastic element, i.e., it behaves as a damped spring of
+constant stiffness. In addition, viscous friction is present on the motor and load sides of the
+transmission. The DC motor is commanded in current. Write down the complete dynamic
+equations and draw an associated block diagram for simulation purposes (in Simulink style).
+• Neglect all dissipative effects in the following. Plan a smooth rest-to-rest trajectory that
+rotates the load from an initial angle q0 to a final qf in given time T , without residual
+vibrations.
+• Determine next the input current profile that should command the motor so that the planned
+trajectory is realized exactly when the system is initially undeformed and at rest.
+Exercise 2
+The Newton-Euler method is used for the dynamic modeling of serial robots. In inverse dynamics
+problems, its most efficient implementation is a numerical algorithm (NE) containing a forward
+recursive (FR) part, which computes from the base to the tip all relevant differential kinematic
+terms associated to the links, and a backward recursive (BR) part, which computes from the
+tip to the base the exchanged forces/torques between links. Suppose now that we compute the
+(linear/angular) acceleration vector p̈ ∈ R6 of the end-effector by
+p̈ = N EF R(q, q̇, q̈) = J (q)q̈ + J̇ (q)q̇,
+
+(1)
+
+where N EF R in eq. (1) denotes compactly the FR part only of the NE algorithm. How could the
+N EF R algorithm be used to evaluate numerically and separately the Jacobian matrix J and the
+product term J̇ q̇? With the same algorithm, can we also evaluate the matrix J̇ alone?
+[150 minutes; open books]
+
+

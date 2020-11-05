@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>ARISTO</Name>
+  <Scale>1</Scale>
+  <Links>
+    <Link>
+      <FileName>link0.stl</FileName>
+      <Color>DarkGray</Color>
+    </Link>
+    <Link>
+      <FileName>link1.stl</FileName>
+      <Color>Sienna</Color>
+    </Link>
+    <Link>
+      <FileName>link2.stl</FileName>
+      <Color>Yellow</Color>
+    </Link>
+    <Link>
+      <FileName>link3.stl</FileName>
+      <Color>BlueViolet</Color>
+    </Link>
+    <Link>
+      <FileName>link4.stl</FileName>
+      <Color>Peru</Color>
+    </Link>
+    <Link>
+      <FileName>link5.stl</FileName>
+      <Color>DarkViolet</Color>
+    </Link>
+    <Link>
+      <FileName>link6.stl</FileName>
+      <Color>Maroon</Color>
+    </Link>
+  </Links>
+  <Joints>
+    <RevoluteJoint>
+      <JointOffset>322</JointOffset>
+      <JointAngle>0</JointAngle>
+      <LinkLength>0</LinkLength>
+      <TwistAngle>90</TwistAngle>
+      <JointAngleMin>-150</JointAngleMin>
+      <JointAngleMax>150</JointAngleMax>      
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>0</JointOffset>
+      <JointAngle>90</JointAngle>
+      <LinkLength>300</LinkLength>
+      <TwistAngle>0</TwistAngle>
+      <JointAngleMin>60</JointAngleMin>
+      <JointAngleMax>120</JointAngleMax>      
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>0</JointOffset>
+      <JointAngle>180</JointAngle>
+      <LinkLength>0</LinkLength>
+      <TwistAngle>90</TwistAngle>
+      <JointAngleMin>130</JointAngleMin>
+      <JointAngleMax>190</JointAngleMax>      
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>-375</JointOffset>
+      <JointAngle>-180</JointAngle>
+      <LinkLength>0</LinkLength>
+      <TwistAngle>90</TwistAngle>
+      <JointAngleMin>-210</JointAngleMin>
+      <JointAngleMax>-150</JointAngleMax>      
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>0</JointOffset>
+      <JointAngle>-90</JointAngle>
+      <LinkLength>0</LinkLength>
+      <TwistAngle>90</TwistAngle>
+      <JointAngleMin>-100</JointAngleMin>
+      <JointAngleMax>90</JointAngleMax>      
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>63</JointOffset>
+      <JointAngle>0</JointAngle>
+      <LinkLength>0</LinkLength>
+      <TwistAngle>0</TwistAngle>
+      <JointAngleMin>-165</JointAngleMin>
+      <JointAngleMax>165</JointAngleMax>      
+    </RevoluteJoint>
+  </Joints>
+  <CellObjects>
+    <CellObject>
+      <Name>Table</Name>
+      <FileName>table.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Cyan</Color>
+      <HTM>1, 0, 0, 0; 0, 1, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Base</Name>
+      <FileName>base.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Gray</Color>
+      <HTM>1, 0, 0, 0; 0, 1, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1</HTM>
+    </CellObject>	
+	<CellObject>
+      <Name>PegStand</Name>
+      <FileName>pegStand.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Yellow</Color>
+      <HTM>1, 0, 0, 0; 0, 1, 0, 0; 0, 0, 1, 250; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>PegStand2</Name>
+      <FileName>pegStand2.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Yellow</Color>
+      <HTM>1, 0, 0, 0; 0, 1, 0, 0; 0, 0, 1, 250; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg1</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Green</Color>
+      <HTM>1, 0, 0, 225; 0, 1, 0, -225; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg2</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Green</Color>
+      <HTM>1, 0, 0, 275; 0, 1, 0, -225; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg3</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Green</Color>
+      <HTM>1, 0, 0, 325; 0, 1, 0, -225; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg4</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Green</Color>
+      <HTM>1, 0, 0, 375; 0, 1, 0, -225; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg5</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Red</Color>
+      <HTM>1, 0, 0, 225; 0, 1, 0, -275; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg6</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Red</Color>
+      <HTM>1, 0, 0, 275; 0, 1, 0, -275; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg7</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Red</Color>
+      <HTM>1, 0, 0, 325; 0, 1, 0, -275; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+	<CellObject>
+      <Name>Peg8</Name>
+      <FileName>peg.stl</FileName>
+      <Scale>1</Scale>
+      <Color>Red</Color>
+      <HTM>1, 0, 0, 375; 0, 1, 0, -275; 0, 0, 1, 300; 0, 0, 0, 1</HTM>
+    </CellObject>
+
+  </CellObjects>
+  <Manufacturer>MTAB</Manufacturer>
+  <ModelName>Aristo</ModelName>
+  <Payload>2.5</Payload>
+  <TotalWeight>35</TotalWeight>
+</Robot>

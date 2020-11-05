@@ -1,0 +1,929 @@
+Robotics II
+July 11, 2018
+Exercise 1
+Consider a 2R planar robot, with the two links of length l1 and l2 , having the actuating motors
+mounted on the axes of the two revolute joints. Each motor delivers its torque to the driven link
+through an elastic transmission, modeled as a torsional spring of stiffness ki > 0, for i = 1, 2. The
+robot has no motion reduction elements. In the ith motor-link assembly, for i = 1, 2, let mmi
+and Imi be, respectively, the balanced mass and the inertia of the rotor of the motor around its
+spinning axis, and mi , dci , and Ii the link mass, the distance of the center of mass of the link
+from the preceding joint axis, and the link inertia around its center of mass. Using as generalized
+coordinates the angle θmi of the rotor of motor i w.r.t. the preceding link axis, and the angle θi
+of link i w.r.t. the preceding link axis, for i = 1, 2, define the 4 × 4 inertia matrix M (q) of the
+robot, where q = (θ T θ Tm )T . State explicitly any simplifying assumption that you may wish to
+use. Moreover, find a linear parametrization of the inertial term M (q) q̈ = Y M (q, q̈) a of the robot
+dynamic model in terms of a minimal set of p suitable dynamic coefficients ai , i = 1, . . . , p.
+Exercise 2
+Consider a 4R planar robot with all links of equal length ` = 0.2 [m]. The robot is in the DH
+configuration q = ( 0 π/2 0 π/2 )T [rad] and at rest (q̇ = 0). In this state, we should assign to
+the end-effector a desired linear acceleration a = ( 5 0 )T [m/s2 ]. The joint accelerations are taken
+as input commands, and are bounded as |q̈i | ≤ Ai , i = 1, . . . , 4, with the limits A1 = 9, A2 = 6,
+A3 = 4, and A4 = 2 [rad/s2 ]. Find, if possible, a feasible joint acceleration q̈ ∈ R4 that executes
+instantaneously the desired Cartesian task, while satisfying these hard bounds. A solution with a
+lower norm is preferred, and could be obtained by a straightforward variation of the SNS method
+moved to the acceleration level.
+Exercise 3
+In a visual servoing scheme, n point features with coordinates (ui , vi ), for i = 1, . . . , n, can be
+extracted from the image. Define the 2 × 6 interaction matrix J̄ between the 6D vector of linear
+velocity V ∈ R3 and angular velocity Ω ∈ R3 of the camera and the time derivative of the
+coordinates (ū, v̄) of the average position of the n point features in the image plane. State all
+variables that matrix J̄ depends upon.
+Exercise 4
+For a robot with n degrees of freedom, partition the generalized coordinates as q = (q a , q b ), where
+q a has na components, q b has nb components, and na + nb = n. Provide the explicit expressions of
+the na -dimensional reduced robot dynamics and of the constraint-preserving forces λ ∈ Rnb , when
+the geometric constraint h(q) = q b − q b,d = 0 is imposed at all times, with q b,d being constant.
+[240 minutes; open books, but no computer or smartphone]
+
+1
+
+Solution
+July 11, 2018
+Exercise 1
+We need to compute the kinetic energy of the two motors and the two links, all in planar motion.
+For the motors, we have
+Tm1 =
+
+1
+Im θ̇2 ,
+2 1 m1
+
+Tm2 =
+
+1
+1
+mm2 l12 θ̇12 + Im2 (θ̇1 + θ̇m2 )2 ,
+2
+2
+
+since the first motor is balanced and its center of mass does not move, while the center of mass of
+the second motor is placed on the second joint axis at a distance equal to the link length l1 .
+For the links, we have
+Tl1 =
+
+
+1
+I1 + m1 d2c1 θ̇12 ,
+2
+
+Tl2 =
+
+1
+1
+m2 kv c2 k2 + I2 (θ̇1 + θ̇2 )2 ,
+2
+2
+
+with
+
+pc2 =
+
+l1 cos θ1 + dc2 cos(θ1 + θ2 )
+l1 sin θ1 + dc2 sin(θ1 + θ2 )
+
+
+,
+
+v c2 = ṗc2 =
+
+−(l1 θ̇1 sin θ1 + dc2 (θ̇1 + θ̇2 ) sin(θ1 + θ2 ))
+l1 θ̇1 cos θ1 + dc2 (θ̇1 + θ̇2 ) cos(θ1 + θ2 )
+
+!
+
+and thus
+kv c2 k2 = l12 θ̇12 + d2c2 (θ̇1 + θ̇2 )2 + 2l1 dc2 θ̇1 (θ̇1 + θ̇2 ) cos θ2 .
+T
+T
+= θ1 θ2 θm1 θm2
+. we can write the total kinetic
+Therefore, having set q = θ T θ Tm
+energy as
+1
+T = Tm1 + Tl1 + Tm2 + Tl2 = q̇ T M (q)q̇,
+2
+with the 4 × 4 inertia matrix of the robot given by
+
+
+I1 + m1 d2c1 + I2 + m2 d2c2 + m2 l12
+2
+ + Im + mm l2 + 2m2 l1 dc cos θ2 I2 + m2 dc2 + m2 l1 dc2 cos θ2 0 Im2 
+2
+2 1
+2
+
+
+
+
+2
+2
+
+M (q) = 
+I2 + m2 dc2 + m2 l1 dc2 cos θ2
+I2 + m2 dc2
+0
+0 
+.
+
+
+0
+0
+Im1 0 
+
+Im2
+0
+0 Im2
+Note that, if we assume that in the kinetic energy of the second motor the contribution of the
+angular velocity due to the previous link carrying the motor can be neglected in comparison with
+the spinning velocity of the rotor of the motor itself, we would have
+1
+1
+2
+Tm2 = · · · + Im2 (θ̇1 + θ̇m2 )2 ' · · · + Im2 θ̇m
+,
+2
+2
+2
+
+(1)
+
+and the off-diagonal terms M14 = M41 = Im2 of the inertia matrix would disappear. As a result,
+the matrix would become block diagonal, with two 2 × 2 blocks (the second being diagonal) that
+pertain to the link kinetic energy and, respectively, to the motor kinetic energy. This assumption
+is quite realistic when the motors are connected to the driven links via transmissions with large
+reduction ratios (which is not, however, the present case), independently from the presence or not
+of elasticity in the transmissions.
+
+2
+
+,
+
+The robot inertia matrix can be rewritten compactly using the following p = 5 dynamic coefficients
+a1 = I1 + m1 d2c1 + I2 + m2 l12 + Im2 + mm2 l12
+a2 = m2 l1 dc2
+a3 = I2 + m2 d2c2
+a4 = Im1
+a5 = Im2 ,
+as
+
+
+
+
+M (q) = 
+
+
+a1 + 2a2 cos θ2 a3 + a2 cos θ2
+a3 + a2 cos θ2
+a3
+0
+0
+a5
+0
+
+0
+0
+a4
+0
+
+a5
+0
+0
+a5
+
+
+
+
+.
+
+
+Thus, the inertial terms in the robot dynamic model can be given a linearly parametrized form as
+
+
+θ̈2
+
+0
+
+θ̈m2
+
+
+
+θ̈1 cos θ2
+
+θ̈1 + θ̈2
+
+0
+
+0
+
+0
+
+0
+
+θ̈m1
+
+0
+
+
+
+
+
+
+
+0
+
+0
+
+0
+
+θ̈1 + θ̈m2
+
+θ̈1 (2θ̈1 + θ̈2 ) cos θ2
+
+
+ 0
+M (q)q̈ = 
+ 0
+
+0
+
+a1
+a2
+a3
+a4
+a5
+
+
+
+
+ = Y M (q, q̈)a.
+
+
+
+We remark that the simplifying assumption (1) would eliminate from Y M the presence of θ̈m2 in
+element YM,15 and of θ̈1 in YM,45 , but not reduce the number of dynamic coefficients: as a matter
+of fact, p = 5 is the smallest possible number of such coefficients.
+Exercise 2
+The task Jacobian of the planar 4R robot is given by
+
+
+− (s1 + s12 + s123 + s1234 ) − (s12 + s123 + s1234 ) − (s123 + s1234 ) −s1234
+J (q) = `
+, (2)
+c1 + c12 + c123 + c1234
+c12 + c123 + c1234
+c123 + c1234
+c1234
+and is used, together with its time derivative J̇ (q), in the first- and second-order differential
+mappings
+v = J (q)q̇,
+a = J (q)q̈ + J̇ (q)q̇,
+a ∈ R2 ,
+q̈ ∈ R4 .
+Since a minimum norm solution is being sought at the acceleration level, we solve the second-order
+differential kinematics in the least squares sense using pseudoinversion as
+
+
+q̈ = J # (q) a − J̇ (q)q̇ .
+(3)
+When q = q̄ = ( 0 π/2 0 π/2 )T [rad] and for ` = 0.2 [m], the Jacobian becomes
+
+J := J (q̄) =
+
+−0.4
+0
+
+−0.4
+−0.2
+
+−0.2
+−0.2
+
+0
+−0.2
+
+
+
+Having J full rank1 , any desired task acceleration a in (3) will be exactly realized in the absence
+of bounds, or realized at least in direction (possibly in a scaled form) in case the joint accelerations
+1 This
+
+property is particularly strong in this case, since all 2 × 2 minors are nonsingular in this configuration.
+
+3
+
+bounds cannot be satisfied. Moreover, since the robot is at rest (q̇ = 0) in q = q̄, the relation (3)
+collapses into
+q̈ = J # a.
+(4)
+In this setting, the SNS (Saturation in the Null Space) method presented originally at the velocity
+level can be applied without any modification, except for the acceleration limits Ai ’s replacing the
+velocity ones.
+The pseudoinverse solution in (4) provides the joint acceleration with minimum norm. We have
+
+
+
+
+−8.3333
+−1.6667 1.6667
+ −0.8333 −0.8333   5   −4.1667 
+
+
+
+
+#
+T
+T −1
+=
+q̈ P S = J a = J (J J ) a = 
+ [rad/s2 ]. (5)
+
+
+
+0
+
+0
+−1.6667  0
+4.1667
+0.8333
+−2.5
+The fourth joint acceleration violates the maximum limit, q̈P S,4 = 4.1667 > 2 = A4 , so this is not
+a feasible solution. Thus, we search for a feasible solution by using the SNS method.
+In step 1 of the SNS method, we saturate the overdriven joint by setting q̈4 = A3 = 2 [rad/s2 ].
+Then, the original task is modified by removing the saturated contribution of the fourth joint
+acceleration (and discarding the associated column of J ). We rewrite this as
+
+
+ 
+
+ 
+ 
+ q̈1
+5
+0
+5
+−0.4 −0.4 −0.2 
+
+a1 = a − J 4 A4 =
+−2
+=
+=
+ q̈2  = J −4 q̈ −4 ,
+0
+−0.2
+0.4
+0
+−0.2 −0.2
+q̈3
+where J −i is the Jacobian obtained by deleting the ith column and, similarly, q̈ −i is the vector
+of joint accelerations without the ith component. We recompute next the contribution of the
+remaining active joints, by pseudoinverting the J −4 matrix for the modified task. We obtain
+
+
+
+
+
+
+−9.7778
+−2.2222 3.3333
+5
+
+
+
+
+q̈ P S−4 = J #
+=  −3.4444  [rad/s2 ],
+−4 a1 =  −0.5556 −1.6667 
+0.4
+1.4444
+0.5556 −3.3333
+to be completed with the additional choice q̈4 = A4 = 2. The first joint acceleration violates now
+its limit (on the negative side), q̈P S−4 ,1 = −9.7778 < −9 = −A1 . So. this is not yet a feasible
+solution and we proceed with the SNS method.
+In step 2, we saturate also the first overdriven joint by setting q̈1 = −A1 = −9 [rad/s2 ]. The
+original task is modified by removing both saturated acceleration contributions by the first and
+fourth joints (discarding the two associated columns of J ). We rewrite this as
+
+
+
+ 
+
+5
+−0.4
+1.4
+a2 = a − J 4 A4 − J 1 (−A1 ) = a1 + J 1 A1 =
++9
+=
+0.4
+0
+0.4
+and
+
+a2 =
+
+1.4
+0.4
+
+
+
+
+=
+
+−0.4
+−0.2
+
+−0.2
+−0.2
+
+
+
+q̈2
+q̈3
+
+
+= J −14 q̈ −14 ,
+
+with obvious notation. We recompute next the contribution of the remaining active joints, by
+pseudoinverting the (now square and nonsingular) matrix J −23 for the modified task. We obtain
+
+
+ 
+
+1.4
+−5
+−5
+5
+−1
+q̈ P S−14 = J #
+a
+=
+J
+a
+=
+=
+[rad/s2 ],
+−14 2
+−14 2
+5 −10
+0.4
+3
+4
+
+with q̈1 = −A1 = −9 and q̈4 = A4 = 2. All bounds are now satisfied and the obtained joint
+acceleration is feasible. Recomposing the complete vector, we have the solution
+
+
+−9
+ −5 
+
+
+with J q̈ SN S = a and kq̈ SN S k = 10.9087.
+(6)
+q̈ SN S = 
+ [rad/s2 ],
+ 3 
+2
+This feasible solution is the one having the least possible norm.
+The solution (6) is not the only feasible one. As a matter of fact, one could have attempted a
+heuristic procedure to find a (set of) solution(s) in a reasonable but otherwise arbitrary way, e.g.,
+by fixing one component of the input acceleration to one of its (upper or lower) limits, and working
+out then the rest of the solution. For this, reconsider the original equation to be solved, written
+explicitly in terms of a linear system in the joint accelerations (scaling the coefficients so as to
+become all integers):
+
+
+ 
+2q̈1 + 2q̈2 + q̈3 = −25
+−0.4 −0.4 −0.2
+0
+5
+J (q̄) q̈ = a ⇒
+q̈ =
+⇐⇒
+0
+−0.2 −0.2 −0.2
+0
+q̈2 + q̈3 + q̈4 = 0.
+By inspection, we find that choosing q̈1 = −A1 = −9 will contribute at best to the solution of
+the first scalar equation, being this variable present only in this equation and having the largest
+coefficient (and thus the highest sensitivity). In addition, set parametrically q̈4 = α in the second
+scalar equation. We have then
+
+
+ 
+ 
+
+
+
+ 
+q̈2
+2 1
+−25 + 2A1
+−7
+q̈2
+−7 + α
+=
+=
+⇒
+,
+=
+1 1
+q̈3
+−q̈4
+−α
+q̈3
+7 − 2α
+with the components of the parametric solution that need to satisfy the bounds
+|q̈2 | ≤ A2 = 6
+|q̈3 | ≤ A3 = 4
+|q̈4 | ≤ A4 = 2
+
+−6 ≤ −7 + α ≤ 6
+⇐⇒
+
+−4 ≤ 7 − 2α ≤ 4
+
+⇒
+
+α ∈ [1.5, 2].
+
+−2 ≤ α ≤ 2
+
+The feasible interval for α comes from the simultaneous intersection of the set of inequalities.
+Therefore, we have a parametrized family of feasible solutions in the form
+
+
+−9
+ −7 + α 
+p
+
+
+q̈(α) = 
+with kq̈(α)k = 6α2 − 42α + 179,
+α ∈ [1.5, 2]. (7)
+ [rad/s2 ],
+ 7 − 2α 
+α
+We see immediately that q̈ SN S = q̈(α = 2). Moreover, the quadratic polynomial in the norm of
+q̈(α) has an unconstrained minimum at α = 3.5, which is outside the interval [1.5, 2] of feasibility
+for α. Therefore, the minimum norm is obtained at the upper limit α = 2 of this closed interval,
+i.e., with q̈ SN S . Any other feasible solution will have a larger norm than q̈ SN S .
+We finally remark that, in order to find a feasible joint acceleration, a different (say, more conventional) solution would have been to use pseudo-inversion with a scaling of the original task
+acceleration a (in intensity, but without a change in direction). This is done as follows. From (5),
+we compute the necessary scaling factor s > 1 as
+
+
+
+
+8.3333 4.1667 0 4.1667
+|q̈P S,i |
+, i = 1, . . . , 4 = max
+,
+, ,
+= 2.0833.
+s = max
+Ai
+9
+6
+4
+2
+5
+
+This value is imposed by the exceeding acceleration of the fourth joint. We compute then
+
+
+−4
+
+
+ −2 
+2.4
+a
+
+
+ascaled = =
+⇒
+q̈ P S,scaled = J # ascaled = 
+.
+s
+ 0 
+0
+2
+Indeed, the obtained joint acceleration has lower norm than q̈ SN S , but realizes in fact only 2.4/5 =
+48% of the desired task acceleration of the original problem.
+Exercise 3
+The interaction matrix of a generic point feature with image coordinates (ui , vi ) is known to be
+
+
+
+
+λ
+ui
+ui vi
+u2i
+0
+− λ+
+vi 
+ −Z
+Zi
+Zi
+λ
+i
+,
+J pi (ui , vi , Zi ) = 
+2
+
+
+vi
+vi
+ui v i
+λ
+λ+
+−
+−ui
+0
+−
+Zi Zi
+λ
+Zi
+with
+
+
+
+u̇i
+v̇i
+
+
+
+
+= J pi (ui , vi , Zi )
+
+V
+Ω
+
+
+,
+
+where the parameter λ > 0 is the constant focal length of the camera and Zi is the depth of the
+Cartesian point P i ∈ R3 in the pre-image of (ui , vi ). The average position of n point features in
+the image plane has coordinates
+
+
+1 Pn
+ 
+
+n 
+ n i=1 ui 
+ū
+1 X ui
+
+
+=
+.
+= n
+v̄
+vi
+1 Pn
+i=1
+v
+i
+n i=1
+Therefore
+! 
+ 
+
+ 
+n 
+n
+ū˙
+1 X u̇i
+1X
+V
+V
+J p (ui , vi , Zi )
+= J̄ (u, v, Z)
+=
+=
+Ω
+Ω
+n i=1 v̇i
+n i=1 i
+v̄˙
+
+
+
+Pn
+Pn ui
+Pn ui vi
+Pn u2i 
+ 
+1
+1
+1
+− nλ i=1 Z1i
+0
+−
+λ
++
+v̄
+V
+i=1 Zi
+i=1 Zi
+i=1 λ
+n
+n
+n
+
+=
+,
+Pn 1 1 Pn vi
+Pn vi2
+Pn ui vi
+Ω
+λ
+1
+1
+0
+− n i=1 Zi n i=1 Zi λ + n i=1 λ
+− n i=1 Zi
+−ū
+with a dependence of the interaction matrix J̄ on the components of u = (u1 . . . un )T ∈ Rn ,
+v = (v1 . . . vn )T ∈ Rn , and Z = (Z1 . . . Zn )T ∈ Rn .
+Exercise 4
+The nb -dimensional geometric constraint
+h(q) = q b − q b,d = 0
+
+(8)
+
+has a simple associated Jacobian
+A(q) =
+
+∂h(q)
+=
+∂q
+6
+
+O
+
+I
+
+
+
+.
+
+Therefore, considering the decomposition q = (q a , q b ), the dynamic model of the constrained robot
+can be partitioned as follows
+!  
+    
+M aa (q) M ab (q)
+q̈ a
+na (q, q̇)
+τa
+0
+T
+M (q)q̈+n(q, q̇) = τ +A (q)λ ⇒
++
+=
++
+,
+T
+q̈ b
+nb (q, q̇)
+τb
+λ
+M ab (q) M bb (q)
+where n(q, q̇) collects all non-inertial terms in the model and λ ∈ Rnb is the vector of Lagrange
+multipliers associated to the geometric constraints.
+To obtain a reduced dynamic model (with only n − nb = na independent coordinates), we proceed
+in the general way by bordering A(q) with the rows of a matrix D(q), so as to obtain a square
+and nonsingular transformation matrix. The situation is particularly simple since A is constant,
+and so can be chosen D. A globally valid choice is then
+
+
+A
+D
+
+
+
+
+=
+
+O I
+I O
+
+
+
+
+⇒
+
+A
+D
+
+−1
+
+
+=
+
+O
+I
+
+I
+O
+
+
+=
+
+E
+
+F
+
+
+
+.
+
+Thus, the following bidirectional mappings are established between the generalized velocity q̇ (and
+acceleration q̈) and the pseudo-velocity v (and pseudo-acceleration v̇):
+
+
+
+
+
+I
+I
+v̇.
+v,
+q̈ =
+v̇ = q̈ a
+⇐⇒
+q̇ = F v =
+v = D q̇ = I O q̇ = q̇ a ,
+O
+O
+Dropping dependencies, the reduced inertia matrix and the reduced non-inertial dynamic terms
+are computed as
+
+
+
+I
+T
+= M aa ,
+F MF = I O M
+O
+
+
+ τ a − na
+T
+F (τ − n) = I O
+= τ a − na .
+τ b − nb
+Therefore, taking into account that q b = q b,d and q̇ b = q̈ b = 0 from (8), the reduced dynamic
+model becomes
+M aa (q a , q b,d ) q̈ a + na (q a , q b,d , q̇ a , 0) = τ a ,
+while the Lagrange multipliers (i.e., the forces that will preserve the geometric constraints when
+attempting their violation) takes the expression
+!
+
+ 
+!
+
+∗
+∗
+∗
+T
+λ = E (M F v̇ + n − τ ) = O I
+q̈ a +
+−
+,
+nb
+τb
+M Tab
+or, by expliciting the dependencies,
+λ = M Tab (q a , q b,d ) q̈ a + nb (q a , q b,d , q̇ a , 0) − τ b .
+We conclude with two extra comments. The following torque command, expressed as a function
+of the constrained robot state and of the arbitrary input torque τ a ,
+τ b = M Tab (q a , q b,d ) q̈ a + nb (q a , q b,d , q̇ a , 0)
+
+= M Tab (q a , q b,d )M −1
+aa (q a , q b,d ) τ a − na (q a , q b,d , q̇ a , 0) + nb (q a , q b,d , q̇ a , 0),
+will guarantee λ ≡ 0 at all times, resulting in a feasible motion with minimal internal effort. On
+the other hand, the feedback linearizing control law that achieves (in a decoupled way) a desired
+7
+
+value a for the acceleration q̈ a of the free variables and a desired constraint force λ = λd is given
+by
+!
+
+
+M aa (q a , q b,d )
+O
+τ =
+a+
+λd + n(q a , q b,d , q̇ a , 0),
+I
+M Tab q a , q b,d )
+or
+τ a = M aa (q a , q b,d ) a + na (q a , q b,d , q̇ a , 0),
+τ b = M Tab (q a , q b,d ) a + nb (q a , q b,d , q̇ a , 0) + λd .
+∗∗∗∗∗
+
+8
+
+

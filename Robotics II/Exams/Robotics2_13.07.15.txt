@@ -1,0 +1,507 @@
+Robotics II
+July 15, 2013
+Consider a planar 3R robot on a horizontal plane, having link lengths `1 , `2 , and `3 . Figure 1
+shows three different situations. In each of them, the robot is subject to:
+T
+, of arbitrary direction and intensity
+• a single unknown external force F i = Fxi Fyi
+in the plane, applied to a point of the first, second, or third link, at a (possibly, unknown)
+distance `ci from the link i base (with i = 1, 2, 3, respectively);
+T
+• an associated known (measured, or computed by a controller) joint torque τ = τ1 τ2 τ3
+T
+that keeps the robot in a static equilibrium q = q1 q2 q3
+, as measured by encoders.
+
+Figure 1: A planar 3R robot subject to an unknown external force F i applied to the first (i = 1,
+left), second (i = 2, center), or third link (i = 3, right)
+Analyze for each of the above three generic situations if and how:
+1. one can identify which link is subject to the external force;
+2. knowing the distance `ci of the application point along the link (which can be obtained
+by means of an external camera, a Kinect, or using distributed tactile sensing), one can
+completely estimate F i , e.g., its direction and intensity;
+3. one can estimate F i and the distance `c,i of the application point along the link, without
+any external/extra sensing;
+4. the presence of gravity (with the robot being in a vertical plane) makes a difference for the
+above problems.
+Verify the analysis for a 3R robot in a horizontal plane, with the numerical data
+T
+`1 = 0.5 [m], `2 = 0.3 [m], `3 = 0.2 [m],
+q = 45◦ −90◦ 60◦
+(in D-H convention),
+and for the following two cases of known equilibrium joint torques:
+T
+a) τ a = −0.25 −0.75 0
+[Nm],
+b) τ b = 0.7585 −0.2995
+
+0.2000
+
+T
+
+[Nm].
+
+Estimate the applied external force in case a) and b), respectively. Following the outcome of your
+analysis, try to work without any a priori knowledge of the application point of the external force.
+If a case turns out to be under-determined, choose the application point at the link midpoint.
+[120 minutes; open books]
+1
+
+Solution
+July 15, 2013
+In the absence of gravity, the joint torque that balances at an equilibrium q a force applied to a
+point along the robot structure having position pc = f c (q) is given by
+
+τ =−
+
+∂f c
+∂q
+
+T
+
+F = −J Tc (q) F .
+
+Planar forces F ∈ R2 are expressed here in the base frame (x0 , y 0 ). From the position of the
+contact point pc ∈ R2 , we can derive the contact Jacobian associated to a force F i acting on link
+i at a distance `ci from its base, for i = 1, 2, 3 (three cases).
+For a force F 1 acting on the first link, with `c1 ∈ (0, `1 ]:
+
+−`c1 sin q1 0
+J c1 =
+`c1 cos q1 0
+
+0
+0
+
+
+.
+
+For a force F 2 acting on the second link, with `c2 ∈ (0, `2 ]:
+
+
+−`1 sin q1 − `c2 sin(q1 + q2 ) −`c2 sin(q1 + q2 ) 0
+J c2 =
+.
+`1 cos q1 + `c2 cos(q1 + q2 )
+`c2 cos(q1 + q2 ) 0
+For a force F 3 acting on the third link, with `c3 ∈ (0, `3 ]:
+
+−`1 s1 − `2 s12 − `c3 s123 −`2 s12 − `c3 s123
+J c3 =
+`1 c1 + `2 c12 + `c3 c123
+`2 c12 + `c3 c123
+
+
+
+−`c3 s123
+`c3 c123
+
+,
+
+where we used the usual compact notation, e.g., s123 = sin(q1 + q2 + q3 ).
+In order to have a better insight on the contact forces that are felt at the robot joints, it is
+convenient to express these forces in the local frame attached to each link, i.e., according to their
+tangential and normal components w.r.t. the geometric link. Since we are dealing with a purely
+planar problem, the planar rotation matrices of interest are
+
+
+
+
+
+
+c1 −s1
+c12 −s12
+c123 −s123
+0
+R1 =
+, 0R2 =
+, 0R3 =
+.
+s1 c1
+s12 c12
+s123 c123
+we have
+F i = 0Ri iF i
+
+⇒
+
+τ i = −J Tci (q) F i = −J Tci (q)0Ri iF i = −
+
+
+
+RTi J ci (q)
+
+0
+
+T
+
+F i = −iJ Tci (q) iF i .
+
+i
+
+Once expressed in the local link frame, the contact Jacobians iJ ci (q) for the considered cases are:
+
+
+0 0 0
+1
+J c1 = 0RT1 J c1 (q) =
+,
+always of rank 1;
+`c1 0 0
+
+
+`1 s2
+0 0
+2
+J c2 = 0RT2 J c2 (q) =
+,
+of rank 2 if and only if |s2 | =
+6 0;
+`1 c2 + `c2 `c2 0
+
+
+`1 s23 + `2 s3
+`2 s3
+0
+3
+J c3 = 0RT3 J c3 (q) =
+, of rank 2 if and only if s22 + s23 6= 0.
+`1 c23 + `2 c3 + `c3 `2 c3 + `c3 `c3
+Therefore, we have the following explicit equations at steady state.
+2
+
+For a force 1F 1 =
+
+1
+
+F1x
+
+1
+
+F1y
+
+T
+
+acting on the first link:
+τ1,1 = −`c1 1F1y ,
+τ1,2 = 0,
+
+(1)
+
+τ1,3 = 0.
+For a force 2F 2 =
+
+2
+
+F2x
+
+2
+
+F2y
+
+T
+
+acting on the second link:
+
+
+τ2,1 = −`1 s2 2F2x − (`1 c2 + `c2 ) 2F2y = −`1 s2 2F2x + c2 2F2y + τ2,2 ,
+τ2,2 = −`c2 2F2y ,
+
+(2)
+
+τ2,3 = 0.
+For a force 3F 3 =
+
+3
+
+F3x
+
+3
+
+F3y
+
+T
+
+acting on the third link:
+
+τ3,1 = − (`1 s23 + `2 s3 ) 3F3x − (`1 c23 + `2 c3 + `c3 ) 3F3y
+
+= −`1 s23 3F3x + c23 3F3y + τ3,2 ,
+
+
+τ3,2 = − `2 s3 3F3x + (`3 c3 + `c3 ) 3F3y = −`2 s3 3F3x + c3 3F3y + τ3,3 ,
+
+(3)
+
+τ3,3 = −`c3 3F3y .
+Inner recursions from the outer to the inner joints have been used to simplify the expressions.
+Based on the above, the following series of observations can be made.
+1. Identification of which link is subject to the contact force is made using the components of
+the joint torque vector τ i , based on the following cascaded (generic) rule:
+τi,3 = τi,2 = 0
+
+⇒
+
+i = 1, link 1 is involved
+
+τi,3 = 0, τi,2 6= 0
+
+⇒
+
+i = 2, link 2 is involved
+
+else
+
+⇒
+
+i = 3, link 3 is involved.
+
+Note that, if a force is applied at the base of link i (corresponding to the exact location of
+joint i), it is then attributed to the tip of the previous link i − 1 (with `c,i−1 = `i−1 ), since
+`ci 6= 0 by definition.
+2. Knowledge of the joint torque vector τ i at an equilibrium configuration q is obtained in one
+of the following alternative, but equivalent ways (however, note the signs!):
+• from the static measurement by a joint torque sensor, τ m = −J Tc (q)F c = τ i ;
+• as the steady-state value of the residual vector r generated in response to a collision
+with a constant contact force F c , r = J Tc (q)F c = −τ i ;
+• as the steady-state output of a feedback controller, e.g., with a regulation law designed
+for a desired position q d and including a proportional term, τ c = K P (q d − q) =
+−J Tc (q)F c = τ i .
+3. Since the rank of matrix J c1 (and of 1J c1 ) is always one, we can never estimate completely
+a contact force acting on link 1. As intuition suggests, from eqs. (1) we can only estimate
+the force component 1F1y that is normal to the link, once we know its application point, as
+1
+
+F1y = −
+3
+
+τ1,1
+,
+`c1
+
+whereas 1F1x can be arbitrary and is balanced by the internal reaction force of the link
+structure.
+4. When matrix J c2 (2J c2 ) has full rank, by using eqs. (2) we can estimate completely the
+contact force F 2 acting on link 2, provided that `c2 is known, as
+
+
+τ2,2
+1
+τ2,2
+2
+2
+F2y = −
+,
+F2x = −
+τ2,1 − (`1 c2 + `c2 )
+.
+`c2
+`1 s2
+`c2
+To recover the expression of the contact force in the base frame, we use F 2 = 0R2 2F 2 .
+5. When the second link is aligned with the first one (s2 = 0), J c2 loses rank and we recover a
+similar situation to that in item 3, namely 2F2x cannot be estimated. However, in this case
+the two data τ2,1 and τ2,2 can be used to estimate both 2F2y and `c2 as
+2
+
+F2y = ±
+
+τ2,1 − τ2,2
+,
+`1
+
+τ2,2
+`c2 = − 2
+,
+F2y
+
+where the sign ‘−’ corresponds to q2 = 0 and the sign ‘+’ to q2 = π.
+6. When matrix 3J c3 (or J c3 ) has full rank and `c3 is known, by using eqs. (3) we can estimate
+completely the contact force F 3 acting on link 3 as
+3
+
+τ3,3
+,
+`c3
+
+
+1
+τ3,3
+= −
+τ3,2 − (`2 c3 + `c3 )
+,
+`2 s3
+`c3
+
+
+1
+τ3,3
+= −
+τ3,1 − τ3,2 − `1 c23
+,
+`2 s23
+`c3
+
+F3y = −
+
+3
+
+F3x
+
+or
+
+3
+
+F3x
+
+if s3 6= 0
+if s3 = 0, but s23 = ± s2 6= 0.
+
+To recover the expression of the contact force in the base frame, we use F 3 = 0R3 3F 3 . When
+the robot arm is fully stretched or folded, we can proceed as in item 5 and identify from τ 3
+both 3F3y and `c3 , but not 3F3x .
+7. One interesting feature of having three independent information from the joint torque vector
+in case of contact on the third link, is that the estimation of the force F 3 can be performed
+even without knowing `c3 . In fact, the value `c3 has disappeared in the recursive expressions
+of the first two equations in (3). Therefore, we can evaluate
+!
+!−1
+!
+3
+F
+`
+s
+`
+c
+τ
+−
+τ
+3x
+1
+23
+1
+23
+3,1
+3,2
+3
+F3 =
+=−
+,
+3
+F3y
+`2 s3 `2 c3
+τ3,2 − τ3,3
+provided that s2 6= 0 holds (for the invertibility of the coefficient matrix), and then complete
+the analysis by using the third equation in (3)
+τ3,3
+`c3 = − 3
+.
+F3y
+8. The results in the above items 3, 4, and 6 can all be obtained by using the pseudoinverse of
+the associated contact Jacobian, independently from its rank,
+
+#
+
+#
+i
+or
+F̂ i = − i J Tci (q) τ i ,
+for i = 1, 2, 3.
+F̂ i = − J Tci (q) τ i
+4
+
+The ‘hat’ has been added to express the fact that the estimation may not be complete (e.g.,
+in the contact on the first link, or in the other two cases when the contact Jacobian loses
+rank). On the other hand, the estimation result in item 7 is obtained by direct inspection of
+the equations.
+9. The presence of a gravity term g(q) in the robot dynamics does not change the picture
+substantially. The main difference is that the joint torque τ should be replaced in all above
+formulas by τ − g(q), since at the equilibrium
+g(q) = τ + J Tc (q)F .
+For the two assigned numerical problems, we have the following results. We note first that the
+T
+given robot configuration q̄ = π/4 −π/2 π/3
+[rad] does not lead to singularity problems.
+a) Contact occurs on the second link (see item 1) and eqs. (2) apply. Since knowledge of the
+application point is necessary in this case, we set `c2 = `2 /2 = 0.15 [m]. The contact Jacobian
+is then
+!
+−0.2475 0.1061 0
+J c2 (q̄) =
+.
+0.4596 0.1061 0
+Thus,
+F2 = −
+
+
+
+J Tc2 (q̄)
+
+#
+
+τa =
+
+4.242
+2.8284
+
+!
+,
+
+2
+
+F2 =
+
+0
+
+RT2 (q̄)F 2
+
+=
+
+!
+
+1
+
+,
+
+5
+
+both expressed in [N].
+
+b) Contact occurs on the third link and eqs. (3) apply. Solving for contact force and distance
+of its application point from the link base yields
+!
+!
+2.6736
+2.5
+3
+F3 =
+, F3 =
+, both expressed in [N]; `c3 = 0.2 [m] (i.e., at the tip).
+−0.3189
+−1
+Using the computed `c3 , the resulting contact Jacobian is then
+J c3 (q̄) =
+
+0.1932
+
+0.1604
+
+−0.0518
+
+0.7589
+
+0.4053
+
+0.1932
+
+
+#
+Finally, one can verify that F 3 = − J Tc3 (q̄) τ b .
+∗∗∗∗∗
+
+5
+
+!
+.
+
+

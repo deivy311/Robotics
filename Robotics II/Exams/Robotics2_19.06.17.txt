@@ -1,0 +1,736 @@
+Robotics II
+June 17, 2019
+Exercise 1
+Consider the Kawasaki S030 robot with six revolute joints and a spherical wrist shown in Fig. 1.
+For every link mass mi , i = 1, . . . , 6, the location of the center of mass is shown graphically in the
+different views (see also the distributed extra sheet in larger size; please, disregard any numerical
+value therein). Note that the position of the center of mass of the fifth link (m5 ) as well as that of
+the sixth link (m6 ) coincide with the wrist center —a simplifying assumption. The robot has been
+calibrated and all kinematic quantities are thus known.
+Determine the symbolic expression of the gravity vector g(q) ∈ R6 and a possible linear parametrization in terms of the unknown dynamic coefficients ag ∈ Rp , with the smallest value of p. Find all
+equilibrium configurations q e of the robot (i.e., such that g(q e ) = 0).
+
+m6
+m6 m4
+⨁
+⨁ ⨁
+
+m4
+
+⨁
+⨁
+
+m3
+
+m3
+
+⨁
+
+⨁
+
+m5
+
+m5
+
+⨁
+
+g0
+m6 m4
+⨁
+⨁ ⨁
+
+m3
+⨁
+
+m3
+
+m5
+
+⨁ m2
+
+m1
+
+m2
+
+⨁
+
+⨁
+
+m2 ⨁
+
+⨁
+
+m1
+
+⨁
+
+m1
+
+⨁
+
+Figure 1: 6R Kawasaki S030 robot: Localization of the centers of mass of the six links.
+Exercise 2
+Consider the 3 × 3 matrix
+
+2
+a1 + (a2 cos q2 + a3 cos(q2 + q3 ))
+
+M (q) = 
+0
+0
+
+0
+a4 + a5 + 2a6 cos q3
+a5 + a6 cos q3
+
+
+0
+
+a5 + a6 cos q3 .
+a5
+
+Check whether this can be the inertia matrix of a 3-dof serial robot manipulator and, if so, under
+which conditions this holds true for the dynamic coefficients ai (i = 1, . . . , 6) appearing in M (q).
+
+1
+
+Exercise 3
+A robot with n > 3 joints, parametrized by q, is redundant w.r.t. a positional task x = f (q) of
+dimension m = 2 or m = 3 (so, always with m < n), having task Jacobian J (q) = ∂f (q)/∂q.
+At a configuration q̄ where rank J (q̄) = r < m, consider the following two cases of joint velocity
+commands associated to a desired task velocity ẋd :
+q̇ A = J # (q̄) ẋd ,
+
+q̇ B = J T (q̄) ẋd .
+
+Taking advantage of the Singular Value Decomposition of the matrix J̄ = J (q̄), show that:
+i. In both cases, the actual ẋ can be different from the desired ẋd , but the vectors ẋd and ẋ make
+always a relative angle that is smaller than π/2;
+
+ii. When ẋd ∈ R J̄ , q̇ A gives no task velocity error, while q̇ B leads in general to an error
+ė = ẋd − ẋ 6= 0.
+Exercise 4
+For a 2R robot moving on a horizontal plane, determine (in symbolic or numerical form) all terms
+in the expression of a control law producing a joint torque τ ∈ R2 that is able to regulate the
+robot end-effector position p ∈ R2 to a desired constant value pd , with a transient error e = pd − p
+which globally satisfies, up to kinematic singularities, the differential equations
+
+
+
+
+100 0
+20 0
+ė +
+e = 0.
+ë +
+0 50
+0 10
+When starting at rest from an initial configuration q 0 that is not associated to pd , will the Cartesian
+behavior of the robot end-effector be oscillatory during the transient?
+Exercise 5
+A robot should slide a cube, firmly held by its end-effector gripper, on a flat surface, following an
+arbitrary path (see Fig. 2). For modeling purposes, assume that the surface is infinitely stiff and
+frictionless.
+
+Figure 2: A cube sliding along a path on a flat surface.
+Provide the set of natural constraints and a suitable set of artificial constraints for this interaction
+task with the environment. Consider both cases of a constant or arbitrary time-varying orientation
+of the cube while moving along the path. How many control loops of the generalized force or motion
+type are needed to achieve a perfectly linear and decoupled behavior in the task space? How many
+degrees of freedom are necessary for the robot in order to fulfil all control specifications? Can at
+least some of the desired control tasks be performed by a Scara robot? And by a 3R planar robot?
+If so, under which conditions?
+[open books, 240 minutes]
+2
+
+Solution
+June 17, 2019
+Exercise 1
+We need to define first a set of generalized coordinates q, either by following a DH assignment of
+frames or by direct inspection of Fig. 1. The latter is more convenient here. In fact, it is rather easy
+to see that the definition of the link variables q1 and (q4 , q5 , q6 ) is irrelevant for the computation
+of the gravity term g(q) in the robot dynamics because:
+• the rotation q1 of joint 1 will not affect the height of the center of mass of any link;
+• the position of the center of mass of link 4 will not depend on q4 , since m4 lies exactly on the
+axis of joint 4;
+• the position of the two center of masses m5 and m6 (which are assumed to be coincident1 with
+the center of the spherical wrist) is independent from the joint variables of the wrist.
+As a matter of fact, the potential energy of the system due to gravity, and thus the dynamic term
+g(q), will be a function of q2 and q3 only. Moreover, we will have g1 = g4 = g5 = g6 ≡ 0 for the
+components of g(q2 , q3 ).
+
+l5
+dc4
+dc3
+
+q3
+
+⨁ ⨁
+⨁
+
+m3
+
+m4 m6
+
+⨁ m2
+
+l2
+
+q2
+
+dc2
+
+l1
+
+m5
+
+⨁
+
+⨁ m1
+
+Figure 3: One possible choice of variables q2 and q3 for the second and third links of the Kawasaki
+robot, together with the definition kinematic/dynamic parameters.
+With reference to Fig. 3, where the two joint variables q2 and q3 are defined (mimicking the classical
+assignment for the planar 2R case), together with the kinematic/dynamic parameters l1 , dc2 , l2 ,
+dc3 , dc4 and l5 , we obtain
+U1 = constant,
+1 This
+
+U2 = m2 g0 (l1 + dc2 sin q2 ) ,
+
+U3 = m3 g0 (l1 + l2 sin q2 + dc3 sin(q2 + q3 )) ,
+
+simplifying assumption is a very strong one, in particular concerning the location of m6 .
+
+3
+
+U4 = m4 g0 (l1 + l2 sin q2 + dc4 sin(q2 + q3 )) ,
+
+U5 + U6 = (m5 +m6 )g0 (l1 + l2 sin q2 + l5 sin(q2 + q3 )) .
+
+As a result,
+U=
+
+P6
+
+i=1
+
+Ui = g0 (m2 dc2 + (m3 + m4 + m5 + m6 )l2 ) sin q2
++ g0 (m3 dc3 + m4 dc4 + (m5 + m6 )l5 ) sin(q2 + q3 ) + constants
+= a1 sin q2 + a2 sin(q2 + q3 ) + constants.
+
+Thus,
+
+
+g(q2 , q3 ) =
+
+∂U
+∂q
+
+T
+
+
+
+
+
+= 
+
+
+
+
+
+
+
+
+= 
+
+
+
+
+
+0
+a1 cos q2 + a2 cos(q2 + q3 ) 
+
+
+a2 cos(q2 + q3 )
+
+
+
+0
+
+
+0
+0
+
+0
+0
+cos q2 cos(q2 + q3 ) 
+
+
+0
+cos(q2 + q3 ) 
+ a1
+= Y g (q2 , q3 ) a,
+
+ a2
+0
+0
+
+
+0
+0
+0
+
+(1)
+
+0
+
+with a linear parametrization expressed in terms of only p = 2 dynamic coefficients.
+All equilibrium configurations q e are found by setting g(q e ) = 0 in (1). We obtain
+T
+q e = any ±π/2 0 or π any any any
+.
+Exercise 2
+The given matrix M (q) is symmetric and does not depend on q1 —both are necessary conditions
+for being the inertia matrix of a serial manipulator. In order to be a positive definite matrix, it is
+necessary that all diagonal elements are strictly positive for all q. This implies
+a1 > 0,
+
+a4 + a5 > 2|a6 | > 0,
+
+a5 > 0.
+
+(2)
+
+The necessary and sufficient condition for positive definiteness of a symmetric matrix (Sylvester
+criterion) is that the leading minors are strictly positive (for all q). Under (2), this boils down in
+checking that
+
+
+a4 + a5 + 2a6 cos q3 a5 + a6 cos q3
+> 0,
+∀q.
+det M [2:3] = det
+a5 + a6 cos q3
+a5
+We have
+det M [2:3] = a4 a5 − a26 cos2 q3 > 0
+
+⇒
+
+a4 a5 > a26 ≥ 0
+
+⇒
+
+a4 > 0,
+
+(3)
+
+the latter being implied by the previous condition a5 > 0. Joining conditions (2) and (3) leads to
+the necessary and sufficient conditions2
+a1 > 0,
+
+a4 > 0,
+
+a4 + a5 > 2|a6 |,
+
+a5 > 0,
+
+2 Matrix
+
+a4 a5 > a26 .
+
+(4)
+
+M (q) is in fact the inertia matrix of the robot considered in the midterm test of Robotics 2 during the
+academic year 2016/17, with some additional simplifying assumptions. As such, the conditions (4) are automatically
+satisfied in that case by the explicit expressions of the dynamic coefficients.
+
+4
+
+Exercise 3
+We use the Singular Value Decomposition of the m × n matrix J̄ = J (q̄) (with m < n). From
+
+
+diag {σ1 , . . . , σr }
+O r×(m−r)
+J̄ = U ΣV T = U
+O m×(n−m) V T ,
+O (m−r)×r
+diag {0, . . . , 0}
+
+where U = u1 u2 . . . ur ur+1 . . . um and V are two orthonormal matrices, respectively of
+dimension m and n, and the singular values of J̄ have been ordered as σ1 ≥ σ2 ≥ · · · ≥ σr > 0,
+σr+1 = · · · = σm = 0, we have
+n
+o
+
+
+diag σ11 , . . . , σ1r
+O r×(m−r)
+ T
+
+#
+O (m−r)×r
+diag {0, . . . , 0} 
+J̄ = V Σ# U T = V 
+U
+
+O (n−m)×n
+and
+
+diag {σ1 , . . . , σr }
+
+O (m−r)×r
+=V 
+
+
+J̄
+
+T
+
+= V ΣT U T
+
+
+O r×(m−r)
+T
+diag {0, . . . , 0} 
+U .
+
+O (n−m)×n
+T
+
+#
+
+Thus, the result of the two command choices q̇ A = J̄ ẋd and q̇ B = J̄ ẋd is
+#
+
+ẋA = J̄ q̇ A = J̄ J̄ ẋd = U ΣV T V Σ# U T ẋd = U ΣΣ# U T ẋd
+
+
+
+I r×r
+O r×(m−r)
+=U
+U T ẋd = u1 u2 . . . ur 0 . . . 0 U T ẋd
+O (m−r)×r diag {0, . . . , 0}
+and
+T
+
+ẋB = J̄ q̇ B = J̄ J̄ ẋd = U ΣV T V ΣT U T ẋd = U ΣΣT U T ẋd
+
+
+
+
+O r×(m−r)
+diag σ12 , . . . , σr2
+U T ẋd = σ12 u1 σ22 u2 . . . σr2 ur 0 . . . 0 U T ẋd .
+=U
+O (m−r)×r
+diag {0, . . . , 0}
+Based on these expressions, we can immediately see that3
+ẋTd ẋA = ẋTd U ΣΣ# U T ẋd = ẋTd U
+
+
+
+I r×r
+O (m−r)×r
+
+O r×(m−r)
+diag {0, . . . , 0}
+
+2
+
+2
+
+U T ẋd = wT w = kwk ≥ 0,
+
+having set
+
+w=
+
+I r×r
+O (m−r)×r
+
+O r×(m−r)
+diag {0, . . . , 0}
+
+
+
+U T ẋd .
+
+Similarly, one can show that ẋTB ẋd ≥ 0. From the definition of the scalar products it follows that
+ẋTd ẋA = kẋd k · kẋA k cos αA ≥ 0,
+
+ẋTd ẋB = kẋd k · kẋB k cos αB ≥ 0.
+
+Therefore, each of the obtained Cartesian velocities ẋA and ẋB will form an angle αi ≤ π/2,
+i = A, B, with the desired ẋd .
+3 Matrix
+
+A := ΣΣ# is diagonal and idempotent. Thus we can write A = A2 = AT A.
+
+5
+
+Furthermore, when the desired Cartesian velocity ẋd is in the image of the Jacobian J̄ , it is always
+spanned by the first r colums of the orthonormal matrix U , namely
+ẋd ∈ R J̄
+
+
+
+=⇒
+
+ẋd =
+
+r
+X
+
+λi ui =
+
+u1 u2 . . . ur
+
+
+
+λ,
+
+i=1
+
+for a generic vector λ = λ1 λ2 . . . λr
+ẋA = J̄ q̇ A =
+
+=
+
+=
+
+T
+
+∈ Rm . In this case, the choice q̇ A yields
+
+
+u1 u2 . . . ur 0 . . . 0 U T ẋd
+ T 
+u1
+ ... 
+
+
+
+  uTr 
+
+u1 u2 . . . ur 0 . . . 0 
+ uT  u1 u2 . . . ur λ
+ r+1 
+ ... 
+uTm
+
+
+
+
+I r×r
+u1 u2 . . . ur 0 . . . 0
+λ = u1 u2 . . . ur λ = ẋd
+O (m−r)×r
+
+with no Cartesian velocity error. On the other hand, with the choice q̇ B we do not generate the
+desired ẋd :
+
+ẋB = J̄ q̇ B = σ12 u1 σ22 u2 . . . σr2 ur 0 . . . 0 U T ẋd
+
+= . . . = σ12 u1 σ22 u2 . . . σr2 ur λ 6= ẋd .
+Exercise 4
+In order to achieve the desired linear and decoupled dynamics for the Cartesian error e = pd − p
+at the end-effector level, the torque command τ in
+M (q)q̈ + c(q, q̇) = τ
+for the controlled 2R planar robot cannot be chosen as the simple Cartesian PD regulation law
+τ = J T (q) (K P e − K D ṗ) ,
+
+K P , K D > 0,
+
+where ė = −ṗ being ṗd = 0. Rather, we should resort to a feedback linearization control law in
+the Cartesian space. In the considered case of a square and (assumed) nonsingular robot Jacobian,
+this law can be designed in two equivalent ways. Either by
+)
+
+
+τ = M (q)a + c(q, q̇) ⇒ q̈ = a
+⇒ a = J −1 (q) K P (pd − p) − K D ṗ − J̇ (q)q̇ ,
+p̈ = J (q)q̈ + J̇ (q)q̇ = K P e − K D ṗ
+and thus
+
+
+
+τ = M (q)J −1 (q) K P (pd − p(q)) − K D J (q)q̇ − J̇ (q)q̇ + c(q, q̇),
+
+with the matrix control gains chosen as
+
+
+100 0
+KP =
+> 0,
+0
+50
+
+
+KD =
+
+6
+
+20 0
+0 10
+
+(5)
+
+
+> 0.
+
+(6)
+
+Or, by using the Cartesian dynamics of the robot
+M p (q)p̈ + cp (q, q̇) = F ,
+with
+
+−1
+M p (q) = J (q)M −1 (q)J T (q)
+,
+
+
+
+cp (q, q̇) = J −T (q) c(q, q̇) − M (q)J −1 (q)J̇ (q)q̇ ,
+
+and choosing
+F = M p (q)a + cp (q, q̇) ⇒ p̈ = a
+p̈ = K P e − K D ṗ,
+
+)
+⇒ τ = J T (q)M p (q) (K P (pd − p) − K D ṗ)+J T (q)cp (q, q̇).
+
+T
+
+τ = J (q)F
+
+By elaborating further the latter expression of τ ,
+
+−1
+
+
+τ = J T (q) J (q)M −1 (q)J T (q)
+(K P (pd − p) − K D ṗ) + c(q, q̇) − M (q)J −1 (q)J̇ (q)q̇
+= M (q)J −1 (q) (K P (pd − p) − K D ṗ) + c(q, q̇) − M (q)J −1 (q)J̇ (q)q̇,
+we recover (5) as expected.
+The requested symbolic form of the terms in (5) are easily obtained for a 2R planar robot (see
+lecture slides). The kinematic terms are
+
+
+l1 cos q1 + l2 cos(q1 + q2 )
+p(q) =
+,
+l1 sin q1 + l2 sin(q1 + q2 )
+
+
+−(l1 sin q1 + l2 sin(q1 + q2 )) −l2 sin(q1 + q2 )
+∂p(q)
+J (q) =
+=
+,
+∂q
+l1 cos q1 + l2 cos(q1 + q2 )
+l2 cos(q1 + q2 )
+
+
+l1 cos q1 q̇1 + l2 cos(q1 + q2 )(q̇1 + q̇2 ) l2 cos(q1 + q2 )(q̇1 + q̇2 )
+J̇ (q) = −
+.
+l1 sin q1 q̇1 + l2 sin(q1 + q2 )(q̇1 + q̇2 ) l2 sin(q1 + q2 )(q̇1 + q̇2 )
+The dynamic terms are
+
+
+a3 + a2 cos q2
+a3
+
+
+−a2 sin q2 (2q̇1 + q̇2 ) q̇2
+c(q, q̇) =
+,
+a2 sin q2 q̇12
+M (q) =
+
+a1 + 2a2 cos q2
+a3 + a2 cos q2
+
+
+,
+
+with dynamic coefficients a1 = Ic1,zz + m1 d2c1 + Ic2,zz + m2 d2c2 + m2 l12 > 0, a2 = m2 l1 dc2 and
+a3 = Ic2,zz + m2 d2c2 > 0. The numerical values used in (5) are those of the matrix gains given
+by (6).
+In order to study the characteristics of the transient behavior of the error e(t) → 0, one may
+compute the roots of the following two algebraic equations in the Laplace domain:
+
+2
+s2 + 20s + 100 ex (s) = (s + 10) ex (s) = 0,
+
+s2 + 10s + 50 ey (s) = (s + 5 − 5i) (s + 5 + 5i) ey (s) = 0.
+As a result, when starting at rest with an initial ex (0) 6= 0, ex (t) will converge to zero without
+overshoot (double negative real root), whereas ey (t) will converge to zero from an initial ey (0) 6= 0
+7
+
+Figure 4: The evolution of ex (t) [left] and ey (t) [right] when the robot under control (5) starts at rest
+in a configuration q 0 with initial Cartesian position error e(0) = (ex (0), ey (0)) = (0.5, −0.5) 6= 0.
+always changing its sign during the transient (a pair of complex conjugate roots, with negative real
+part). See the numerical example in Fig. 4.
+Exercise 5
+With reference to the task frame (xt , y t , z t ) shown in Fig. 5, the six natural constraints on the
+task are:
+vz = 0, ωx = 0, ωy = 0, Fx = 0, Fy = 0, Mz = 0.
+The six complementary artificial constraints specify the way in which the interaction task should
+be executed:
+Fz = Fz,d < 0,
+
+Mx = Mx,d = 0,
+
+My = My,d = 0,
+
+vx = vx,d ,
+
+vy = vy,d ,
+
+ωz = ωz,d .
+
+Here, |Fz,d | =
+6 0 is the intensity of the normal force to the plane that the robot should apply to
+the cube so as to keep one of its faces in permanent contact. The desired moments around the
+axes xt and y t are both set to zero, so as to minimize the actual strain
+on the cube. The desired
+q
+
+2 + v2
+trajectory on the plane will be followed with a scalar speed ṡ = vx,d
+y,d > 0. Finally, the
+choice of either a constant or arbitrary time-varying orientation of the cube while moving along
+the path is made by setting either ωz,d = 0 or, respectively, ωz,d = ωz,d (t).
+
+zt
+yt
+xt
+
+Figure 5: The instantaneous task frame associated to the cube moving on a flat surface.
+As a result, in a hybrid force-velocity formulation, there will be three control loops on the generalized force components and three control loops on the planar motion components. Out of
+singularities, hybrid force-velocity control will achieve a perfectly linear and decoupled behavior of
+
+8
+
+these six controlled outputs associated to the task space. In general, a robot with six degrees of
+freedom will be necessary in order to fulfil all control specifications.
+With a Scara-type robot (four parallel joint axes, three revolute joints providing motion on a plane
+and a prismatic joint acting orthogonally), only four control specifications can be satisfied. If
+the joint axes of the robot are (perfectly) normal to the plane of motion of the cube, then the
+remaining two specifications Mx,d = My,d = 0 are automatically satisfied (although any desired
+value different from zero for these quantities could not be realized).
+When using a 3R planar robot (with all revolute joint axes normal to the plane of motion of the
+cube), the task specification of a non-zero normal force along the axis z t cannot be accomplished.
+The dofs of this robot are instead necessary and sufficient to execute a complete planar motion,
+with arbitrary values of vx,d , vy,d and ωz,d .
+∗∗∗∗∗
+
+9
+
+

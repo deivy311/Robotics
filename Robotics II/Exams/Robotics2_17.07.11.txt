@@ -1,0 +1,780 @@
+Robotics II
+July 11, 2017
+Exercise 1
+For the RPP cylindrical robot in Fig. 1, using the generalized coordinates defined therein, provide the
+symbolic expression of each term of the dynamic model that appears in the control law
+τ = M (q)q̈ d + C(q, q̇)q̇ d + g(q) + K P (q d − q) + K D (q̇ d − q̇) ,
+
+K P > 0,
+
+K D > 0,
+
+(1)
+
+so that global asymptotic tracking of a desired joint trajectory q d (t) ∈ C 2 is guaranteed. Joint axis 3 has
+a DH offset a2 6= 0 from joint axis 2. Moreover, the center of mass of links 1 and 3 is placed on the joint
+axis having the same index, while the center of mass of link 2 is at a distance r2 > 0 from joint axis 2.
+q1
+
+I2
+
+q3
+
+m2
+
+䎩!m
+
+3
+
+I3
+
+䎩!
+q2
+
+m1
+
+䎩!
+I1
+
+Figure 1: A RPP cylindrical robot with its generalized coordinates q = (q1 , q2 , q3 ).
+Exercise 2
+Consider a Cartesian robot moving in a vertical place and having its end effector constrained to an ideal
+(rigid, frictionless) linear surface tilted by an acute angle α > 0 from the x-axis, as in Fig. 2. For this
+robot in constrained motion, provide the explicit symbolic expressions of
+• the reduced dynamics, i.e., the differential equation relating the pseudo-acceleration v̇ ∈ R to the
+pseudo-velocity v ∈ R, the configuration q ∈ R2 , and the input forces at the joints u ∈ R2 ;
+• the multiplier λ ∈ R, i.e., the scalar reaction force that would act on the robot end effector when
+attempting to violate the geometric constraint.
+Is it possible, by a suitable choice of u, to realize a uniform motion with constant velocity v = V on the
+surface, while inducing no reaction force, i.e., with λ = 0? If so, when and how?
+
+y
+
+q2
+
+!
+g
+
+䎩!
+
+m2
+
+!
+
+q1
+䎩! m1
+
+!
+
+x
+
+Figure 2: A PP robot with the end effector in constrained motion on a linear surface.
+
+1
+
+Exercise 3
+Consider a planar 3R robot, with equal link lengths ` = 0.4 m and equal, uniformly distributed link masses
+m = 2.5 kg, that moves in a vertical plane. The generalized coordinates q ∈ R3 are defined by a standard
+Denavit-Hartenberg convention. Under the action of the Cartesian control law (with gravity cancelation)
+
+
+τ = J T(q) K P pd − p(q) − K D q̇ + g(q),
+(2)
+T
+where pd = 1.17 0.2 , K P = 400 · I 2×2 , K D = 40 · I 2×2 , and p(q) is the direct kinematics of the
+end-effector position, the robot has reached the equilibrium condition shown in Fig. 3, in which the first
+link is in contact with a rigid obstacle. In this steady state, determine the numerical values of
+• the control torque τ ∈ R3 at the joints;
+• the joint torque τ c ∈ R3 at the joints due to the contact force F c ∈ R2 acting on the first link;
+• the momentum-based residual r ∈ R3 for collision detection/isolation, when K I = 10 · I 3×3 ;
+• if possible, the components of the contact force F c acting on the first link (expressed in frame RF0
+or in frame RF1 ).
+
+y0
+
+!
+g
+
+p
+
+0.2
+
+pd
+
+0.1
+!
+
+x0
+1.17
+
+Figure 3: A planar 3R in contact with a rigid obstacle.
+[210 minutes; open books but no computer or smartphone]
+
+2
+
+Solution
+July 11, 2017
+Exercise 1
+Following a Lagrangian approach, we compute first the kinetic energy T = T1 + T2 + T3 . We have
+
+T1 = 12 I1 q̇12
+T2 = 21 I2 q̇12 + 12 m2 r22 q̇12 + q̇22
+⇒
+T = 21 q̇ T M (q)q̇,
+ 2
+
+2
+2
+2
+2
+2
+1
+1
+T3 = 2 I3 q̇1 + 2 m3 a2 + q3 q̇1 + q̇2 + q̇3 + 2a2 q̇1 q̇3
+with
+
+
+I1 + I2 + I3 + m2 r22 + m3 a22 + m3 q32
+
+0
+
+m3 a2
+
+
+
+0
+
+m2 + m3
+
+0
+
+
+.
+
+m3 a2
+
+0
+
+m3
+
+
+M (q) = 
+
+(3)
+
+In order to guarantee global asymptotic trajectory tracking for the control law (1), the factorization
+c(q, q̇) = C(q, q̇)q̇ of the Coriolis and centrifugal terms should be such that Ṁ − 2C is a skew-symmetric
+matrix. This is automatically guaranteed if the components of the Coriolis and centrifugal vector c(q, q̇)
+are computed using the Christoffel’s symbols, i.e.,
+!
+
+T
+∂mi (q)
+∂M (q)
+1 ∂mi (q)
+T
+ci (q, q̇) = q̇ C i (q)q̇,
+C i (q) =
++
+−
+,
+i = 1, 2, 3,
+(4)
+2
+∂q
+∂q
+∂q i
+being mi the ith column of the inertia matrix M . Define I0 = I1 + I2 + I3 + m2 r22 + m3 a22 , so that
+m11 (q) = I0 + m3 q32 . I0 is one of the three dynamic coefficients in the complete robot model, the other
+two being m3 (a2 is a kinematic parameter supposed to be known) and (m2 + m3 ). Using (4), we obtain
+
+
+0
+0 m3 q3
+
+
+0
+0 
+C 1 (q) =  0
+⇒
+c1 (q, q̇) = 2m3 q3 q̇1 q̇3 ,
+m3 q3 0
+0
+C 2 (q) = 0
+
+
+C 3 (q) = 
+
+−m3 q3
+0
+0
+
+0
+0
+0
+
+
+0
+
+0
+0
+
+⇒
+
+c2 (q, q̇) = 0,
+
+⇒
+
+c3 (q, q̇) = −m3 q3 q̇12 .
+
+A factorization that satisfies the skew-symmetric property is then
+ T
+ 
+q̇ C 1 (q)
+m3 q3 q̇3
+
+ 
+0
+C(q, q̇) =  q̇ T C 2 (q)  = 
+−m3 q3 q̇1
+q̇ T C 3 (q)
+
+given by
+0
+0
+0
+
+
+m3 q3 q̇1
+
+0
+.
+0
+
+(5)
+
+For the potential energy due to gravity, Ug = U1 + U2 + U3 , we have (up to a constant)
+U1 = 0,
+
+U2 = m2 g0 q2 ,
+
+and thus
+
+U3 = m3 g0 q2 ,
+
+
+
+
+g(q) =
+
+∂Ug (q)
+∂q
+
+T
+
+
+0
+
+
+=  (m2 + m3 )g0  .
+0
+
+(6)
+
+Summarizing, the terms from the robot dynamics used in the control law (1) are given by (3), (5), and (6).
+
+3
+
+Exercise 2
+The dynamic model of the PP robot in free motion is
+M q̈ + g = u
+
+(m1 + m2 )q̈1 + (m1 + m2 )g0 = u1
+m2 q̈2 = u2 .
+
+⇐⇒
+
+The linear constraint on the end-effector position is expressed by its implicit form1 in terms of the angle
+α as (note the exchanged order of joint variables!)
+!
+!
+rx
+q2
+r=
+=
+= f (q),
+k(r) = rx sin α − ry cos α + k0 = 0
+ry
+q1
+⇒
+
+h(q) = k (f (q)) = −q1 cos α + q2 sin α + k0 = 0.
+
+Accordingly, the constraint Jacobian A is a constant, 1 × 2 matrix (always of full rank)
+A=
+
+∂h(q)
+=
+∂q
+
+− cos α
+
+sin α
+
+
+
+The kinematic constraint is
+⇒
+
+A q̇ = 0
+
+−q̇1 cos α + q̇2 sin α = 0.
+
+The dynamic model of the PP robot constrained to the surface becomes
+M q̈ + g = u + AT λ
+s.t.
+
+(m1 + m2 )q̈1 + (m1 + m2 )g0 = u1 − λ cos α
+⇐⇒
+
+h(q) = 0
+
+m2 q̈2 = u2 + λ sin α
+s.t. − q1 cos α + q2 sin α + k0 = 0.
+
+To proceed with the reduced dynamics approach, we can border A with a row matrix D, so as to build a
+(globally) nonsingular matrix:
+!
+!
+!−1
+!
+
+A
+− cos α sin α
+A
+− cos α sin α
+=
+⇒
+=
+= E F .
+D
+sin α cos α
+D
+sin α cos α
+The pseudo-velocity v that automatically satisfies the differential constraint is given by
+v = D q̇ = q̇1 sin α + q̇2 cos α,
+whereas the admissible joint velocities and accelerations are given by
+!
+!
+sin α
+sin α
+q̇ = F v =
+v,
+q̈ = F v̇ =
+v̇.
+cos α
+cos α
+Since
+T
+
+F MF =
+
+sin α
+
+cos α
+
+
+
+FTg =
+
+sin α
+
+cos α
+
+
+
+!
+!
+0
+sin α
+= m1 sin2 α + m2
+m2
+cos α
+!
+(m1 + m2 )g0
+= (m1 + m2 )g0 sin α
+0
+m1 + m2
+0
+
+the reduced dynamic model is given by
+
+
+F T M F v̇ + F T g = F T u
+⇐⇒
+(m1 sin2 α + m2 ) v̇ + (m1 + m2 )g0 sin α = u1 sin α + u2 cos α, (7)
+1 The geometric expression of a line in a plane (r , r ) having an angular coefficient m = tan α, for α ∈ (0, π/2),
+x y
+is ry = (tan α) rx + β. Multiplying by cos α 6= 0, one easily obtains the expression k(r) = 0, where k0 = β cos α.
+
+4
+
+while, being E T =
+
+− cos α
+
+λ = E T (M F v̇ + g − u)
+
+
+sin α , the force multiplier is given by
+⇐⇒
+
+λ = −m1 cos α sin α v̇ − (m1 + m2 )g0 cos α + u1 cos α − u2 sin α. (8)
+
+Note that for α = π/2, equations (7–8) collapse to
+(m1 + m2 ) v̇ + (m1 + m2 )g0 = u1 ,
+
+λ = −u2 ,
+
+showing in particular that each force applied by the second actuator will result in an equal reaction force
+in the opposite direction.
+Finally, it is possible to maintain a uniform motion with constant velocity v = V on the linear surface
+without having a reaction force λ = 0 at all times, under following (necessary and sufficient) conditions:
+• the robot is in an initial configuration q 0 satisfying h(q 0 ) = 0, i.e., the end effector is already on the
+linear surface;
+• the robot has an initial velocity q̇ 0 satisfying Aq̇ 0 = 0 and such that kṙ 0 k = V or
+!
+!
+sin α
+cos α
+q̇ 0 = V
+⇒
+ṙ 0 = V
+cos α
+sin α
+i.e, the end-effector velocity is tangential to the surface and has the right module;
+• the input u is computed by solving eqs. (7–8) for v̇ = 0 and λ = 0, or
+!
+!
+!
+!
+u1
+sin α
+sin α
+cos α
+u1
+=
+⇒ u=
+=
+(m1 + m2 )g0
+u2
+cos α
+cos α − sin α
+u2
+
+(m1 + m2 )g0
+0
+
+!
+;
+
+namely, it is sufficient that the first actuator sustains the total gravity load of the robot.
+
+Exercise 3
+The direct kinematics for the end-effector position of the planar 3R robot with equal link lengths ` and
+standard DH angles is
+!
+!
+cos q1 + cos(q1 + q2 ) + cos(q1 + q2 + q3 )
+c1 + c12 + c123
+p = p(q) = `
+,
+=`
+sin q1 + sin(q1 + q2 ) + sin(q1 + q2 + q3 )
+s1 + s12 + s123
+where a shorthand notation has been introduced. The associated analytic Jacobian matrix is
+!
+− (s1 + s12 + s123 ) − (s12 + s123 ) −s123
+∂p(q)
+J (q) =
+=`
+.
+∂q
+c1 + c12 + c123
+c12 + c123
+c123
+T
+The equilibrium configuration of the robot in Fig. 2 is easily recognized to be q = π/6 −π/6 0 .
+Using this configuration and the data of the problem, we obtain numerical values for the following terms
+in the control law (2):
+
+
+!
+!
+−0.2 1.1464
+1.1464
+9.4359
+
+
+0.8  .
+p=
+,
+F e = K P (pd − p) =
+,
+JT =  0
+0.2
+0
+0
+0.4
+To compute the gravity vector, we start from the potential energy Ug (q) = U1 + U2 + U3 . Having each
+link the same uniformly distributed mass m, we have
+
+
+
+
+1
+1
+1
+U1 = m g0 ` s1 ,
+U2 = m g0 ` s1 + s12 ,
+U3 = m g0 ` s1 + s12 + s123 ,
+2
+2
+2
+
+5
+
+and thus
+
+
+
+g(q) =
+
+∂Ug (q)
+∂q
+
+T
+
+
+2.5 c1 + 1.5 c12 + 0.5 c123
+
+
+1.5 c12 + 0.5 c123
+= m g0 ` 
+
+0.5 c123
+
+
+
+
+40.8593
+
+
+g =  19.6200  .
+4.9050
+
+⇒
+
+Therefore, being q̇ = 0, the control torque at steady state is
+
+
+38.9721
+
+
+τ = J T F e + g =  19.6200  [Nm].
+4.9050
+The contact with the obstacle occurs at the midpoint of link 1, with
+
+ 
+!
+!
+−s1 c1
+−0.1
+c1
+0.1732
+`
+`
+ 
+T
+0 = 0
+pc =
+=
+,
+Jc =  0
+2
+2
+s1
+0.1
+0
+0
+0
+
+
+0.1732
+
+0
+.
+0
+
+The unknown contact force F c generates a joint torque τ c = J Tc F c , which will have a non-zero component τc1 only at joint 1, the only joint preceding the contact point. Moreover, because gravity is being
+compensated by control (and thus removed from this analysis) and the robot is in a static equilibrium,
+from the balance of joint torques it follows that
+
+
+1.8872
+
+
+0
+τc + τe = 0
+⇐⇒
+J Tc F c + J T F e = 0
+⇒
+τ c = −J T F e = 
+ [Nm].
+0
+This is also the value reached by the momentum-based residual at steady state, i.e.,
+
+
+1.8872
+
+
+0
+ṙ = K I (τ c − r)
+⇒
+r ∞ = lim r(t) = τ c = 
+ [Nm].
+t→∞
+0
+Note that the internal structure of r supports its isolation property: in fact, the components of r associated
+to joints that are beyond the contacting link are always zero. This is true not only at steady state, but
+also in dynamic conditions, when the robot is moving and may hit an obstacle.
+At this stage, knowing exactly the contact point on link 1, we can recover at least the component n Fc of the
+contact force F c that is normal to the first link. Instead, the internal force component t Fc that is aligned
+with link 1 produces no torque at joint 1, and thus cannot be reconstructed from τc1 only. Expressing the
+contact force in the frame RF1 rotated with link 1, we have
+!
+t
+Fc
+2τc1
+`
+n
+1
+⇒
+Fc =
+= 9.4359 [N].
+Fc = n
+,
+τc1 = n Fc
+2
+`
+Fc
+This partial result can be obtained also from pseudo-inversion of the static relation τ c = J Tc F c . Note first
+that the contact Jacobian in frame 1 is
+!
+!
+!
+!
+c1
+s1
+−s1 0 0
+0
+0 0
+0
+0 0
+`
+1
+T
+J c (q) = Rot (q1 ) J c (q) =
+=
+=
+.
+2
+−s1 c1
+c1
+0 0
+`/2 0 0
+0.2 0 0
+From
+τ c = J Tc F c =
+we obtain
+1
+
+Fc =
+
+
+
+1
+
+J Tc
+
+#
+
+τc =
+
+0
+5
+
+0
+0
+
+0
+0
+
+!
+
+1
+
+Jc
+
+T
+
+· 1F c
+
+
+
+
+1.8872
+
+
+0
+
+=
+0
+
+6
+
+0
+9.4359
+
+!
+
+t
+
+=
+
+Fc
+n
+Fc
+
+!
+.
+
+Since pseudo-inversion yields always a minimum norm solution, the obtained tangential component of the
+contact force is t Fc = 0, i.e., is automatically set to zero. Finally, the contact force expressed in the base
+reference frame RF0 is computed as
+!
+−4.7180
+1
+F c = Rot(q1 ) F c =
+[N].
+8.1718
+Indeed, kF c k =
+
+1
+
+F c = 9.4359.
+∗∗∗∗∗
+
+7
+
+

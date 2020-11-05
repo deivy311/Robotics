@@ -1,0 +1,582 @@
+Robotics 2
+
+Dynamic model of robots:
+
+Algorithm for computing kinetic energy
+Prof. Alessandro De Luca
+
+Complexity of robot inertia terms
+element 𝑚11(𝑞) of Stanford arm
+
+𝑞=
+
+𝜃(
+𝜃)
+𝑑+
+𝜃,
+𝜃𝜃.
+
+m(( =
+
+… (derived by hand) in JPL
+Tech. Memo. 33-669, 1974
+
+3R spherical wrist
+
+a typical term …
+
+sin 𝜃) sin 𝜃- − cos 𝜃) sin 𝜃, cos 𝜃-
+
+)
+radius of gyration factors 𝑘789
+are being used here
+for a body of mass 𝑚 and moment of inertia 𝐼 w.r.t. an axis,
+the radius of gyration 𝑘 is the distance of a point mass 𝑚
+from the same axis, such that its moment of inertia is 𝐼
+
+Robotics 2
+
+2
+
+Expression of 𝑣𝑐𝑖 and 𝜔𝑖
+n
+
+n
+
+𝑣?7 and 𝜔7 can be written using the relations of the robot
+differential kinematics (partial Jacobians)
+it is useful however to operate in a recursive way, expressing
+each vector quantity related to link 𝑖 in the “moving” frame RF𝑖
+attached to link 𝑖 (with the notation 𝒊vector𝒊 )
+n
+
+particularly convenient when using algebraic/symbolic manipulation
+languages (Matlab Symbolic Toolbox, Maple, Mathematica, …) for
+computing the kinetic energy of a (open chain) robot arm, when the
+number of joints increases (e.g., for 𝑁 ≥ 4)
+
+Moving Frames
+Robotics 2
+
+3
+
+Recall: D-H frames
+joint 𝑖 − 1 axis
+
+link 𝑖 − 1
+
+joint 𝑖 axis
+
+joint 𝑖 + 1 axis
+
+𝝎𝒊
+link 𝑖
+
+𝒗𝒄𝒊
+
+𝒓𝒄𝒊
+
+𝑑𝑖 𝑧7D(
+𝑥7D(
+𝑂7D(
+
+7D(
+
+𝐴7 𝑞7 =
+
+Robotics 2
+
+cos 𝜃7
+sin 𝜃7
+0
+0
+
+𝑎𝑖
+𝜃𝑖
+
+𝒓𝒊D𝟏,𝒊
+
+𝑧𝑖
+
+𝛼𝑖
+
+𝒗𝒊
+
+𝑂𝑖 𝑥𝑖
+
+7D(
+
+𝑅7 𝑞7
+− cos 𝛼7 sin 𝜃7
+sin 𝛼7 sin 𝜃7
+cos 𝛼7 cos 𝜃7 − sin 𝛼7 cos 𝜃7
+sin 𝛼7
+cos 𝛼7
+0
+0
+
+𝑎7 cos 𝜃7
+𝑎7 sin 𝜃7
+𝑑7
+1
+4
+
+Moving Frames algorithm
+velocity of
+center of mass
+of link 𝑖
+
+𝑣?7 = 𝑣7 + 𝜔7 × 𝑟?7
+velocity of 𝑂7
+(origin of RF𝑖 )
+
+𝜔7 =
+
+7D( W
+𝑅7
+
+𝑞7
+
+angular velocity
+of link 𝑖
+0 revolute joint
+
+set 𝜎7 =
+7
+
+position of
+center of mass
+of link 𝑖 w.r.t. 𝑂7
+
+1 prismatic joint
+
+7D(
+
+𝜔7D( + 1 − 𝜎7 𝑞̇ 7
+
+7D(
+
+𝑧7D( =
+
+7D( W
+𝑅7
+
+𝑞7
+
+7D(
+
+𝜔7
+
+𝑧-axis of RFi-1
+7
+
+𝑣7 =
+
+7D( W
+𝑅7
+
+𝑞7
+
+7D(
+
+𝑣7D( + 𝜎7 𝑞̇ 7
+
+… = 7 𝜔7 already computed
+Robotics 2
+
+7D(
+
+𝑧7D( + 7D(𝜔7 × 7D(𝑟7D(,7
+
+0
+0
+1
+
+7
+
+… = 𝑟7D(,7 (constant,
+if joint 𝑖 is revolute!)
+
+5
+
+Dynamic model of a 2R robot
+application of the algorithm
+
+𝑦)
+𝑦(
+
+−𝑙
+
+𝑦[
+𝑑(
+
++
+−𝑙 (
+
+𝑥)
+)
+
++
+
+𝑑)
+
+𝑞)
+
+𝑑(
+
+𝑞(
+𝑥[
+
+𝑥(
+
+𝑑)
+
+𝜎𝑖 = 0,
+0
+𝑔 = −𝑔[
+0
+𝑔[ = 9.81
+
+𝑐7
+7D(
+𝑅7 (𝑞7 ) = 𝑠7
+0
+
+−𝑠7
+𝑐7
+0
+
+0
+0
+1
+
+𝑖 = 1,2
+(revolute joints)
+
+moving in the
+vertical plane
+
+−𝑙7 + 𝑑7
+7
+𝑟?7 =
+0
+0
+
+assumption: center of mass of
+each link is on its kinematic axis
+
+initialization: 𝑖 = 0
+Robotics 2
+
+[
+
+𝜔[ = 0
+
+[
+
+𝑣[ = 0
+6
+
+First step (link 1)
+(
+
+𝜔( = [𝑅(W 𝑞(
+
+𝑖=1
+
+0
+𝑙(𝑐(
+[
+𝑣[ + 0 × 𝑙(𝑠(
+𝑞̇ (
+0
+
+(
+
+𝑣( = [𝑅(W 𝑞(
+
+[
+
+𝜔[ + 𝑞̇ (
+
+0
+0
+1
+
+0
+= 0
+𝑞̇ (
+
+0
+𝑙(𝑐(
+= [𝑅(W (𝑞() 0 × [𝑅(W (𝑞() 𝑙(𝑠(
+𝑞̇ (
+0
+
+0
+𝑙(
+0
+= 0 × 0 = 𝑙(𝑞̇ (
+𝑞̇ (
+0
+0
+(
+
+𝑣?(
+
+Robotics 2
+
+0
+0
+0
+−𝑙( + 𝑑(
+= 𝑙(𝑞̇ ( + 0 ×
+= 𝑑(𝑞̇ (
+0
+𝑞̇ (
+0
+0
+0
+7
+
+Kinetic energy of link 1
+0
+(
+𝜔( = 0
+𝑞̇ (
+
+(
+
+𝑣?(
+
+0
+= 𝑑( 𝑞̇ (
+0
+
+1
+1
+1
+) )
+)
+𝑇( = 𝑚( 𝑑( 𝑞̇ ( + 𝐼?(,dd 𝑞̇ ( = 𝐼?(,dd + 𝑚( 𝑑() 𝑞̇ ()
+2
+2
+2
+the actual inertia around the rotation axis
+of the first joint (parallel axis theorem)
+Robotics 2
+
+8
+
+Second step (link 2)
+𝑖=2
+
+)
+
+𝑣) = (𝑅)W 𝑞)
+
+)
+
+𝜔) = (𝑅)W 𝑞)
+
+(
+
+𝜔( + 𝑞̇ )
+
+0
+𝑙)𝑐)
+(
+0
+𝑣( +
+× 𝑙)𝑠)
+𝑞̇ ( + 𝑞̇ )
+0
+
+0
+0
+1
+
+0
+0
+=
+𝑞̇ ( + 𝑞̇ )
+
+0
+𝑙(𝑠)𝑞̇ (
+𝑙)
+0
+= 𝑙(𝑐)𝑞̇ ( +
+× 0
+𝑞̇ ( + 𝑞̇ )
+0
+0
+
+𝑙(𝑠)𝑞̇ (
+= 𝑙(𝑐)𝑞̇ ( + 𝑙) 𝑞̇ ( + 𝑞̇ )
+0
+
+Robotics 2
+
+9
+
+Kinetic energy of link 2
+𝑖=2
+)
+
+𝑣?)
+
+0
+𝑙(𝑠)𝑞̇ (
+−𝑙) + 𝑑)
+0
+= )𝑣) +
+×
+= 𝑙(𝑐)𝑞̇ ( + 𝑑) 𝑞̇ ( + 𝑞̇ )
+0
+𝑞̇ ( + 𝑞̇ )
+0
+0
+
+1
+𝑇) = 𝑚) 𝑙() 𝑞̇ () + 𝑑() 𝑞̇ ( + 𝑞̇ )
+2
+1
++ 𝐼?),dd 𝑞̇ ( + 𝑞̇ ) )
+2
+Robotics 2
+
+)
+
++ 2𝑙( 𝑑) 𝑐) 𝑞̇ ( 𝑞̇ ( + 𝑞̇ )
+
+10
+
+Robot inertia matrix
+1
+𝑇 = 𝑇( + 𝑇) = 𝑞̇ (
+2
+
+𝑞̇ )
+
+W
+
+𝑚(( (𝑞) 𝑚() (𝑞)
+𝑚)( (𝑞)
+𝑚))
+
+𝑞̇ (
+𝑞̇ )
+
+𝑚(( 𝑞 = 𝐼?(,dd + 𝑚( 𝑑() + 𝐼?),dd + 𝑚) 𝑑)) + 𝑚) 𝑙() + 2𝑚) 𝑙( 𝑑) 𝑐)
+= 𝑎( + 2𝑎) cos 𝑞)
+𝑚() 𝑞 = 𝑚)( 𝑞 = 𝐼?),dd + 𝑚) 𝑑)) + 𝑚) 𝑙( 𝑑) 𝑐) = 𝑎+ + 𝑎) cos 𝑞)
+𝑚)) = 𝐼?),dd + 𝑚) 𝑑)) = 𝑎+
+NOTE: introduction of dynamic coefficients 𝑎𝑖 is a convenient regrouping of the
+dynamic parameters (more on this later → linear parametrization of dynamics)
+Robotics 2
+
+11
+
+Centrifugal and Coriolis terms
+1 𝜕𝑀(
+𝜕𝑀(
+𝐶( 𝑞 =
++
+2 𝜕𝑞
+𝜕𝑞
+0
+= −𝑎 𝑠
+) )
+
+W
+
+𝜕𝑀
+1
+−
+=
+𝜕𝑞(
+2
+
+−𝑎)𝑠)
+−𝑎)𝑠)
+
+0 −2𝑎)𝑠)
+0
++
+0 −𝑎)𝑠)
+−2𝑎)𝑠)
+
+0
+−𝑎)𝑠)
+
+𝑐( 𝑞, 𝑞̇ = −𝑎) 𝑠) 𝑞̇ )) + 2𝑞̇ ( 𝑞̇ )
+
+1 𝜕𝑀)
+𝜕𝑀)
+𝐶) 𝑞 =
++
+2 𝜕𝑞
+𝜕𝑞
+
+W
+
+𝜕𝑀
+𝑎 𝑠
+−
+=⋯= ) )
+0
+𝜕𝑞)
+
+0
+0
+
+𝑐) 𝑞, 𝑞̇ = 𝑎) 𝑠) 𝑞̇ ()
+Robotics 2
+
+12
+
+Gravity terms
+𝑈( = −𝑚( 𝑔W 𝑟[,?( = − 𝑚( 0 −𝑔[
+
+0
+
+∗
+𝑑( 𝑠( = 𝑚( 𝑔[ 𝑑( 𝑠(
+∗
+
+𝑈) = − 𝑚) 𝑔W 𝑟[,?) = 𝑚) 𝑔[ 𝑙( 𝑠( + 𝑑) 𝑠()
+𝑈 = 𝑈( + 𝑈)
+W
+
+𝜕𝑈
+𝑔[ 𝑚( 𝑑( 𝑐( + 𝑚) 𝑙( 𝑐( + 𝑚) 𝑑) 𝑐()
+𝑔 𝑞 =
+=
+𝑔[ 𝑚) 𝑑) 𝑐()
+𝜕𝑞
+
+Robotics 2
+
+𝑎, 𝑐( + 𝑎- 𝑐()
+=
+𝑎- 𝑐()
+
+13
+
+Dynamic model of a 2R robot
+𝑎( + 2𝑎) 𝑐) 𝑞̈ ( + 𝑎) 𝑐) + 𝑎+ 𝑞̈ ) − 𝑎) 𝑠) 𝑞̇ )) + 2𝑞̇ ( 𝑞̇ )
++ 𝑎, 𝑐( + 𝑎- 𝑐() = 𝑢(
+𝑎) 𝑐) + 𝑎+ 𝑞̈ ( + 𝑎+ 𝑞̈ ) + 𝑎) 𝑠) 𝑞̇ () + 𝑎- 𝑐() = 𝑢)
+Q1: is it 𝑎2 = 0 possible? …physical interpretation? …consequences?
+Q2: is it 𝑎4 = 𝑎5 = 0 possible as well? …physical interpretation?
+Q3: based on the expressions of the dynamic coefficients 𝑎1, 𝑎2, 𝑎3,
+check that the robot inertia matrix is always positive definite, and
+in particular that the diagonal elements are always positive (∀𝑞)
+Q4: provide two different matrices 𝑆’ and 𝑆’’ for the factorization of the
+quadratic velocity terms, respectively satisfying and not satisfying
+the skew-symmetry of 𝑀̇ − 2𝑆
+Robotics 2
+
+14
+
+

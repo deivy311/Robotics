@@ -1,0 +1,1136 @@
+Robotics 2
+
+Detection and isolation
+of robot actuator faults
+Prof. Alessandro De Luca
+
+Fault diagnosis problems
+n
+
+n
+
+in the diagnosis of faults possibly affecting a (nonlinear)
+dynamic system various problems can be formulated
+Fault Detection
+n
+
+n
+
+discriminate which particular fault 𝑓 has occurred out of a (large)
+class of potential ones, by distinguishing it from any other fault and
+from the effects of disturbances possibly acting on the system
+
+Fault Identification
+n
+
+n
+
+recognize that the malfunctioning of the (controlled) system is due
+to the occurrence of a fault (or not proper behavior) affecting some
+physical or functional component of the system
+
+Fault Isolation
+n
+
+n
+
+-1
+
+determine the time profile (and/or class type) of the isolated fault 𝑓
+
+Fault Accommodation
+n
+
+Robotics 2
+
+modify the control law so as to compensate for the effects of the
+detected and isolated fault (possibly also identified)
+2
+
+Fault diagnosis problems
+n
+
+FDI solution (simultaneous detection and isolation)
+n
+
+n
+
+n
+
+n
+
+-2
+
+definition of an auxiliary dynamic system (Residual Generator)
+whose output will depend only on the presence of the fault 𝑓 to be
+detected and isolated (and not on any other fault or disturbance)
+and will converge asymptotically to zero when 𝑓 ≡ 0 (stability)
+in case of many potential faults, each component 𝑟% of the vector 𝑟
+of residuals will depend on one and only one associated fault 𝑓%
+(possibly reproducing approximately its time behavior)
+many of the FDI schemes are model-based: they use a nominal
+(fault- and disturbance-free) dynamic model of the system
+
+Fault Tolerant Control
+n
+
+n
+
+Robotics 2
+
+passive: control scheme that is intrinsically robust to uncertainties
+and/or faults (typically having only moderate/limited effects)
+active: control scheme involving a reconfiguration after FDI (with
+guaranteed performance for the faulted system)
+3
+
+Typical FDI architecture
+n
+
+bank of 𝑛 + 1 (model-based) estimators
+n
+n
+
+Robotics 2
+
+1 for detection of a faulty condition
+𝑛 for isolation of the specific (in general, modeled) fault
+
+4
+
+Some terminology
+n
+
+fault types
+n
+
+n
+
+instantaneous (abrupt), incipient (slow), intermittent, concurrent
+
+thresholds for detection/isolation (also adaptive)
+n
+
+delay times (w.r.t. the instant 𝑇0 of fault start) vs. false alarms
+detection instant
+
+detection
+
+isolation
+of fault #𝑖
+
+constant
+threshold
+adaptive
+thresholds
+instant of
+exclusion
+of fault #2
+instant of
+exclusion
+of fault #3
+
+Robotics 2
+
+5
+
+Actuator faults in robots
+actual
+torque
+
+𝑞 ∈ ℝH
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + 𝐹D 𝑞̇ + 𝐹E sgn 𝑞̇ = 𝑢 − 𝑢,
+inertia
+matrix
+(> 0)
+
+gravity
+centrifugal
+and Coriolis
+
+viscous and
+static friction
+
+actuation
+torques
+
+vector of actuation faults (even concurrent on more axes)
+• bias 𝑢,,% = 𝑏% Ex: ??
+• total fault 𝑢,,% = 𝑢%
+• partial fault 𝑢,,% = 𝜀𝑢% (0 < 𝜀 < 1)
+• saturation
+Robotics 2
+
+• block 𝑢,,% = ⋯
+
+𝑢,,% = 𝑢% − sgn 𝑢% 𝑢%,789 • ... any type!
+6
+
+Working assumptions
+n
+
+signals and measurements available
+n the commanded input torque 𝑢 , but obviously not 𝑢, …
+n a measure of the full state (𝑞, 𝑞)
+̇ is available
+n
+
+n
+
+n
+
+n
+
+in the absence of faults, and neglecting disturbances
+no pre-specified model or type of faults is needed
+
+no dependence on/request of a specific input 𝑢(𝑡)
+n
+
+n
+
+no further sensors are anyway necessary (“sensorless”)
+
+the robot dynamic model is known
+n
+
+n
+
+can be relaxed: in practice, with an estimate of joint velocities
+
+can be anything (open loop, linear or nonlinear feedback)
+
+no dependence on/request of a specific motion 𝑞J (𝑡)
+
+Robotics 2
+
+7
+
+Generalized momentum
+𝑝 = 𝑀(𝑞)𝑞̇
+with associated dynamic equation
+
+𝑝̇ = 𝑢 − 𝑢, − 𝛼(𝑞, 𝑞)
+̇
+decoupled components
+relative to the single fault inputs
+
+exploiting structure
+of centrifugal and
+Coriolis terms
+
+1 O 𝜕𝑀 𝑞
+𝛼% = − 𝑞̇
+𝑞̇ + 𝑔% 𝑞 + 𝐹D,% 𝑞̇ % + 𝐹E,% sgn 𝑞̇ %
+2
+𝜕𝑞%
+scalar expressions, for 𝑖 = 1, ⋯ , 𝑁
+Robotics 2
+
+8
+
+FDI solution
+n
+
+definition of a vector of residuals
+
+𝑟 = 𝐾 U 𝑢 − 𝛼 𝑞, 𝑞̇ − 𝑟 𝑑𝑡 − 𝑝
+n
+
+n
+
+𝐾>0
+diagonal
+
+no need to compute joint accelerations nor to invert
+the robot inertia matrix 𝑀(𝑞)
+with perfect model knowledge, the dynamics of 𝑟 is
+𝑁 decoupled filters,
+
+with unitary gains and
+time constants 𝜏% = 1⁄𝑘%
+
+𝑟̇ = −𝐾𝑟 + 𝐾𝑢,
+
+in the Laplace domain
+𝑟% (𝑠)
+𝑘%
+1
+=
+=
+𝑢,,% (𝑠) 𝑠 + 𝑘% 1 + 𝜏% 𝑠
+
+for sufficiently large 𝐾, 𝑟 reproduces the time behavior of 𝑢,
+Robotics 2
+
+9
+
+Block diagram of the residual generator
+𝑢,
+−
+
+𝑢
+
++
+
++
+−
+initialization
+of integrators
+
+𝑝(0)
+̂
+= 𝑝(0)
+
+(zero if robot
+starts at rest)
+
+robot with possibly faulted actuators
+
+robot
+
+𝑞̇
+
+𝑞
+
+∫
+
+residual
+generator
+−
+
+𝛼
+
+𝑝
+
+𝑝(0)
+̂
+
+∫
+
+−
++
+
+𝐾
+
+𝑟
+
+𝑟 = 𝐾 U 𝑢 − 𝛼 𝑞, 𝑞̇ − 𝑟 𝑑𝑡 − 𝑝
+Robotics 2
+
+10
+
+Residual generator
+as “disturbance observer”
+from the
+block diagram…
+
+𝑝̇̂ = 𝑢 − 𝛼 𝑞, 𝑞̇ + 𝐾(𝑝 − 𝑝)̂
+𝑟 = 𝐾(𝑝̂ − 𝑝)
+
+dynamic observer of the unknown actuation faults
+(𝑟 ≈→ 𝑢, = external disturbances)
+with linear error dynamics (for constant 𝑢, )
+𝑒\]^ = 𝑢, − 𝑟
+
+𝑒̇\]^ = 𝑢̇ , − 𝑟̇ = 𝑢̇ , − 𝐾 𝑝̇̂ − 𝑝̇
+= 𝑢̇ , − 𝐾 𝑢 − 𝛼 − 𝑟 − 𝑢 − 𝛼 − 𝑢,
+= 𝑢̇ , − 𝐾(𝑢, − 𝑟) = 𝑢̇ , − 𝐾𝑒\]^ ≅ −𝐾𝑒\]^
+
+Robotics 2
+
+11
+
+A worked-out example
+planar 2R robot under gravity
+
+n
+
+dynamic model (without friction)
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢 − 𝑢,
+𝑞d
+
+𝑞`
+
+= 𝑆 𝑞, 𝑞̇ 𝑞̇
+𝑎` + 2𝑎d 𝑐d
+𝑎e + 𝑎d 𝑐d
+
+𝑢d
+
+𝑎e + 𝑎d 𝑐d
+𝑎e
+
+−𝑎d (2𝑞̇ ` + 𝑞̇ d )𝑞̇ d 𝑠d
+𝑞̈ `
++
+𝑞̈ d
+𝑎d 𝑞̇ `d 𝑠d
+
+𝑎b 𝑐` + 𝑎c 𝑐`d
++
+=
+𝑎c 𝑐`d
+
+𝑢`
+
+𝑢` − 𝑢,,`
+𝑢d − 𝑢,,d
+
+computation of the residual vector
+𝑟 = 𝐾 U 𝑢 − 𝛼 𝑞, 𝑞̇ − 𝑟 𝑑𝑡 − 𝑝
+𝑝 = 𝑀 𝑞 𝑞̇
+
+𝛼` = 𝑔` 𝑞 = 𝑎b 𝑐` + 𝑎c 𝑐`d
+1 O 𝜕𝑀 𝑞
+𝛼d = − 𝑞̇
+𝑞̇ + 𝑔d 𝑞
+2
+𝜕𝑞d
+= 𝑎d 𝑞̇ ` + 𝑞̇ d 𝑞̇ ` 𝑠d + 𝑎c 𝑐`d
+
+Robotics 2
+
+12
+
+Faults on both actuators
+(total, intermittent, concurrent)
+
+commanded torques (in open loop)
+
+actual (faulted) torques
+
+= first joint (fault for 𝑡 ∈ [15 ÷ 20] sec)
+= second joint (fault for 𝑡 ∈ [12 ÷ 18] sec)
+Robotics 2
+
+time interval of
+fault concurrence
+𝑡 ∈ 15 ÷ 18 sec
+13
+
+First simulation
+actual torques (to the robot)
+
+= first joint
+= second joint
+Robotics 2
+
+(measured) joint positions
+
+no clear evidence of faults in the
+dynamic evolution of the system!
+14
+
+First simulation ⎯ FDI
+actual torques (to the robot)
+
+= first joint
+= second joint
+Robotics 2
+
+𝐾 = diag 50, 50
+
+residuals
+
+residuals reconstruct the
+“missing” parts of the torques
+(identification property!)
+15
+
+Second simulation ⎯ FDI
+(total fault on second actuator, added noise on first channel)
+actual torques (to the robot)
+
+= first joint
+= second joint (fault for 𝑡 ∈ 12 ÷ 18 sec)
+Robotics 2
+
+residuals
+
+residual 𝑟1 is not affected by faulty
+actuation, while residual 𝑟2 is not
+affected by the disturbance on
+first channel (decoupling property)
+16
+
+Experimental setup
+Quanser Pendubot
+link 1
+(actuated)
+
+link 2
+(not actuated)
+
+with encoders on both joints
+
+video
+
+nonlinear control for swing-up
+
+sampling time 𝑇p = 1 ms, residual gains 𝐾% = 50,
+practical thresholds of fault detection ≅ 10qd ÷ 10qe Nm
+Robotics 2
+
+17
+
+First experiment
+n
+n
+n
+
+n
+
+motor 1 driven by sinusoidal voltage of period 2π sec (open loop)
+bias fault on 𝑢1 for 𝑡 ∈ [3 ÷ 4] sec
+total fault on second joint for 𝑡 ∈ [3.5 ÷ 4.5] sec (a constant torque
+is requested, but no motor at the joint to provide 0.05 Nm…)
+fault concurrency for 𝑡 ∈ [3.5 ÷ 4] sec
+commanded torques
+
+joint 1
+Robotics 2
+
+joint positions
+
+joint 2
+18
+
+First experiment ⎯ FDI
+commanded torques
+
+joint 1
+Robotics 2
+
+residuals
+
+joint 2
+19
+
+Second experiment
+n
+n
+n
+n
+
+position regulation of the first joint at 𝑞J` = 30° (PID control)
+50% power loss on motor 1 for 𝑡 ∈ [1.7 ÷ 2] sec
+total fault on joint 2 for 𝑡 ∈ [1.9 ÷ 2.4] sec (no motor…)
+fault concurrency for 𝑡 ∈ [1.7 ÷ 1.9] sec
+commanded torques
+
+joint 1
+Robotics 2
+
+joint positions
+
+joint 2
+20
+
+Second experiment ⎯ FDI
+commanded torques
+
+joint 1
+Robotics 2
+
+residuals
+
+joint 2
+21
+
+Third experiment ⎯ FDI
+n
+
+same as in second experiment, but with only 10% power loss on motor 1
+n
+
+due to noisy PWM signals driving the DC motor, a dynamic filtering of residuals is used,
+staying above [below] a threshold (𝑟`,xyz{^ = 9 | 10qe Nm, 𝑟d,xyz{^ = 2 | 10qe Nm) for a
+time 𝑇^{x = 0.02 s [𝑇z{^{x = 0.03 s] before detecting a fault [reset to normal operation]
+RESIDUALS
+
+COMMANDED TORQUES
+
+0.025
+
+0.2
+
+0.02
+
+0.015
+
+0.15
+
+0.01
+
+0.1
+
+0.005
+
+u1
+u
+Nms
+
+2
+
+FAULT INTERVAL 1
+FAULT INTERVAL 2
+
+Nm
+
+commanded
+torques
+
+residuals
+
+0
+
+−0.005
+
+0.05
+
+−0.01
+
+faults are
+“unobservable”
+in these
+evolutions
+
+0
+
+1
+
+2
+
+40
+
+3
+4
+JOINT POSITIONS
+s
+
+5
+
+−0.025
+
+0
+
+1
+
+2
+
+0.025
+
+3
+4
+FILTERED RESIDUALS
+s
+
+5
+
+6
+
+rfilt1
+rfilt2
+
+0.02
+
+joint 2
+
+FAULT INTERVAL 1
+FAULT INTERVAL 2
+
+0.015
+
+q1
+q2
+
+0.01
+
+FAULT INTERVAL 1
+FAULT INTERVAL 2
+
+10
+
+filtered
+residuals
+
+0.005
+Nms
+
+deg
+
+−0.02
+
+6
+
+30
+
+20
+
+joint
+positions
+
+FAULT INTERVAL 1
+FAULT INTERVAL 2
+
+joint 1
+−0.05
+
+r
+1
+r2
+
+−0.015
+
+0
+
+0
+
+0
+
+−0.005
+
+−10
+
+−0.01
+−20
+
+−0.015
+−30
+
+Robotics 2
+
+−40
+
+−0.02
+
+0
+
+1
+
+2
+
+3
+
+4
+s
+
+5
+
+6
+
+−0.025
+
+0
+
+1
+
+2
+
+3
+
+4
+s
+
+5
+
+6
+
+22
+
+Extensions
+n
+
+n
+
+n
+
+FDI method based on generalized momentum is easily extended to the
+presence of flexible transmissions (elastic joints), actuator dynamics, …
+the scheme can be made adaptive, so as to handle parametric
+uncertainties in the robot dynamic model
+the method can be modified for detection and isolation of significant
+classes of sensor faults (e.g., faults in force/torque sensor at the wrist)
+n
+
+n
+
+assuming non-concurrency (at most a single fault occurs at the same
+time) of a given set of faults, relaxed FDI conditions have been derived
+n
+n
+
+n
+
+n
+
+applies to all faults that instantaneously affect robot acceleration or torque
+(i.e., occurring at the second-order differential level)
+
+of interest when the necessary conditions for multiple FDI are violated
+involves processing of continuous residuals + discrete logic for isolation
+
+the same FDI-type approach has been applied also for compensation of
+unmodeled friction (treated as a “permanent fault” on the system)
+combination of model- and signal-based approaches to FDI
+
+Robotics 2
+
+23
+
+Isolation of F/T sensor faults
+n
+
+planar 2R robot with fault on force measure of sensor on the end-effector
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢 + 𝐽O 𝑞 𝐹 = 𝑢 + 𝐽O 𝑞 (𝐹7 + 𝑓† )
+𝑔}
+
+𝑭
+𝐹9
+
+𝐹~
+
+𝐽 𝑞 =
+𝐽8J
+
+𝑞d
+
+𝑞`
+
+𝑢d
+
+𝜁 ̇ = − 𝐽O
+
+𝑟 = 𝐽O
+
+ℓd
+𝑞 =
+−ℓd − ℓ` 𝑐d
+
+𝑔 𝑞 − 𝑆 O (𝑞, 𝑞)
+̇ 𝑞̇
+
+𝑢`
+
+residual
+generator
+(function of
+𝑞, 𝑞,̇ 𝐹7 , 𝜁 )
+
+ℓ` 𝑠d
+ℓd + ℓ` 𝑐d
+
+8J
+
+8J
+
+𝑞
+
++
+
+0
+0
+
+robot Jacobian expressed
+in end-effector frame
+adjoint of Jacobian
+
+0
+ℓ` 𝑠d
+
+time derivative of
+transposed
+Jacobian adjoint
+
+𝑎b 𝑐` + 𝑎c 𝑐`d
+𝑎c 𝑐`d + 𝑎d 𝑠d 𝑞̇ ` 𝑞̇ ` + 𝑞̇ d
+
+𝐽8J = det 𝐽 | 𝐽q`
+
+⇒ singularity robust!
+
+robot inertia
+
+𝑞 𝑀 𝑞 𝑞̇ − 𝜁
+
+det 𝐽O (𝑞)
+
+Ex: prove this expression!
+
+input torque
+
+−ℓ` 𝑐d 𝑞̇ d
+𝑀 𝑞 𝑞̇ + 𝐽O
+ℓ` 𝑐d 𝑞̇ d
+
++ ℓ` ℓd 𝑠d 𝐹7 + 𝐾
+
+predicted FDI behavior
+in presence of force sensor faults 𝑓† ∈ ℝd
+Robotics 2
+
+0
+ℓd
+
+𝐽O
+
+8J
+
+8J
+
+𝑞 𝑢
+
+𝑞 𝑀 𝑞 𝑞̇ − 𝜁
+
+measured force (nominal)
+
+𝑟̇ = −𝐾𝑟 + ℓ` ℓd sin 𝑞d 𝑓†
+
+decoupled, though
+modulated by 𝑞d
+
+24
+
+Isolation of F/T sensor faults
+n
+
+simulation on the 2R robot
+
+bias faults
+on the two components
+of force sensor measures
+0.3N on 𝑓†‡ in 𝑡 ∈ [25 ÷ 190]
+0.6N on 𝑓†ˆ in 𝑡 ∈ [109 ÷ 285]
+
+n
+
+𝑞d is tracking a sinusoid (𝐴 = 𝜋/8 rad, 𝜔 = 0.1 rad/s)
+
+𝑓†‡
+𝑓†ˆ
+
+FDI residual
+components
+(with 𝐾 = 0.1𝐼 )
+𝑟†‡
+𝑟†ˆ
+
+experiment on the Pendubot (no force sensor and no contact!)
+RESIDUALS
+0.25
+r
+1
+r2
+
+0.2
+
+FAULT INTERVAL 1
+FAULT INTERVAL 2
+
+0.15
+
+0.05
+
+singularity
+zone
+
+(𝑞d ≈ 0)
+
+Nms
+
+evolution
+of joint
+variables
+
+0.1
+
+0
+
+−0.05
+
+−0.1
+
+𝐽O 8J ⟶ diag 𝑠d , 1 𝐽qO
+in previous scheme
+
+−0.15
+
+−0.2
+
+−0.25
+
+residuals
+for emulated bias
+measurement faults
+-1N on 𝐹9 in 𝑡 ∈ [1.8 ÷ 5.5]
+0.05N on 𝐹~ in 𝑡 ∈ [1 ÷ 4]
+
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+s
+
+Robotics 2
+
+25
+
+Isolation of non-concurrent faults
+n
+
+n
+
+faults of the actuators AND faults of the force sensor components
+(possibly occurring simultaneously) CANNOT be detected AND isolated
+n for a mechanical system with 𝑁 dofs, the max # of faults allowing FDI is 𝑁 !
+with non-concurrency, e.g., 2 actuator + 2 F/T sensor faults in 2R robot
+
+dependence of
+residuals on
+considered faults
+
+𝑓••
+𝑓•‘
+𝑓†‡
+𝑓†ˆ
+
+𝑟`,`
+𝑟`,d
+time sequence of
+non-concurrent
+bias faults:
+𝑓•• → 𝑓•‘ → 𝑓†‡ → 𝑓†ˆ
+𝑟d,`
+𝑟d,d
+
+Robotics 2
+
+𝑓••
+𝑓•‘
+
+isolation
+matrix
+
+𝑟`,`
+
+𝑟•‘
+
+𝑟d,`
+
+𝑟†‡
+𝑟†ˆ
+
+𝑟d,d
+isolation
+logics
+
+𝑓†ˆ
+
+𝑟••
+𝑟•‘
+
+𝑟••
+
+𝑟`,d
+
+𝑓†‡
+
+hybrid
+residuals
+allowing
+isolation
+of 4 faults
+𝑟†‡
+𝑟†ˆ
+
+26
+
+Experiments on friction compensation
+n
+
+results on the DLR 7R medical robot
+used then on-line
+in control law...
+
+friction estimate via residuals
+
+position error
+
+HD at the joints
+⇒ elastic joint
+dynamic model
+
+Robotics 2
+
+27
+
+Model- and signal-based FDI
+n
+
+detection and isolation features can be enhanced by combining
+multiple sensor inputs and different approaches
+n
+n
+
+model-based (exact, but require accurate models)
+signal-based (approximate, but without special requirements)
+
+so as to obtain the “best of both worlds”
+
+Robotics 2
+
+28
+
+Bibliography
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+X. Zhang, M. Polycarpou, T. Parisini, “Robust detection and isolation scheme for abrupt
+and incipient faults in nonlinear systems,” IEEE Trans. on Automatic Control, vol. 47, no. 4,
+pp. 576-592, 2002.
+A. De Luca, R. Mattone, "Actuator failure detection and isolation using generalized
+momenta," Proc. IEEE Int. Conf. on Robotics and Automation, pp. 634-639, 2003.
+A. De Luca, R. Mattone, "An adapt-and-detect actuator FDI scheme for robot
+manipulators," Proc. IEEE Int. Conf. on Robotics and Automation, pp. 4975-4980, 2004.
+A. De Luca, R. Mattone, "An identification scheme for robot actuator faults," Proc. IEEE/RSJ
+Int. Conf. on Intelligent Robots and Systems, pp.1127-1131, 2005.
+R. Mattone, A. De Luca, "Relaxed fault detection and isolation: An application to a nonlinear
+case study,” Automatica, vol. 42, no. 1, pp. 109-116, 2006.
+R. Mattone, A. De Luca, "Nonlinear fault detection and isolation in a three-tank heating
+system," IEEE Trans. on Control Systems Technology, vol. 14, no. 6, pp. 1158-1166, 2006.
+L. Le Tien, A. Albu-Schäffer, A. De Luca, G. Hirzinger, "Friction observer and compensation
+for control of robots with joint torque measurements," Proc. IEEE/RSJ Int. Conf. on
+Intelligent Robots and Systems, pp. 3789-3795, 2008.
+C. Gaz, A. Cristofaro, A. De Luca, ”Detection and isolation of actuator faults and collisions
+for a flexible robot arm," 59th IEEE Conf. on Decision and Control, South Korea, Dec 2020.
+
+Robotics 2
+
+29
+
+

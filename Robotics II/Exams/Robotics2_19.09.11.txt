@@ -1,0 +1,665 @@
+Robotics II
+September 11, 2019
+Exercise 1
+Consider the 3R robot in Fig. 1, moving on a horizontal plane. The robot has identical links (each of
+length L, uniformly distributed mass m, and inertia IL = mL2 /12 around the barycentral vertical axis)
+and is commanded at the joint level by torques τ (t) ∈ R3 . Neglect in the following any dissipative/friction
+effects. With the system at t = 0 in a generic initial state (q(0), q̇(0)) = (q 0 , q̇ 0 ) with q̇ 0 6= 0, we want to
+control the robot so that its kinetic energy T = T (q, q̇) in the closed-loop dynamics satisfies the following
+desired target equation:
+dT
+= −γ T,
+with γ > 0.
+dt
+Determine the expression of the control law τ = τ (q, q̇) that realizes this behavior. For L = 0.2 [m],
+m = 3 [kg], q 0 = (0, π/2, π/2) [rad], q̇ 0 = (0, −π, −π) [rad/s] and γ = 1, compute the numerical value of
+such a control torque at t = 0, i.e., τ (0).
+y0
+
+L
+m
+q3
+
+q2
+m
+
+L
+
+L
+
+m q1
+
+x0
+
+Figure 1: A 3R robot moving on a horizontal plane, and its coordinates q = (q1 , q2 , q3 ).
+Exercise 2
+The RP planar robot shown in Fig. 2 should execute a rest-to-rest motion task in minimum time under
+torque/force bounds |τi | ≤ τmax,i > 0, i = 1, 2, with its end-effector moving along a circular path of radius
+R > d by an angle α from A to B. Determine the analytic expression of the minimum time T ∗ in terms
+of the task data and of the robot dynamic parameters. Draw the profile of the two components of the
+time-optimal command τ ∗ (t), for t ∈ [0, T ∗ ].
+
+B
+
+y0
+
+q2
+𝛼
+
+d
+q1
+
+𝜏$
+𝜏#
+
+A
+x0
+
+R
+
+Figure 2: A RP robot moving its end-effector along a circular path on a horizontal plane.
+Exercise 3
+With reference to Fig. 3, a mass m1 is moving at constant speed v0 > 0 and collides at some time t = tc
+with a mass m2 which is initially at rest. Assume a purely ideal situation: there is no dissipation due to
+friction and the collision is perfectly elastic. Therefore, the total kinetic energy T and the total (scalar)
+momentum P of the two masses will both remain constant over time. Determine the expressions of the
++
+velocities v1 (t+
+c ) and v2 (tc ) of the two masses after the collision. Describe what happens when m1 > m2 ,
+m1 = m2 , or m1 < m2 , and in the limit cases when m2 → 0 or m2 → ∞.
+m1 v
+0
+
+m2
+x
+
+Figure 3: A mass m1 in motion collides with a second mass m2 initially at rest.
+[open books, 180 minutes]
+
+1
+
+Solution
+September 11, 2019
+Exercise 1
+The dynamic model of a frictionless robot in the absence of gravity is given by
+M (q)q̈ + S(q, q̇) q̇ = τ ,
+
+(1)
+
+where any factorization matrix S can be used for the (quadratic) Coriolis and centrifugal terms. From the
+expression of the kinetic energy T = 12 q̇ T M (q)q̇, we obtain
+dT
+1
+1
+= q̇ T M (q)q̈ + q̇ T Ṁ (q)q̇ = q̇ T (τ − S(q, q̇) q̇) + q̇ T Ṁ (q)q̇ = q̇ T τ ,
+(2)
+dt
+2
+2
+
+
+where we have used (1) and the principle of energy conservation (implying q̇ T Ṁ (q) − 2S(q, q̇) q̇ ≡ 0,
+Ṫ =
+
+∀(q, q̇)). In order to impose the desired behavior to the Kinetic energy, it follows immediately that
+Ṫ = q̇ T τ = −γ T = −
+
+γ T
+q̇ M (q)q̇
+2
+
+=⇒
+
+τ =−
+
+γ
+M (q)q̇.
+2
+
+(3)
+
+The control law should apply a torque that is the (scaled) negative value of the current generalized momentum p = M (q)q̇ of the robot.
+To realize (3), one needs to derive only the inertia matrix M (q) for the 3R planar robot at hand. The
+kinetic energy is given by
+T =
+
+3
+X
+
+Ti ,
+
+1
+1
+2
+m kv ci k2 + IL ωz,i
+,
+2
+2
+
+Ti =
+
+I=1
+
+i = 1, 2, 3.
+
+We compute first
+1
+T1 = m
+2
+
+
+
+L
+q̇1
+2
+
+2
+
+1
++ IL q̇12
+2
+
+
+
+
+1
+L2 2
+··· = m
+q̇1 .
+2
+3
+
+Then, from
+L cos q1 + (L/2) cos(q1 + q2 )
+L sin q1 + (L/2) sin(q1 + q2 )
+
+pc2 =
+
+!
+⇒
+
+v c2 =
+
+−L sin q1 q̇1 − (L/2) sin(q1 + q2 )(q̇1 + q̇2 )
+L cos q1 q̇1 + (L/2) cos(q1 + q2 )(q̇1 + q̇2 )
+
+and
+pc3 =
+⇒
+
+v c3 =
+
+we obtain
+T2 =
+
+L(cos q1 + cos(q1 + q2 )) + (L/2) cos(q1 + q2 + q3 )
+L(sin q1 + sin(q1 + q2 )) + (L/2) sin(q1 + q2 + q3 )
+
+!
+
+!
+
+−L(sin q1 q̇1 + sin(q1 + q2 )(q̇1 + q̇2 )) − (L/2) sin(q1 + q2 + q3 )(q̇1 + q̇2 + q̇3 )
+L(cos q1 q̇1 + cos(q1 + q2 )(q̇1 + q̇2 )) + (L/2) cos(q1 + q2 + q3 )(q̇1 + q̇2 + q̇3 )
+
+!
+,
+
+
+
+1
+L2
+1
+m L2 q̇12 +
+(q̇1 + q̇2 )2 + L2 cos q2 q̇1 (q̇1 + q̇2 ) + IL (q̇1 + q̇2 )2
+2
+4
+2
+
+and
+T3 =
+
+1  2 2
+L2
+m L q̇1 + L2 (q̇1 + q̇2 )2 + 2L2 cos q2 q̇1 (q̇1 + q̇2 ) +
+(q̇1 + q̇2 + q̇3 )2
+2
+4 
+1
++ L2 (cos(q2 + q3 )q̇1 + cos q3 (q̇1 + q̇2 )) (q̇1 + q̇2 + q̇3 ) + IL (q̇1 + q̇2 + q̇3 )2 .
+2
+
+Therefore, using the compact notation for trigonometric functions and substituting for IL = mL2 /12, the
+inertia matrix is
+
+
+4 + 3c2 + c3 + c23 35 + 32 c2 + c3 + 12 c23 31 + 12 (c3 + c23 )
+
+
+5
+1
+.
++ c3
++ 12 c3
+M (q) = mL2 
+(4)
+3
+3
+
+
+1
+symm
+3
+Finally, evaluating the control law at q 0 = (0, π/2, π/2) [rad] and q̇ 0 = (0, −π, −π) [rad/s] and with the
+data L = 0.2 [m], m = 3 [kg] (thus IL = 0.01 [kg·m2 ]) and γ = 1, gives
+
+
+
+
+ 
+
+7
+3
+− 16
+0
+0.12
+0.1885
+6
+1
+1 3  7
+π
+
+
+ 
+
+5
+1 
+−π  =  0.24  =  0.3770  [Nm]. (5)
+τ (0) = − M (q 0 ) q̇ 0 = − ·
+ 6
+3
+3 
+2
+2 25
+2
+1
+− 16 13
+0.08
+−π
+0.1257
+3
+
+2
+
+Exercise 2
+We start by deriving the dynamic model of the RP planar robot in Fig. 2. For the kinetic energy
+1 T
+q̇ M (q)q̇,
+2
+
+T = T1 + T2 =
+since pc2 = (q2 − d)
+T1 =
+
+cos q1
+
+1
+Ic1 q̇12 ,
+2
+
+sin q1
+T2 =
+
+T
+
+and v c2 = ṗc2 , we have
+
+
+1
+1
+1
+1
+Ic2 q̇12 + m2 kv c2 k2 =
+Ic2 + m2 (q2 − d)2 q̇12 + m2 q̇22 ,
+2
+2
+2
+2
+
+with an obvious interpretation of the dynamic parameters. The robot inertia matrix is then
+!
+Ic1 + Ic2 + m2 (q2 − d)2
+0
+M (q) =
+.
+0
+m2
+
+(6)
+
+From this, we compute the Coriolis/centrifugal terms using the matrices of Christoffel symbols
+"
+#
+ 
+T 
+∂M (q)
+∂mi (q)
+∂mi (q)
+1
+,
+i = 1, 2.
+−
+C i (q) =
++
+2
+∂q
+∂q
+∂qi
+We obtain
+C 1 (q) =
+
+0
+m2 (q2 − d)
+
+and thus
+c(q, q̇) =
+
+m2 (q2 − d)
+0
+q̇ T C 1 (q)q̇
+q̇ T C 2 (q)q̇
+
+!
+,
+
+!
+=
+
+C 2 (q) =
+
+−m2 (q2 − d)
+0
+
+2m2 (q2 − d) q̇1 q̇2
+−m2 (q2 − d) q̇12
+
+0
+0
+
+!
+
+!
+.
+
+From (6) and (7), we write the (unconstrained) dynamic equations in their scalar form as
+
+Ic1 + Ic2 + m2 (q2 − d)2 ) q̈1 + 2m2 (q2 − d) q̇1 q̇2 = τ1 ,
+m2 q̈2 − m2 (q2 −
+
+d) q̇12
+
+,
+
+= τ2 .
+
+(7)
+
+(8)
+(9)
+
+In order to execute the task, the second joint variable should remain constant at all times, namely q2 = R,
+q̇2 = q̈2 = 0. Therefore, from (8) with q2 = R and q̇2 = 0, the robot dynamics along the path can be
+described by
+I0 q̈1 = τ1 ,
+with I0 = Ic1 + Ic2 + m2 (R − d)2 > 0,
+(10)
+whereas, from (9) used as inverse dynamics with q2 = R and q̈2 = 0, the second motor should apply the
+force
+τ2 (t) = −m2 (R − d) q̇12 (t)
+(11)
+in order to have the end-effector remaining perfectly on the path. Equations (10–11) are the core of the
+solution. Based on the linear dynamics (10), to perform the desired rest-to-rest motion task in minimum
+time, the first motor should apply a bang-bang torque profile τ1 (t) (with maximum positive and negative
+torque ±τmax,1 , each applied for half of the motion interval). The total motion time should be sufficient
+to complete the rotation ∆q1 = α > 0. Again from (10), this corresponds to using a maximum (absolute)
+acceleration bound in the definition of the time-optimal motion of joint 1, i.e,
+|q̈1 | ≤ Amax,1 =
+
+τmax,1
+.
+I0
+
+(12)
+
+While doing so, however, the velocity q̇1 (t) of the first joint will increase linearly and, according to (11),
+the force that the second motor needs to apply in order to keep the robot end-effector on the path will
+increase quadratically. As a result, the second actuator may exceed its dynamic capabilities. Therefore,
+the bound |τ2 | ≤ τmax,2 will impose also a bound Vmax,1 on the (absolute) velocity that the first joint can
+reach. We have1
+r
+τmax,2
+|τ2 | = m2 (R − d) q̇12 ≤ τmax,2
+=⇒
+|q̇1 | ≤ Vmax,1 =
+.
+(13)
+m2 (R − d)
+Under the combined velocity/torque (viz. velocity/acceleration) bounds for the motion of joint 1, the minimum time solution will have in general a bang-coast-bang profile for the first torque (and its acceleration
+as well). The motion time T ∗ is computed then from known formulas.
+1 Note
+
+that R − d > 0 by assumption, so the argument of the square root is positive.
+
+3
+
+2
+If α > Vmax,1
+/Amax,1 , a coast phase will exist. Then
+
+Ts =
+
+Vmax,1
+Amax,1
+
+=⇒
+
+(T ∗ − Ts )Vmax,1 = α
+
+=⇒
+
+T∗ =
+
+α
+Vmax,1
++
+,
+Vmax,1
+Amax,1
+
+(14)
+
+where one should replace the definitions of bounds in (12) and (13). The (qualitative) plots of the resulting
+torque/force vector τ ∗ (t) are reported in Fig. 4. The second joint force τ2∗ (t) follows from (11), with a
+quadratic time profile where the velocity of the first joint is linear in time and a constant value where q̇1
+is constant. The other special cases (with pure bang-bang commands) are treated similarly.
+
+𝝉𝟏
+𝝉𝒎𝒂𝒙,𝟏
+T *-Ts
+
+T*
+
+t
+
+𝝉𝟐
+
+Ts
+
+T *-Ts
+
+Ts
+
+−𝝉𝒎𝒂𝒙,𝟏
+𝒒̇ 𝟏
+
+T*
+
+t
+
+−𝝉𝒎𝒂𝒙,𝟐
+
+𝑽𝒎𝒂𝒙,𝟏
+t
+Ts
+
+T *-Ts
+
+T*
+
+Figure 4: Optimal profiles of the torque τ1∗ , of the related velocity q̇1∗ , and of the force τ2∗ for the requested
+rest-to-rest minimum time motion of the RP robot in Fig. 2.
+Exercise 3
+This is a simple application of conservation principles of the total kinetic energy T and total momentum P
+(along the direction x) for the system with the two masses m1 and m2 . In formulas,
+T (t) =
+
+1
+1
+m1 v12 (t) + m2 v22 (t) = constant,
+2
+2
+
+P (t) = m1 v1 (t) + m2 v2 (t) = constant,
+
+∀t.
+
++
+We apply these identities around the collision time t = tc , just before (t = t−
+c ) and just after (t = tc ). Let
+
+v1 = v1 (t+
+c ),
+
+v1 (t−
+c ) = v0 > 0,
+
+v2 = v2 (t+
+c ),
+
+v2 (t−
+c ) = 0,
+
+where v1 and v2 are the unknowns of our problem. Thus,
+1
+1
+1
+m1 v12 + m2 v22 = m1 v02
+2
+2
+2
+
+(15)
+
+m1 v1 + m2 v2 = m1 v0 .
+
+(16)
+
+and
+Equations (15) and (16) are rewritten respectively as
+m1 (v12 − v02 ) + m2 v22 = m1 (v1 − v0 )(v1 + v0 ) + m2 v22 = 0
+
+(17)
+
+m1 (v1 − v0 ) = −m2 v2 .
+
+(18)
+
+and
+Substituting (18) in (17) and simplifying yields
+v2 = v1 + v0 .
+
+(19)
+
+Plugging (19) back into (16) leads to
+m1 v1 + m2 (v1 + v0 ) = m1 v0
+
+=⇒
+
+v1 =
+
+m1 − m2
+v0 .
+m1 + m2
+
+(20)
+
+Finally, substituting v1 in (19) gives
+v2 =
+
+2m1
+v0 .
+m1 + m2
+
+4
+
+(21)
+
+From (20–21), we conclude that:
+
+m2 → 0
+
+
+
+
+
+m2 < m1
+
+
+
+m2 = m1
+
+
+
+
+m2 > m1
+
+
+
+
+m2 → ∞
+
+=⇒
+
+v1 = v0 > 0,
+
+v2 = 2v0 > 0,
+
+=⇒
+
+v0 > v1 > 0,
+
+v2 > v0 > 0,
+
+=⇒
+
+v1 = 0,
+
+v2 = v0 > 0,
+
+=⇒
+
+−v0 < v1 < 0,
+
+0 < v2 < v0 ,
+
+=⇒
+
+v1 = −v0 < 0,
+
+v2 = 0.
+
+∗∗∗∗∗
+
+5
+
+

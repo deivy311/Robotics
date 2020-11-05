@@ -1,0 +1,863 @@
+Robotics II
+February 5, 2018
+Exercise 1
+Consider a robot manipulator with q ∈ Rn joint variables that is redundant with respect to a task
+described by r ∈ Rm variables, with m < n. The m × n task Jacobian matrix J (q) relates task and
+joint velocities, i.e., ṙ = J (q)q̇. For task regulation problems, kinematic control typically defines
+a law of the form
+
+
+q̇ = J #(q)Ke + I − J #(q)J (q) q̇ 0 ,
+K > 0 (diagonal), e = r d − r,
+(1)
+where r d is the desired value for the task variables. The first term in (1) leads to ė = −Ke, so that
+exponential convergence of the error e to zero is guaranteed (out of task singularities). The second
+term allows shaping the robot configuration during motion without affecting task execution, using
+a joint velocity q̇ 0 ∈ Rn projected in the null space of the task Jacobian. When m = n, there
+is no null space to explore (the second term vanishes); when m > n, the pseudoinverse command
+q̇ = J # (q)Ke guarantees only that a minimum error (in norm) is achieved, but still with e 6= 0.
+With the above in mind, consider a visual servoing problem that uses as task variables M point
+features, namely the coordinates f i = (ui vi )T ∈ R2 , i = 1, . . . , M , of M points on the 2D image
+plane of an eye-in-hand camera. Let the task vector be r = f ∈ Rm , with m = 2M , while vectors u
+and v (both in RM ) collect the coordinates of the image points. The task Jacobian J is the product
+J p (u, v, Z)J m (q), where J p is the m × 6 interaction matrix of the M point features (depending
+on the sensed image and on the depths Zi > 0 of the 3D points), and J m is the 6 × n geometric
+Jacobian of the manipulator carrying the camera. The rank of J will be equal to ρ ≤ min{m, 6, n},
+no matter how large n is, and the dimension of the null space N {J } will be n − ρ.
+To handle critical issues related to the lack of full row rank for the task Jacobian, it was recently
+proposed to modify the way the regulation task is accomplished. Instead of considering the original
+task as a m-dimensional vector, so as to achieve the goal r = r d , or e = 0, by driving each and
+every component to its desired value, we can define the task as the norm of the error e ∈ Rm ,
+η = kek,
+
+(2)
+
+and achieve the goal by specifying η = 0 as the desired task value. This is indeed equivalent to
+obtaining e = 0. Thanks to the modified definition, the task is one-dimensional and the null space
+of the associated task Jacobian will always be of dimension equal to (at least) n − 1.
+Formulate and address the problem of task-based kinematic control for η ∈ R. In particular:
+• determine the general form of the 1 × n task Jacobian matrix J η associated to (2);
+• analyze the singularities and/or the problems of definition of J η ;
+• write the explicit expression of the pseudoinverse J #
+η in the control law (1), assuming that
+e 6= 0 and J η is full (row) rank;
+• specify the main terms needed in this type of task-based kinematic control for the case of a
+visual servoing task with M = 2 point features.
+[Turn sheet for next exercises]
+
+1
+
+Exercise 2
+For a robot of the cylindrical type with a sequence PRP of joints and mounted on a vertical wall,
+provide the dynamic model in the usual form
+M (q)q̈ + c(q, q̇) + g(q) + F q̇ = τ ,
+
+(3)
+
+using the generalized coordinates q ∈ R3 and the dynamic coefficients defined in Fig. 1. In (3),
+F > 0 is a diagonal matrix of viscous coefficients. Make reasonable assumptions on the zero values
+of the variables qi , i = 1, 2, 3, and neglect the small offset between joint axes 2 and 3 (i.e., assume
+that these two axes intersect). Moreover, assume that the center of mass of each link is placed on
+the joint axis having the same index.
+Without any a priori knowledge of dynamic parameters, define all the terms needed in the design
+of an adaptive control law for this robot so as to achieve global asymptotic tracking of a desired
+joint trajectory q d (t), with qdi (t) = q0i + Ai (1 − cos (2πt/T ))ν (i = 1, 2, 3) of amplitude Ai and
+period T , for an unlimited time t ≥ 0. Which is the minimum value of the integer ν ∈ N that
+allows asymptotic exact tracking?
+q3
+m3 䎩!
+m1
+
+䎩!
+
+I1
+
+q1
+
+g0
+I3
+
+䎩!
+
+I2
+
+m2
+
+q2
+
+Figure 1: A cylindrical PRP-type robot mounted on a vertical wall, with its generalized coordinates
+q = (q1 , q2 , q3 ) and relevant dynamic parameters.
+Exercise 3
+Consider an actuated pendulum that moves in the vertical plane under a joint torque u. The single
+link is a uniform thin rod of mass m = 10 kg and length L = 2 m. The downward equilibrium is at
+θ = 0. Suppose that the link is initially at rest in θ0 = 0, and that we want to regulate its angular
+position to θd = π/3 rad using the control scheme
+u = kp (θd − θ) − kd θ̇ + ui−1 ,
+
+i = 1, 2, . . .
+
+(4)
+
+with kp = 500 and kd = 45. The constant feedforward ui−1 in (4) is updated at every new reached
+equilibrium configuration θi , i = 1, 2, . . . , as
+ui = ui−1 + kp (θd − θi ),
+
+i = 1, 2, . . . ,
+
+with u0 = 0.
+
+(5)
+
+Will the error ei = θd − θi converge to zero for i → ∞ with this iterative control scheme? Why, or
+why not? If (or when) it does, can you predict which is the minimum number imin > 0 of iterations
+guaranteeing that the error will satisfy |ei | < ε = 0.01 rad for all i ≥ imin ?
+[150 minutes; open books]
+
+2
+
+Solution
+February 5, 2018
+Exercise 1
+We first rewrite more explicitly eq. (2) as
+η = kek =
+
+√
+
+eT e = kr d − rk.
+
+(6)
+
+Since r d is constant, taking the time derivative of (6) yields
+1 2 eT ė
+eT ṙ
+eT J (q)
+√
+=−
+=−
+q̇ = J η (q)q̇,
+(7)
+2 eT e
+η
+kek
+where J is the Jacobian matrix associated to the original task variables r. Thus, the new 1 × n
+task Jacobian is
+eT J (q)
+.
+(8)
+J η (q) = −
+kek
+η̇ =
+
+This matrix has rank one whenever e 6∈ N {J T (q)}. On the other hand, the condition e = 0
+(i.e., exactly where the task is accomplished!) is critical because both the numerator and the
+denominator go to zero, so that a further analysis is needed (which is out of the scope of this
+exercise). Far from these situations, and similarly to (1), we define the control law as
+
+
+#
+q̇ = J #
+(9)
+η (q) k η + I − J η (q)J η (q) q̇ 0 ,
+with the pseudoinverse J #
+η of the row vector J η being the column vector computed as
+
+−1
+kek
+T
+T
+=−
+J#
+(q)
+=
+J
+(q)
+J
+(q)J
+(q)
+J T (q)e.
+η
+η
+η
+η
+T
+e J (q)J T (q)e
+
+(10)
+
+It is easy to see that (9) will work properly: in fact, plugging this q̇ in (7) leads to the exponentially
+stable (scalar) error system
+η̇ = −k η.
+(11)
+Moreover, the projection matrix P = I − J #
+η J η in (9) has rank one, and the null space in which
+we can now accommodate a desired extra motion q̇ 0 is now (n − 1)-dimensional.
+For a visual servoing task with M = 2 point features, r = f ∈ R4 , we need first to define the 4 × 6
+interaction matrix J p , as well as the (generic) 6 × n geometric Jacobian J m , so that
+ 
+ 
+V
+V
+,
+= J m (q)q̇
+⇒
+J = J pJ m,
+(12)
+ḟ = J p (u, v, Z)
+Ω
+Ω
+being V ∈ R3 and Ω ∈ R3 , respectively the linear and angular
+The interaction matrix takes the expression
+
+λ
+u1
+−
+0
+ Z1
+Z
+1
+
+λ
+v1
+! 
+ 0
+−
+J p1 (u1 , v1 , Z1 )
+
+Z1 Z1
+J p (u, v, Z) =
+=
+
+λ
+u2
+J p2 (u2 , v2 , Z2 )
+
+0
+−
+ Z2
+Z2
+
+λ
+v2
+0
+−
+Z2 Z2
+
+velocity of the eye-in-hand camera.
+u 1 v1
+λ
+v2
+λ+ 1
+λ
+u 2 v2
+λ
+v2
+λ+ 2
+λ
+
+
+
+u2
+− λ+ 1
+λ
+u1 v1
+−
+λ
+
+
+u22
+− λ+
+λ
+u2 v2
+−
+λ
+
+v1
+
+
+
+
+
+
+−u1 
+
+,
+
+
+v2 
+
+
+−u2
+(13)
+
+3
+
+with the camera focal length λ > 0. Moreover, from
+T
+f = u1 v1 u2 v2
+,
+f d = u1d v1d
+
+u2d
+
+v2d
+
+T
+
+e = fd − f,
+
+,
+
+the scalar task takes the expression
+q
+2
+2
+2
+2
+η = kek = (u1d − u1 ) + (v1d − v1 ) + (u2d − u2 ) + (v2d − v2 ) .
+The associated task Jacobian is compactly written as
+
+
+J p1 (u1 , v1 , Z1 )
+1
+J η = − eT
+J m (q).
+η
+J p2 (u2 , v2 , Z2 )
+
+(14)
+
+(15)
+
+(16)
+
+Finally, the pseudoinverse (10) takes the form
+J#
+η = −η
+
+
+J Tm (q) J Tp1 (u1 , v1 , Z1 ) J Tp2 (u2 , v2 , Z2 ) e
+.
+
+
+
+J p1 (u1 , v1 , Z1 )
+T
+T
+T
+T
+e
+J m (q) J m (q) J p1 (u1 , v1 , Z1 ) J p2 (u2 , v2 , Z2 ) e
+J p2 (u2 , v2 , Z2 )
+
+(17)
+
+Exercise 2
+Following a Lagrangian approach, we compute first the kinetic energy T = T1 + T2 + T3 . Since the
+position of the center of mass of the third link will be an unknown dynamic parameter, we need to
+define q3 in a purely kinematic way as the radial position of the distal end of the third link with
+respect to the joint axis 2. The radial position of the center of mass of link 3 will then be given by
+q3 − d3 , being d3 > 0 the distance of the center of mass from the link end. With this and under
+the other given assumptions, considering the sequence PRP of joint types we have
+T2 = 21 m2 q̇12 + 12 I2 q̇22 ,
+
+q̇12 + (q3 − d3 )2 q̇22 + q̇32 + 12 I3 q̇22
+
+T1 = 21 m1 q̇12 ,
+T3 =
+
+1
+2 m3
+
+⇒
+
+T = 12 q̇ T M (q)q̇,
+
+with
+
+
+M (q) = 
+
+m1 + m2 + m3
+
+0
+
+0
+
+0
+
+I2 + I3 + m3 (q3 − d3 )2
+
+
+
+
+0 .
+
+(18)
+
+0
+0
+m3
+For the Coriolis and centrifugal terms, the requested adaptive control law will use the factorization
+c(q, q̇) = C(q, q̇)q̇ such that Ṁ −2C is a skew-symmetric matrix. This is automatically guaranteed
+if the components of the Coriolis and centrifugal vector c(q, q̇) are computed using the Christoffel’s
+symbols, i.e.,
+!
+
+T
+1 ∂mi (q)
+∂mi (q)
+∂M (q)
+T
+ci (q, q̇) = q̇ C i (q)q̇, C i (q) =
++
+−
+, i = 1, 2, 3,
+(19)
+2
+∂q
+∂q
+∂q i
+being mi the ith column of the inertia matrix M . Using (18) and (19), we obtain
+C 1 (q) = 0
+
+
+0
+
+C 2 (q) =  0
+0
+
+0
+
+C 3 (q) =  0
+0
+
+⇒
+
+c1 (q, q̇) = 0,
+
+⇒
+
+c2 (q, q̇) = 2m3 (q3 − d3 ) q̇2 q̇3 ,
+
+⇒
+
+c3 (q, q̇) = −m3 (q3 − d3 ) q̇22 .
+
+
+
+0
+0
+
+0
+m3 (q3 − d3 ) 
+m3 (q3 − d3 )
+0
+
+0
+0
+
+−m3 (q3 − d3 ) 0 
+0
+0
+4
+
+A factorization that satisfies the skew-symmetric property is then given by
+
+ 
+ T
+q̇ C 1 (q)
+0
+0
+0
+
+ 
+
+C(q, q̇) =  q̇ T C 2 (q)  =  0 m3 (q3 − d3 ) q̇3 m3 (q3 − d3 ) q̇2  .
+0 −m3 (q3 − d3 ) q̇2
+0
+q̇ T C 3 (q)
+
+(20)
+
+For the potential energy due to gravity, Ug = U1 + U2 + U3 , we have (up to a constant)
+U1 = 0,
+
+U2 = 0,
+
+U3 = −m3 g0 (q3 − d3 ) cos q2 ,
+
+where we assumed that the third link is vertical and points downward for q2 = 0. Thus
+
+
+
+T
+0
+∂Ug (q)
+
+
+=  m3 g0 (q3 − d3 ) sin q2  .
+g(q) =
+∂q
+−m3 g0 cos q2
+
+(21)
+
+The dynamic model of the robot, including the viscous friction term with F = diag{f1 , f2 , f3 },
+can thus be written in the linear parametrized form,
+M (q)q̈ + C(q, q̇)q̇ + g(q) + F q̇ = Y (q, q̇, q̈) a = τ ,
+with the 3 × 7 regressor
+
+q̈1 0
+0
+
+2
+Y (q, q̇, q̈) =  0 q̈2 q3 q̈2 + 2q3 q̇2 q̇3 + g0 sin q2
+0
+
+0
+
+(22)
+
+
+
+0
+
+q̇1
+
+0
+
+0
+
+−2q3 q̈2 − 2 q̇2 q̇3 − g0 sin q2
+
+0
+
+q̇2
+
+
+0
+
+q̇22
+
+0
+
+0
+
+q̇3
+
+q̈3 − q3 q̇22 − g0 cos q2
+
+(23)
+and the vector of dynamic coefficients
+
+ 
+m1 + m2 + m3
+a1
+ a   I + I + m d2
+3
+3 3
+ 2  2
+
+ 
+ a3  
+m3
+
+ 
+ 
+m3 d3
+a=
+ a4  = 
+a  
+f1
+ 5 
+
+ 
+f2
+ a6  
+f3
+a7
+
+
+
+
+
+
+
+ ∈ R7 .
+
+
+
+
+
+
+(24)
+
+Defining q̇ r = q̇ d + Λe = q̇ d + Λ(q d − q), with a diagonal matrix Λ > 0, two diagonal gain
+matrices K D > 0 and K P = K D Λ > 0, and a diagonal estimation gain matrix Γ > 0, the
+adaptive controller will have dimension 7 and the expression
+u = M̂ (q)q̈ r + Ĉ(q, q̇)q̇ r + ĝ(q) + K P e + K D ė = Y (q, q̇, q̇ r , q̈ r )â + K P e + K D ė
+˙ = Γ Y T (q, q̇, q̇ , q̈ ) (q̇ − q̇) ,
+â
+r
+r
+r
+
+(25)
+
+â(0) = arbitrary,
+
+where
+Y (q, q̇, q̇ r , q̈ r ) =
+
+
+q̈r1 0
+0
+0
+q̇r1 0 0
+
+
+ 0 q̈r2 q32 q̈r2 + q3 (q̇2 q̇r3 + q̇r2 q̇3 ) + g0 sin q2 −2q3 q̈r2 −(q̇2 q̇r3 + q̇r2 q̇3 ) − g0 sin q2 0 q̇r2 0 
+0 0
+q̈r3 − q3 q̇2 q̇r2 − g0 cos q2
+q̇2 q̇r2
+0 0 q̇r3
+(26)
+5
+
+and
+â =
+
+â1
+
+â2
+
+â3
+
+â4
+
+â5
+
+â6
+
+â7
+
+T
+
+.
+
+(27)
+
+Finally, the desired trajectory is sufficiently smooth already with ν = 1 and guarantees thus
+permanent exact tracking when the error e(t) = q d (t)−q(t) asymptotically vanishes. In particular,
+we shall need the quantities
+
+
+2πt
+2πt
+2πAi
+2πt
+4π 2 Ai
+cos
+qdi (t) = q0i + Ai 1 − cos
+, q̇di (t) =
+sin
+, q̈di (t) =
+(28)
+T
+T
+T
+T2
+T
+for i = 1, 2, 3.
+Exercise 3
+The dynamic equation of the pendulum is
+
+I0 + md2 θ̈ + mdg0 sin θ = u,
+
+(29)
+
+with d = L/2 = 1 m and I0 = mL2 /12, which is the inertia of a uniform thin rod of mass m and
+length L around an orthogonal axis passing through its center of mass. However, note that the
+value of I0 (as well as that of the total inertia I0 + md2 ) will be irrelevant in the solution of our
+problem. Same for the gain kd .
+The gradient of the gravity term can be easily bounded as
+∂g(θ)
+= |mdg0 cos θ| ≤ mdg0 = 98.1 = α.
+∂θ
+
+(30)
+
+Being
+kp = 500 > 196.2 = 2α,
+
+(31)
+
+the iterative scheme (4–5) will certainly converge to e = θd − θ = 0. Moreover, we can take out
+from kp a factor 1/β in the following way
+kp =
+
+kp0
+= 500
+β
+
+⇒
+
+kp0 = 100 > 98.1 = α,
+
+0<β=
+
+1
+1
+≤ ,
+5
+2
+
+(32)
+
+so that we recognize the sufficient conditions for contraction of the iterative learning control (4–5).
+From the proof of the related theorem and the value of β in (32), we have
+kei k <
+
+β
+kei−1 k
+1−β
+
+⇒
+
+|θd − θi | = |ei | <
+
+1
+5
+
+1−
+
+1
+5
+
+|ei−1 | = 0.25 |θd − θi−1 | .
+
+(33)
+
+As a result, we know in advance that the error will be reduced at least by a factor 4 from one
+iteration to the other. Thus, starting with the known initial error
+π
+(34)
+e0 = θd − θ0 = = 1.0472,
+3
+we can iteratively estimate upper bounds êi for the absolute errors |ei |:
+π
+|e1 | = |θd − θ1 | < 0.25 |e0 | =
+= 0.2618 = ê1 ,
+12
+π
+|e2 | = |θd − θ2 | < 0.25 |e1 | =
+= 0.0654 = ê2 ,
+48
+(35)
+π
+|e3 | = |θd − θ3 | < 0.25 |e2 | =
+= 0.0164 = ê3 ,
+208
+π
+|e4 | = |θd − θ4 | < 0.25 |e3 | =
+= 0.0041 = ê4 < 0.01 = ε.
+832
+6
+
+We can conclude that the absolute error with respect to θd will be reduced and kept below the
+required tolerance ε starting with the iteration imin = 4. Note that the control scheme tolerates
+a large uncertainty for the bound α on the gravity term. In the present case, we could handle
+a link mass which is up to 250% larger than the nominal value and would still converge, though
+progressively slower, without modifying the chosen proportional control gain (nor anything else).
+We can do an exact calculation of the solution sequence of angles θi and feedforward torques ui , even
+without performing a dynamic simulation but just knowing in advance the value M = mdg0 = 98.1.
+In fact, every new equilibrium configuration θ = θi will have to satisfy the nonlinear equation
+mg0 d sin θ = kp (θd − θ) + ui−1 ,
+
+i = 1, 2, . . .
+
+(36)
+
+We can solve numerically (36) using, e.g., the matlab function fsolve
+theta(i) = fsolve(@(theta) M ∗ sin(theta) − kp ∗ (thetad − theta) − u(i − 1), theta(i − 1))
+providing each time θi−1 as initial guess. We update then the feedforward torque ui using the
+recursion (5). Table 1 shows the actual convergence of the iterative control process, and also
+a comparison of the actual errors vs. their estimated bounds in (35). Indeed, the actual error
+converges to zero faster than its estimated bound.
+i
+
+θi
+
+ei
+
+êi
+
+ui
+
+0 (init)
+
+0
+
+1.0472
+
+1.0472
+
+0
+
+1
+
+0.8942
+
+0.1530
+
+0.2618
+
+76.4904
+
+2
+
+1.0318
+
+0.0154
+
+0.0654
+
+84.1916
+
+3
+
+1.0458
+
+0.0014
+
+0.0164
+
+84.888
+
+4 (stop)
+
+1.0471
+
+0.0001
+
+0.0041
+
+84.9510
+
+true
+
+1.0472
+
+0
+
+−
+
+84.9571
+
+Table 1: Iterative learning process for regulation at θd = π/3 = 1.0472 rad with gravity torque
+estimation. Iterations are stopped when êi ≤ ε = 0.01. Angles/errors in [rad], torques in [Nm].
+∗∗∗∗∗
+
+7
+
+

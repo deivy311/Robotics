@@ -1,0 +1,967 @@
+Robotics II
+June 6, 2017
+Exercise 1
+Consider a planar 3R robot with unitary link lengths as in Fig. 1, where the generalized coordinates q
+are defined as the absolute angles of the links w.r.t. the x-axis. The position of the robot end-effector
+p = p(q), as obtained through the direct kinematics, should follow the desired trajectory
+!
+1 + 2 sin 3t
+`
+´ ,
+pd (t) =
+for t ≥ 0.
+(1)
+2 + cos 3t + π2
+The robot is kinematically redundant for this task.
+...
+• Define a differential inversion scheme at the level of joint jerk commands q such that the squared
+... 2
+norm k q k is locally minimized and the trajectory can be executed exactly right from the initial
+time t = 0.
+• Provide numerical values for the initial joint position q(0), joint velocity q̇(0), and joint acceleration
+q̈(0) such that there is a perfect initial matching with the desired trajectory. Provide also the
+...
+numerical value of the initial locally optimal command q (0).
+• Suppose that there is no perfect matching between the initial kinematic conditions of the robot
+...
+and the trajectory at time t = 0. How can we modify the command law for q such that the error
+e(t) = pd (t) − p(t) and all its time derivatives will exponentially converge to zero?
+
+y
+
+p
+q3
+q2
+q1
+
+x
+Figure 1: A planar 3R robot with absolute angles as generalized coordinates q = (q1 , q2 , q3 ).
+Exercise 2
+For the same robot in Fig. 1, and using the same coordinates defined therein, assume that the three links
+have equal, uniformly distributed mass mi = m = 10 kg, for i = 1, 2, 3. Each torque τi delivered by
+the motors and performing work on the absolute coordinate qi is bounded as |τi | ≤ Tmax = 300 Nm, for
+i = 1, 2, 3. Consider the Cartesian regulation control law
+!
+“
+”
+1
+T
+τ = J (q) K P pd − p(q) − K D q̇ + g(q),
+with pd =
+,
+(2)
+2
+where the gain matrices K P and K D are diagonal and positive definite. Let the robot starts at rest at
+`
+´T
+t = 0 in the configuration q(0) = π/2 0 0
+.
+• If the gain matrices are of the form K P = kP · I 2×2 and K D = kD · I 2×2 , provide the largest values
+for the scalars kP and kD such that τ (0) in (2) does not violate its bounds.
+• Let now the positional gain matrix be K P = diag{kP x , kP y }, while K D is as before. Provide the
+largest values for the scalars kP x , kP y , and kd such that τ (0) in (2) does not violate its bounds.
+• How would things change if the bounds were set as |τθ,i | ≤ Tmax = 300 Nm, where τθ,i is the torque
+delivered by the motors and performing work on the relative (Denavit-Hartenberg) coordinate θi ,
+for i = 1, 2, 3?
+[Turn sheet for the next exercise]
+
+1
+
+Exercise 3
+Consider the planar PRP robot in Fig. 2.
+
+!
+g
+
+y
+
+q3
+
+䎩!
+
+m3,I3
+
+!
+
+m1,I1
+
+d
+
+䎩! q2
+
+䎩!
+
+m2,I2
+
+q1
+
+x
+
+Figure 2: A planar PRP robot moving in a vertical plane, with definition of the generalized
+coordinates q = (q1 , q2 , q3 ) to be used.
+• Determine the expressions of the inertial, Coriolis and centrifugal, and gravity terms in the dynamic
+model expressed in the usual Lagrangian form
+M (q)q̈ + c(q, q̇) + g(q) = τ .
+• Find a factorization c(q, q̇) = C(q.q̇)q̇ such that Ṁ − 2C is a skew-symmetric matrix.
+• Find all equilibrium configurations q e (i.e., such that g(q e ) = 0), if any.
+• Provide symbolic expressions for the scalar coefficients α > 0 and β > 0 such that the following
+global linear bound holds for the Hessian of the gravitational potential energy Ug (q):
+‚ ‚
+‚
+‚ 2
+‚ ∂ Ug (q) ‚ ‚ ∂g(q) ‚
+‚=‚
+‚
+‚
+∀q ∈ R3 .
+‚ ∂q 2 ‚ ‚ ∂q ‚ ≤ α + β |q3 |,
+[240 minutes; open books but no computer or smartphone]
+
+2
+
+Solution
+June 6, 2017
+
+Exercise 1
+The direct kinematics of the planar 3R robot with unitary link lengths using absolute coordinates (i.e.,
+the link angles w.r.t. the x-axis) is
+!
+c1 + c2 + c3
+p = p(q) =
+.
+s1 + s2 + s3
+The associated first-order differential kinematics, with the Jacobian matrix, is
+!
+−s1 −s2 −s3
+∂p(q)
+q̇ = J (q) q̇ =
+q̇.
+ṗ =
+∂q
+c1
+c2
+c3
+The second-order differential kinematics, with the first time-derivative J̇ of the Jacobian, is
+!
+−c1 q̇1 −c2 q̇2 −c3 q̇3
+q̇.
+p̈ = J (q) q̈ + J̇ (q) q̇ = J (q) q̈ +
+−s1 q̇1 −s2 q̇2 −s3 q̇3
+The third-order differential kinematics, including the second time-derivative J̈ of the Jacobian, is
+...
+...
+...
+p = J (q) q + 2J̇ (q) q̈ + J̈ (q) q̇ = J (q) q + 2J̇ (q) q̈ +
+
+s1 q̇12 − c1 q̈1
+−c1 q̇12 − s1 q̈1
+
+s2 q̇22 − c2 q̈2
+−c2 q̇22 − s2 q̈2
+
+s3 q̇32 − c3 q̈3
+−c3 q̇32 − s3 q̈3
+
+!
+q̇.
+
+When the initial conditions of the robot are perfectly matched with the desired end-effector trajectory,
+p(q(0)) = pd (0),
+
+J (q(0)) q̇(0) = ṗd (0),
+
+J (q(0)) q̈(0) + J̇ (q(0)) q̇(0) = p̈d (0),
+
+(3)
+
+the nominal solution for executing pd (t) with minimum norm of the joint jerk is (dropping dependencies)
+“
+”
+...
+...
+q = J # p d − 2J̇ q̈ − J̈ q̇ .
+(4)
+From (1), we have
+ṗd =
+
+6 cos 3t
+`
+−3 sin 3t +
+
+Thus
+pd (0) =
+
+1
+2
+
+!
+´
+π
+
+,
+
+−18 sin 3t
+`
+´
+−9 cos 3t + π2
+
+p̈d =
+
+2
+
+!
+,
+
+ṗd (0) =
+
+6
+−3
+
+!
+,
+
+p̈d (0) =
+
+!
+,
+
+0
+0
+
+...
+pd =
+
+!
+,
+
+−54 cos 3t
+`
+´
+27 sin 3t + π2
+
+...
+p d (0) =
+
+−54
+27
+
+!
+.
+
+!
+.
+
+It is easy to find an initial configuration q 0 = q(0) that is matched with the initial position of the trajectory:
+q0 =
+
+`
+
+0 π/2 π/2
+
+´T
+
+[rad]
+
+⇒
+
+p(q 0 ) = pd (0).
+
+In this configuration, the Jacobian is full rank and its pseudoinverse is easily computed as
+0
+1
+!
+0
+1
+“
+”
+−1
+0 −1 −1
+B
+C
+T
+T
+J 0 = J (q 0 ) =
+⇒
+J#
+= @ −0.5 0 A
+0 = J 0 J 0J 0
+1
+0
+0
+−0.5 0
+
+3
+
+The associated initial joint velocity q̇ 0 = q̇(0) and acceleration q̈ 0 = q̈(0) can be computed as minimum
+norm solutions at their differential level. We have
+0
+1
+−3
+B
+C
+q̇ 0 = J #
+0 ṗd (0) = @ −3 A [rad/s].
+−3
+From this, evaluating
+3
+0
+
+J̇ 0 q̇ 0 =
+
+0
+3
+
+0
+3
+
+we obtain also
+
+!
+
+0
+
+1
+−3
+B
+C
+@ −3 A =
+−3
+
+−9
+−18
+
+!
+,
+
+0
+
+“
+
+q̈ 0 = J #
+p̈d (0) − J̇ 0 q̇ 0
+0
+
+”
+
+1
+18
+B
+C
+2
+= −J #
+0 J̇ 0 q̇ 0 = @ −4.5 A [rad/s ].
+−4.5
+
+Evaluating now
+
+J̇ 0 q̈ 0 =
+
+54
+−27
+
+!
+,
+
+J̈ 0 q̇ 0 =
+
+−18
+−9
+
+from eq. (4) we finally obtain the jerk command at
+0
+0
+“
+”
+...
+...
+B
+#
+q (0) = J 0 p d (0) − 2J̇ 0 q̈ 0 − J̈ 0 q̇ 0 = @ −0.5
+−0.5
+
+9
+4.5
+
+9
+4.5
+
+!
+
+0
+
+1
+−3
+B
+C
+@ −3 A =
+−3
+
+time t = 0:
+1
+!
+1
+−54
+C
+0A
+−2
+27
+0
+
+54
+−27
+
+0
+0
+
+!!
+
+!
+= 0,
+
+0
+
+1
+81
+B
+C
+= @ 81 A [rad/s3 ].
+81
+
+Instead, when the initial conditions of the robot are not matched with the desired end-effector trajectory
+(i.e., if one or more of the identities in (3) is violated), in order to obtain exponential tracking of pd (t),
+the solution with minimum norm of the joint jerk can be modified as (dropping dependencies)
+“
+“
+”
+”
+...
+...
+q = J # p d + k2 p̈d − J q̈ − J̇ q̇ + k1 (ṗd − J q̇) + k0 (pd − p) − 2J̇ q̈ − J̈ q̇ ,
+(5)
+where the scalars k0 , k1 , and k2 are such that
+k(s) = s3 + k2 s2 + k1 s + k0
+is a Hurwitz polynomial, namely it has all roots in the left-hand side of the complex plane. From Routh
+criterion, this happens if and only if
+k0 > 0,
+
+k1 >
+
+k0
+> 0,
+k2
+
+k2 > 0.
+
+(6)
+
+To show the transient properties of the control law (5), let the Cartesian position error be defined as
+e = pd − p ∈ R2 . From
+“
+”
+... ...
+... ...
+...
+e = p d − p = p d − J q + 2J̇ q̈ + J̈ q̇
+using (5) and being JJ # = I 2×2 , it is easy to see that the following linear differential equation holds:
+...
+e + k2 ë + k1 ė + k0 e = 0.
+Under the conditions (6), the evolution of e(t) and of its time derivatives is that of the modes of an
+asymptotically stable linear system, namely exponentially or pseudo-exponentially converging to zero.
+
+4
+
+Exercise 2
+We compute first the gravitational potential energy Ug (q) = U1 + U2 + U3 . We have
+U1 = m1 g0 d1 sin q1 ,
+
+U2 = m2 g0 (`1 sin q1 + d2 sin q2 ) ,
+
+U3 = m3 g0 (`1 sin q1 + `2 sin q2 + d3 sin q3 ) .
+Since di = `i /2 = 0.5, for i = 1, 2, 3, it is
+“m
+”
+“m
+”
+m3
+1
+2
+Ug (q) = g0
++ m2 + m3 sin q1 + g0
++ m3 sin q2 + g0
+sin q3
+2
+2
+2
+and
+0
+„
+g(q) =
+
+∂Ug (q)
+∂q
+
+«T
+B
+=@
+
+g0 ((m1 /2) + m2 + m3 ) cos q1
+
+1
+
+g0 ((m2 /2) + m3 ) cos q2
+
+C
+A.
+
+g0 (m3 /2) cos q3
+Using the expressions of p(q) and J (q) from Exercise 1 and the mass data, we evaluate the control law (2)
+`
+´T
+with K P = kP · I 2×2 , at the initial time t = 0, when q(0) = π/2 0 0
+and q̇(0) = 0:
+τ (0) = kp J T (q(0)) (pd − p(q(0))) + g(q(0))
+0
+1
+0
+1 0
+1
+!
+!!
+kp
+−1 0
+0
+1
+2
+B
+C
+B
+C B
+C
+1A
+= kp @ 0
+−
++ @ 15g0 A = @ kp + 15g0 A ,
+2
+1
+0
+1
+5g0
+kp + 5g0
+
+(7)
+kp > 0, g0 = 9.81 > 0.
+
+Therefore, the largest value kp > 0 that satisfies the bounds on the joint torques, |τi | ≤ Tmax = 300 Nm,
+for i = 1, 2, 3, is the one that saturates the second torque component, i.e.,
+τ2 (0) = kp + 15g0 = 300 [Nm]
+
+⇒
+
+kp = 300 − 15g0 ' 152.85.
+
+If K P = diag{kP x , kP y } and all the rest is as before, the control law (2) is evaluated again as
+0
+
+kP x
+
+1
+
+C
+B
+τ (0) = J T (q(0)) diag{kP x , kP y } (pd − p(q(0))) + g(q(0)) = @ kP y + 15g0 A ,
+
+kP x > 0, kP y > 0.
+
+(8)
+
+kP y + 5g0
+Therefore, we can take as the largest gain values those that saturate the first two components of the torque
+τ , i.e.,
+kP x = τ1 (0) = 300 [Nm],
+kP y = 300 − 15g0 ' 152.85 [Nm].
+In both cases, the value of K D = kD · I 2×2 does not play any role (as long as q̇ = 0).
+Finally, consider the case of torque bounds in the form |τθ,i | ≤ Tmax = 300 Nm, for i = 1, 2, 3, where
+τ θ are the torques producing work on the relative coordinates θ (of the Denavit-Hartenberg convention).
+Since
+0
+1
+1 0 0
+B
+C
+q = @ 1 1 0 Aθ = Tθ
+⇒
+q̇ = T θ̇,
+1 1 1
+from the principle of virtual work (τ T q̇ = τ Tθ θ̇) we have
+0
+1
+0
+1 1 1
+1
+B
+C
+B
+τθ = TTτ = @ 0 1 1 Aτ
+⇒
+τ = T −T τ θ = @ 0
+0 0 1
+0
+
+5
+
+−1
+1
+0
+
+1
+0
+C
+−1 A τ θ .
+1
+
+(9)
+
+Therefore, taking for example the gain structure in (7), it follows that
+0
+
+−300
+
+1
+
+kp
+
+0
+
+1
+
+0
+
+3kp + 20g0
+
+1
+
+0
+
+300
+
+1
+
+C
+C B
+C B
+C
+B
+T
+T B
+@ −300 A ≤ τ θ (0) = T τ (0) = T @ kp + 15g0 A = @ 2kp + 20g0 A ≤ @ 300 A .
+−300
+
+300
+
+kp + 5g0
+
+kp + 5g0
+
+The largest value kp > 0 that satisfies all the above bounds is obtained then from the first component:
+kp =
+
+300 − 20g0
+' 34.6 [Nm].
+3
+
+Note also that, from the linear transformations (9), a feasible cube of side 2Tmax = 600 Nm centered in
+the origin of the τ θ -space becomes a skewed parallelepiped in the τ -space (and vice versa).
+Exercise 3
+Following a Lagrangian approach, we compute first the kinetic energy T (q, q̇) = T1 + T2 + T3 . We have
+´
+`
+T1 = 12 m1 q̇12 ,
+T2 = 21 m2 q̇12 + d2 q̇22 − 2d sin q2 q̇1 q̇2 + 12 I2 q̇22 ,
+´
+`
+T3 = 21 m3 q̇12 + q32 q̇22 + q̇32 − 2q3 sin q2 q̇1 q̇2 + 2 cos q2 q̇1 q̇3 + 12 I3 q̇22 .
+Thus
+0
+T =
+
+m1 + m2 + m3
+
+1
+1 T
+B
+q̇ M (q)q̇ = q̇ T @
+2
+2
+
+−(m2 d + m3 q3 ) sin q2
+
+m3 cos q2
+
+I2 + m2 d2 + I3 + m3 q32
+
+0
+
+symm
+
+1
+C
+A q̇.
+
+m3
+
+The components of the Coriolis and centrifugal vector are computed using the Christoffel’s symbols
+!
+„
+«T
+∂M (q)
+∂mi (q)
+1 ∂mi (q)
+ci (q, q̇) = q̇ T C i (q)q̇,
+C i (q) =
++
+−
+,
+2
+∂q
+∂q
+∂q i
+being mi the ith column of the inertia matrix M (q). We have
+0
+0
+0
+B
+C 1 (q) = @ 0 −(m2 d + m3 q3 ) cos q2
+0
+−m3 sin q2
+⇒
+
+1
+0
+C
+−m3 sin q2 A
+0
+
+c1 (q, q̇) = −(m2 d + m3 q3 ) cos q2 q̇22 − 2 m3 sin q2 q̇2 q̇3 .
+
+Similarly
+0
+
+0
+B
+C 2 (q) = @ 0
+0
+and
+
+0
+
+0
+B
+C 3 (q) = @ 0
+0
+
+0
+0
+m3 q3
+
+1
+0
+C
+m3 q3 A
+0
+
+⇒
+
+c2 (q, q̇) = 2 m3 q3 q̇2 q̇3 ,
+
+1
+0
+C
+0A
+0
+
+⇒
+
+c3 (q, q̇) = −m3 q3 q̇22 .
+
+0
+−m3 q3
+0
+
+A factorization of the Coriolis and centrifugal terms c(q, q̇) = C(q, q̇)q̇ that satisfies the skew-symmetric
+property is given by
+0 T
+1 0
+1
+q̇ C 1 (q)
+0 −(m2 d + m3 q3 ) cos q2 q̇2 − m3 sin q2 q̇3 −m3 sin q2 q̇2
+B
+C B
+C
+m3 q3 q̇3
+m3 q3 q̇2
+C(q, q̇) = @ q̇ T C 2 (q) A = @ 0
+A.
+T
+0
+−m3 q3 q̇2
+0
+q̇ C 3 (q)
+
+6
+
+Being
+0
+
+0
+
+−(m2 d + m3 q3 ) cos q2 q̇2 − m3 sin q2 q̇3
+
+−m3 sin q2 q̇2
+
+1
+
+2 m3 q3 q̇3
+
+0
+
+C
+A,
+
+0
+
+0
+
+B
+Ṁ (q) = @ −(m2 d + m3 q3 ) cos q2 q̇2 − m3 sin q2 q̇3
+−m3 sin q2 q̇2
+it is easy to check that the matrix Ṁ − 2C is skew-symmetric.
+
+For the potential energy due to gravity, Ug (q) = U1 + U2 + U3 , we have (up to a constant)
+U1 = 0,
+
+U2 = m2 g0 d sin q2 ,
+
+Thus
+
+U3 = m3 g0 q3 sin q2 .
+
+0
+
+„
+g(q) =
+
+∂Ug (q)
+∂q
+
+«T
+
+1
+0
+B
+C
+= @ (m2 d + m3 q3 )g0 cos q2 A .
+m3 g0 sin q2
+
+The unforced equilibrium configurations are
+g(q e ) = 0
+
+⇒
+
+qe,2 = {0, π},
+
+qe,1 = any,
+
+qe,3 = −
+
+m2
+d.
+m3
+
+Taking a further partial derivative of g w.r.t. q, we obtain the matrix
+0
+1
+0
+0
+0
+2
+∂g(q)
+∂ Ug (q)
+B
+C
+=
+= @ 0 −(m2 d + m3 q3 )g0 sin q2 m3 g0 cos q2 A = A(q).
+∂q
+∂q 2
+0
+m3 g0 cos q2
+0
+Matrix A is symmetric, thus it has real eigenvalues. To have all non-negative eigenvalues (so that we can
+order them and find their maximum, as requested by the definition of norm of a matrix that we use), we
+compute the semi-positive definite matrix
+0
+1
+0
+0
+0
+`
+´
+B
+C
+−g02 m3 (m2 d + m3 q3 ) sin q2 cos q2 A ,
+AT (q)A(q) = @ 0 g02 (m2 d + m3 q3 )2 sin2 q2 + m23 cos2 q2
+2
+2 2
+2
+0
+−g0 m3 (m2 d + m3 q3 ) sin q2 cos q2
+g0 m3 cos q2
+which has clearly one zero eigenvalue. Denote by B the lower 2 × 2 block on the diagonal of this matrix.
+The characteristic polynomial of AT A is then
+“
+”
+`
+´
+det λI − AT (q)A(q) = λ · det (λI − B(q)) = λ λ2 − trace{B(q)}λ + det{B(q)}
+with trace{B(q)} > 0 and det{B(q)} > 0. Therefore, the maximum eigenvalue of AT A is
+“
+”
+1p
+1
+(trace{B(q)})2 − 4 det{B(q)}
+λmax AT (q)A(q) = trace{B(q)} +
+2
+2
+Since we are looking for a bound on the norm of A(q), we can write the chain of inequalities
+`
+´
+`
+´
+λmax AT (q)A(q) ≤ trace{B(q)} = g02 (m2 d + m3 q3 )2 sin2 q2 + 2 m23 cos2 q2
+√
+`
+´
+< g02 (m2 d + m3 q3 )2 + 2 m23 < g02 (m2 d + m3 |q3 | + 2 m3 )2 .
+Therefore, we finally obtain the requested bound
+‚
+‚
+q
+√
+‚ ∂g(q) ‚
+` T
+´
+‚
+‚
+‚ ∂q ‚ = kA(q)k = λmax A (q)A(q) < g0 (m2 d + m3 |q3 | + m3 2) = α + β |q3 |,
+with
+
+√
+α = g0 (m2 d + m3 2),
+∗∗∗∗∗
+
+7
+
+β = g0 m3 .
+
+∀q ∈ R3 ,
+
+

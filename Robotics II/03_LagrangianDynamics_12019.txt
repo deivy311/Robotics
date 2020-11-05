@@ -1,0 +1,1423 @@
+Robotics 2
+
+Dynamic model of robots:
+Lagrangian approach
+Prof. Alessandro De Luca
+
+Dynamic model
+n
+
+provides the relation between
+generalized forces !(#) acting on the robot
+robot motion, i.e.,
+assumed configurations %(#) over time
+!&'()#*(#)
+
+!+,-#.*(,)(#)
+%(#)
+
+Robotics 2
+
+a system of 2nd order
+differential equations
+
+/ %, %,̇ %̈ = !
+2
+
+Direct dynamics
+n
+
+direct relation
+-1
+- ! = ⋮
+-3
+
+01
+0 ! = ⋮
+03
+input for ! ∈ [0, &]
+
+- 0 , -(0)
+̇
+
+resulting motion
+
+initial state at ! = 0
+n
+
+n
+
+experimental solution
+n apply torques/forces with motors and measure joint variables
+with encoders (with sampling time &) )
+
+, -, -,̇ -̈ = 0
+solution by simulation
+n use dynamic model and integrate numerically the differential
+equations (with simulation step &* ≤ &) )
+
+Robotics 2
+
+3
+
+Inverse dynamics
+n
+
+inverse relation
+
+20 ! , 2̇ 0 ! , 2̈ 0 (!)
+desired motion
+for ! ∈ [0, &]
+n
+
+n
+
+(0 (!)
+required input
+for ! ∈ [0, &]
+
+experimental solution
+n repeated motion trials of direct dynamics using () (!), with
+iterative learning of nominal torques updated on trial , + 1
+based on the error in [0, &] measured in trial ,: () (!) ⇒ (0 (!)
+
+1 2, 2,̇ 2̈ = (
+analytic solution
+n use dynamic model and compute algebraically the values (0 (!)
+at every time instant !
+
+Robotics 2
+
+4
+
+Approaches to dynamic modeling
+Euler-Lagrange method
+(energy-based approach)
+n
+
+n
+
+dynamic equations in
+symbolic/closed form
+best for study of dynamic
+properties and analysis of
+control schemes
+
+Newton-Euler method
+(balance of forces/torques)
+n
+
+n
+
+dynamic equations in
+numeric/recursive form
+best for implementation of
+control schemes (inverse
+dynamics in real time)
+
+§ many other formal methods based on basic principles in mechanics
+are available for the derivation of the robot dynamic model:
+§ principle of d’Alembert, of Hamilton, of virtual works, …
+Robotics 2
+
+5
+
+Euler-Lagrange method
+(energy-based approach)
+
+basic assumption: the ! links in motion are considered as rigid bodies
+(+ possibly, concentrated elasticity at the joints)
+
+' ∈ ℝ+ generalized coordinates (e.g., joint variables, but not only!)
+Lagrangian , ', '̇ = . ', '̇ − 0(')
+kinetic energy – potential energy
+§ least action principle of Hamilton
+§ virtual works principle
+
+Euler-Lagrange
+equations
+
+Robotics 2
+
+3 5,
+5,
+−
+= 6(
+34 5 '̇ ( 5'(
+
+" = 1, … , !
+
+non-conservative (external or dissipative)
+generalized forces performing work on '(
+
+6
+
+Dynamics of actuated pendulum
+a first example
+
+("
+
+viscous friction
+*≥1
+
+()
+
+%
+!, $
+
+!" , $"
+
+motor
+transmission
+
+&'
+
+kinetic energy
+Robotics 2
+
+! = *!2
+
+$2 = *$ + $2.
+=0
+
+1 = $ (or 1 = $2 )
+
+(with reduction gear)
+
+9
+"-.
+
+$̇2 = *$̇
+
+5 = 52 + 5)
+
+1
+8
+52 = 72 $̇2
+2
+
+motor inertia
+(around its
+spinning axis)
+
+1
+5) = 7) + "%8 $̇ 8
+2
+link inertia
+
+(around the :-axis through
+its center of mass)
+
+1
+1 8
+8
+8
+8
+5 = 7) + "% + * 72 $̇ = 7$̇
+2
+2
+7
+
+Dynamics of actuated pendulum (cont)
+
+−" cos&
+
+'( , &(
+
+*'( , &
+
+./
+Fx
+
+-0 = 2 sin &
+-̇0 = 2 cos & ? &̇ = @0 &̇
+
+5 = 5/ − 6./ " cos &
+
+potential energy
+
+1 =
+7 = 8 − 5 = ; &̇ + 6./ " cos & −5/
+2
+A7
+= ; &̇
+A &̇
+
+" A7
+= ; &̈
+"B A &̇
+
+A7
+= −6./ " sin &
+A&
+
+D = *'( − EF &̇ − *E( &̇( + @0G +0 = *'( − EF + *= E( &̇ + 2 cos & +0
+applied or dissipated torques
+on motor side are multiplied by *
+when moved to the link side
+Robotics 2
+
+equivalent joint torque
+due to force +, applied to
+the tip at point -,
+
+“sum” of
+non-conservative
+torques
+8
+
+Dynamics of actuated pendulum (cont)
+'$ , "$
+
+!'$ , "
+
+dynamic model in & = "
+
+) "̈ + ,-. / sin " = !'$ − 45 + !6 4$ "̇ + 8 cos " ; <=
+dividing by ! and substituting " = "$ /!
+
+)
+,
+"$
+45
+8
+"$
+̈$ + -. / sin
+̇$ + cos
+"
+=
+'
+−
++
+4
+"
+; <=
+$
+$
+6
+6
+!
+!
+!
+!
+!
+!
+
+dynamic model in & = "$
+Robotics 2
+
+9
+
+Kinetic energy of a rigid body
+!" body #
+&
+
+mass ' = ) + ,, ., / 0,0.0/ = ) 0'
+*
+
+RFc
+
+RF0
+
+*
+
+1
+position of
+$% = ) $ 0'
+' *
+center of mass (CoM)
+when all vectors are referred to a body frame
+RFc attached to the CoM, then
+
+$%
+
+$% = 0
+kinetic energy
+(fundamental)
+kinematic relation
+for a rigid body
+
+Robotics 2
+
+mass density
+
+⇒ ) $ 0' = 0
+*
+
+1
+; = ) 4 = ,, ., / 4(,, ., /) 0'
+2 *
+4 = 4% + 6 × $ = 4% + 8(6) $
+skew-symmetric matrix
+10
+
+Kinetic energy of a rigid body (cont)
+1
+$ = ( *+ + - . /
+2 )
+
+0
+
+*+ + - . / 12
+
+3
+
+3
+
+= ∫) *+0 *+ 12 + ∫) *+0 - . /12 + ∫) / 0 - 0 . - . / 12
+4
+4
+
+sum of elements
+on the diagonal
+of a matrix
+
+70 8 = 9/7":{780 }
+
+1
+= 2 *+0 *+
+2
+translational
+kinetic energy
+(point mass
+in CoM)
+
+König theorem
+
+= *+0 - . ( /12 = 0
+)
+
++
+
+rotational
+kinetic energy
+(of the whole body)
+
+1
+= ( 9/7": - . / / 0 - 0 . 12
+2 )
+1
+= 9/7": - . ( / / 0 12 - 0 .
+2
+)
+1
+= 9/7": - . !+ - 0 .
+2
+
+1 0
+= . #+ .
+2
+
+body inertia matrix
+(around the CoM)
+Robotics 2
+
+Euler matrix
+Ex #1: provide the expressions
+of the elements of Euler matrix !"
+Ex #2: prove last equality and
+provide the expressions of the
+elements of inertia matrix #"
+
+11
+
+Examples of body inertia matrices
+homogeneous bodies of mass ! , with axes of symmetry
+parallelepiped with sides
+" (length/height), #, $ (base)
+
+y
+"
+
+$
+
+x
+
+#
+
+%& =
+
+%((
+
++
+!
++,
+
+%))
+
+z
+
+ℎ
+
+#
+
+x
+
++
+!
+,
+
+%& =
+
+0
+%**
+
+Steiner theorem
+23 2
+
+4 56×6 −
+
+body inertia matrix
+relative to the CoM
+
+Robotics 2
+
+", + $ ,
++
+!
++,
+
+", + # ,
+
+", + # ,
++
+!
++,
+
+"
+
+z
+
+% = %& + !
+
++
+!
++,
+
+=
+
+empty cylinder with length ℎ,
+and external/internal radius ", #
+
+y
+
+z’
+
+%**
+
+#, + $ ,
+
+22 3
+
+ℎ
+= %** + !
+2
+
+= %& + !
+
+identity
+matrix
+
+93
+
+3 ", + # ,
+
+,
+
+%** = %))
+
++ ℎ,
+%**
+
+,
+
+2 9 2
+
+Ex #3: prove the
+last equality
+
+(parallel) axis translation theorem
+its generalization:
+changes on body inertia matrix
+due to a pure translation r of
+the reference frame
+12
+
+Robot kinetic energy
+5
+
+& = 2 &'
+
+! rigid bodies (+ fixed base)
+
+'34
+
+&' = &' (78 , 7̇ 8 ; < ≤ >)
+$%#
+"#
+
+open kinematic chain
+König theorem
+1
+1 .
+.
+&' = +' ,-' ,-' + 0' 1-' 0'
+2
+2
+
+RFci
+i-th link (body)
+of the robot
+Robotics 2
+
+absolute velocity
+of the center of mass
+(CoM)
+
+absolute
+angular velocity
+of whole body
+13
+
+Kinetic energy of a robot link
+1
+1 0
+0
+() = -) ./) ./) + 2) 3/) 2)
+2
+2
+!", $%" should be expressed in the same reference frame,
+but the product !"&$%"!" is invariant w.r.t. any chosen frame
+
+in frame RFci attached to (the center of mass of) link '
+4 5 6 + 7 6 8)
+
+3/) =
+
+constant!
+Robotics 2
+
+;5--
+
+− 4 :5 8-
+
+− 4 :7 8-
+
+4 : 6 + 7 6 8-
+
+− 4 57 84 : 6 + 5 6 814
+
+Dependence of ! from " and "̇
+/0+
+
+.+
+link ( − 1
+
+")
+
+link 1
+
+"1
+
+"2
+
+"%&'
+
+12% = 45% " "̇ =
+
+link +
+
+1
+
+⋮
+
+(
+
+0
+0
+0
+
+(
+
+0
+0
+0
+
+typically expressed in RF0
+
+Robotics 2
+
+link )
+
+"(
+
+(partial) Jacobians
+
+8% = 49% " "̇ =
+
+"%-'
+
+1
+
+⋮
+
+⋮
+
+0
+0 "̇ 3 rows
+0
+
+⋮
+
+0
+0 "̇ 3 rows
+0
+15
+
+Final expression of 4
+
+1
+8
+- = 0 51 671
+671 + :18 ;71 :1
+2
+123
+
+NOTE 1:
+in practice, NEVER
+use this formula
+(or partial Jacobians)
+for computing -;
+a better method
+is available...
+
+NOTE 2:
+in the past, I have
+always used
+the notation C())
+for the robot
+inertia matrix...
+Robotics 2
+
+4
+
+1 8
+8
+8
+= "̇ 0 51 <=1
+(")<=1 (") + <>1
+" ;71 <>1 (") "̇
+2
+123
+
+& $
+$ = )̇ *()))̇
+'
+
+constant if ?@ is
+expressed in RFci
+else
+A
+
+;71 " = AB1 "
+
+robot (generalized) inertia matrix
+§ symmetric
+§ positive definite, ∀" ⇒ always invertible
+
+1
+
+;71 AB18 (")
+
+16
+
+Robot potential energy
+assumption: GRAVITY contribution only
+(
+
+" = $ "%
+%&'
+
+"% = "% (*+ ; - ≤ !)
+
+N rigid bodies (+ fixed base)
+open kinematic chain
+
+"% = −1% 23 45,7%
+gravity acceleration
+position of the
+vector
+center of mass of link !
+
+dependence on *
+45,7%
+4%,7%
+5
+'
+%<'
+= 9' (*' ) 9: (*: ) ⋯ 9% (*% )
+1
+1
+
+typically
+expressed
+in RF0
+constant
+in RFi
+
+NOTE: need to work with homogeneous coordinates
+Robotics 2
+
+17
+
+Summarizing ...
+kinetic
+energy
+
+1 2
+1
+0 = ,̇ 3 , ,̇ = 4 756 (,),̇ 5 ,̇ 6
+2
+2
+
+potential
+energy
+
+: = :(,)
+
+Lagrangian
+Euler-Lagrange
+equations
+
+5,6
+
+positive definite
+quadratic form
+
+0 ≥ 0,
+0=0
+,̇ = 0
+
+* = 0 ,, ,̇ − :(,)
+' )*
+)*
+−
+= /'( ) ,̇ - ),-
+
+! = 1, … , &
+
+non-conservative (active/dissipative)
+generalized forces performing work on => coordinate
+Robotics 2
+
+18
+
+Applying Euler-Lagrange equations
+(the scalar derivation; see Appendix for vector format)
+
+1
+$(!, !)
+̇ = + .,- ! !̇ , !̇ - − 0(!)
+2
+,,-
+
+1$
+= + .2- !̇ 1 !̇ 2
+-
+
+(dependences of
+elements on !
+are not shown)
+
+1.23 1$
+= + .2- !̈ - + +
+!̇ , !̇ 34 1 !̇ 2
+1!,
+-
+
+,,-
+
+1.,1$
+1
+10
+= +
+!̇ , !̇ - −
+1!2 2
+1!2
+1!2
+,,-
+
+LINEAR terms in ACCELERATION !̈
+QUADRATIC terms in VELOCITY !̇
+NONLINEAR terms in CONFIGURATION !
+Robotics 2
+
+19
+
+! -th dynamic equation ...
+' )*
+)*
+−
+= .#
+'( ),̇ # ),#
+
+)0#% 1 )0$%
+)6
+/ 0#% ,̈ % + /
+−
+,̇ $ ,̇ % +
+= .#
+),$
+2 ),#
+),#
+%
+
+$,%
+
+exchanging
+“mute” indices 7, 8
+
+1 )0#% )0#$ )0$%
+⋯+ /
++
+−
+,̇ $ ,̇ % + ⋯
+2 ),$
+),%
+),#
+$,%
+
+"#$% = "#%$ Christoffel symbols
+of the first kind
+
+Robotics 2
+
+20
+
+… and interpretation of dynamic terms
+6 /&0 (()(̈ 0 + 6 1&20
+0
+
+INERTIAL
+terms
+
+2,0
+
+:;
+( (̇ 2 (̇ 0 +
+= <&
+:(&
+
+CENTRIFUGAL (! = #)
+and CORIOLIS (! ≠ #) terms
+
+* = 1, … , .
+
+GRAVITY
+terms %& (()
+
+/&& (() = inertia at joint * when joint * accelerates (/&& > 0!!)
+/&0 (() = inertia “seen” at joint * when joint # accelerates
+1&22 (() = coefficient of the centrifugal force at joint * when
+joint ! is moving (1222 = 0, ∀!)
+1&20 (() = coefficient of the Coriolis force at joint * when
+joint ! and joint # are both moving
+Robotics 2
+
+21
+
+Robot dynamic model
+in vector formats
+
+1.
+
+! " "̈ + % ", "̇ + ( " = *
+
++ -th column
+of matrix !(")
+
+2.
+NOTE:
+the model
+is in the form
+
+5 ", ",̇ "̈ = *
+as expected
+Robotics 2
+
++ -th component
+of vector %
+
+%, ", "̇ = "̇ - ., (")"̇
+1 3!,
+3!,
+., (") =
++
+2 3"
+3"
+
+-
+
+3!
+−
+3",
+
+symmetric
+matrix!
+
+! " "̈ + 6 ", "̇ "̇ + ( " = *
+NOT a
+symmetric
+matrix
+in general
+
+7,8 ", "̇ = 9 %,:8 " "̇ :
+:
+
+factorization of %
+by 6 is not unique!
+22
+
+Dynamic model of a PR robot
+0 = 02 + 0(
+
+y
+&'(
+
+$%2
+
+&%1
+
+$'2
+
+!2
+
+!1
+
+$'(
+
+!2 + &'( cos !(
+=
+&'( sin !(
+0
+
+0( =
+Robotics 2
+
+2
+
+8( !̇ 2(
+(
+
+5'(
+
++
+
+(
+&'(
+
+(on horizontal plane)
+
+!2 − &'2
+=
+0
+0
+
+5'2
+
+(
+
+7
+= $̇'2
+$̇'2 = !̇ 2(
+
+1
+02 = 82 !̇ 2(
+2
+1
+1 7
+7
+0( = 8( 5'( 5'( + 9( :'( 9(
+2
+2
+
+x
+
+$%1
+
+) = constant ⇒ +(!) ≡ 0
+
+!̇ ((
+
+0
+9( = 0
+!̇ (
+
+!̇ 2 − &'( sin !( !̇ (
+=
+&'( cos !( !̇ (
+0
+2
+
+− 2&'( sin !( !̇ 2 !̇ ( + :'(,AA !̇ ((
+(
+
+23
+
+Dynamic model of a PR robot (cont)
+$% + $'
+! " =
+−$' )*' sin "'
+
+−$' )*' sin "'
+'
+.*',00 + $' )*'
+
+!%
+
+1 :!2
+:!2
+where 52 (") =
++
+2 :"
+:"
+
+4
+
+!'
+
+1% ", "̇
+1 ", "̇ =
+1' ", "̇
+12 ", "̇ = "̇ 4 52 (")"̇
+
+:!
+−
+:"2
+
+1
+5% " =
+2
+
+0
+0
+
+1
+5' " =
+2
+
+1% ", "̇ = −$' )*' cos "' "̇ ''
+0
+0
+0 −$' )*' cos "'
++
+−$' )*' cos "' 0
+0
+0
+=0
+0
+−$' )*' cos "'
+−
+−$' )*' cos "'
+0
+1' ", "̇ = 0
+
+Robotics 2
+
+0
+−$' )*' cos "'
+
+0
++
+0
+
+0
+−$' )*' cos "'
+
+−
+
+0
+0
+
+0
+0
+
+24
+
+Dynamic model of a PR robot (cont)
+
+$ % %̈ + ( %, %̇ = !
+," + ,−,- /0- sin %-
+
+−,- /0- sin %40-,55 + ,- /0-
+
+!"
+%̈ "
+−,
+/
+cos
+%
+%
+̇
+0+
+= !
+%̈ 0
+
+NOTE: the ,99 element (here, for : = 2)
+of the robot inertia matrix is always constant!
+Q1: why Coriolis terms are not present?
+Q2: when applying a force !" , does the second joint accelerate? … always?
+Q3: what is the expression of a factorization matrix # ? … is it unique?
+Q4: which is the configuration with “maximum inertia”?
+Robotics 2
+
+25
+
+A structural property
+Matrix "̇ − 2% is skew-symmetric
+(when using Christoffel symbols to define matrix % )
+
+Proof
+&̇ '(
+
+,&'(
+=*
+-̇ +
+,-+
+
+2.'(
+
++
+
+&̇ '( − 2.'(
+
+,&'( ,&'+ ,&+(
+= * 2/'+( -̇ + = *
++
+−
+-̇ +
+,-+
+,-(
+,-'
++
+
++
+
+,&+( ,&'+
+=*
+−
+-̇ + = 1'(
+,-'
+,-(
++
+
+1(' = &̇ (' − 2.('
+
+,&+' ,&(+
+=*
+−
+-̇ + = −1'(
+,-(
+,-'
++
+
+using the
+symmetry of "
+
+2 3 "̇ − 2% 2 = 0, ∀2
+Robotics 2
+
+26
+
+Energy conservation
+n
+
+n
+
+n
+
+total robot energy
+
+1 /
+& = ( + * = .̇ 0 . .̇ + *(.)
+2
+its evolution over time (using the dynamic model)
+1 /
+4*
+/
+̇
+̇
+& = .̇ 0 . .̈ + .̇ 0 . .̇ +
+.̇
+2
+4.
+here, any
+factorization
+1 /
+/
+/
+of vector $
+= .̇ ! − % ., .̇ .̇ − 7(.) + .̇ 0̇ . .̇ + .̇ 7(.)
+2
+by a matrix %
+can be used
+1 /
+/
+= .̇ ! + .̇ 0̇ . − 2% ., .̇ .̇
+2
+if ! ≡ 0, total energy is constant (no dissipation or increase)
+&̇ = 0
+
+.̇ / 0̇ . − 2% ., .̇
+
+.̇ = 0, ∀., .̇
+
+weaker than skew-symmetry,
+as the external velocity is the same
+that appears in the internal matrices
+Robotics 2
+
+&̇ = .̇ / !
+in general, the variation
+of the total energy is
+equal to the work of
+non-conservative forces
+27
+
+Appendix:
+Vector format derivation of dynamic model
+! #$
+!" # &̇
+
+'
+
+'
+
+#$
+−
+#&
+
+=*
+
+1 '
+$ = &̇ - & &̇ − .(&)
+2
+
+0 ⋯ 1 ⋯ 0
+
+5
+
+-(&) = -2 (&)
+#$
+#&̇
+
+#$
+#&
+
+⋯
+
+-4 (&)
+
+⋯
+
+-5 (&) = 6 -4 (&)84'
+472
+
+'
+
+= &̇ ' -(&)
+
+'
+
+! #$
+!" #&̇
+'
+
+Robotics 2
+
+5
+
+= - & &̈ + -̇ & &̇ = - & &̈ + 6
+
+5
+
+1 '
+#-4 (&) '
+#.
+=
+&̇ 6
+84 &̇ −
+2
+#&
+#&
+472
+
+this construction
+gives to -̇ − 2=
+skew-symmetry
+
+dyadic expansion
+
+= - & &̇
+'
+
+5
+
+'
+
+472
+'
+
+5
+
+1
+#-4 (&)
+= 6
+2
+#&
+472
+
+#-4 1 #-4 (&)
+- & &̈ + 6
+−
+#&
+2
+#&
+
+?-th row of matrix =
+=@' &, &̇ = &̇ ' A@ (&)
+
+1-th
+position
+
+472
+
+=(&, &)
+̇
+
+'
+
+&̇ 4
+
+#-4
+&̇ &̇ 4
+#&
+#.
+&̇ 4 &̇ −
+#&
+
+#.
+&̇ +
+#&
+
+'
+
+'
+
+<(&)
+
+=*
+
+28
+
+

@@ -1,0 +1,1236 @@
+Robotics 2
+
+Hybrid Force/Motion Control
+Prof. Alessandro De Luca
+
+Hybrid force/motion control
+n
+
+n
+
+we consider contacts/interactions between a robot and a stiff
+environment that naturally constrains the end-effector motion
+compared to an approach using the constrained/reduced robot
+dynamics with (bilateral) geometric constraints, the differences are
+n
+
+n
+
+the hybrid control law is designed in ideal conditions, but now
+unconstrained directions of motion and constrained force directions
+are defined in a more direct way using a task frame formalism
+all non-ideal conditions (compliant surfaces, friction at the contact,
+errors in contact surface orientation) are handled explicitly in the
+control scheme by a geometric filtering of the measured quantities
+n
+
+n
+
+considering only signal components that should appear in certain
+directions based on the nominal task model, and treating those that
+should not be there as disturbances to be rejected
+
+the hybrid control law avoids to introduce conflicting behaviors
+(force control vs. motion control) in all task space directions!!
+
+Robotics 2
+
+2
+
+Natural constraints
+n
+
+in ideal conditions (robot and environment are perfectly rigid,
+contact is frictionless), two sets of generalized directions can be
+defined in the task space
+n end-effector motion (𝑣/𝜔) is prohibited along/around 6 − 𝑘 directions
+n
+
+n
+
+n
+
+(since the environment reacts there with forces/torques)
+reaction forces/torques (𝑓/𝑚) are absent along/around 𝑘 directions
+(where the environment does not prevent end-effector motions)
+
+these constraints have been called the natural constraints on force
+and motion associated to the task geometry
+the two sets of directions are characterized through the axes of a
+𝑣. , 𝑓.
+suitable task frame 𝑅𝐹+
+𝜔 ,𝑚
+typically, placed at the end-effector
+
+robot
+Robotics 2
+
+.
+
+.
+
+𝜔, , 𝑚,
+𝜔/ , 𝑚/
+
+environment
+
+𝑣, , 𝑓,
+𝑣/ , 𝑓/
+3
+
+Artificial constraints
+n
+
+the way task execution should be performed can be expressed
+in terms of so-called artificial constraints that specify the desired
+values (to be imposed by the control law)
+n for the end-effector velocities (𝑣/𝜔) along/around 𝑘 directions
+n
+
+n
+
+where feasible motions can occur
+for the contact forces/torques (𝑓/𝑚) along/around 6 − 𝑘 directions
+where admissible reactions of the environment can occur
+
+the two sets of directions are complementary (they cover the
+6D generalized task space) and mutually orthogonal, while the
+task frame can be time-varying (“moves with task progress”)
+2 𝜔2 2 and
+n directions are intended as 6D screws: twists 𝑉 = 𝑣
+𝑣. , 𝑓.
+wrenches 𝐹 = 𝑓 2 𝑚2 2
+𝜔. , 𝑚.
+𝜔, , 𝑚,
+
+Robotics 2
+
+𝜔/ , 𝑚/
+
+𝑣, , 𝑓,
+𝑣/ , 𝑓/
+
+4
+
+Task frame and constraints
+𝑧
+
+𝑅𝐹+
+
+task: slide the cube
+along a guide
+
+𝑦
+𝑥
+
+𝑣 = linear velocity
+𝜔 = angular velocity
+𝑓 = force
+𝑚 = moment
+Robotics 2
+
+- example 1
+
+6−𝑘 =4
+
+𝑘=2
+
+natural (geometric) constraints
+𝑣, = 𝑣. = 0
+6−𝑘 =4
+𝜔/ = 𝜔. = 0
+𝑘=2
+𝑓/ = 𝑚, = 0
+artificial constraints
+(to be imposed by the control law)
+𝑓, = 𝑓,,789 (= 0) (to avoid internal stress)
+𝑚/ = 𝑚/,789 = 0 , 𝑚. = 𝑚.,789 (= 0)
+𝑓. = 𝑓.,789
+𝜔, = 𝜔,,789 = 0 (to slide and not to roll !!)
+𝑣/ = 𝑣/,789
+5
+
+Selection of directions
+𝑧
+
+parametrization of
+feasible motions
+
+- example 1
+
+𝑣
+=
+𝜔
+
+𝑅𝐹+
+
+0
+0
+0
+0
+1
+0
+
+𝑣/
+𝑣/
+𝜔, = 𝑇 𝜔,
+
+𝑦 here, constant and unitary
+(“selection” of columns from
+the 6×6 identity matrix)
+
+𝑥
+parametrization of
+feasible reactions
+
+𝑓 =
+𝑚
+Robotics 2
+
+1
+0
+0
+0
+0
+0
+
+0
+1
+0
+0
+0
+0
+
+0
+0
+1
+0
+0
+0
+
+0
+0
+0
+1
+0
+0
+
+0
+0
+0
+0
+0
+1
+
+𝑇2𝑌 = 0
+𝑓,
+𝑓.
+𝑚/
+𝑚.
+
+𝑓,
+= 𝑌 𝑓.
+𝑚/
+𝑚.
+
+reaction forces/torques
+do not perform work on
+feasible motions
+
+𝑓2
+
+𝑚2
+
+𝑣
+𝜔 =0
+
+6
+
+Task frame and constraints
+𝑅𝐹+ (𝛼)
+
+𝑅𝐹0
+𝑧
+
+𝑧0
+
+𝑥
+𝑦
+
+𝑅𝐹0
+
+Robotics 2
+
+𝑅. (𝛼)
+
+task: turning a crank
+(free handle)
+
+𝑦0
+
+𝛼
+
+- example 2
+
+𝑥0
+
+𝑅𝐹+ (𝛼)
+
+natural constraints
+𝑣/ = 𝑣. = 0
+𝜔/ = 𝜔, = 0
+𝑓, = 𝑚. = 0
+artificial constraints
+𝑓/ = 𝑓/,789 = 0 , 𝑓. = 𝑓.,789 (= 0)
+𝑚/ = 𝑚/,789 = 0 , 𝑚, = 𝑚,,789 = 0
+𝑣, = 𝑣,,789 (the tangent speed of rotation)
+𝜔. = 𝜔.,789 (= 0 if handle should not spin)
+
+7
+
+Selection of directions
+𝑅𝐹+ (𝛼)
+
+𝑥
+
+𝑧0
+
+𝑦
+
+parametrization of
+feasible reactions
+
+𝑓
+𝑅2 (𝛼)
+0
+=
+B
+0
+𝑅2 (𝛼)
+𝑚
+Robotics 2
+
+B
+
+𝑣
+𝑅2 (𝛼)
+0
+=
+B
+0
+𝑅2 (𝛼)
+𝜔
+
+𝑦0
+
+𝛼
+
+B
+
+parametrization of
+feasible motions
+
+𝑅𝐹0
+𝑧
+
+– example 2
+
+𝑥0
+
+𝑣,
+= 𝑇(𝛼) 𝜔
+.
+
+0
+1
+0
+0
+0
+0
+
+0
+0
+0
+0
+0
+1
+
+𝑣,
+𝜔.
+
+𝑇 2 (𝛼)𝑌(𝛼) = 0
+1
+0
+0
+0
+0
+0
+
+0
+0
+1
+0
+0
+0
+
+0
+0
+0
+1
+0
+0
+
+0
+0
+0
+0
+1
+0
+
+𝑓/
+𝑓.
+𝑚/
+𝑚,
+
+𝑓/
+𝑓
+= 𝑌(𝛼) 𝑚.
+/
+𝑚,
+8
+
+Task frame and constraints
+
+- example 3
+
+task: insert a screw
+in a bolt
+
+𝑥
+𝑦
+𝑅𝐹𝑡
+
+𝑝 = screw pitch
+
+𝑧
+
+the screw proceeds along and
+around the 𝑧-axis, but not in
+an independent way! (1 dof)
+accordingly, 𝑓. and 𝑚𝑧 cannot
+be independent
+
+natural constraints (partial…)
+𝑣/ = 𝑣, = 0
+𝜔/ = 𝜔, = 0
+
+artificial constraints (abundant…)
+𝑓/ = 𝑓/,789 = 0, 𝑓, = 𝑓,,789 = 0
+𝑚/ = 𝑚/,789 = 0, 𝑚, = 𝑚,,789 = 0
+𝑣. = 𝑣.,789 , 𝜔. = 𝜔.,789 = (2𝜋/𝑝)𝑣.,789
+𝑓. = 𝑓.,789 , 𝑚. = 𝑚.,789 (a function of 𝑓.,789 )
+
+wrench (force/torque) direction should be orthogonal to motion twist!
+Robotics 2
+
+9
+
+Selection of directions
+𝑣
+= 0
+𝜔
+
+𝑅𝐹𝑡
+
+Robotics 2
+
+0
+
+0
+
+2
+
+𝑣. = 𝑇𝑣. (𝑘 = 1)
+
+𝑌: such that 𝑇𝑇𝑌 = 0
+
+𝑝
+
+2𝜋
+𝑓. = −
+𝑚.
+𝑝
+
+𝑧
+
+the columns of 𝑇 and 𝑌
+do not necessarily coincide
+with selected columns
+of the 6×6 identity matrix
+⇒ generalized (screw)
+directions
+
+1
+
+2𝜋
+𝑝
+
+𝑣.
+or 𝜔. = 2𝜋
+𝑝
+
+𝑥
+𝑦
+
+0
+
+– example 3
+
+𝑓
+=
+𝑚
+
+1
+0
+0
+0
+0
+0
+
+0 0 0 0
+1 0 0 0
+0 0 0 − 2𝜋⁄𝑝
+0 1 0 0
+0 0 1 0
+0 0 0 1
+
+(6 − 𝑘 = 5)
+
+𝑓/
+𝑓,
+𝑚/
+𝑚,
+𝑚.
+
+𝑓/
+𝑓,
+= 𝑌 𝑚/
+𝑚,
+𝑚.
+10
+
+Frames of interest
+
+– example 4
+
+planar motion of a 2R robot in pointwise contact with a surface (𝑀 = 2)
+
+𝑦𝑡
+
+𝑦0
+𝑥0
+
+𝑦𝑒
+
+𝑥𝑡
+
+environment
+surface
+
+𝑥𝑒
+
+§ task frame 𝑹𝑭𝒕 used for an independent definition of the hybrid reference
+values (here: +𝑣/,789 [𝑘 = 1] and + 𝑓,,789 [𝑀 − 𝑘 = 1]) and for computing
+the errors that drive the feedback control law
+
+§ sensor frame 𝑹𝑭𝒆 (here: 𝑅𝐹2) where the force 8𝑓 = ( 8𝑓/ , 8𝑓, ) is measured
+§ base frame 𝑹𝑭𝟎 in which the end-effector velocity is expressed (here:
+B
+𝑣 = B𝑣/ , B𝑣, of 𝑂2), computed using robot Jacobian and joint velocities
+all quantities (and errors!) should be expressed (“rotated”)
+in the same reference frame ⇒ the task frame!
+Robotics 2
+
+11
+
+General parametrization of hybrid tasks
+a “description” of
+robot-environment
+contact type:
+it implicitly
+defines the
+task frame
+
+𝑣
+= 𝑇(𝑠)𝑠̇
+𝜔
+
+𝑠 ∈ ℝ]
+
+parametrizes robot
+E-E free motion
+
+𝑓 = 𝑌(𝑠)𝜆
+𝑚
+
+𝜆 ∈ ℝ^_]
+
+parametrizes reaction
+forces/torques
+
+in the previous examples,
+and in general, it is 𝑀 = 6
+
+robot
+dynamics
+
++
+
+𝑇𝑇(𝑠)𝑌(𝑠) = 0
+axes directions
+of task frame depend
+in general on 𝑠
+(i.e., on robot E-E pose
+in the environment)
+
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢 + 𝐽2 (𝑞)
+robot
+kinematics
+
+Robotics 2
+
+reaction forces/torques
+do not perform work
+on E-E displacements
+
+𝑓
+𝑚
+
+𝑣
+= 𝐽(𝑞)𝑞̇
+𝜔
+12
+
+Hybrid force/velocity control
+n
+
+n
+
+control objective: to impose desired task evolution to the
+parameters 𝑠 of motion and to the parameters 𝜆 of force
+𝑠 ⟶ 𝑠7 (𝑡) 𝜆 ⟶ 𝜆7 (𝑡)
+the control law is designed in two steps
+1. exact linearization and decoupling in the task frame by feedback
+closed-loop
+model
+
+𝑎9
+𝑠̈
+= 𝑎
+𝜆
+b
+
+2. (linear) design of 𝑎𝑠 and 𝑎𝜆 so as to impose the desired dynamic
+behavior to the errors 𝑒9 = 𝑠7 − 𝑠 and 𝑒b = 𝜆7 − 𝜆
+
+§ assumptions: 𝑁 = 𝑀 (= 6 usually), 𝐽(𝑞) out of singularity
+Note: in “simple” cases, 𝑠̇ and 𝜆 are just single components of 𝑣 or 𝜔 and
+of 𝑓 or 𝑚; accordingly, 𝑇 and 𝑌 will be simple 0/1 selection matrices
+Robotics 2
+
+13
+
+Feedback linearization in task space
+𝑣
+𝐽 𝑞 𝑞̇ =
+= 𝑇(𝑠)𝑠̇
+𝜔
+
+̇ ̇ = 𝑇𝑠̈ + 𝑇̇ 𝑠̇
+𝐽𝑞̈ + 𝐽𝑞
+
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢 + 𝐽2 𝑞
+
+_d
+
+2
+
+𝑢 = 𝑀𝐽 𝑇 ⋮ −𝐽 𝑌
+
+nonsingular 𝑁 × 𝑁 matrix
+(under the assumptions made)
+
+𝑎9
+_d ̇
+̇ ̇ + 𝑆𝑞̇ + 𝑔
++
+𝑀𝐽
+𝑇
+𝑠
+̇
+−
+𝐽
+𝑞
+𝑎b
+
+𝑠̈ = 𝑎9
+𝑎b
+𝜆
+Robotics 2
+
+𝑓
+= 𝑢 + 𝐽2 𝑞 𝑌(𝑠)𝜆
+𝑚
+
+𝑠̈
+𝜆
+̇ 𝑞̇ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢
+𝑞 𝑇̇ 𝑠 𝑠̇ − 𝐽(𝑞)
+
+𝑀 𝑞 𝐽_d 𝑞 𝑇 𝑠 ⋮ −𝐽2 𝑞 𝑌 𝑠
++ 𝑀 𝑞 𝐽_d
+
+̇ ̇
+𝑞̈ = 𝐽_d (𝑇𝑠̈ + 𝑇̇ 𝑠̇ − 𝐽𝑞)
+
+linearizing and
+decoupling
+control law
+
+𝑘
+
+𝑠 has “relative degree” = 2
+
+𝑀−𝑘
+
+𝜆 has “relative degree” = 0
+14
+
+Stabilization with 𝑎𝑠 and 𝑎𝜆
+as usual, it is sufficient to apply linear control techniques for the exponential
+stabilization of tracking errors (on each single, input-output decoupled channel)
+
+𝑎9 = 𝑠̈7 + 𝐾h 𝑠̇7 − 𝑠̇ + 𝐾i (𝑠7 − 𝑠)
+𝑒̈9 + 𝐾h 𝑒̇9 + 𝐾i 𝑒9 = 0
+𝐾j ≥ 0
+
+diagonal
+
+𝐾i , 𝐾h > 0
+
+and diagonal
+
+𝑒9 = 𝑠7 − 𝑠 ⟶ 0
+𝑎b = 𝜆7 would be enough,
+
+𝑎b = 𝜆7 + 𝐾j k 𝜆7 − 𝜆 𝑑𝑡
+𝑒b + 𝐾j k 𝑒b 𝑑𝑡 = 0
+
+but adding an integral
+with the force error
+gives more robustness
+to (constant) disturbances
+
+𝑒b = 𝜆7 − 𝜆 ⟶ 0
+
+we need “values” for 𝑠, 𝑠̇ and 𝜆 to be
+extracted from actual measurements !
+Robotics 2
+
+15
+
+“Filtering” position and force measures
+𝑠 and 𝑠̇ are obtained from measures of 𝑞 and 𝑞̇ , equating the descriptions
+of the end-effector pose and velocity “from the robot side” (direct and
+differential kinematics) and “from the environment side” (function of 𝑠, 𝑠̇ )
+example
+
+𝑟
+
+𝐿 cos 𝑠
+B
+B
+𝑟
+=
+𝑓(𝑞) = 𝐿 sin 𝑠
+𝑧0
+0
+
+𝑠 = atan2
+
+B
+
+𝑓, 𝑞 , B𝑓/ 𝑞
+
+𝑦0
+
+𝑠=𝛼
+
+𝐽 𝑞 𝑞̇ = 𝑇(𝑠)𝑠̇
+
+𝑠̇ = 𝑇 #(𝑠)𝐽 𝑞 𝑞̇
+
+𝑥0
+
+𝐿
+
+pseudoinverses
+𝜆 is obtained from force/torque measures at end-effector of “tall” matrices
+having full
+𝑓
+𝑓
+column rank, e.g.,
+#
+
+𝑚
+
+Robotics 2
+
+= 𝑌(𝑠)𝜆
+
+𝜆 = 𝑌 (𝑠)
+
+𝑚
+
+𝑇 # = (𝑇 2 𝑇)_d 𝑇 2
+(or weighted)
+
+16
+
+Block diagram of hybrid control
+𝑞, 𝑞̇
+
+𝑠̈7 + 𝐾h 𝑠̇7 + 𝐾i 𝑠7
++
+_
+
+𝜆7
+
+𝑎𝑠
+
++
+_
++
+_
+
++
+
+𝐾j k
+
++
+
+𝑎b
+
+task-space
+feedback
+linearization
+
+𝑢
+
+robot
+in contact
+with the
+environment
+
+𝑞
+𝑞̇
+
+𝑓
+𝑚
+
+𝑠, 𝑠̇
+𝑀 − 𝑘 force control loops
+𝑘 motion control loops
+usually
+
+𝐾𝐷
+
+𝐾𝑃
+
+𝜆
+𝑠 filtering of
+𝑠̇ measures
+
+𝑀 = 6 (complete 3D space)
+
+limit cases 𝑘 = 𝑀 : no force control loops, only motion (free motion)
+𝑘 = 0 : no motion control loops, only force (“frozen” robot end-effector)
+Robotics 2
+
+17
+
+Block diagram of hybrid control
+simpler case of 0/1 selection matrices
+
+rotation matrix to
+task frame 𝑅𝐹+
+in base
+frame 𝑅𝐹B
+compact
+notation
+in this slide
+
+𝑓
+𝑚
+𝑣
+𝑉=
+𝜔
+
+𝐹=
+
+in sensor
+frame 𝑅𝐹9
+
+in base
+frame 𝑅𝐹B
+
+𝑠̇ and 𝜆 are just single components of 𝑣 (or 𝜔) and 𝑓 (or 𝑚)
+𝑇 and 𝑌 are replaced by 0/1 selection matrices: 𝐼 − Σ and Σ
+Robotics 2
+
+18
+
+Force control via an impedance model
+n
+
+in a force-controlled direction of the hybrid task space, when the contact
+stiffness is limited (i.e., far from infinite, as assumed in the ideal case),
+one may use impedance model ideas to explicitly control the contact force
+n
+
+n
+
+let 𝑥 be the position of the robot along such a direction, 𝑥7 the (constant) contact point,
+𝑘9 > 0 the contact (viz., sensor) stiffness, and 𝑓7 > 0 the desired contact force
+
+the impedance model is chosen then as
+
+𝑚} 𝑥̈ + 𝑑} 𝑥̇ + 𝑘9 𝑥 − 𝑥7 = 𝑓7
+where the force sensor measures 𝑓9 = 𝑘9 𝑥 − 𝑥7 , and only 𝑚} > 0 and
+𝑑} > 0 are free model parameters
+n
+
+after feedback linearization (𝑥̈ = 𝑎/ ), the command 𝑎/ is designed as
+
+𝑎/ = 1⁄𝑚} (𝑓7 −𝑓9 ) − 𝑑} 𝑥̇
+which is a P-regulator of the desired force, with velocity damping
+n
+
+the same control law works also before the contact (𝑓9 = 0), guaranteeing
+a steady-state speed 𝑥̇ 99 = 𝑓7 ⁄𝑑} > 0 in the approaching phase
+
+Robotics 2
+
+19
+
+First experiments with hybrid control
+
+video
+
+video
+MIMO-CRF robot
+(DIS, Laboratorio di Robotica, 1991)
+Robotics 2
+
+20
+
+Sources of inconsistency
+
+in force and velocity measurements
+1. presence of friction at the contact
+➜ a reaction force component appears that opposes motion in a
+“free” motion direction (in case of Coulomb friction, the tangent
+force intensity depends also on the applied normal force ...)
+
+2. compliance in the robot structure and/or at the contact
+➜ a (small) displacement may be present also along directions that
+are nominally “constrained” by the environment
+NOTE: if the environment geometry at the contact is perfectly known, the
+task inconsistencies due to 1. and 2. on parameters 𝑠 and 𝜆 are already
+filtered out by the pseudo-inversion of matrices 𝑇 and 𝑌
+
+3. uncertainty on environment geometry at the contact
+➜ can be reduced/eliminated by real-time estimation processes
+driven by external sensors (e.g., vision ⎯but also force!)
+Robotics 2
+
+21
+
+Estimation of an unknown surface
+how difficult is to estimate the unknown profile of the environment surface,
+using information from velocity and force measurements at the contact?
+1. normal = nominal direction of measured force
+... in the presence of contact motion with friction, the
+measured force 𝑓 is slightly rotated from the actual
+normal by an (unknown) angle 𝛾
+
+2. tangent = nominal direction of measured velocity
+... compliance in the robot structure (joints) and/or at
+the contact may lead to a computed velocity 𝑣 having a
+small component along the actual normal to the surface
+
+3. mixed method (sensor fusion) with RLS
+a. tangent direction is estimated by a recursive least
+squares method from position measurements
+b. friction angle is estimated by a recursive least
+squares method, using the current estimate of the
+tangent direction and from force measurements
+Robotics 2
+
+𝑓
+𝑓€
+𝑓+ = 𝜇𝑓€ = tan 𝛾 𝑓€ ≠ 0
+𝑣𝑡
+
+𝑣
+𝑣€ ≠ 0
+to approach an
+unknown surface or
+to recover contact
+(in case of loss),
+the robot uses a
+simple exploratory logic
+22
+
+Position-based estimation of the tangent
+
+[degrees]
+
+(for a circular surface traced at constant speed)
+
+Robotics 2
+
+time [sampling intervals]
+
+23
+
+Force-based estimation of the tangent
+
+[degrees]
+
+(for the same circular surface traced at constant speed)
+
+Robotics 2
+
+time [sampling intervals]
+
+24
+
+Difference between estimated tangents
+
+[degrees]
+
+differences are
+in the order
+of 7-8°...
+but which one
+is “correct”?
+
+Robotics 2
+
+better results
+are obtained
+with some kind
+of sensor
+fusion
+
+time [sampling intervals]
+
+25
+
+Reconstructed surface profile
+estimation by a RLS (Recursive Least Squares) method: we continuously update
+the coefficients of two quadratic polynomials that fit locally the unknown contour,
+using data fusion from both force and position/velocity measurements
+
+[m]
+
+this is the
+reconstructed
+contour of
+a cinema
+“film reel”
+(of radius
+= 17 cm)
+
+Robotics 2
+
+[m]
+
+26
+
+Normal force
+
+[N]
+
+regulated
+to 20 N
+during
+simultaneous
+motion and
+estimation
+force peaks
+correspond
+to the grooves
+on the surface
+contour
+
+time [sampling intervals]
+Robotics 2
+
+27
+
+Contour estimation and hybrid control
+performed simultaneously
+
+MIMO-CRF robot (DIS, Laboratorio di Robotica, 1992)
+Robotics 2
+
+28
+
+Contour estimation and hybrid control
+
+video
+
+Robotics 2
+
+29
+
+Robotized deburring of car windshields
+n
+
+n
+
+n
+
+car windshield with sharp edges and
+fabrication tolerances, with excess of
+material (PVB = Polyvinyl butyral for
+glueing glass layers) on the contour
+robot end-effector follows the preprogrammed path, despite the small
+errors w.r.t. the nominal windshield
+profile, thanks to the passive
+compliance of the deburring tool
+contact force between tool blades
+and workpiece can be independently
+controlled by a pneumatic actuator in
+the tool
+
+the robotic deburring tool contains in particular
+n
+
+n
+n
+
+two blades for cutting the exceeding plastic material (PVB), the first one
+actuated, the second passively pushed against the surface by a spring
+a load cell for measuring the 1D applied normal force at the contact
+on-board control system, exchanging data with the ABB robot controller
+
+Robotics 2
+
+30
+
+Model of the deburring work tool
+blade
+load
+cell
+
+robot
+
+base
+
+glass (uneven surface)
+blade
+support
+
+pneumatic actuator
+
+load cell support
+spring
+
+physical
+mathematical
+
+𝑥9„ƒ,…
+
+𝑥ƒ€8„
+𝑚ƒ€8„
+
+𝑥9„ƒ,†
+𝑘…‰Š7
+
+𝑘9ƒˆ‹€‡
+
+𝑚9„ƒ,†
+
+𝑥‡…
+𝑘†…Š78
+
+𝑚9„ƒ,…
+
+𝑥ˆ‰†
+for a stability analysis (based on linear models and root locus techniques)
+of force control in a single direction and in presence of multiple masses/springs,
+see again Eppinger & Seering, IEEE CSM, 1987 (material in the course web site)
+Robotics 2
+
+31
+
+Summary through video segments
+
+compliance control
+(active Cartesian stiffness
+control without F/T sensor)
+
+impedance control
+(with F/T sensor)
+
+force control
+(realized as external loop
+providing the reference to
+an internal position loop
+⎯see Appendix)
+
+COMAU Smart robot
+c/o Università di Napoli, 1994
+Robotics 2
+
+hybrid force/position control
+
+(full video on course web site)
+32
+
+Appendix
+n
+
+n
+
+force control can also be realized as an external loop providing
+reference values to an internal motion loop (see video in slide #32)
+inner-outer (or cascaded) control scheme
+n
+
+angular position quantities (E-E orientation, errors, commands) can be
+expressed in different ways (Euler angles 𝝓, rotation matrices 𝑹, ...)
+
+𝒇𝒅 , 𝒎 𝒅
+
+𝒑𝒄 , 𝝓 𝒄
+
+𝒂
+
+𝒖
+
+𝒇, 𝒎
+𝒒
+𝒒̇
+
+𝒑𝒆 , 𝝓 𝒆
+𝒗 𝒆 , 𝝎𝒆
+
+Robotics 2
+
+33
+
+

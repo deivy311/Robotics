@@ -1,0 +1,39 @@
+/************************************************************************/
+/* This directory contains the code for inverse kinematics 
+/* of a General 6R robot.*/
+/* The executable is based on an earlier implementation*/
+/* by Dr. Dinesh Manocha of UNC						*/
+/************************************************************************/
+
+Steps to run executable:
+
+1. Double click General6R.exe.
+2. The executable reads input from input.dat.
+3. Output is generated as output.dat.
+4. User can modify the contents of input.dat.
+5. For a definition of the DH parameters used, please visit
+http://www.roboanalyzer.com/uploads/2/5/8/8/2588919/dhparams.pdf
+
+The input has the following format: (see files *.dat for examples)
+
+a1 a2 ... a6   
+b1 b2 ... b6
+alpha1 alpha2 ... alpha6
+
+R11 R12 R13
+R21 R22 R23
+R31 R32 R33
+T1  
+T2  
+T3
+
+comments: ai's are link lengths,
+	      bi's are joint offsets,
+		  alphai's are the twist angles,
+          R* is the rotation component of the end-effector, 
+	  and T* is translation part.
+
+
+The output of The executable is the values of Theta1 ... Theta6.
+
+

@@ -1,0 +1,1385 @@
+Robotics 2
+
+Dynamic model of robots:
+Analysis, properties, extensions, uses
+Prof. Alessandro De Luca
+
+Analysis of inertial couplings
+n
+
+Cartesian robot
+
+𝑀=
+
+𝑚$$
+0
+
+0
+𝑚&&
+
+n
+
+Cartesian “skew” robot
+
+𝑚$$
+𝑀= 𝑚
+$&
+
+𝑚$&
+𝑚&&
+
+n
+
+PR robot
+
+𝑚$$
+𝑀=
+𝑚$& (𝑞& )
+
+𝑚$& (𝑞& )
+𝑚&&
+
+n
+
+2R robot
+
+𝑀=
+
+𝑚$$ (𝑞& )
+𝑚$& (𝑞& )
+
+𝑚$& (𝑞& )
+𝑚&&
+
+n
+
+3R articulated robot
+(under simplifying
+assumptions on the CoMs)
+
+Robotics 2
+
+𝑚$$ (𝑞& , 𝑞+ )
+0
+𝑀=
+0
+
+0
+𝑚&& (𝑞+ )
+𝑚&+ (𝑞+ )
+
+0
+𝑚&+ (𝑞+ )
+𝑚++
+2
+
+Analysis of gravity term
+n
+
+absence of gravity
+n
+n
+
+n
+
+static balancing
+n
+
+n
+
+constant 𝑈- (motion on horizontal plane)
+applications in remote space
+distribution of masses (including motors)
+
+𝑔 𝑞 ≈0
+
+mechanical compensation
+n
+n
+
+Robotics 2
+
+articulated system of springs
+closed kinematic chains
+
+3
+
+Bounds on dynamic terms
+n
+
+for an open-chain (serial) manipulator, there always exist
+positive real constants 𝑘0 to 𝑘7 such that, for any value of
+𝑞 and 𝑞̇
+𝑘3 ≤ 𝑀 𝑞 ≤ 𝑘$ + 𝑘& 𝑞 + 𝑘+ 𝑞 &
+inertia matrix
+𝑆 𝑞, 𝑞̇
+𝑔 𝑞
+
+n
+
+≤ 𝑘7 + 𝑘8 𝑞
+
+𝑞̇
+
+factorization matrix of
+Coriolis/centrifugal terms
+
+≤ 𝑘9 + 𝑘: 𝑞
+
+gravity vector
+
+if the robot has only revolute joints, these simplify to
+𝑘3 ≤ 𝑀 𝑞
+
+≤ 𝑘$
+
+𝑆 𝑞, 𝑞̇
+
+≤ 𝑘7 𝑞̇
+
+𝑔 𝑞
+
+≤ 𝑘9
+
+(the same holds true with bounds 𝑞;,<;= ≤ 𝑞; ≤ 𝑞;,<>? on prismatic joints)
+NOTE: norms are either for vectors or for matrices (induced norms)
+Robotics 2
+
+4
+
+Robots with closed kinematic chains
+
+Comau Smart NJ130
+Robotics 2
+
+-1
+
+MIT Direct Drive Mark II and Mark III
+5
+
+Robots with closed kinematic chains
+
+MIT Direct Drive Mark IV
+(planar five-bar linkage)
+Robotics 2
+
+-2
+
+UMinnesota Direct Drive Arm
+(spatial five-bar linkage)
+6
+
+Robot with parallelogram structure
+(planar) kinematics and dynamics
+
+3
+
+𝑙C7
+
+𝑦
+
+𝑙C+
+
+1
+
+𝑙C$
+2
+
+𝑙8
+
+4
+
+𝑙C&
+
+center of mass:
+arbitrary 𝑙C;
+
+𝑞& − 𝜋
+5
+
+E-E
+
+parallelogram:
+
+𝑙$ = 𝑙+
+𝑙& = 𝑙7
+
+𝑞&
+𝑞$
+
+𝑝GG
+
+𝑥
+
+direct kinematics
+𝑙8 cos 𝑞& − 𝜋
+𝑙$ 𝑐$
+=
++
+𝑙$ 𝑠$
+𝑙8 sin 𝑞& − 𝜋
+
+𝑙8 𝑐&
+𝑙$ 𝑐$
+=
+−
+𝑙$ 𝑠$
+𝑙8 𝑠&
+
+position of center of masses
+𝑝C$
+
+𝑙C$ 𝑐$
+=
+𝑙C$ 𝑠$
+
+Robotics 2
+
+𝑝C&
+
+𝑙C& 𝑐&
+=
+𝑙C& 𝑠&
+
+𝑝C+
+
+𝑙C+ 𝑐$
+𝑙& 𝑐&
+=
++
+𝑙& 𝑠&
+𝑙C+ 𝑠$
+
+𝑝C7
+
+𝑙$ 𝑐$
+𝑙C7 𝑐&
+=
+−
+𝑙$ 𝑠$
+𝑙C7 𝑠&
+7
+
+Kinetic energy
+linear/angular velocities
+−𝑙C$ 𝑠$
+−𝑙C+ 𝑠$
+−𝑙& 𝑠&
+𝑣C$ =
+𝑞̇ $ 𝑣C+ =
+𝑞̇ $ +
+𝑞̇ &
+𝑙C$ 𝑐$
+𝑙C+ 𝑐$
+𝑙& 𝑐&
+−𝑙C& 𝑠&
+−𝑙$ 𝑠$
+𝑙 𝑠
+𝑣C& =
+𝑞̇ & 𝑣C7 =
+𝑞̇ $ + C7 & 𝑞̇ &
+𝑙C& 𝑐&
+𝑙$ 𝑐$
+−𝑙C7 𝑐&
+
+𝜔$ = 𝜔+ = 𝑞̇ $
+𝜔& = 𝜔7 = 𝑞̇ &
+
+Note: a (planar) 2D notation is used here!
+
+𝑇;
+
+$
+
+$
+
+& &
+𝑇$ = & 𝑚$ 𝑙C$
+𝑞̇ $ + & 𝐼C$,SS 𝑞̇ $&
+
+𝑇& =
+
+$
+& &
+𝑚& 𝑙C&
+𝑞̇ &
+&
+
+$
+
+$
+
+&
+
+&
+
++
+
+$
+𝐼C&,SS 𝑞̇ &&
+&
+
+& &
+𝑇+ = 𝑚+ 𝑙&& 𝑞̇ && + 𝑙C+
+𝑞̇ $ + 2𝑙& 𝑙C+ 𝑐&U$ 𝑞̇ $ 𝑞̇ & + 𝐼C+,SS 𝑞̇ $&
+
+𝑇7 =
+Robotics 2
+
+$
+
+𝑚7 𝑙$& 𝑞̇ $&
+&
+
++
+
+& &
+𝑙C7
+𝑞̇ &
+
+$
+
+− 2𝑙$ 𝑙C7 𝑐&U$ 𝑞̇ $ 𝑞̇ & + 𝐼C7,SS 𝑞̇ &&
+&
+
+8
+
+Robot inertia matrix
+7
+
+1 Y
+𝑇 = V 𝑇; = 𝑞̇ 𝑀 𝑞 𝑞̇
+2
+;W$
+
+&
+&
+𝐼C$,SS + 𝑚$ 𝑙C$
++ 𝐼C+,SS + 𝑚+ 𝑙C+
++ 𝑚7 𝑙$&
+𝑀 𝑞 =
+𝑚+ 𝑙& 𝑙C+ − 𝑚7 𝑙$ 𝑙C7 𝑐&U$
+
+structural condition
+in mechanical design
+
+symm
+&
+&
+𝐼C&,SS + 𝑚& 𝑙C&
++ 𝐼C7,SS + 𝑚7 𝑙C7
++ 𝑚+ 𝑙&&
+
+𝑚+ 𝑙& 𝑙C+ = 𝑚7 𝑙$ 𝑙C7
+
+(*)
+
+𝑀(𝑞) diagonal and constant ⇒ centrifugal and Coriolis terms ≡ 0
+mechanically DECOUPLED and LINEAR
+dynamic model (up to the gravity term 𝑔(𝑞))
+
+𝑀$$
+0
+
+0
+𝑀&&
+
+𝑢$
+𝑞̈ $
+= 𝑢
+𝑞̈ &
+&
+
+big advantage for the design of a motion control law!
+Robotics 2
+
+9
+
+Potential energy and gravity terms
+𝑈;
+
+from the 𝑦-components of vectors 𝑝C;
+
+𝑈$ = 𝑚$ 𝑔3 𝑙C$ 𝑠$
+
+𝑈& = 𝑚& 𝑔3 𝑙C& 𝑠&
+
+𝑈+ = 𝑚+ 𝑔3 𝑙& 𝑠& + 𝑙C+ 𝑠$
+
+𝑈7 = 𝑚7 𝑔3 𝑙$ 𝑠$ − 𝑙C7 𝑠&
+7
+
+𝑈 = V 𝑈;
+;W$
+
+𝜕𝑈
+𝑔 𝑞 =
+𝜕𝑞
+in addition,
+when (*) holds
+
+Y
+
+=
+
+𝑔3 𝑚$ 𝑙C$ + 𝑚+ 𝑙C+ + 𝑚7 𝑙$ 𝑐$
+𝑔 𝑞
+= $ $
+𝑔3 𝑚& 𝑙C& + 𝑚+ 𝑙& − 𝑚7 𝑙C7 𝑐&
+𝑔& 𝑞&
+
+𝑚$$ 𝑞̈ $ + 𝑔$ 𝑞$ = 𝑢$
+𝑚&& 𝑞̈ & + 𝑔& 𝑞& = 𝑢&
+
+gravity
+components
+are always
+“decoupled”
+𝑢; are
+
+(non-conservative) torques
+performing work on 𝑞;
+
+further structural conditions in the mechanical design lead to 𝑔(𝑞) ≡ 0!!
+Robotics 2
+
+10
+
+Adding dynamic terms ...
+1) dissipative phenomena due to friction at the joints/transmissions
+n viscous, Coulomb, stiction, Stribeck, LuGre (dynamic)...
+n local effects at the joints
+n difficult to model in general, except for:
+
+𝑢a,; = −𝐹a,; 𝑞̇ ;
+
+𝑢c,; = −𝐹c,; sgn 𝑞̇ ;
+𝑭𝑽 𝒒̇
+
+𝑭𝑪 𝒔𝒈𝒏(𝒒)
+̇
+𝑭𝒔𝒕𝒊𝒄𝒕𝒊𝒐𝒏
+
+Robotics 2
+
+11
+
+Adding dynamic terms ...
+2) inclusion of electrical actuators (as additional rigid bodies)
+n motor 𝑖 mounted on link 𝑖 − 1 (or before) , with very few exceptions
+n often with its spinning axis aligned with joint axis 𝑖
+n (balanced) mass of motor included in total mass of carrying link
+n (rotor) inertia has to be added to robot kinetic energy
+n transmissions with reduction gears (often, large reduction ratios)
+n in some cases, multiple motors cooperate in moving multiple links:
+use a transmission coupling matrix 𝛤 (with off-diagonal elements)
+Unimation PUMA family
+
+𝑚𝑜𝑡𝑜𝑟 3
+
+𝑗𝑜𝑖𝑛𝑡 3
+
+𝑚𝑜𝑡𝑜𝑟 2
+𝑗𝑜𝑖𝑛𝑡 2
+
+Robotics 2
+
+Mitsubishi RV-3S
+
+12
+
+Placement of motors along the chain
+𝜃̇<y
+
+𝜃̇<$
+motor 1
+rotor 1
+frame
+link 1
+
+RFW
+
+rotor N
+frame
+motor N
+
+joint 2
+link 2
+
+RFN-1
+
+(world frame)
+
+link N
+
+RFN
+RF0
+
+RF1
+link N - 1
+
+link 0
+(base)
+
+motor 2
+
+joint N
+
+joint1
+
+𝜃̇<; = 𝑛z; 𝜃̇;
+𝜏; = 𝑛z; 𝜏<;
+
+𝜃̇<&
+Robotics 2
+
+13
+
+Resulting dynamic model
+n
+
+simplifying assumption: in the rotational part of the kinetic
+energy, only the “spinning” rotor velocity is considered
+𝑇<;
+
+n
+
+1
+1
+1
+&
+& &
+̇
+= 𝐼<; 𝜃<; = 𝐼<; 𝑛z; 𝑞̇ ; = 𝐵<; 𝑞̇ ;&
+2
+2
+2
+
+y
+
+𝑇< = V 𝑇<;
+;W$
+
+1 Y
+= 𝑞̇ 𝐵< 𝑞̇
+2
+diagonal, > 0
+
+including all added terms, the robot dynamics becomes
+moved to
+the left ...
+
+𝑀 𝑞 + 𝐵< 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + 𝐹a 𝑞̇ + 𝐹c sgn 𝑞̇ = 𝜏
+constant
+n
+
+diagonal
+
+𝐹𝑉 > 0, 𝐹c > 0
+
+does NOT
+contribute to 𝑐
+
+diagonal
+
+motor torques
+
+(after
+reduction gears)
+
+scaling by the reduction gears, looking from the motor side
+𝑚;; (𝑞)
+𝐼< + diag
+&
+𝑛z;
+
+Robotics 2
+
+1
+̈
+𝜃< + diag
+𝑛z;
+
+y
+
+‚• (𝑞)𝑞̈ • + 𝑓 𝑞, 𝑞̇
+V𝑀
+•W$
+
+except the terms 𝑚••
+
+= 𝜏<
+
+motor torques
+
+(before
+reduction gears)
+14
+
+Including joint elasticity
+n
+
+in industrial robots, use of motion transmissions based on
+n
+n
+n
+
+n
+
+introduces flexibility between actuating motors (input) and driven
+links (output)
+in research robots compliance in transmissions is introduced on
+purpose for safety (human collaboration) and/or energy efficiency
+n
+n
+n
+
+n
+n
+
+belts
+harmonic drives
+long shafts
+
+actuator relocation by means of (compliant) cables and pulleys
+harmonic drives and lightweight (but rigid) link design
+redundant (macro-mini or parallel) actuation, with elastic couplings
+
+in both cases, flexibility is modeled as concentrated at the joints
+in most cases, assuming small joint deformation (elastic domain)
+
+Robotics 2
+
+15
+
+Robots with joint elasticity
+
+DLR LWR-III
+
+Dexter
+
+with harmonic drives
+
+with cable transmissions
+
+elastic
+motor spring load/link
+(stiffness K)
+
+Quanser Flexible Joint
+
+(1-dof linear, educational)
+
+Robotics 2
+
+video
+
+Stanford DECMMA
+
+with micro-macro actuation
+
+16
+
+Dynamic model
+of robots with elastic joints
+n
+
+introduce 2𝑁 generalized coordinates
+n
+n
+
+n
+
+1 Y
+add motor kinetic energy 𝑇𝑚 to that of the links 𝑇ˆ = 𝑞̇ 𝑀(𝑞)𝑞̇
+2
+y
+𝑇<;
+
+n
+
+𝑞 = 𝑁 link positions
+𝜃 = 𝑁 motor positions (after reduction, 𝜃; = 𝜃<; /𝑛z; )
+
+1
+1
+1
+&
+& ̇&
+̇
+= 𝐼<; 𝜃<; = 𝐼<; 𝑛z; 𝜃; = 𝐵<; 𝜃̇;&
+2
+2
+2
+
+;W$
+
+diagonal, > 0
+
+add elastic potential energy 𝑈𝑒 to that due to gravity 𝑈- (𝑞)
+n
+
+𝐾 = matrix of joint stiffness (diagonal, > 0)
+
+1
+𝜃<;
+𝑈‰; = 𝐾; 𝑞; −
+2
+𝑛z;
+n
+
+𝑇< = V 𝑇<;
+
+1 Y
+= 𝜃̇ 𝐵< 𝜃̇
+2
+
+&
+
+1
+= 𝐾; 𝑞; − 𝜃;
+2
+
+y
+
+&
+
+1
+𝑈‰ = V 𝑈‰; = 𝑞 − 𝜃 Y 𝐾 𝑞 − 𝜃
+2
+;W$
+
+apply Euler-Lagrange equations w.r.t. (𝑞, 𝜃)
+
+2𝑁 2nd-order
+differential
+equations
+Robotics 2
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 + 𝐾 𝑞 − 𝜃 = 0
+𝐵< 𝜃̈ + 𝐾 𝜃 − 𝑞 = 𝜏
+
+no external torques
+performing work on 𝑞
+
+17
+
+Use of the dynamic model
+inverse dynamics
+
+n
+
+given a desired trajectory 𝑞Š (𝑡)
+n
+twice differentiable (∃ 𝑞̈ Š (𝑡))
+n
+
+possibly obtained from a task/Cartesian trajectory 𝑟Š (𝑡), by
+(differential) kinematic inversion
+
+the input torque needed to execute this motion (in free space) is
+
+𝜏Š = 𝑀 𝑞Š + 𝐵< 𝑞̈ Š + 𝑐 𝑞Š , 𝑞̇ Š + 𝑔 𝑞Š + 𝐹a 𝑞̇ Š + 𝐹c sgn 𝑞̇ Š
+n
+n
+
+useful also for control (e.g., nominal feedforward)
+however, this way of performing the algebraic computation (∀𝑡) is
+not efficient when using the above Lagrangian approach
+n symbolic terms grow much longer, quite rapidly for larger 𝑁
+n
+
+Robotics 2
+
+in real time, numerical computation is based on Newton-Euler method
+18
+
+State equations
+direct dynamics
+
+Lagrangian
+dynamic model
+
+𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑢
+
+𝑁 differential
+2nd order
+equations
+
+𝑥$
+𝑞
+&y
+defining the vector of state variables as 𝑥 =
+=
+∈
+ℝ
+𝑥&
+𝑞̇
+state equations
+
+𝑥&
+𝑥̇ $
+𝑥̇ =
+=
+−𝑀 U$ (𝑥$ ) 𝑐 𝑥$ , 𝑥& + 𝑔(𝑥$ )
+𝑥̇ &
+
+2𝑁 differential
+
+= 𝑓(𝑥) + 𝐺(𝑥)𝑢
+2𝑁 × 1
+
+Robotics 2
+
+1st order
+equations
+
+2𝑁 × 𝑁
+
+𝑞
+another choice... 𝑥• = 𝑀(𝑞)𝑞̇
+
+0
++
+𝑢
+𝑀 U$ (𝑥$ )
+
+generalized
+momentum
+
+𝑥•̇ = ... (do it as exercise)
+19
+
+Dynamic simulation
+Simulink
+block
+scheme
+input torque
+command
+(open-loop
+or in
+feedback)
+
+𝑐(𝑞, 𝑞)
+̇
+
+𝑢
+
++
+
+here, a generic 2-dof robot
+
+𝑞, 𝑞̇
+
+𝑞̇ $ (0)
+
+_
+_
+
+𝑔(𝑞)
+
+𝑞$ (0)
+
+𝑞̈ $
+
+𝑞̇ $
+
+𝑞̈ &
+
+𝑞̇ &
+
+𝑞$
+
+𝑀U$ (𝑞)
+
+𝑞
+
+𝑞
+
+𝑞̇ & (0)
+
+𝑞&
+𝑞& (0)
+including “inv(M)”
+
+§ initialization (dynamic coefficients and initial state)
+§ calls to (user-defined) Matlab functions for the evaluation of model terms
+§ choice of a numerical integration method (and of its parameters)
+Robotics 2
+
+20
+
+Approximate linearization
+n
+
+we can derive a linear dynamic model of the robot, which is valid
+locally around a given operative condition
+n useful for analysis, design, and gain tuning of linear (or, the linear
+part of) control laws
+n approximation by Taylor series expansion, up to the first order
+n linearization around a (constant) equilibrium state or along a
+(nominal, time-varying) equilibrium trajectory
+n usually, we work with (nonlinear) state equations; for mechanical
+systems, it is more convenient to directly use the 2nd order model
+n
+
+same result, but easier derivation
+
+equilibrium state (𝑞, 𝑞)
+̇ = (𝑞‰ , 0) [ 𝑞̈ = 0 ]
+
+𝑔 𝑞‰ = 𝑢‰
+
+equilibrium trajectory (𝑞, 𝑞)
+̇ = (𝑞Š (𝑡), 𝑞̇ Š (𝑡)) [ 𝑞̈ = 𝑞̈ Š (𝑡) ]
+
+𝑀 𝑞Š 𝑞̈ Š + 𝑐 𝑞Š , 𝑞̇ Š + 𝑔 𝑞Š = 𝑢Š
+Robotics 2
+
+21
+
+Linearization at an equilibrium state
+n
+
+variations around an equilibrium state
+𝑞 = 𝑞‰ + Δ𝑞
+
+n
+
+𝑞̇ = 𝑞̇ ‰ + Δ𝑞̇ = Δ𝑞̇
+
+𝑞̈ = 𝑞̈ ‰ + ∆𝑞̈ = ∆𝑞̈ 𝑢 = 𝑢‰ + Δ𝑢
+
+keeping into account the quadratic dependence of c terms
+on velocity (thus, neglected around the zero velocity)
+𝑀 𝑞‰ ∆𝑞̈ + 𝑔 𝑞‰ +
+
+𝜕𝑔
+–
+∆𝑞 + o ∆𝑞 , ∆𝑞̇
+𝜕𝑞 ˆWˆ
+—
+
+𝐺(𝑞‰ )
+
+= 𝑢‰ + ∆𝑢
+
+infinitesimal terms
+of second or higher order
+
+∆𝑞
+n in state-space format, with ∆𝑥 =
+∆𝑞̇
+0
+𝐼
+0
+̇
+∆𝑥 =
+∆𝑥 +
+∆𝑢 = 𝐴 ∆𝑥 + 𝐵 ∆𝑢
+U$
+U$
+−𝑀 𝑞‰ 𝐺(𝑞‰ ) 0
+𝑀 (𝑞‰ )
+Robotics 2
+
+22
+
+Linearization along a trajectory
+n
+
+variations around an equilibrium trajectory
+𝑞 = 𝑞Š + Δ𝑞
+
+n
+
+𝑞̇ = 𝑞̇ Š + Δ𝑞̇
+
+𝑞̈ = 𝑞̈ Š + ∆𝑞̈
+
+𝑢 = 𝑢Š + Δ𝑢
+
+developing to 1st order the terms in the dynamic model ...
+
+̇ + 𝑔 𝑞Š + ∆𝑞 = 𝑢Š + ∆𝑢
+𝑀(𝑞Š + ∆𝑞) 𝑞̈ Š + ∆𝑞̈ + 𝑐(𝑞Š + ∆𝑞, 𝑞̇ Š + ∆𝑞)
+y
+
+𝑀 𝑞Š + ∆𝑞 ≅ 𝑀 𝑞Š
+
+𝜕𝑀;
++V
+–
+𝑒;Y ∆𝑞
+𝜕𝑞 ˆWˆ
+;W$
+
+𝑔 𝑞Š + ∆𝑞 ≅ 𝑔 𝑞Š + 𝐺(𝑞Š )∆𝑞
+
+š
+
+𝐶$ (𝑞Š , 𝑞̇ Š )
+
+𝑐 𝑞Š + ∆𝑞, 𝑞̇ Š + ∆𝑞̇ ≅ 𝑐 𝑞Š , 𝑞̇ Š +
+
+𝜕𝑐
+𝜕𝑐
+–
+∆𝑞 + –
+∆𝑞̇
+𝜕𝑞 ˆWˆš
+𝜕 𝑞̇ ˆWˆš
+ˆW
+̇ ˆ̇ š
+
+Robotics 2
+
+𝑖-th row of the
+identity matrix
+
+ˆW
+̇ ˆ̇ š
+
+𝐶& (𝑞Š , 𝑞̇ Š )
+
+23
+
+Linearization along a trajectory
+n
+
+(cont)
+
+after simplifications …
+
+𝑀(𝑞Š )∆𝑞̈ + 𝐶& (𝑞Š , 𝑞̇ Š )∆𝑞̇ + 𝐷 𝑞Š , 𝑞̇ Š , 𝑞̈ Š ∆𝑞 = ∆𝑢
+with
+
+y
+
+𝐷 𝑞Š , 𝑞̇ Š , 𝑞̈ Š = 𝐺 𝑞Š + 𝐶$ 𝑞Š , 𝑞̇ Š
+n
+
+in state-space format
+
+∆𝑥̇ =
+
+𝜕𝑀;
++V
+–
+𝑞̈ Š 𝑒;Y
+𝜕𝑞 ˆWˆ
+;W$
+
+š
+
+0
+𝐼
+−𝑀 U$ 𝑞Š 𝐷 𝑞Š , 𝑞̇ Š , 𝑞̈ Š
+−𝑀 U$ 𝑞Š 𝐶& 𝑞Š , 𝑞̇ Š
+0
++
+∆𝑢 = 𝐴(𝑡) ∆𝑥 + 𝐵(𝑡) ∆𝑢
+𝑀 U$ (𝑞Š )
+
+∆𝑥
+
+a linear, but time-varying system!!
+Robotics 2
+
+24
+
+Coordinate transformation
+𝑞 ∈ ℝy 𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑀 𝑞 𝑞̈ + 𝑛 𝑞, 𝑞̇ = 𝑢ˆ
+
+1
+
+if we wish/need to use a new set of generalized coordinates 𝑝
+
+𝑝 ∈ ℝy
+
+𝑝 = 𝑓(𝑞)
+
+𝑞 = 𝑓 U$ (𝑝)
+
+𝜕𝑓
+𝑝̇ =
+𝑞̇ = 𝐽(𝑞)𝑞̇
+𝜕𝑞
+
+𝑞̇ = 𝐽U$ (𝑞)𝑝̇ 𝑢ˆ = 𝐽Y (𝑞)𝑢ž
+
+̇ 𝑞̇
+𝑝̈ = 𝐽 𝑞 𝑞̈ + 𝐽(𝑞)
+
+U$ (𝑞)𝑝̇
+̇
+𝑞̈ = 𝐽U$ (𝑞) 𝑝̈ − 𝐽(𝑞)𝐽
+
+1
+
+U$ (𝑞)𝑝̇ + 𝑛 𝑞, 𝑞̇ = 𝐽 Y (𝑞)𝑢
+̇
+𝑀 𝑞 𝐽U$ 𝑞 𝑝̈ − 𝑀(𝑞)𝐽U$ (𝑞)𝐽(𝑞)𝐽
+ž
+
+𝐽UY (𝑞) Ÿ
+Robotics 2
+
+pre-multiplying the whole equation...
+25
+
+Robot dynamic model
+
+after coordinate transformation
+U$ (𝑞)𝑝̇ = 𝑢
+̇
+𝐽UY 𝑞 𝑀 𝑞 𝐽U$ 𝑞 𝑝̈ + 𝐽UY 𝑞 𝑛 𝑞, 𝑞̇ − 𝑀(𝑞)𝐽U$ (𝑞)𝐽(𝑞)𝐽
+ž
+
+𝑞→𝑝
+
+for actual computation,
+these inner substitutions
+are not necessary
+
+(𝑞, 𝑞)
+̇ → (𝑝, 𝑝)̇
+
+𝑀ž 𝑝 𝑝̈ + 𝑐ž 𝑝, 𝑝̇ + 𝑔ž 𝑝 = 𝑢ž
+𝑀ž =
+𝑐ž =
+
+symmetric,
+
+𝐽UY 𝑀𝐽U$ positive definite
+
+(out of singularities)
+
+𝐽UY
+
+𝑐−
+
+𝑀𝐽U$
+
+𝑔ž = 𝐽UY 𝑔
+
+𝐽 ̇ 𝐽U$ 𝑝̇ = 𝐽UY 𝑐 − 𝑀ž 𝐽 ̇ 𝐽U$ 𝑝̇
+
+𝑐ž (𝑝, 𝑝)̇ = 𝑆ž (𝑝, 𝑝)̇ 𝑝̇
+
+non-conservative
+generalized forces
+performing work on 𝑝
+
+𝑀̇ ž − 2𝑆ž
+
+quadratic
+dependence on 𝑝̇
+
+skew-symmetric
+
+when 𝑝 = E-E pose, this is the robot dynamic model in Cartesian coordinates
+Q: What if the robot is redundant with respect to the Cartesian task?
+Robotics 2
+
+26
+
+Dynamic scaling of trajectories
+uniform time scaling of motion
+
+n
+
+given a smooth original trajectory 𝑞Š (𝑡) of motion for 𝑡 ∈ [0, 𝑇]
+n suppose to rescale time as 𝑡 → 𝑟(𝑡) (a strictly increasing function of 𝑡 )
+n
+
+in the new time scale, the scaled trajectory 𝑞¡ (𝑟) satisfies
+
+𝑞Š 𝑡 = 𝑞¡ 𝑟(𝑡)
+same path executed
+(at different instants of time)
+
+𝑑𝑞Š 𝑑𝑞¡ 𝑑𝑟
+𝑞̇ Š 𝑡 =
+=
+= 𝑞¡£ 𝑟̇
+𝑑𝑡
+𝑑𝑟 𝑑𝑡
+
+𝑑 𝑞̇ Š
+𝑑𝑞¡£ 𝑑𝑟
+𝑞̈ Š 𝑡 =
+=
+𝑟̇ + 𝑞¡£ 𝑟̈ = 𝑞¡££ 𝑟̇ & + 𝑞¡£ 𝑟̈
+𝑑𝑡
+𝑑𝑟 𝑑𝑡
+n
+
+uniform scaling of the trajectory occurs when 𝑟 𝑡 = 𝑘𝑡
+
+𝑞̇ Š 𝑡 = 𝑘𝑞¡£ (𝑘𝑡)
+
+𝑞̈ Š 𝑡 = 𝑘 & 𝑞¡££ (𝑘𝑡)
+
+Q: what is the new input torque needed to execute the scaled trajectory?
+(suppose dissipative terms can be neglected)
+Robotics 2
+
+27
+
+Dynamic scaling of trajectories
+inverse dynamics under uniform time scaling
+
+n
+
+the new torque could be recomputed through the inverse dynamics, for
+every 𝑟 = 𝑘𝑡 ∈ 0, 𝑇 £ = [0, 𝑘𝑇] along the scaled trajectory, as
+
+𝜏¡ 𝑘𝑡 = 𝑀 𝑞¡ 𝑞¡££ + 𝑐 𝑞¡ , 𝑞¡£ + 𝑔(𝑞¡ )
+n
+
+however, being the dynamic model linear in the acceleration and
+quadratic in the velocity, it is
+
+𝜏Š 𝑡 = 𝑀 𝑞Š 𝑞̈ Š + 𝑐 𝑞Š , 𝑞̇ Š + 𝑔 𝑞Š = 𝑀 𝑞¡ 𝑘 & 𝑞¡££ + 𝑐 𝑞¡ , 𝑘𝑞¡£ + 𝑔(𝑞¡ )
+= 𝑘 & 𝑀 𝑞¡ 𝑞¡££ + 𝑐 𝑞¡ , 𝑞¡£
+n
+
++ 𝑔 𝑞¡ = 𝑘 & 𝜏¡ 𝑘𝑡 − 𝑔 𝑞¡
+
++ 𝑔 𝑞¡
+
+thus, saving separately the total torque 𝜏Š (𝑡) and gravity torque 𝑔Š (𝑡)
+in the inverse dynamics computation along the original trajectory, the
+new input torque is obtained directly as
+
+1
+𝜏¡ 𝑘𝑡 = & 𝜏Š 𝑡 − 𝑔 𝑞Š (𝑡)
+𝑘
+Robotics 2
+
++ 𝑔 𝑞Š (𝑡)
+
+𝑘 > 1: slow down
+⇒ reduce torque
+𝑘 < 1: speed up
+⇒ increase torque
+
+gravity term (only position-dependent): does NOT scale!
+
+28
+
+Dynamic scaling of trajectories
+numerical example
+
+n
+
+n
+
+rest-to-rest motion with cubic polynomials for planar 2R robot under gravity
+(from downward equilibrium to horizontal link 1 & upward vertical link 2)
+original trajectory lasts 𝑇 = 0.5 s (but maybe violates the torque limit at joint 1)
+only joint 1 torque is shown
+torque only due
+to non-zero initial
+acceleration
+total torque
+
+gravity torque
+component
+
+at equilibrium
+= zero gravity
+torque
+
+for both joints
+
+Robotics 2
+
+29
+
+Dynamic scaling of trajectories
+numerical example
+
+original
+total
+torque
+
+gravity torque
+to sustain the link
+at steady state
+
+n
+
+scaling with 𝑘 = 2 (slower) → 𝑇 £ = 1 s
+
+𝜏Š 0.1 − 𝑔 𝑞Š 0.1
+
+= 20 Nm
+
+*
+
+𝑇 = 0.5 s
+
+scaled
+total
+torque
+
+gravity torque
+component
+does not scale
+
+𝜏¡ 2 Ÿ 0.1 − 𝑔 𝑞¡ 2 Ÿ 0.1
+
+&3
+&¨
+
+= 5 Nm
+
+*
+*
+
+*
+
+0 Nm
+
+1
+4
+
+𝑇 = 0.5 s
+
+Robotics 2
+
+=
+
+𝑇£ = 1 s
+
+𝑘=2
+
+𝑇=1s
+
+30
+
+Optimal point-to-point robot motion
+considering the dynamic model
+
+§ given the initial and final robot configurations (at rest) and
+actuator torque bounds, find
+n the minimum-time Tmin motion
+n the (global/integral) minimum-energy Emin motion
+and the associated command torques needed to execute them
+§ a complex nonlinear optimization problem solved numerically
+
+video
+
+Robotics 2
+
+video
+
+Tmin= 1.32 s, E = 306
+
+T = 1.60 s, Emin = 6.14
+
+31
+
+

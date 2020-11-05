@@ -1,0 +1,711 @@
+Robotics II
+September 21, 2017
+Exercise 1
+Consider the RP planar robot in Fig. 1, with the coordinates q = (q1 , q2 ), the kinematic parameter
+L2 , and the dynamic parameters dc2 , m2 , I1 and I2 defined therein.
+
+y0
+
+L2
+
+q2
+
+dc2
+
+䎩!
+
+F
+
+p
+
+m2,I2
+
+q1
+x0
+
+I1
+
+!"
+Figure 1: A RP planar robot with the relevant variables and parameters.
+• Provide the symbolic expression of the inertia matrix M (q), of the Coriolis and centrifugal
+vector c(q, q̇), and of the gravity vector g(q) when the plane (x0 , y 0 ) is inclined with respect
+to the horizontal plane by an angle α ∈ [0, π/2] around the x0 axis.
+• Determine the symbolic expression of q̈ 0 ∈ R2 , the joint acceleration when the robot starts
+from rest and the two actuators apply a torque τ and a force F as command inputs.
+• Next, assume that
+i)
+ii)
+iii)
+iv)
+
+α = 0 and the robot is at rest;
+the second link is a uniform thin rod with mass m2 and inertia I2 = (m2 L22 )/12;
+the torque and the force provided by the motors are bounded: |τ | ≤ Tmax , |F | ≤ Fmax ;
+the prismatic joint has a limited symmetric range, with q2 ∈ [−L2 , L2 ].
+
+In these conditions:
+2
+
+a. Provide the expression of the squared norm kp̈0 k , where p̈0 ∈ R2 is the end-effector
+acceleration when the robot starts from rest. Verify that this quantity is a function of
+q and sketch graphically this dependence.
+b. Analyze at least qualitatively how the configurations q ∗min and q ∗max that provide, re2
+spectively, the minimum and maximum of kp̈0 k change, when the inertia I1 of the first
+link is either much larger or much smaller than I2 (by 1-2 orders of magnitude).
+
+1
+
+Exercise 2
+A lightweight 6R robot with a spherical wrist operates in a working environment where a human
+is occasionally present. During normal operation, the robot task is to track accurately a desired
+smooth trajectory pd (t) for the end-effector position p = f p (q) ∈ R3 and an associated desired
+trajectory φd (t) for a minimal representation of the end-effector orientation φ = f φ (q) ∈ R3 .
+Assume that:
+• The complete dynamic model of the robot in free motion is perfectly known, and is described
+(with the usual notations) by the following equations
+M (q)q̈ + C(q, q̇)q̇ + g(q) = τ − τ f (q̇),
+
+(1)
+
+where the friction term τ f denotes a dissipative action at the joints.
+• The direct kinematic functions f p and f φ are known, as well as the 6 × 6 analytic Jacobian
+associated to the end-effector task
+ ∂f (q) 
+!
+p
+J p (q)
+∂q
+=
+J (q) = 
+,
+(2)
+∂f φ (q)
+J φ (q)
+∂q
+
+where the two matrices J p and J φ have dimension 3 × 6, and matrix J is nonsingular in the
+region of interest.
+• The robot is equipped only with encoders at the joints, and the environment is not monitored
+by any external sensor.
+state A
+
+condition A ⇒ B
+
+control law A
+
+state B
+
+control law B
+
+condition A ⇒ C
+
+state C
+
+condition B ⇒ A
+
+control law C
+
+condition B ⇒ C
+
+Figure 2: A state diagram of robot control operation in collision-aware tasks.
+With reference to the state diagram in Fig. 2, the following collision-aware behavior for safe HumanRobot Interaction (HRI) should be realized through a suitable set of robot control laws and conditions for the transitions:
+• During normal operation (state A in the diagram), if a mild contact occurs and is detected,
+the robot keeps the three-dimensional position task but relaxes the orientation task, trying
+to accommodate in this way a reflex reaction to the contact (state B).
+• Instead, when a severe collision occurs during normal operation, the robot abandons the task
+completely by bouncing away from the collision area (state C) ad then stops.
+• While in state B, the robot may either switch back to normal operation when the contact
+is no longer present, or abandon also the orientation task and switch to state C in case the
+interaction forces will increase further.
+Specify the control laws and the transition conditions to be used in the state diagram of Fig. 2.
+[150 minutes; open books]
+2
+
+Solution
+September 21, 2017
+Exercise 1
+Following a Lagrangian approach, we compute first the kinetic energy T = T1 + T2 . We have
+
+ 2
+
+d q2 cos q1
+1
+1
+1
+1
+1
+2
++ I2 q̇12 =
+I2 + m2 q22 q̇12 + m2 q̇22 ,
+T2 = m2
+T1 = I1 q̇1 ,
+2
+2
+dt q2 sin q1
+2
+2
+2
+and thus the diagonal inertia matrix
+
+M (q) =
+
+I1 + I2 + m2 q22
+0
+
+0
+m2
+
+
+.
+
+(3)
+
+Using the Christoffel symbols, the Coriolis and centrifugal terms are easily computed from (3) as
+
+
+2m2 q2 q̇1 q̇2
+c(q, q̇) =
+.
+−m2 q2 q̇12
+For the potential energy due to gravity, Ug = U1 + U2 , we have (up to a constant)
+U1 = 0,
+
+U2 = m2 (g0 sin α) q2 sin q1 ,
+
+and thus
+
+g(q) =
+
+∂Ug (q)
+∂q
+
+T
+
+
+= m2 g0 sin α
+
+q2 cos q1
+sin q1
+
+
+.
+
+When the robot is at rest (q̇ = 0), the joint acceleration takes the expression
+ τ − m g sin α q cos q 
+2 0
+2
+1
+ 
+
+2
+
+
+I
++
+I
++
+m
+q
+τ
+1
+2
+2
+2
+
+q̈ 0 = q̈ |q̇=0 = M −1 (q)
+− g(q) = 
+ F − m g sin α sin q  =
+F
+2 0
+1
+m2
+
+(4)
+
+q̈1
+
+!
+
+q̈2
+
+.
+
+(5)
+
+The end-effector position and its velocity are
+
+
+
+
+
+
+cos q1
+cos q1
+− sin q1
+p = (q2 + dc2 )
+,
+ṗ = q̇2
++ (q2 + dc2 ) q̇1
+.
+sin q1
+sin q1
+cos q1
+Thus, the end-effector acceleration at zero joint velocity is
+
+
+
+
+cos q1
+− sin q1
+p̈0 = p̈ |q̇=0 = q̈2
++ (q2 + dc2 ) q̈1
+sin q1
+cos q1
+
+
+
+
+
+cos q1 − sin q1
+q̈2
+q̈2
+=
+= R(q1 )
+,
+sin q1 cos q1
+(q2 + dc2 ) q̈1
+(q2 + dc2 ) q̈1
+
+(6)
+
+where R(·) is a 2 × 2 (planar) rotation matrix. From (6), we have
+2
+
+kp̈0 k =
+
+p̈T0
+
+p̈0 =
+
+q̈2
+(q2 + dc2 ) q̈1
+3
+
+2
+2
+
+= (q2 + dc2 ) q̈12 + q̈22 .
+
+(7)
+
+Using (5) for α = 0 in (7), we obtain
+2
+
+2
+
+kp̈0 k =
+
+1 2
+(q2 + dc2 )
+2
+F +
+2 τ ,
+m22
+(I1 + I2 + m2 q22 )
+
+(8)
+
+which shows an actual dependence only on the prismatic joint variable q2 . The two addends in (8)
+are separately driven by the two motors: the first one is a radial contribution due to F , which is
+scaled just by m22 and is independent from the robot configuration; the second one is the tangential
+contribution (normal to the second link) due to τ , which depends in a nonlinear fashion on q2 , as
+well as on m2 , dc2 , I1 , and I2 (and their relative values).
+2
+
+∗
+It is easy to see that the minimum of kp̈0 k is obtained at q2,min
+= −dc2 (with arbitrary q1∗ ),
+namely when the end-effector position is at the origin (on the axis of joint 1). Note also that this
+value is independent from the dynamic parameters m2 , I1 , and I2 .
+
+From the expression (8), it follows that the maximum value H of the squared norm of the acceleration is given by
+2
+(q2 + dc2 )
+F2
+2
++
+max
+H = max
+2 τmax ,
+m22
+q2 ∈[−L2 ,L2 ] (I1 + I2 + m2 q 2 )
+2
+where the maximum bounds on the inputs have been used. Under the given assumption on the
+mass distribution of link 2, in order to find the absolute maximum of the tangential contribution
+2
+in kp̈0 k one should study the behavior of the positive function
+
+h(q2 ) =
+
+q2 + dc2
+I1 + I2 + m2 q22
+
+2
+
+2
+
+
+=
+
+I1 +
+
+q2 + L22
+
+ 2
+L
+m2 122 + q22
+
+for q2 in the closed interval [−L2 , L2 ]. The stationary points of h satisfy the necessary condition
+ 2
+
+
+
+
+L2
+L2
+2
+L2
+I
++
+m
++
+q
+1
+2
+2 − 2m2 q2 q2 + 2
+q2 + 2
+12
+dh(q2 )
+ 2
+
+=0
+=0
+⇐⇒
+2
+
+2
+ 2
+L
+dq2
+L
+I1 + m2 122 + q22
+I1 + m2 122 + q22
+q2 +
+⇐⇒
+
+L2
+2
+
+
+
+
+L2
+m2 q22 + m2 L2 q2 − I1 + m2 122
+= 0.
+
+ 2
+3
+L
+I1 + m2 122 + q22
+
+The zeros of the derivative occur where one of the two polynomial factors (one linear, the other
+quadratic) at the numerator vanishes. This occurs at1
+∗
+q2 = q2,min
+=−
+
+L2
+2
+
+⇒
+
+a minimum of h(q2 )
+
+⇒
+
+a maximum —only if ∈ [−L2 , L2 ].
+
+and at
+q2 =
+
+∗
+q2,max
+
+L2
+=−
++
+2
+
+s
+
+L2
+2
+
+2
++
+
+I1
+L2
++ 2
+m2
+12
+
+For very large values of the ratio I1 /I2 ∝ I1 /m2 , this second expression will be larger than L2 ,
+and thus outside the closed interval of definition for q2 . Therefore, the maximum will occur at the
+1 The
+
+second root of the quadratic factor is always strictly lower than −L2 , thus outside the interval [−L2 , L2 ].
+
+4
+
+∗
+upper limit, i.e., q2,max
+= L2 . On the other hand, for very small values of I1 /m2 , neglecting this
+∗
+term and using a Taylor expansion yields q2,max
+≈ L2 /12.
+
+As a numerical example, Fig. 3 shows the plots of h(q2 ) for various ratios of I1 /I2 , when the
+second link is a uniform thin rod of mass m2 = 1 [kg] and length L2 = 0.5 [m]. For instance, when
+∗
+I1 /I2 = 50 (red profile on the left), the maximum is at q2,max
+= L2 = 0.5. On the other hand,
+∗
+when I1 /I2 = 0.01 (red profile on the right), the maximum is at q2,max
+≈ L2 /12 = 0.04 [m].
+3
+
+M2 = 1, L2 = 0.5, LC2 = 0.25, I2 = 0.020833, I1 = I2*[50 (red), 20 (green), 10 (blue)]
+
+180
+
+M2 = 1, L2 = 0.5, LC2 = 0.25, I2 = 0.020833, I1 = I2*[1 (blue), 0.1 (green), 0.01 (red)]
+
+160
+2.5
+140
+
+120
+acceleration factor
+
+acceleration factor
+
+2
+
+1.5
+
+100
+
+80
+
+60
+
+1
+
+40
+0.5
+20
+
+0
+−0.5
+
+−0.4
+
+−0.3
+
+−0.2
+
+−0.1
+
+0
+q2
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0
+−0.5
+
+0.5
+
+−0.4
+
+−0.3
+
+−0.2
+
+−0.1
+
+0
+q2
+
+0.1
+
+0.2
+
+0.3
+
+0.4
+
+0.5
+
+Figure 3: Behavior of the h(q2 ) function, for various ratios I1 /I2 : high ratios 50, 20, 10 (left) and
+low ratios = 1, 0.1, 0.01 (right).
+The physical explanation of these behaviors is as follows. When the inertia of the first link is
+very large, this constant inertia will dominate the effort needed by the first motor to accelerate
+the robot structure and so the maximum tangential component of the end-effector acceleration
+will be obtained when the second link is fully stretched. On the other hand, when the first link
+inertia can be assumed as negligible in the picture, the maximum tangential acceleration of the
+end-effector will result from the trade-off between two contrasting effects: the amplification of the
+joint acceleration due to a longer radial extension of the second link and its reduction due to the
+associated larger inertia seen by the first motor torque. Thus, qualitatively speaking, the peak will
+be somewhere in between q2 = 0 and q2 = L2 .
+Note finally that when the location of the center of mass of the second link (with non-uniformly
+distributed mass) approaches the tip of the link (dc2 = 0), the above qualitative behavior remains
+the same, but the plots in Fig. 3 will become symmetric w.r.t. q2 = 0, with the single minimum at
+∗
+∗
+q2,min
+= 0 and two maxima in ±|q2,max
+| ∈ [−L2 , L2 ].
+Exercise 2
+The problem can be solved by using the residual vector r as a collision monitoring signal, together
+with a number of ordered positive thresholds on its norm krk to be used in the switching conditions,
+and suitable control laws for each state.
+Based on the known model (1), the residual r ∈ R6 can be defined as
+
+Z t
+ 
+T
+r(t) = K M (q)q̇ −
+τ + C (q, q̇)q̇ − g(q) − τ f (q̇) + r ds ,
+
+with K > 0 (diagonal),
+
+0
+
+(9)
+where τ is the actual control torque applied in any of the robot states A, B, or C. Using (1),
+
+5
+
+equation (9) implies the dynamic behavior
+ṙ = K (τ c − r) ,
+
+(10)
+
+where τ c ∈ R6 is the joint torque resulting from a collision force/moment occurring anywhere along
+the robot structure. Indeed, if at some time t the torque τc returns to zero, then each component
+of r will decay exponentially to zero as well. Moreover, for a sufficiently large K, from (10) we
+can use the approximation τ C ' r and use the residual vector r as a proxy of the unknown joint
+torque τ c due to collision.
+With reference to Fig. 2, in the following suitable control laws will be defined for each state.
+
+T
+• Control in state A. Define the desired task trajectory as xd (t) = pTd (t) φTd (t)
+∈ R6 . In
+order to accurately follow this smooth trajectory, we use the Cartesian feedback linearization
+controller
+
+
+τ = M (q)J −1 (q) ẍd + K D (ẋd −J (q)q̇) + K P (xd −f (q)) − J̇ (q)q̇
+(11)
++ C(q, q̇)q̇ + g(q) + τ f (q̇),
+with 6 × 6 (typically diagonal) gain matrices K P > 0 and K D > 0. Within this law, the
+presence of a PD action on the task error allows to recover exponentially transient errors.
+This is necessary, e.g., when the complete task is partially abandoned and then resumed (in
+case we are coming back to state A from state B).
+• Control in state B. In this case, the orientation part of the desired task will be relaxed,
+while the position task pd (t) ∈ R3 for the robot end-effector should be kept. Therefore,
+the robot becomes kinematically redundant since the task has dimension m = 3 while the
+robot has n = 6 control commands available; the degree of redundancy is thus n − m = 3.
+We continue to achieve Cartesian position tracking, e.g., by using a dynamically consistent
+redundancy resolution scheme. This control scheme uses the 3 × 6 Jacobian J p in a partially
+feedback linearizing law that is weighted by the inverse of the task inertia matrix Λ(q) and
+adds a suitable torque τ 0 ∈ R6 projected in the dynamic null space of the task. We have
+thus
+
+
+τ = J Tp (q)Λ(q) p̈d + K D,p (ṗd −J p (q)q̇) + K P,p pd −f p (q) − J̇ p (q)q̇
+
++ J p (q)M −1 (q) (C(q, q̇)q̇ + g(q) + τ f (q̇)) ,
+(12)
+
+
++ I − J T (q)Λ(q)J (q)M −1 (q) τ 0 ,
+with 3 × 3 (typically diagonal) gain matrices K P,p > 0 and K D,p > 0, and the 3 × 3 inertia
+matrix reduced to the task
+
+−1
+Λ(q) = J p (q)M −1 (q)J Tp (q)
+.
+In (12), the torque τ 0 = K r r is used, with K r > 0, so as to obtain a reaction to the collision
+torque τ c ' r which is consistent with the remaining Cartesian position task.
+• Control in state C. In this case, the complete original task is abandoned. The robot reacts
+to the collision in a stronger or weaker way depending on the intensity (and direction in the
+
+6
+
+joint space) of r, which is a proxy of the severity of the collision. Moreover, to avoid bias in
+the reaction due to the gravity, this term should be cancelled. As a result
+τ = g(q) + K r r
+
+(13)
+
+with K r > 0. Once the contact is lost, r will go to zero. As a result, thanks of the presence
+of friction, the robot will come to a stop in a zero-gravity condition. Joint velocity damping
+can be added so as to anticipate the instant when the robot is finally at rest, but this will
+limit quick reaction to collisions.
+Transitions between the states in Fig. 2 will be driven by the actual value of krk ≥ 0. To this end,
+define a sequence of positive thresholds for this variable:
+0 < rlow < rmild < rsevere .
+The value rlow is the minimum threshold that should be crossed by krk in order to detect reliably
+contact/collision events (i.e., obtaining few false positives, or eliminating them). The detection
+instant tdetect ≥ 0 is the first instant at which kr(tdetect )k ≥ rlow . For the choice of this lowest
+threshold, one takes into account the presence of noise in position sensing and in the generation
+of an estimate of the velocity q̇ by numerical differentiation of the position measures q, as well
+as the remaining model uncertainties. For the two other thresholds, the rationale is that mild
+collisions will generate small values of the norm of the residual and, conversely, severe collisions
+will be associated to large values of r. The value rmild is chosen only slightly above rlow , so that
+the control system may detect a contact but not yet consider it as a collision, letting thus the robot
+continue the original motion task. With this in mind, the following switching conditions correctly
+realize the desired behavior:
+• condition A ⇒ B:
+
+rmild ≤ krk < rsevere ;
+
+• condition A ⇒ C:
+
+krk ≥ rsevere ;
+
+• condition B ⇒ C:
+
+krk ≥ rsevere ;
+
+• condition B ⇒ A:
+
+krk < rlow .
+
+Note that the last condition may be replaced also by krk < rmild . However, using the more
+conservative value rlow introduces some hysteresis, so that the robot will avoid switching several
+times between the states A and B when the norm of the residual is oscillating around rmild .
+∗∗∗∗∗
+
+7
+
+

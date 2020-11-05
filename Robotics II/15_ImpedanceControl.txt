@@ -1,0 +1,455 @@
+Robotics 2
+
+Impedance Control
+Prof. Alessandro De Luca
+
+Impedance control
+n
+
+n
+
+n
+
+n
+
+n
+
+n
+
+imposes a desired dynamic behavior to the interaction between
+robot end-effector and environment
+the desired performance is specified through a generalized dynamic
+impedance, namely a complete set of mass-spring-damper equations
+(typically chosen as linear and decoupled, but also nonlinear)
+a model describing how reaction forces are generated in association
+with environment deformation is not explicitly required
+suited for tasks in which contact forces should be “kept small”, while
+their accurate regulation is not mandatory
+since a control loop based on force error is missing, contact forces
+are only indirectly assigned by controlling position
+the choice of a specific stiffness in the impedance model along a
+Cartesian direction results in a trade-off between contact forces and
+position accuracy in that direction
+
+Robotics 2
+
+2
+
+Dynamic model of a robot in contact
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢 + 𝐽. 𝑞 𝐹
+
+𝑞 ∈ ℝ5
+
+forces
+
+linear velocity
+
+“geometric”
+Jacobian
+
+generalized
+Cartesian force
+“analytic”
+Jacobian
+
+𝑝̇
+𝑣
+𝑓
+8
+𝐹=
+∈ ℝ performing work on 𝑉 = 𝜔 = 𝐽 𝑞 𝑞̇ ≠ 𝑥̇ = ̇ = 𝐽- (𝑞)𝑞̇
+𝜙
+𝑚
+torques
+
+direct kinematics
+
+angular velocity
+
+𝜕𝑓(𝑞)
+𝐽- 𝑞 =
+= 𝑇- 𝜙 𝐽(𝑞)
+𝜕𝑞
+
+derivative of
+Euler angles
+
+𝑥̇ = 𝑇- 𝜙 𝑉
+
+𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 = 𝑢 + 𝐽-. 𝑞 𝐹-
+
+with
+
+𝐹- = 𝑇-1. 𝜙 𝐹
+
+generalized forces performing work on 𝑥̇
+Robotics 2
+
+3
+
+Dynamic model in Cartesian coordinates
+assuming
+
+𝑛=𝑚
+
+𝑀A 𝑞 𝑥̈ + 𝑆A 𝑞, 𝑞̇ 𝑥̇ + 𝑔A 𝑞 = 𝐽-1. 𝑞 𝑢 + 𝐹with
+
+𝑀A 𝑞 = 𝐽-1. (𝑞)𝑀(𝑞)𝐽-1F(𝑞)
+𝑆A 𝑞, 𝑞̇ = 𝐽-1. 𝑞 𝑆 𝑞, 𝑞̇ 𝐽-1F 𝑞 − 𝑀A (𝑞)𝐽-̇ (𝑞)𝐽-1F(𝑞)
+𝑔A 𝑞 = 𝐽-1. (𝑞)𝑔(𝑞)
+... and the usual structural properties
+
+§ 𝑀A > 0, if 𝐽- is non-singular
+§ 𝑀̇ A − 2𝑆A is skew-symmetric, if 𝑀̇ − 2𝑆 satisfies the
+same property
+§ the Cartesian dynamic model of the robot can be linearly
+parameterized in terms of a set of dynamic coefficients
+Robotics 2
+
+4
+
+Design of the control law
+designed in two steps:
+1. feedback linearization in the Cartesian space (with force measure)
+
+𝑢 = 𝐽-. (𝑞) 𝑀A 𝑞 𝑎 + 𝑆A 𝑞, 𝑞̇ 𝑥̇ + 𝑔A 𝑞 − 𝐹𝑥̈ = 𝑎
+
+closed-loop system
+
+2. imposition of a dynamic impedance model
+most of the times
+it is “decoupled”
+(diagonal matrices)
+
+𝑀8 𝑥̈ − 𝑥̈ H + 𝐷8 𝑥̇ − 𝑥̇ H + 𝐾8 𝑥 − 𝑥H = 𝐹-
+
+desired (apparent)
+desired
+inertia (> 0)
+damping (≥ 0)
+
+desired
+stiffness (> 0)
+
+external forces
+from the environment
+
+is realized by choosing
+1F 𝐷 𝑥̇ − 𝑥̇ + 𝐾 𝑥 − 𝑥 + 𝐹
+𝑎 = 𝑥̈ H + 𝑀8
+8 H
+8 H
+-
+
+Note: 𝑥H (𝑡) is the desired motion, which typically “slightly penetrates”
+inside the compliant environment (inducing contact forces)...
+Robotics 2
+
+5
+
+Examples of desired reference 𝑥𝑑
+in impedance/compliance control
+
+𝑀8 𝑥̈ − 𝑥̈ H + 𝐷8 𝑥̇ − 𝑥̇ H + 𝐾8 𝑥 − 𝑥H = 𝐹the desired motion 𝒙𝒅 (𝒕) is slightly inside
+the environment (keeping thus contact)
+
+𝒙𝒆
+
+𝒙𝒅(𝒕)
+
+𝒙𝒅(𝒕)
+robot in grinding task
+Robotics 2
+
+robot writing on a surface
+6
+
+Examples of desired reference 𝑥𝑑
+in impedance/compliance control
+
+𝑀8 𝑥̈ − 𝑥̈ H + 𝐷8 𝑥̇ − 𝑥̇ H + 𝐾8 𝑥 − 𝑥H = 𝐹constant desired pose 𝒙𝒅 is the free Cartesian
+rest position in a human-robot interaction task
+
+𝒙𝒅
+𝒙𝒅
+
+KUKA iiwa robot with human operator
+Robotics 2
+
+KUKA LWR robot in pHRI (collaboration)
+7
+
+Control law in joint coordinates
+substituting and simplifying…
+1F 𝐷 𝑥̇ − 𝑥̇ + 𝐾 𝑥 − 𝑥 }
+𝑢 = 𝑀 𝑞 𝐽-1F(𝑞)S𝑥̈ H − 𝐽-̇ 𝑞 𝑞̇ + 𝑀8
+8 H
+8 H
+1F − 𝐼 𝐹
++ 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 + 𝐽-. (𝑞) 𝑀A 𝑞 𝑀8
+-
+
+matrix weighting the measured contact forces
+§ the following identity holds for the term involving contact forces
+1F − 𝐼 𝐹 = 𝑀 𝑞 𝐽1F(𝑞)𝑀1F − 𝐽. 𝑞 𝐹
+𝐽-. 𝑞 𝑀A 𝑞 𝑀8
+8
+-
+
+which eliminates from the control law also the appearance of the
+last remaining Cartesian quantity (the Cartesian inertia matrix)
+§ while the control design is based on dynamic analysis and desired
+(impedance) behavior described in the Cartesian space, the final
+control implementation is always at the robot joint level
+Robotics 2
+
+8
+
+Choice of the impedance model
+n
+
+n
+
+n
+
+rationale ...
+avoid large impact forces due to uncertain geometric characteristics
+(position, orientation) of the environment
+adapt/match to the dynamic characteristics of the environment (in
+particular, of its estimated stiffness) in a complementary way
+mimic the behavior of a human arm
+è fast and stiff in “free” motion, slow and compliant in “guarded” motion
+
+n
+
+n
+
+n
+
+large 𝑀8,V and small 𝐾8,V in Cartesian directions where contact is
+foreseen (➔ low contact forces)
+large 𝐾8,V and small 𝑀8,V in Cartesian directions that are supposed
+to be free (➔ good tracking of desired motion trajectory)
+damping coefficients 𝐷8,V are used then to shape transient behaviors
+
+Robotics 2
+
+9
+
+Human arm behavior
+hard environment
+expected contact motion
+= soft motion control
+
+expected free motion
+= stiff motion control
+
+in the selected 𝑖 -th Cartesian direction:
+the stiffer is the environment, the softer is the chosen model stiffness 𝐾8,V
+Robotics 2
+
+10
+
+A notable simplification
+
+-1
+
+choose the apparent inertia equal to the natural Cartesian inertia of the robot
+
+𝑀8 = 𝑀A 𝑞 = 𝐽-1. 𝑞 𝑀(𝑞)𝐽-1F(𝑞)
+then, the control law becomes
+
+𝑢 = 𝑀 𝑞 𝐽-1F(𝑞)S𝑥̈ H − 𝐽-̇ 𝑞 𝑞̇ } + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞
++ 𝐽-. (𝑞) 𝐷8 𝑥̇ H − 𝑥̇ + 𝐾8 𝑥H − 𝑥
+WITHOUT contact force feedback! (a F/T sensor is no longer needed…)
+
+this is a pure motion control applied also during interaction,
+but designed so as to keep limited contact forces at the end-effector level
+(as before, 𝐾𝑚 is chosen as a function of the expected environment stiffness)
+Robotics 2
+
+11
+
+A notable simplification
+
+-2
+
+technical issue: if the impedance model (now, nonlinear) is still supposed to
+represent a real mechanical system, then in correspondence to a desired
+non-constant inertia (𝑀A (𝑞)) there should be Coriolis and centrifugal terms...
+
+𝑀A (𝑞) 𝑥̈ − 𝑥̈ H + 𝑆A 𝑞, 𝑞̇ + 𝐷8 𝑥̇ − 𝑥̇ H + 𝐾8 𝑥 − 𝑥H = 𝐹nonlinear impedance model (“only” gravity terms disappear)
+
+redoing computations, the control law becomes
+
+𝑢 = 𝑀 𝑞 𝐽-1F(𝑞)S𝑥̈ H − 𝐽-̇ 𝑞 𝐽-1F 𝑞 𝑥̇ H } + 𝑆 𝑞, 𝑞̇ 𝐽-1F(𝑞)𝑥̇ H + 𝑔 𝑞
++ 𝐽-. (𝑞) 𝐷8 𝑥̇ H − 𝑥̇ + 𝐾8 𝑥H − 𝑥
+which is indeed slightly more complex, but has the following advantages:
+§ guarantee of asymptotic convergence to zero tracking error (on 𝑥𝑑(𝑡))
+when 𝐹- = 0 (no contact situation) ⇒ Lyapunov + skew-symmetry of 𝑀̇ A − 2𝑆A
+§ further simplifications when 𝑥𝑑 is constant
+Robotics 2
+
+12
+
+Cartesian regulation revisited
+(without contact, 𝐹- = 0)
+
+when 𝑥𝑑 is constant (𝑥̇ H = 0, 𝑥̈ H = 0), from the previous expression we get
+the control law
+
+𝑢 = 𝑔 𝑞 + 𝐽-. 𝑞 𝐾8 𝑥H − 𝑥 − 𝐷8𝑥̇
+
+(★)
+
+Cartesian PD control with gravity cancellation…
+when 𝐹- = 0 (absence of contact), we know already that this control law
+ensures asymptotic stability of 𝑥H , provided 𝐽- (𝑞) has full rank
+proof
+
+1 .
+1
+Lyapunov candidate 𝑉F = 𝑥̇ 𝑀A 𝑞 𝑥̇ + 𝑥H − 𝑥 . 𝐾8 𝑥H − 𝑥
+(alternative)
+2
+2
+1 .
+.
+̇
+𝑉F = 𝑥̇ 𝑀A 𝑞 𝑥̈ + 𝑥̇ 𝑀̇ A 𝑞 𝑥̇ − 𝑥̇ . 𝐾8 𝑥H − 𝑥 = ⋯ = −𝑥̇ . 𝐷8 𝑥̇ ≤ 0
+2
+using skew-symmetry of 𝑀̇ A − 2𝑆A and 𝑔A = 𝐽-1. 𝑔
+Robotics 2
+
+13
+
+Cartesian stiffness control
+(with contact, 𝐹- ≠ 0)
+
+when 𝐹- ≠ 0, convergence to 𝑥H is not assured
+(it may not even be a closed-loop equilibrium…)
+§ for analysis, assume an elastic contact model for the environment
+
+𝐹- = 𝐾\ (𝑥\ − 𝑥) with stiffness 𝐾\ ≥ 0 and rest position 𝑥\
+§ closed-loop system behavior
+Lyapunov candidate
+1 .
+1
+1
+.
+𝑉] = 𝑥̇ 𝑀A 𝑞 𝑥̇ + 𝑥H − 𝑥 𝐾8 𝑥H − 𝑥 + 𝑥\ − 𝑥 . 𝐾\ 𝑥\ − 𝑥
+2
+2
+2
+1
+= 𝑉F + 𝑥\ − 𝑥 . 𝐾\ 𝑥\ − 𝑥
+2
+1 .
+.
+̇
+𝑉] = 𝑥̇ 𝑀A 𝑞 𝑥̈ + 𝑥̇ 𝑀̇ A 𝑞 𝑥̇ − 𝑥̇ . 𝐾8 𝑥H − 𝑥 − 𝑥̇ . 𝐾\ 𝑥\ − 𝑥
+2
+= ⋯ = −𝑥̇ . 𝐷8 𝑥̇ + 𝑥̇ . (𝐹- − 𝐾\ 𝑥\ − 𝑥 ) = −𝑥̇ . 𝐷8 𝑥̇ ≤ 0
+Robotics 2
+
+14
+
+Stability analysis
+
+(with 𝐹- ≠ 0)
+
+when 𝑥̇ = 𝑥̈ = 0, at a closed-loop system equilibrium it is
+𝐾8 (𝑥H − 𝑥) + 𝐾\ (𝑥\ − 𝑥) = 0
+which has the unique solution
+
+𝑥 = 𝐾8 + 𝐾\
+
+1F
+
+𝐾8𝑥H + 𝐾\ 𝑥\ =: 𝑥_
+
+(check that the Lyapunov candidate 𝑉2 has in fact its minimum in 𝑥_ !)
+LaSalle
+
+𝑥_ ≈
+
+𝑥𝐸 asymptotically stable equilibrium
+𝑥\ for 𝐾\ ≫ 𝐾8 (rigid environment)
+𝑥H for 𝐾8 ≫ 𝐾\
+
+(rigid controller)
+
+Note: the Cartesian stiffness control law (★) is often
+called compliance control in the literature
+Robotics 2
+
+15
+
+Active equivalent of RCC device
+IF § displacements from the desired position 𝑥H are small, namely
+
+(𝑥H − 𝑥) ≈ 𝐽- (𝑞H − 𝑞)
+§ 𝑔(𝑞) = 0 (gravity is compensated/cancelled, e.g., mechanically)
+§ 𝐷8 = 0
+
+𝑢 = 𝐽-. 𝑞 𝐾8 𝐽- 𝑞H − 𝑞 = 𝐾(𝑞)(𝑞H − 𝑞)
+
+THEN
+𝐾8
+
+∆𝑥
+𝐽- (𝑞)
+∆𝑞
+
+𝐾(𝑞)
+
+𝐹
+
+∆𝑥
+
+constant Cartesian-level stiffness 𝐾8
+corresponds to
+𝐽-. (𝑞)
+𝐽-1F (𝑞)
+variable joint-level stiffness 𝐾(𝑞)
+𝑢
+∆𝑞
+(and vice versa on compliance)
+
+𝐶(𝑥)
+
+𝐹
+𝐽-1. (𝑞)
+
+𝐶8
+
+𝑢
+
+is the ‘‘active’’ counterpart of a Remote Center of Compliance (RCC) device
+Robotics 2
+
+16
+
+Admittance control
+§ in some cases, we don’t have access to low-level robot torque (or
+motor current) commands ⇒ closed control architecture
+§ for handling the interaction with the environment, one uses then
+admittance control: contact forces ⇒ velocity commands
+§ implementation (with compliant matrices 𝐶 )
+§ at the velocity or incremental position level
+§ in the joint or Cartesian (or task) space
+
+𝑢e = 𝐽. (𝑞)𝐹e ⟶ 𝑞̇ = 𝐶g 𝑢e ⟶ 𝑞̇ = 𝐶g 𝐽. (𝑞)𝐹e
+𝐶g ≥ 0
+↕
+∆𝑞 (to be added to the current 𝑞)
+𝐹e ⟶ 𝑥̇ = 𝐶A 𝐹e ⟶ 𝑞̇ = 𝐽1F (𝑞)𝐶A 𝐹e
+↕
+(in case of redundancy) 𝐽# (𝑞)
+Robotics 2
+
+𝐶A ≥ 0
+
+17
+
+

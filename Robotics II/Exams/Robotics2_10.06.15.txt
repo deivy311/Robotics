@@ -1,0 +1,293 @@
+Robotics II
+June 15, 2010
+
+For the planar RP robot under gravity shown in Fig. 1, consider a class of one-dimensional tasks
+defined only in terms of the y-component of the end-effector Cartesian position
+y = py (q1 , q2 ).
+
+y0
+
+g0
+m1,I1
+
+q2
+x0
+
+q1
+m2,I2
+
+d2
+
+P
+
+Figure 1: RP robot in the vertical plane, with definition of coordinates (d2 > 0 is a constant)
+Noting that the robot is redundant for this class of tasks, determine the explicit expression of the
+actuation input τ = (τ1 , τ2 ) that, at a generic robot state (q, q̇), realizes a desired ÿd = A and has
+the minimum norm property.
+[90 minutes; open books]
+
+1
+
+Solution
+June 15, 2010
+The dynamic model of the RP robot
+B(q)q̈ + c(q, q̇) + g(q) = τ
+
+(1)
+
+should be obtained first.
+With reference to Fig. 1, the robot kinetic energy T is given by
+1
+I1 q̇12
+2
+1
+1
+1
+1
+T2 = m2 kvc2 k2 + I2 q̇12 = (I2 + m2 q22 ) q̇12 + m2 q̇22
+2
+2
+2
+2
+
+1
+I1 + I2 + m2 q22
+T = T1 + T2 = q̇ T B(q)q̇ ⇒ B(q) =
+0
+2
+T1 =
+
+0
+m2
+
+
+
+
+=
+
+b11 (q2 ) 0
+0
+b22
+
+Using the Christoffel’s symbols for the components of the velocity vector c(q, q̇)
+
+ 
+T 
+!
+∂bi (q)
+∂bi (q)
+∂B(q)
+1
+T
++
+−
+ci (q, q̇) = q̇ C i (q)q̇
+C i (q) =
+2
+∂q
+∂q
+∂qi
+
+
+.
+
+i = 1, 2,
+
+the Coriolis and centrifugal terms are determined as follows:
+
+
+0
+m2 q2
+C 1 (q) =
+⇒ c1 (q2 , q̇1 , q̇2 ) = 2 m2 q2 q̇1 q̇2
+m2 q2
+0
+
+
+−2 m2 q2 0
+C 2 (q) =
+⇒ c2 (q1 , q̇1 ) = −m2 q2 q̇12 .
+0
+0
+The robot potential energy U is given by
+U1 = U10
+
+U2 = m2 g0 q2 sin q1 + U20
+
+U = U1 + U2 = m2 g0 q2 sin q1 + U10 + U20
+T 
+ 
+
+
+∂U (q)
+m2 g0 q2 cos q1
+g1 (q1 , q2 )
+=
+=
+,
+⇒ g(q) =
+m2 g0 sin q1
+g2 (q1 )
+∂q
+with g0 = 9.81 > 0.
+The direct kinematics associated to the end-effector position of the RP robot is
+
+ 
+
+px
+(d2 + q2 ) cos q1
+p=
+=
+,
+py
+(d2 + q2 ) sin q1
+where d2 > 0 is the constant length shown in Fig. 1. Being the task defined only in terms of the
+py component, it is
+
+ṗy = (d2 + q2 ) cos q1 sin q1 q̇ = J (q)q̇
+and then
+p̈y = J (q)q̈ + J̇ (q)q̇ = J (q)q̈ +
+
+cos q1 q̇2 − (d2 + q2 ) sin q1 q̇1
+2
+
+cos q1 q̇1
+
+
+
+q̇.
+
+(2)
+
+Note that the task Jacobian J is singular if and only if sin q1 = 0 and q2 = −d2 .
+Replacing in (2) the accelerations q̈ from (1) yields
+p̈y = J (q)B −1 (q) (τ − c(q, q̇) − g(q)) + J̇ (q)q̇
+Setting then p̈y = A and reorganizing terms, we obtain
+M (q)τ = A − J̇ (q)q̇ + J (q)B −1 (q) (c(q, q̇) + g(q)) =: d(q, q̇),
+having defined also
+M (q) = J (q)B
+
+−1
+
+
+(q) =
+
+(d2 + q2 ) cos q1
+b11 (q2 )
+
+sin q1
+b22
+
+
+.
+
+At a generic robot state (q, q̇), the question at hand is then formulated as a linear-quadratic
+optimization problem in the standard form
+
+1 2
+1
+τ1 + τ22
+min kτ k2 =
+2
+2
+
+s.t.
+
+M τ = d.
+
+The optimal solution is simply
+τ ∗ = M # d,
+
+(3)
+
+where all quantities have been already defined. In explicit terms, in case of full (row) rank M we
+have1
+
+−1
+M # = B −1 J T J B −2 J T
+.
+In particular, out of the singularities of the 1 × 2 matrix M , which coincide with those of the task
+Jacobian J , the pseudoinverse of M has the explicit expression
+
+
+(d2 + q2 ) cos q1
+
+
+b11 (q2 )
+1
+
+
+M # (q) = 
+.
+2 
+2 
+
+
+sin q1
+(d2 + q2 ) cos q1
+sin q1
++
+b11 (q2 )
+b22
+b22
+The optimal solution (3) implies that both joints/actuators are typically involved in this onedimensional task. Although in general the task could have been realized also by actuating only a
+single joint (the revolute or the prismatic one), the combination results in the minimum actuation
+effort.
+It should be remarked that the norm of τ has a dimensionality problem. In fact, the first
+actuation input is a torque (on the revolute joint) and the second is a force (on the prismatic
+joint), so that physical units are mixed in computing the norm. A way to handle this problem is
+to introduce a proper scaling in the objective function, i.e., considering a positive definite diagonal
+matrix W = diag{1, w} > 0 and minimizing
+
+1 T
+1 2
+τ Wτ =
+τ + w τ22 ,
+2
+2 1
+1 Note
+
+also that in general M # = (JB −1 )# 6= BJ # . The equality holds if B = b · I, for a scalar b.
+
+3
+
+where the scalar w > 0 takes into account how costly a unit of torque is in comparison to a unit
+of force. The associated solution is then obtained by replacing the pseudoinverse of M in (3) by
+its weighted pseudoinverse
+−1
+
+−1
+T
+−1
+T
+M
+W
+M
+.
+M#
+=
+W
+M
+W
+Finally, it is worth mentioning that the above local solution with minimum norm of the actuation inputs is prone to an internal build up of joint velocities, especially for long task trajectories.
+A countermeasure to this phenomenon is to choose a solution of the form
+
+
+τ = M #d + I − M #M τ 0,
+(4)
+with τ 0 = −K D q̇ and where K D is a diagonal, positive definite matrix. The additional torque
+τ 0 damps the joint velocity q̇, without affecting the execution of the task. It is also easy to see
+that (4) is the solution to the following modified linear-quadratic optimization problem
+min
+
+1
+T
+(τ − τ 0 ) (τ − τ 0 )
+2
+∗∗∗∗∗
+
+4
+
+s.t. M τ = d.
+
+

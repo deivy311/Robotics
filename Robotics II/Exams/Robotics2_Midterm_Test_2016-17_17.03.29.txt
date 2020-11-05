@@ -1,0 +1,1508 @@
+Robotics 2
+Midterm test in classroom – March 29, 2017
+Exercise 1
+For the 3R spatial robot in Fig. 1, determine the symbolic expression of the elements of the inertia matrix
+B(q) using the recursive algorithm with moving frames for the computation of the kinetic energy of the
+links. The coordinates q ∈ R3 to be used are those of the Denavit-Hartenberg (DH) convention.
+
+y2
+y1
+
+x2
+y3
+
+x1
+
+z1
+
+z0
+
+x0
+
+z2
+
+x3
+z3
+
+i
+1
+2
+3
+
+αi
+π/2
+0
+0
+
+di
+L1
+0
+0
+
+ai
+0
+L2
+L3
+
+θi
+q1
+q2
+q3
+
+y0
+Figure 1: An elbow-type 3R robot, with associated DH frames and table of parameters.
+Besides the masses mi , i = 1, 2, 3, of the links, the other constant dynamic parameters are specified as
+
+
+
+
+
+
+A
+−C
+−D
+1
+2
+3
+r 1,c1 =  −F  ,
+r 2,c2 =  0  ,
+r 3,c3 =  0  ,
+(1)
+0
+0
+E
+where A, C, D, E and F take positive values, and
+
+
+Ixx,i
+0
+0
+i
+Iyy,i
+0 ,
+I ci =  0
+0
+0
+Izz,i
+
+i = 1, 2, 3.
+
+(2)
+
+Once B(q) has been obtained, define a set of dynamic coefficients that linearly parametrize the inertia
+matrix and is of the smallest possible cardinality.
+Exercise 2
+When the Jacobian J (q) is a m × n matrix with full row rank m, its weighted pseudoinverse J #
+W (q) takes
+the explicit form
+
+−1
+−1 T
+J#
+J (q) J (q)W −1 J T (q)
+,
+(3)
+W (q) = W
+where W is a n × n, symmetric, and positive definite matrix. The matrix J #
+W in (3) satisfies three of
+the four identities that uniquely define a pseudoinverse. Prove that the weighted pseudoinverse takes the
+following more general form, which holds true even when the Jacobian J (q) loses rank:
+
+#
+−1/2
+J#
+J (q)W −1/2
+.
+W (q) = W
+
+1
+
+(4)
+
+Exercise 3
+Consider a 4R planar robot with all links of equal length ` = 0.5 [m]. The robot is stretched along the x0
+axis, in the DH configuration q = 0. The end-effector of the robot should execute an instantaneous linear
+velocity v = ( 0 10 )T [m/s]. The joint velocities are bounded as |q̇i | ≤ Vi , i = 1, . . . , 4, with V1 = 4,
+V2 = 2, and V3 = V4 = 1 [rad/s]. Find a feasible joint velocity q̇ ∈ R4 that executes the given Cartesian
+task, either as such or in a scaled way, while satisfying the hard bounds on joint velocity. Scale the task
+velocity v only if strictly needed. A solution with a lower norm is preferred.
+Hint: The following useful expressions hold for the pseudoinverse of a block matrix A (with a submatrix
+O of zeros) and of a vector u 6= 0:
+
+ # 
+
+
+
+B
+B
+⇒ A# = B # O T ,
+(5)
+A= B O
+⇒ A# =
+,
+A=
+T
+O
+O
+
+−1
+ #
+uT
+u
+u ∈ R n ⇒ u# = uT u
+uT =
+,
+uT
+=
+.
+(6)
+2
+kuk
+kuk2
+Exercise 4
+Consider a 3R planar robot with links of equal length ` = 1 [m]. The primary task for this robot is
+to execute an instantaneous Cartesian velocity v ∈ R2 with its end-effector. Denote the associated task
+Jacobian as J (q).
+T
+• When the robot is in the configuration q 0 = π/2 π/3 −2π/3
+, use the Reduced Gradient
+3
+(RG) method to determine the joint velocity q̇ ∈ R that realizes a desired Cartesian velocity
+√ T
+[m/s] while maximizing the objective function
+v= 1 − 3
+H(q) = sin2 q2 + sin2 q3 .
+
+(7)
+
+• As an auxiliary task, the robot should move so as to always keep the position p2 = (x2 , y2 ) of the
+endpoint of its second link on the circle defined by
+x22 + (y2 − 1.5)2 = 0.75.
+
+(8)
+
+Determine the Jacobian J a (q) associated to this auxiliary task. When the robot is in the configuration q 0 defined above, is the robot in an algorithmic singularity? Can the two requested primary
+and auxiliary tasks be executed at the same time?
+Exercise 5
+Consider a 2R planar robot with the nominal kinematics expressed by the DH parameters in Tab. 1.
+
+i
+1
+2
+
+αi
+0
+0
+
+di
+0
+0
+
+ai
+L1
+L2
+
+θi
+q1
+q2
+
+Table 1: Nominal kinematic parameters of a 2R planar robot.
+In order to improve the robot accuracy, we would like to perform a large number of calibration experiments
+in which the robot end-effector position p ∈ R2 (in the plane of motion) is measured by an external laser
+system. To recover the residual errors of the nominal direct kinematics with respect to the external
+measurements, it is assumed that we require only the fine tuning of the parameters a ∈ R2 and of the
+encoder measurements θ ∈ R2 , whose adjustments will be performed simultaneously. What will be the
+expression of the 2 × 4 regressor matrix Φ for a single calibration experiment?
+[270 minutes (4.5 hours); open books, but no computer or smartphone]
+
+2
+
+Solution
+March 29, 2017
+Exercise 1
+From the table of DH parameters given in Fig. 1, we compute the needed rotation matrices
+
+
+
+
+
+c3 −s3
+c2 −s2 0
+c1 0 s1
+2
+1
+0
+c3
+c2
+0 ,
+R3 (q3 ) =  s3
+R2 (q2 ) =  s2
+R1 (q1 ) =  s1 0 −c1  ,
+0
+0
+0
+0
+1
+0 1
+0
+
+
+0
+0 ,
+1
+
+with the usual shorthand notation for trigonometric quantities, e.g., s2 = sin q2 , c23 = cos(q2 + q3 ).
+Similarly, the following kinematic quantities will be used:
+
+
+
+
+
+
+0
+L3
+L2
+1
+2
+3
+r 0,1 =  L1  ,
+r 1,2 =  0  ,
+r 2,3 =  0  .
+0
+0
+0
+T
+The moving frames algorithm is initialized with 0 ω 0 = 0 and 0 v 0 = 0. Also, i z i = z 0 = 0 0 1
+for
+i = 0, 1, 2 (joint axis 1, 2, and 3, respectively).
+Link i = 1
+
+
+1
+
+1
+
+ω 1 = 0 RT1 (q1 )0 ω 1 = 0 RT1 (q1 )
+
+v 1 = 0 RT1 (q1 )0 v 1 = 0 RT1 (q1 )
+
+0
+
+0
+
+ω 0 + q̇1 0 z 0
+
+v 0 + 0 ω 1 × 0 r 0,1
+
+
+
+ 
+
+0
+0
+= 0 RT1 (q1 )  0  =  q̇1 
+q̇1
+0
+
+
+
+
+1
+
+v c1
+
+⇒
+
+ 
+
+0
+0
+= 0 RT1 (q1 )0 ω 1 × 0 RT1 (q1 )0 r 0,1 = 1 ω 1 × 1 r 0,1 =  q̇1  ×  L1  = 0
+0
+0
+
+ 
+ 
+
+0
+A
+0
+= 1 v 1 + 1 ω 1 × 1 r 1,c1 =  q̇1  ×  −F  =  0 
+0
+0
+−Aq̇1
+T1 =
+
+1
+m1
+2
+
+1
+
+v c1
+
+2
+
++
+
+
+11 T1 1
+1
+ω 1 I c1 ω 1 =
+Iyy,1 + m1 A2 q̇12 .
+2
+2
+
+Link i = 2
+
+2
+
+2
+
+ω2 =
+
+1
+
+RT2 (q2 )1 ω 2
+
+v 2 = 1 RT2 (q2 )1 v 2 = 1 RT2 (q2 )
+
+=
+1
+
+1
+
+RT2 (q2 ) 1 ω 1
+
+1
+
+
+
++ q̇2 z 1 =
+
+v 1 + 1 ω 2 × 1 r 1,2
+
+1
+
+RT2 (q2 ) 
+
+
+ 
+0
+s2 q̇1
+q̇1  =  c2 q̇1 
+q̇2
+q̇2
+
+
+
+
+2
+
+v c2
+
+ 
+ 
+
+s2 q̇1
+L2
+0
+= 1 RT2 (q2 )1 ω 2 × 1 RT2 (q2 )1 r 1,2 = 2 ω 2 × 2 r 1,2 =  c2 q̇1  ×  0  =  L2 q̇2 
+q̇2
+0
+−L2 c2 q̇1
+
+ 
+ 
+ 
+
+0
+s2 q̇1
+−C
+0
+= 2 v 2 + 2 ω 2 × 2 r 2,c2 =  L2 q̇2  +  c2 q̇1  ×  0  =  (L2 − C) q̇2 
+−L2 c2 q̇1
+q̇2
+0
+−(L2 − C) c2 q̇1
+⇒
+
+T2 =
+
+1
+2
+
+=
+
+1
+2
+
+m2
+
+2
+
+v c2
+
+2
+
++
+
+1 2 T 2
+ω 2 I c2 2 ω 2
+2
+
+
+Ixx,2 s22 + Iyy,2 c22 + m2 (L2 − C)2 c22 q̇12 +
+
+3
+
+1
+2
+
+
+Izz,2 + m2 (L2 − C)2 q̇22 .
+
+Link i = 3
+
+3
+
+3
+
+ω3 =
+
+2
+
+RT3 (q3 )2 ω 3
+
+=
+
+2
+
+RT3 (q3 ) 2 ω 2
+
+2
+
+
+
++ q̇3 z 2 =
+
+2
+
+RT3 (q3 ) 
+
+
+ 
+s23 q̇1
+s2 q̇1
+c2 q̇1  =  c23 q̇1 
+q̇2 + q̇3
+q̇2 + q̇3
+
+
+v 2 + 2 ω 3 × 2 r 2,3 = 2 RT3 (q3 )2 v 2 + 2 RT3 (q3 )2 ω 3 × 2 RT3 (q3 )2 r 2,3
+
+ 
+ 
+ 
+
+L2 s3 q̇2
+L3
+s23 q̇1
+L2 s3 q̇2
+= 2 RT3 (q3 )2 v 2 + 3 ω 3 × 3 r 2,3 =  L2 c3 q̇2  +  c23 q̇1  ×  0  =  L2 c3 q̇2 + L3 (q̇2 + q̇3 ) 
+− (L2 c2 + L3 c23 ) q̇1
+0
+q̇2 + q̇3
+−L2 c2 q̇1
+
+ 
+ 
+
+−D
+s23 q̇1
+L2 s3 q̇2
+3
+v c3 = 3 v 3 + 3 ω 3 × 3 r 3,c3 =  L2 c3 q̇2 + L3 (q̇2 + q̇3 )  +  c23 q̇1  ×  0 
+E
+q̇2 + q̇3
+− (L2 c2 + L3 c23 ) q̇1
+
+
+L2 s3 q̇2 + Ec23 q̇1
+=  L2 c3 q̇2 + (L3 − D) (q̇2 + q̇3 ) − Es23 q̇1 
+− (L2 c2 + (L3 − D) c23 ) q̇1
+
+v 3 = 2 RT3 (q3 )2 v 3 = 2 RT3 (q3 )
+
+⇒
+
+T3 =
+=
+
+1
+2
+
+m3
+
+3
+
+2
+
+v c3
+
+2
+
++
+
+1 3 T 3
+ω 3 I c3 3 ω 3
+2
+
+
+m3 E 2 q̇12 + (L2 c2 + (L3 − D) c23 )2 q̇12 + L22 q̇22 + (L3 − D)2 (q̇2 + q̇3 )2
+
++ 2 (L3 − D) (L2 c3 q̇2 − Es23 q̇1 ) (q̇2 + q̇3 ) − 2EL2 s2 q̇1 q̇2
+
++ 21 Ixx,3 s223 + Iyy,3 c223 q̇12 + 12 Izz,3 (q̇2 + q̇3 )2 .
+1
+2
+
+Robot inertia matrix
+From
+T =
+
+3
+X
+
+Ti =
+
+i=1
+
+3
+3
+1 T
+1 XX
+bij (q) q̇i q̇j ,
+q̇ B(q)q̇ =
+2
+2 i=1 j=1
+
+we obtain the elements bij of the symmetric inertia matrix B(q) as
+
+b11 = Iyy,1 + m1 A2 + Ixx,2 s22 + Iyy,2 + m2 (L2 − C)2 c22
++ m3 E 2 + Ixx,3 s223 + Iyy,3 c223 + m3 (L2 c2 + (L3 − D) c23 )2
+b12 = −m3 E (L2 s2 + (L3 − D) s23 )
+b13 = −m3 E (L3 − D) s23
+b21 = b12
+b22 = Izz,2 + m2 (L2 − C)2 + Izz,3 + m3 (L3 − D)2 + m3 L22 + 2 m3 L2 (L3 − D) c3
+b23 = Izz,3 + m3 (L3 − D)2 + m3 L2 (L3 − D) c3
+b31 = b13
+b32 = b23
+b33 = Izz,3 + m3 (L3 − D)2 .
+Minimal parametrization
+Reorganizing the squares of trigonometric functions, the element b11 can be also rewritten as
+
+b11 = Iyy,1 + m1 A2 + Iyy,2 + m2 (L2 − C)2 + Iyy,3 + m3 (L3 − D)2 + m3 L22 + E 2
+
++ Ixx,2 − Iyy,2 − m2 (L2 − C)2 − m3 L22 s22
+
++ Ixx,3 − Iyy,3 − m3 (L3 − D)2 s223 + 2 m3 L2 (L3 − D) c2 c23 .
+
+4
+
+(9)
+
+Using the expression (9) for b11 , and introducing constant dynamic coefficients ai (i = 1, . . . , 8), the inertia
+matrix B(q) takes the more compact, linearly parametrized form
+
+
+a1 + a2 s22 + a3 s223 + 2a4 c2 c23 −a7 s2 − a8 s23
+−a8 s23
+
+
+−a7 s2 − a8 s23
+a5 + 2a4 c3
+a6 + a4 c3  .
+B(q) = 
+(10)
+−a8 s23
+a6 + a4 c3
+a6
+Note that the most notable simplification occurs when E = 0. In this case, it follows that a7 = a8 = 0 and
+the inertia matrix becomes block diagonal.
+Exercise 2
+One needs to verify that the expression in (4) satisfies the three identities (dropping dependency on q):
+(i) JJ #
+W J = J,
+
+#
+#
+(ii) J #
+W JJ W = J W ,
+
+
+
+(iii)
+
+JJ #
+W
+
+T
+
+= JJ #
+W.
+
+For (i), using the similar property (i) of the pseudoinverse of JW −1/2 ,
+
+
+
+# 
+
+# 
+
+
+−1/2
+−1/2
+−1/2
+−1/2
+JJ #
+J
+=
+J
+JW
+JW
+W
+J
+=
+J
+W
+J · W −1/2 W 1/2
+W
+
+
+
+
+#
+
+JW −1/2 W 1/2 = JW −1/2 W 1/2 = J .
+= JW −1/2 JW −1/2
+For (ii), using the property (ii) in the definition of the pseudoinverse of JW −1/2 ,
+
+# 
+
+#  
+
+#
+−1/2
+−1/2
+−1/2
+−1/2
+JW
+J
+W
+J#
+JJ
+=
+W
+JW
+W
+W
+
+#
+
+# 
+
+#
+−1/2
+−1/2
+−1/2
+−1/2
+= W
+JW
+JW
+JW
+= W −1/2 JW −1/2
+= J#
+W.
+Finally for (iii), the symmetry of the matrix
+
+
+#  
+
+#
+JJ #
+W −1/2 JW −1/2
+= JW −1/2 JW −1/2
+W = J
+follows from the same property of symmetry holding for the pseudoinverse of JW −1/2 .
+Exercise 3
+The task Jacobian of the planar 4R robot is given by
+J (q) =
+
+−` (s1 + s12 + s123 + s1234 )
+` (c1 + c12 + c123 + c1234 )
+
+−` (s12 + s123 + s1234 )
+` (c12 + c123 + c1234 )
+
+−` (s123 + s1234 )
+` (c123 + c1234 )
+
+with
+v = J (q)q̇,
+
+v ∈ R2 ,
+
+q̇ ∈ R4 .
+
+When q = 0 and for ` = 0.5 [m], the Jacobian becomes
+J := J (0) =
+
+0
+2
+
+0
+1.5
+
+0
+1
+
+0
+0.5
+
+!
+
+and is clearly not full rank. However, the desired task velocity lies in the range of J ,
+
+
+ 
+0
+0
+v=
+∈ R{J } = α
+,
+10
+1
+
+5
+
+−` s1234
+` c1234
+
+!
+(11)
+
+so that it will be realizable at least in direction, possibly in a scaled form in case the joint velocity bounds
+cannot be satisfied.
+Looking for a minimum norm joint velocity, to start with, we derive first the pseudoinverse solution. Using
+the hints in the text, it is easy to compute the pseudoinverse of J without resorting to a SVD. We have
+
+2 
+
+
+0 7.5
+2.6667
+
+ 0 1.5  
+ 2.0000 
+0
+
+7.5 
+
+=
+q̇ P S = J # v = 
+1 
+ 1.3333  [rad/s].
+ 0 7.5
+ 10
+0.6667
+0 0.5
+7.5
+
+The third joint velocity violates the maximum bound, q̇P S,3 = 1.3333 > 1 = V3 , so this is not a feasible
+solution. Thus, we search for an equivalent but feasible solution by using the SNS (Saturation in the Null
+Space) method, which is particularly simple to apply here.
+In step 1 of the SNS method, we saturate the (single) overdriven joint by setting q̇3 = V3 = 1 [rad/s]. Then,
+the original task is modified by removing the saturated contribution of the third joint velocity (discarding
+the associated column of J ). We rewrite this as
+!  q̇ 
+
+    
+1
+0
+0
+0
+0
+0
+0
+ q̇2  = J −3 q̇ −3 ,
+−
+=
+=
+v 1 = v − J 3 V3 =
+10
+1
+9
+2 1.5 0.5
+q̇4
+where J −i is the Jacobian obtained by deleting the ith column and, similarly, q̇ −i is the vector of joint
+velocity without the ith component. We recompute next the contribution of the remaining active joints,
+by pseudoinverting the J −3 matrix for the modified task. We obtain
+
+
+
+
+2
+0 6.5
+ 
+2.7692
+0
+
+#
+1.5 
+=  2.0769  [rad/s],
+(with the additional q̇3 = 1 = V3 ).
+q̇ P S−3 = J −3 v 1 =  0 6.5 
+9
+0.5
+0.6923
+0 6.5
+The second joint velocity violates the maximum bound, q̇P S−3 ,2 = 2.0769 > 2 = V2 , so this is not yet a
+feasible solution and we proceed with the SNS method.
+In step 2, we saturate also the second overdriven joint by setting q̇2 = V2 = 2 [rad/s]. The original task is
+modified by removing both saturated contributions of the second and third joint velocities (discarding the
+two associated columns of J ). We rewrite this as
+!
+
+      
+
+0
+0
+0
+0
+0
+0
+q̇1
+v 2 = v − J 2 V2 − J 3 V3 =
+−
+−
+=
+=
+= J −23 q̇ −23 ,
+10
+3
+1
+6
+q̇4
+2 0.5
+with obvious notation. We recompute next the contribution of the remaining active joints, by pseudoinverting the (now square, but still singular) J −23 matrix for the modified task. We obtain
+!  
+
+2
+0 4.25
+0
+2.8235
+#
+=
+[rad/s], (with q̇2 = 2 = V2 , q̇3 = 1 = V3 ).
+q̇ P S−23 = J −23 v 2 =
+6
+0.7059
+0 0.5
+4.25
+
+All bounds are now satisfied and the obtained joint velocity is feasible. Recomposing the complete joint
+velocity vector, we have the solution
+
+
+2.8235
+ 2.0000 
+
+q̇ ∗ = 
+with J q̇ ∗ = v and kq̇ ∗ k = 3.6702.
+ 1.0000  [rad/s],
+0.7059
+Therefore, there was no need to scale the original task velocity v in order to find a feasible joint velocity
+solution. Note that the solution q̇ ∗ can be rewritten in the general form
+
+
+q̇ ∗ = (JW )# v + I − (JW )# J q̇ N ,
+
+6
+
+with
+
+
+ 
+0
+0
+ V2   2
+
+
+
+=
+=
+V3   1
+0
+0
+
+
+W = diag{1, 0, 0, 1} (the selected active joints),
+
+q̇ N
+
+
+ (the saturated joint velocities),
+
+
+which explains also the name given to the method. Indeed, this solution is not unique. However, the
+SNS method (actually a variant of it, Opt-SNS, which is not needed in this simple case) guarantees also
+that a feasible minimum norm solution is obtained. For example, another feasible solution is obtained by
+saturating the first joint velocity to its maximum value (q̇1 = V1 = 4 [rad/s]) and adjusting the other three
+joint velocities accordingly. We have
+
+
+
+
+1.5
+0 3.5
+ 
+0.8571
+0
+
+1 
+q̇ P S−1 = J #
+(with q̇1 = 4 = V1 ).
+=  0.5714  [rad/s],
+−1 (v − J 1 V1 ) =  0
+3.5 
+2
+0.5
+0.2857
+0
+3.5
+
+
+
+The complete solution q̇ is feasible, but has a larger norm than the SNS solution q̇ ∗ :
+
+
+4.0000
+ 0.8571 
+
+q̇  = 
+with J q̇  = v and kq̇  k = 4.1404.
+ 0.5714  [rad/s],
+0.2857
+Exercise 4
+Reduced Gradient
+The Jacobian of the primary task is similar to that of the previous exercise, see (11)
+!
+−` (s1 + s12 + s123 ) −` (s12 + s123 ) −`s123
+.
+J (q) =
+` (c1 + c12 + c123 )
+` (c12 + c123 )
+`c123
+When evaluated at q = q 0 =
+
+π/2 π/3 −2π/3
+
+T
+
+J := J (q 0 ) =
+
+(12)
+
+and for ` = 1 [m], the Jacobian (12) becomes
+!
+−2 −1 −0.5
+√
+0
+0
+3/2
+
+and is clearly full row rank. However, for the purpose of designing a RG solution, we need to extract
+from J a non-singular 2 × 2 submatrix J a , and not every selection will work. In fact, the three possible
+alternatives (i.e., deleting respectively column 1, 2, or 3) yield
+det J −1 = −.8660,
+
+det J −2 = −1.7321,
+
+det J −3 = 0 (singular!).
+
+We will choose as J a the minor with the largest determinant (presumably, the best conditioned solution).
+Thus, q a = (q1 , q3 ), q b = q2 . Accordingly, after a reordering of variables obtained by the unitary matrix
+T (with T −1 = T T )
+
+
+
+
+!
+1 0 0
+q̇1
+
+
+q̇ a
+
+
+T =  0 0 1 ,
+q → T q̇ =  q̇3  =
+, J → JT = J 1 J 3 J 2 = J a J b ,
+q̇ b
+q̇2
+0 1 0
+we have
+Ja =
+
+−2
+0
+
+−0.5
+√
+3/2
+
+!
+⇒
+
+J −1
+a =
+
+−0.5
+0
+
+7
+
+−0.2887
+1.1547
+
+!
+,
+
+Jb =
+
+−1
+0
+
+!
+.
+
+The gradient of the objective function H in (7) evaluated at q = q 0 is
+
+
+
+
+0
+0
+∇q H(q) =  2 sin q2 cos q2 
+⇒
+∇q H := ∇q H(q 0 ) =  0.8660  .
+0.8660
+2 sin q3 cos q3
+The reduced gradient is thus
+
+0
+ 0.8660  = 0.8660.
+0.8660
+
+∇qb H 0 := ∇qb H 0 (q 0 ) =
+
+
+
+− J −1
+a Jb
+
+The solution to the first item is thus
+!
+q̇ a
+q̇ RG = T T
+= TT
+q̇ b
+
+T
+
+1
+
+
+
+−0.5
+
+T ∇q H =
+
+0
+J −1
+a (v − J b ∇q b H )
+
+!
+
+∇qb H 0
+
+0
+
+
+
+1
+
+
+−0.4330
+=  0.8660  [rad/s].
+−2.0000
+
+
+Task augmentation
+We consider next the auxiliary task of keeping the endpoint of the second robot link on the circle (8). The
+endpoint position is
+!
+
+
+`(c1 + c12 )
+x2
+p2 =
+=
+y2
+`(s1 + s12 )
+and its associated Jacobian is
+∂p2 (q)
+J 2 (q) =
+=
+∂q
+
+−` (s1 + s12 )
+` (c1 + c12 )
+
+−`s12
+`c12
+
+0
+0
+
+!
+.
+
+(13)
+
+T
+We first note that when the robot is in the configuration q 0 = π/2 π/3 −2π/3
+, the position p2
+satisfies already the constraint (8), see Fig. 2. Thus, the auxiliary task should constrain the joint velocities
+so that p2 (when moving or not) will remain on the assigned circle.
+
+y0
+q3 = −2!/3
+
+v = (1, −√3)
+(xc, yc)
+= (0, 1.5)
+
+p2 = (−√0.75,1.5)
+
+q2 = !/3
+R = √0.75
+
+q1 = !/2
+
+x0
+
+Figure 2: The primary task (in red) and the auxiliary task (in green) for the 3R planar robot.
+Differentiating (8) with respect to time yields
+2x2 ẋ2 + 2(y2 − 1.5) ẏ2 = 0.
+
+8
+
+Rearranging this equation so as to isolate the velocity ṗ2 and using (13) leads to
+
+
+
+ ẋ2
+2x2 2(y2 − 1.5)
+= 2x2 2(y2 − 1.5) J 2 (q)q̇ = 0.
+ẏ2
+The auxiliary task Jacobian is then the 1 × 3 row vector
+J a (q) =
+=
+
+2(y2 − 1.5)
+
+2x2
+
+−3` (c1 + c12 )
+
+
+
+2`(c1 + c12 )
+
+−2`2 s2 − 3`c12 0 .
+J 2 (q) =
+
+2(`(s1 + s12 ) − 1.5)
+
+
+
+−` (s1 + s12 )
+` (c1 + c12 )
+
+−`s12
+`c12
+
+0
+0
+
+!
+
+(14)
+Augmenting the primary task Jacobian (12) with the auxiliary task Jacobian (14) leads to a square, 3 × 3
+extended Jacobian J e (q) and to an extended task vector v e ∈ R3 :
+
+
+!
+!
+−` (s1 + s12 + s123 ) −` (s12 + s123 ) −`s123
+J (q)
+v
+
+
+` (c12 + c123 )
+`c123  , v e =
+J e (q) =
+=  ` (c1 + c12 + c123 )
+, J e (q)q̇ = v e .
+J a (q)
+0
+−3` (c1 + c12 )
+−2`2 s2 − 3`c12
+0
+At the configuration q 0 , using also ` = 1, we have
+
+
+−2
+
+0
+J e := J e (q 0 ) = 
+2.5981
+
+−1
+0
+0.8660
+
+
+−0.5
+0.8660 
+.
+0
+
+(15)
+
+It is easy to see that q 0 is not a singularity for the extended task, and thus in particular not an algorithmic
+singularity. In fact,
+rank(J ) = 2,
+
+rank(J a ) = 1,
+
+and rank(J e ) = 3 = 2 + 1.
+
+Therefore, in this configuration the robot can realize any generic extended task velocity v e ∈ R3 (in
+particular, with an arbitrary top part v ∈ R2 ). Therefore, the joint velocity
+
+ 
+
+1
+0
+√
+ 
+
+−1 
+q̇ † = J −1
+e v e = J e  − 3  =  0  [rad/s]
+−2
+0
+will instantaneously realize both tasks at the same time. For the particular numerical value assigned as
+v, the simple rotation of the third link around its joint axis will realize the primary task. In this case,
+the endpoint of the second link will remain at rest, thus satisfying in a trivial way the auxiliary task. In
+general, with a different desired value of v, all robot joints will move so as to realize the extended task,
+instantaneously keeping the endpoint of the second link on the circle (i.e., its velocity will be tangential to
+the circle in the current position). For instance,
+  
+
+1
+1.5774
+ 
+
+0
+−1 
+q̇ †0 = J −1
+e v e = J e  1  =  −4.7321  [rad/s].
+0
+1.1547
+Exercise 5
+For the direct kinematics, using the homogeneous transformations defined through Tab. 1, we obtain
+
+p0,2 = 0 A1 (q1 )1 p1,2 = 0 A1 (q1 ) 1 A2 (q2 )2 p2,2
+
+0
+
+
+
+c2
+ s2
+0
+= A1 (q1 ) 
+ 0
+0
+
+−s2
+c2
+0
+0
+
+0
+0
+1
+0
+
+
+a2 c2
+0
+0
+a2 s2 
+
+0  0
+1
+1
+
+
+
+
+
+c1
+  s1
+=
+  0
+0
+
+9
+
+−s1
+c1
+0
+0
+
+0
+0
+1
+0
+
+
+ 
+a1 c1
+a2 c2
+a1 c1 + a2 c12
+ a2 s2   a1 s1 + a2 s12
+a1 s1 
+
+=
+0  0  
+0
+1
+1
+1
+
+
+
+.
+
+
+The planar position p ∈ R2 is given by the (x, y) components extracted from the position vector 0 p0,2 .
+Thus, from
+
+
+a1 c1 + a2 c12
+p=
+= f (a, θ)
+a1 s1 + a2 s12
+we obtain
+Ja =
+
+∂f
+=
+∂a
+
+
+
+c1
+s1
+
+c12
+s12
+
+
+,
+
+Jθ =
+
+∂f
+=
+∂θ
+
+
+
+−a1 s1 − a2 s12
+a1 c1 + a2 c12
+
+−a2 s12
+a2 c12
+
+
+.
+
+The regressor equation is then
+∆p = J a ∆a + J θ ∆θ = Φ∆φ,
+
+∆p = pm − p = pm − f (an , θ n ),
+
+∈ R4 ,
+
+
+
+with
+
+∆φ =
+
+∆a
+∆θ
+
+
+
+Φ=
+
+J a (θ)
+
+J θ (a, θ)
+
+a=an ,θ=θ n
+
+∗∗∗∗∗
+
+10
+
+
+,
+
+an =
+
+L1
+L2
+
+
+
+
+,
+
+θn =
+
+q1
+q2
+
+
+.
+
+

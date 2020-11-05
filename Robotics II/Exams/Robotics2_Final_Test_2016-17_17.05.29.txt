@@ -1,0 +1,692 @@
+Robotics 2
+Final test in classroom – May 29, 2017
+Exercise 1
+Let the dynamics of a robot manipulator with n joints be described by the usual Lagrangian model
+(neglecting dissipative terms):
+M (q)q̈ + c(q, q̇) + g(q) = τ .
+
+(1)
+
+• List all feedback control laws for τ that allow regulation to a desired (generic) constant
+configuration q d . For each control law, specify the design conditions that guarantee success,
+the type of convergence/stability achieved, and the pros and cons of the method.
+• When applied to eq. (1), is it possible that the control law
+τ = K P (q d − q) − K D q̇
+
+(2)
+
+achieves asymptotic stabilization of a desired state (q, q̇) = (q d , 0)? If so, under which
+operative conditions? Would these conditions be only sufficient or also necessary?
+• Can it happen that the following control law applied to eq. (1)
+τ = g(q d ) + K P (q d − q) − K D q̇
+
+(3)
+
+does not achieve asymptotic stabilization of the state (q, q̇) = (q d , 0)? Why (or why not)?
+What should be done in (3) to validate the reverse statement “does certainly achieve . . . ”?
+Exercise 2
+• In the context of image-based visual servoing (IBVS), determine the interaction matrix
+J p,polar associated to a point feature s = (ρ θ)T ∈ R2 which is parametrized with polar
+coordinates in the image plane, i.e.,
+!
+
+
+ρ̇
+V
+ṡ =
+= J p,polar (ρ, θ, λ, Z)
+,
+Ω
+θ̇
+where λ > 0 is the focal length of the camera, Z > 0 is the depth coordinate of the Cartesian
+point P = (X, Y, Z) in the camera frame, and the perspective equations of a pinhole camera
+model are used.
+• Discuss the characteristics of the obtained interaction matrix in terms of decoupled effects
+on the chosen feature parameters, when only single components of the linear velocity V ∈ R3
+or of the angular velocity Ω ∈ R3 are active. Compare this analysis with the one on the
+interaction matrix J p that uses the Cartesian coordinates (u, v) in the image plane.
+• In an IBVS control law that regulates the polar coordinates of a point feature s to a desired
+constant value sd , what careful actions may be needed when the point P is on or gets close
+to the optical axis of the camera?
+
+1
+
+Exercise 3
+Consider the planar PRP robot in Fig. 1, moving under gravity. Its dynamic model can be written
+in the form
+Y M (q, q̇, q̈) aM + g(q) = τ ,
+(4)
+where the inertial terms and the related Coriolis and centrifugal components are already expressed
+in a linear factorized form in terms of the dynamic coefficients aM ∈ RpM . In the following, assume
+that the symbolic expressions of Y M and aM are known.
+• Derive explicitly the gravity term g(q) and an associated minimal factorization in the form
+g(q) = Y g (q) ag , with ag ∈ Rpg .
+• Provide the expression of an adaptive control law that guarantees global asymptotic tracking
+of a desired joint trajectory q d (t) ∈ C 2 , without any a priori knowledge of the numerical
+values of the robot dynamic parameters. How many states will have this dynamical controller?
+• Assume now that the actual values of the dynamic coefficients aM are known in advance.
+Solve the previously stated trajectory tracking problem by designing an adaptive controller
+that has a reduced number of states. Sketch a formal proof of your result.
+
+!
+g
+
+y
+
+d3
+
+q3
+
+!
+
+m1,I1
+
+䎩!
+q1
+
+d2
+
+䎩!
+
+m3,I3
+
+䎩! q2
+m2,I2
+
+x
+
+Figure 1: A planar PRP robot, with an associated set of
+Figure 2: Robotized surface polishing
+generalized coordinates q = (q1 , q2 , q3 ).
+of a metallic work piece.
+Exercise 4
+Consider a robotized polishing task of a large surface area of a metallic work piece, as shown in
+Fig. 2. The work piece has a complex geometry, with planar and curved surfaces. The polishing
+tool held by the robot ends with a sphere which is in point-wise contact with the geometric surface
+of the work piece. The tool needs not to be orthogonal to the local tangent plane to the surface.
+However, in order to complete an optimal polishing (reducing the roughness of the surface below
+a specified level —with tolerances in the order of few µm), a specified normal force should be
+applied to the surface while moving the tool in contact with an assigned constant speed. Assume a
+perfectly rigid interaction and that friction at the contact can be neglected in this modeling stage.
+Define a task frame in which the polishing operation can be correctly defined and executed. Specify
+accordingly the natural and artificial constraints. Sketch the task frame in two cases, on a flat
+surface of the work piece and on a curved one.
+[240 minutes (4 hours); open books, but no computer or smartphone]
+2
+
+Solution
+May 29, 2017
+Exercise 1
+The first part is a free text exercise. Completeness, accuracy, and clarity in writing are evaluated.
+For the two other specific questions:
+• The control law (2) achieves asymptotic stabilization of a desired state (q, q̇) = (q d , 0) also in
+the presence of gravity if: i) g(q d ) = 0 (the desired configuration is an unforced equilibrium
+for the open-loop system); ii) K P is symmetric and positive definite, and its minimum
+eigenvalue K P,m > α, where α > 0 is a global upper bound on the norm of the Hessian of
+the potential energy Ug (q) due to gravity; iii) K D is symmetric and positive definite. In
+general, these are only sufficient conditions.
+• Even assuming that K P and K D are symmetric and positive definite, the control law (3)
+may still fail because K P,m ≤ α. Indeed, when this sufficient condition is violated, we cannot
+predict if we will obtain asymptotic stabilization of the desired equilibrium state or not.
+Exercise 2
+Using the pinhole model, a 3D Cartesian point P = (X, Y, Z), with coordinates expressed in the
+camera frame, becomes in the image plane a point feature (u, v)
+u=λ
+
+X
+,
+Z
+
+v=λ
+
+Y
+,
+Z
+
+when 2D Cartesian coordinates are used, being λ > 0 the focus length of the camera. These two
+feature parameters move in the image plane in response to a linear and angular velocity of the
+camera, respectively V and Ω, as
+ λ
+u   Ẋ 
+ 
+0
+−
+u̇
+
+
+Z 
+= Z
+  Ẏ  ,
+λ
+v
+v̇
+0
+−
+Ż
+Z
+Z 
+
+
+
+−1 0
+0
+0
+−Z
+Y
+Ẋ
+
+
+
+ V
+
+
+Z
+0
+−X 
+ Ẏ  = −V − Ω × P =  0 −1 0
+Ω
+Ż
+0
+0 −1 −Y
+X
+0
+
+
+
+
+λ
+u
+uv
+u2
+ 
+
+
+
+
+−
+0
+−
+λ
++
+v
+u̇
+V
+ Z
+ V
+Z
+λ
+λ
+⇒
+=
+= J p (u, v, λ, Z)
+.
+
+v̇
+Ω
+Ω
+λ v
+v2
+uv
+0
+−
+λ+
+−
+−u
+Z Z
+λ
+λ
+When using instead the polar coordinates as feature parameters in the image plane, we have the
+transformations
+!
+√
+  
+
+ 
+u2 + v 2
+u
+ρ cos θ
+ρ
+=
+⇐⇒
+=
+v
+ρ sin θ
+θ
+ATAN2{v, u}
+!
+!
+!
+ 
+
+
+ρ̇
+ρ̇
+u̇
+ρ̇ cos θ − ρθ̇ sin θ
+cos θ −ρ sin θ
+⇒
+=
+=
+= J t (ρ, θ)
+,
+v̇
+sin θ ρ cos θ
+θ̇
+θ̇
+ρ̇ sin θ + ρθ̇ cos θ
+3
+
+with det J t = ρ. Therefore,
+ρ̇
+θ̇
+
+!
+=
+
+J −1
+t (ρ, θ)
+
+
+
+u̇
+v̇
+
+
+
+cos θ
+
+
+=
+
+sin θ
+−
+ρ
+
+sin θ
+
+
+
+
+
+cos θ 
+ρ
+
+u̇
+v̇
+
+
+,
+
+provided that ρ =
+
+
+
+ρ2 cos2 θ
+− λ+
+λ
+
+√
+
+u2 + v 2 6= 0.
+
+Evaluating then
+J p,t (ρ, θ, λ, Z) = J p (u, v, λ, Z)| u=ρ cos θ
+v=ρ sin θ
+
+λ
+ −Z
+=
+
+0
+
+0
+
+ρ cos θ
+Z
+
+ρ2 sin θ cos θ
+λ
+
+λ
+Z
+
+ρ sin θ
+Z
+
+λ+
+
+
+
+−
+
+ρ2 sin2 θ
+λ
+
+−
+
+ρ2 sin θ cos θ
+λ
+
+
+ρ sin θ 
+,
+
+−ρ cos θ
+
+we obtain
+ρ̇
+θ̇
+
+!
+=
+
+J −1
+t (ρ, θ)J p,t (ρ, θ, λ, Z)
+
+
+
+V
+Ω
+
+
+
+
+= J p,polar (ρ, θ, λ, Z)
+
+V
+Ω
+
+
+,
+
+with
+λ cos θ
+− Z
+J p,polar (ρ, θ, λ, Z) = 
+ λ sin θ
+
+
+ρZ
+
+λ sin θ
+Z
+λ cos θ
+−
+ρZ
+−
+
+ρ
+Z
+0
+
+(λ2 + ρ2 ) sin θ
+λ
+λ cos θ
+ρ
+
+−
+
+(λ2 + ρ2 ) cos θ
+λ
+λ sin θ
+ρ
+
+
+0 
+.
+
+−1
+
+Comparing now the structural zeros of J p (u, v, λ, Z) and J p,polar (ρ, θ, λ, Z), we see that in the first
+case the effects of Vx and Vy respectively on u̇ and v̇ are decoupled, whereas in the second case the
+decoupled effects of Vz and Ωz are respectively on ρ̇ and θ̇.
+Finally, when the 3D Cartesian point P is sufficiently close to the optical axis (ρ → 0), matrix J t
+becomes ill-conditioned, meaning that small motions of the Cartesian point may then lead to huge
+variations of the chosen polar parameters —in particular of θ— in the image plane. To recover a
+regular behavior close to and across ρ = 0, the inverse of J t may be replaced, for instance, by a
+damped least squares matrix with damping factor σ 2 > 0,
+
+−1
+T
+T
+2
+(ρ,
+θ)
+=
+J
+(ρ,
+θ)
+σ
+I
++
+J
+(ρ,
+θ)J
+(ρ,
+θ)
+J DLS
+2×2
+t
+t
+t
+t
+
+ 2
+−1
+cos θ
+sin θ
+σ + cos2 θ + ρ2 sin2 θ
+(1 − ρ2 ) sin θ cos θ
+=
+−ρ sin θ ρ cos θ
+(1 − ρ2 ) sin θ cos θ
+σ 2 + sin2 θ + ρ2 cos2 θ
+
+
+cos θ
+sin θ
+ 1 + σ2
+1 + σ2 
+,
+=
+
+ρ sin θ
+ρ cos θ 
+− 2
+ρ + σ 2 ρ2 + σ 2
+with det(J DLS
+) = ρ/[ρ2 + σ 2 )(1 + σ 2 )] > 0 for σ 2 > 0 (and equal to 1/ρ for σ 2 = 0).
+t
+Exercise 3
+We compute first the gravitational potential energy Ug (q) = U1 + U2 + U3 , with
+U1 = 0,
+
+U2 = m2 g0 d2 sin q2 ,
+4
+
+U3 = m3 g0 (q3 + d3 ) sin q2 .
+
+Therefore, the gravity vector and its (minimal) linear parametrization are given by
+
+
+0
+
+T
+∂Ug (q)
+
+
+g(q) =
+=  g0 (m2 d2 + m3 (q3 + d3 )) cos q2 
+∂q
+g0 m3 sin q2
+
+
+!
+0
+0
+m3
+
+
+=  g0 q3 cos q2 g0 cos q2 
+= Y g (q) ag ,
+m2 d2 + m3 d3
+g0 sin q2
+0
+with pg = dim(ag ) = 2. The dynamic model (4) can thus be rewritten as
+
+
+ aM
+Y M (q, q̇, q̈) aM + Y g (q) ag = Y M (q, q̇, q̈) Y g (q)
+= Y (q, q̇, q̈) a = τ .
+ag
+Note that the linear parametrization of the dynamic model by a may not be minimal, since there
+could be some overlapping between the coefficients in aM and those defined in ag .
+Assuming that the values of all dynamic coefficients a are unknown, the adaptive trajectory tracking control takes the usual form
+τ = Y (q, q̇, q̇ r , q̈ r )â + K P (q d − q) + K D (q̇ d − q̇),
+˙ = ΓY (q, q̇, q̇ , q̈ ) (q̇ − q̇) ,
+â
+r
+r
+r
+T
+
+KP , KD > 0
+
+Γ > 0,
+
+(5)
+
+where q̇ r = q̇ d + Λ(q d − q), Λ > 0, and
+Y (q, q̇, q̇ r , q̈ r ) =
+
+
+Y M (q, q̇, q̇ r , q̈ r ) Y g (q) â = M̂ (q)q̈ r + Ĉ(q, q̇)q̇ r + ĝ(q).
+
+The number of states of the adaptive controller (5), i.e., the number of its defining differential
+equations, is equal to the number of updating dynamic coefficients: dim(â) = pM + pg = pM + 2.
+Assuming that the values of the dynamic coefficients aM are already known, one can define an
+adaptive trajectory control with the same global tracking properties of (5), but with a reduced
+number of states equal to pg = 2. In fact, it is natural to define this controller as
+τ = Y M (q, q̇, q̇ r , q̈ r )aM + Y g (q)âg + K P (q d − q) + K D (q̇ d − q̇),
+˙ g = Γg Y T (q) (q̇ − q̇) ,
+â
+r
+g
+
+Γg > 0,
+
+KP , KD > 0
+
+(6)
+
+where q̇ r = q̇ d + Λ(q d − q), Λ > 0, and Y g (q)âg = ĝ(q).
+The proof of global asymptotic stability of the tracking error follows the same lines of the proof
+holding for (5). The ‘trick’ in (6) that leads to this sufficient result stands in preserving the
+passivity structure also in the known term: namely, adopting q̇ r and q̈ r in the evaluation of Y M
+(and not q̇ only (or q̇ d ) and q̈ d ), as well as using the skew-symmetric property of a suitable
+factorization c(q, q̇) = C(q, q̇)q̇ of the Coriolis and centrifugal terms. More in detail, take the
+Lyapunov candidate
+1
+1
+Vg = sT M (q)s + eT K P e + ãTg Γg ãg ≥ 0,
+2
+2
+with s = q̇ r − q̇, e = q d − q, R > 0, and ãg = ag − âg . Its time derivative is
+V̇g =
+
+1 T
+˙ g.
+s Ṁ (q)s + sT M (q)ṡ + 2eT K P ė − ãTg Γg â
+2
+5
+
+The closed-loop system under (6) satisfies the differential equation
+M (q)q̈ + C(q, q̇)q̇ + g(q) = M (q)q̈ r + C(q, q̇)q̇ r + ĝ(q) + K P e + K D ė
+or
+M (q)ṡ + C(q, q̇)s = g̃(q) − K P e − K D ė,
+
+(7)
+
+with g̃(q) = g(q)−ĝ(q) = Y g (q)ag −Y g (q)âg = Y g (q)ãg . When evaluated along the trajectories
+of (7), V̇g becomes
+V̇g =
+
+
+1 T
+˙g
+s Ṁ (q) − 2C(q, q̇) s + sT (g̃(q) − K P e − K D ė) + 2 eT K P ė − ãTg Γg â
+2
+
+= sT (Y g (q)ãg − K P e − K D ė) + 2 eT K P ė − ãTg Y Tg (q)s
+T
+
+= − (ė + Λe) (K P e + K D ė) + 2 eT K P ė
+T
+T
+= − ė + K −1
+(K P e + K D ė) + 2 eT K P ė = −eT K P K −1
+D KP e
+D K P e − ė K D ė ≤ 0,
+where the skew-symmetry of Ṁ − 2C, the updating law for âg in (6), and Λ = ΛT = K −1
+D KP > 0
+(with diagonal PD gains) have been used. The rest of the proof follows as in the general case,
+using Barbalat lemma and LaSalle theorem.
+Exercise 4
+With reference to Fig. 3, the task frame is placed at the contact point between the spherical
+tool and the surface. The z t -axis is always aligned with the downward normal to the surface, no
+matter if the surface is locally flat or curved. One of the two other axes, say xt , can be chosen
+to be aligned with the desired polishing direction on the metallic surface. Remember that, in the
+modeling phase, the tool-surface contact is assumed to be rigid and frictionless. Therefore, the
+spherical tool can also slide without rolling in contact. Moreover, being the contact point-wise,
+there cannot be any moment applied by the tool at the contact.
+
+yt
+
+curved
+area
+
+yt
+zt
+
+xt
+xt
+
+flat
+area
+
+zt
+
+Figure 3: Task frame definition for the surface polishing of a metallic work piece.
+
+6
+
+According to the chosen task frame, the natural (geometric) constraints of this interaction problem
+are
+vz = 0, Fx = 0, Fy = 0, Mx = 0, My = 0, Mz = 0,
+while the artificial constraints are
+Fz = Fz,d > 0,
+
+vx = vx,d > 0,
+
+vy = vy,d = 0,
+
+ωx = ωx,d ,
+
+ωy = ωy,d ,
+
+ωz = ωz,d .
+
+Therefore, a hybrid force-motion controller designed based on feedback linearization and decoupling
+will include five scalar position control loops and only one force control loop. The value vy,d = 0
+is related to the choice of the xt -axis being aligned with the tangent to the polishing path, which
+is executed at the speed vx,d , that should be followed on the surface. Moreover, when there is no
+need to change the orientation of the tool (e.g., for avoiding collision with some lateral side of the
+T
+work piece), we set ω d = ωx,d ωy,d ωz,d
+= 0. Finally, the positive value Fz,d specifies the
+normal force needed for obtaining a satisfactory polishing result (by pressure).
+∗∗∗∗∗
+
+7
+
+

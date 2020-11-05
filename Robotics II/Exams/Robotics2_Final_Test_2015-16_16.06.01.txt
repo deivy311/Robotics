@@ -1,0 +1,392 @@
+Robotics 2 - Final Test
+June 1, 2016
+A 2R robot moving in the vertical plane uses the joint coordinates defined in Fig. 1. The inertia matrix of
+this robot can be written as
+«
+„
+a1 + 2a2 cos q2 a3 + a2 cos q2
+,
+(1)
+B(q) =
+a3 + a2 cos q2
+a3
+where the three dynamic coefficients ai , i = 1, 2, 3, satisfy a1 > a3 > a2 > 0. The robot is initially at rest
+and should move under the constraint of keeping the absolute orientation of the second link at a constant
+angle β w.r.t. the x0 axis, with the value 0 < β < π/2 being specified by the initial configuration.
+
+y0
+q1!
+
+g0
+
+x0
+q2!
+Figure 1: A planar 2R robot
+• Derive a one-dimensional reduced dynamic model of the robot under the given geometric constraint
+on its motion. Point out the features of the obtained model. Are there any special (e.g., singular)
+situations from the dynamic point of view?
+• With the robot at rest at t = 0 and with q(0) satisfying the geometric constraint, determine all
+feasible torques u(0) that can keep the robot in static equilibrium. Which are the associated values
+of the scalar constraint force λ(0)?
+• Describe how a simulation with arbitrary joint torque inputs u(t) ∈ R2 should be performed when
+using this model.
+• Provide the symbolic expression of the joint torques u1 and u2 that should be applied when the robot
+is at a given generic state (q, q̇) compatible with the constraint, so that the pseudoacceleration is
+equal to a desired value v̇d ∈ R and the constraint force is λ = 0.
+[150 minutes; open books]
+
+1
+
+Solution
+June 1, 2016
+We first derive the Coriolis and centrifugal vector c(q.q̇) from the expression of B(q) in (1), and then
+compute the potential energy U (q) due to gravity and the associated vector g(q) in the dynamic model.
+From (1) and
+„
+c(q, q̇) =
+
+«
+c1 (q, q̇)
+,
+c2 (q, q̇)
+
+1
+C i (q) =
+2
+
+T
+
+ci (q, q̇) = q̇ C i (q)q̇,
+
+(
+)
+„
+«T
+∂bi (q)
+∂bi (q)
+∂B(q)
++
+(i = 1, 2),
+−
+∂q
+∂q
+∂qi
+
+we have
+1
+C 1 (q) =
+2
+
+(
+
+0
+0
+
+−2a2 sin q2
+−a2 sin q2
+
+!
++
+
+0
+−2a2 sin q2
+
+!
+0
+−a2 sin q2
+−a2 sin q2 −a2 sin q2
+(
+!
+0 −a2 sin q2
+0
+1
++
+C 2 (q) =
+2
+0
+0
+−a2 sin q2
+!
+a2 sin q2 0
+=
+0
+0
+
+0
+−a2 sin q2
+
+!
+
+)
+−0
+
+=
+
+0
+0
+
+!
+−
+
+−2a2 sin q2
+−a2 sin q2
+
+and thus
+−a2 sin q2 (2q̇1 + q̇2 ) q̇2
+a2 sin q2 q̇12
+
+c(q, q̇) =
+
+−a2 sin q2
+0
+
+!)
+
+!
+.
+
+(2)
+
+The potential energy is given by
+U=
+
+2
+X
+
+Ui = −mi g T0 r 0,ci ,
+
+Ui ,
+
+i = 1, 2.
+
+i=1
+
+Since
+g T0 =
+
+`
+
+g0
+
+0
+
+0
+
+´
+
+,
+
+g0 = 9.81 [m/s2 ],
+
+we need in the computations only the x-component of the position vector r 0,ci of the center of mass of the
+link i, for i = 1, 2. We have
+U1 = −m1 g0 d1 cos q1
+U2 = −m2 g0 (`1 cos q1 + d2 cos(q1 + q2 )) ,
+where mi is the mass of link i, di is the distance of the CoM of link i from the axis of joint i, and `1 is the
+length of link 1. Therefore,
+!
+„
+«T
+a4 sin q1 + a5 sin(q1 + q2 )
+∂U (q)
+g(q) =
+=
+,
+∂q
+a5 sin(q1 + q2 )
+where we have introduced the dynamic coefficients a4 = (m1 d1 + m2 `1 )g0 and a5 = m2 d2 g0 .
+The scalar geometric constraint (m = 1) imposed on the motion of the robot (with a configuration space
+of dimension n = 2) is to keep the second link oriented at a constant angle β w.r.t. the axis x0 . Thus
+h(q) = q1 + q2 − β = 0
+
+⇒
+
+A(q)q̇ = 0,
+
+2
+
+with A =
+
+`
+∂h(q)
+= 1
+∂q
+
+1
+
+´
+
+.
+
+We note that matrix A is constant since the constraint is linear in q. The constrained dynamic model is
+then
+B(q)q̈ + c(q, q̇) + g(q) = u + AT λ,
+s.t. h(q) = 0.
+In order to obtain a reduced dynamic model, we can define a matrix D in the following way:
+!
+!
+A
+1 1
+=
+(a nonsingular matrix).
+D
+0 1
+From this
+A
+D
+
+!−1
+=
+
+1
+0
+
+−1
+1
+
+(3)
+
+!
+=
+
+`
+
+E
+
+F
+
+´
+
+,
+
+and so we define
+v = D q̇ = q̇2 ,
+
+v̇ = q̈2
+
+⇐⇒
+
+q̇ = F v =
+
+−1
+1
+
+!
+v,
+
+q̈ = F v̇ =
+
+−1
+1
+
+!
+v̇.
+
+Since all these matrices are constant, many simplifications will occur. In particular, the reduced dynamic
+model (of dimension n − m = 1) is expressed by a single differential equation of the form
+“
+”
+F T B(q)F v̇ = F T (u − c(q, q̇) − g(q)) ,
+(4)
+while the expression of the scalar constraint force will be given by
+λ = E T (B(q)F v̇ + c(q, q̇) + g(q) − u) .
+
+(5)
+
+These model expressions will hold everywhere, thanks to the global invertibility of the matrix in (3); no
+singularity will occur with the chosen representation of the reduced dynamics.
+Performing computations, we have
+F T B(q)F = a1 − a3 > 0
+
+(constant!),
+
+T
+
+F u = u2 − u1 ,
+−F T (c(q, q̇) + g(q)) = −a2 sin q2 (q̇1 + q̇2 )2 + a4 sin q1 ,
+E T B(q)F = a3 − a1 − a2 cos q2 ,
+E T u = u1 ,
+E T (c(q, q̇) + g(q)) = c1 (q, q̇) + g1 (q) = −a2 sin q2 (2q̇1 + q̇2 )q̇2 + a4 sin q1 + a5 sin(q1 + q2 ).
+The reduced model (4) has to be initialized at a state (q(0), q̇(0)) that is compatible with the constraint,
+or
+q1 (0) + q2 (0) = β,
+q̇1 (0) + q̇2 (0) = 0.
+(6)
+The velocity constraint is indeed satisfied if the robot is initially at rest (although this is not the only case).
+The constraints (6) will propagate then for all t > 0, if we proceed by integrating (4). Thus, q̇1 + q̇2 = 0
+will hold at any time, and the dynamics (4) simplifies finally to
+(a1 − a3 ) v̇ = u2 − u1 + a4 sin q1 ,
+
+(7)
+
+while the expression (5) of the constraint force (multiplier) becomes
+λ = (a3 − a1 − a2 cos q2 ) v̇ − a2 sin q2 q̇1 q̇2 + a4 sin q1 + a5 sin β − u1 .
+
+(8)
+
+The pseudoinertia in (7) is now constant, and the quadratic velocity terms have disappeared as expected.
+The only residual nonlinearity is due to the gravity.
+
+3
+
+If the robot starts at rest (q̇1 (0) = q̇2 (0) = 0) and satisfies the constraints (6), in order to keep the static
+equilibrium (v̇ = 0), from (7) we need to have
+u1 (0) − u2 (0) = a4 sin q1 (0),
+so that there is (apparently) an infinity of joint torque combinations that will preserve the equilibrium.
+Associated to each of these, from (8) there is a single constraint force given by
+λ(0) = a4 sin q1 (0) + a5 sin β − u1 (0) = a5 sin β − u2 (0).
+Note however that if the constraint h(q) = 0 is a virtual one, namely it is not imposed by a mechanism
+but it is enforced only through a control action, then there can be no real constraint forces generated, i.e.,
+λ(0) should vanish. In particular, this happens only with the natural choice
+!
+!
+u1 (0)
+a4 sin q1 (0) + a5 sin β
+u(0) =
+=
+= g(q(0)).
+u2 (0)
+a5 sin β
+More in general, a simulation with the reduced dynamic model (7) and an arbitrary input torque u(t)
+proceeds, with an integration step T > 0, as follows1 :
+1. The initial state (q 0 , q̇ 0 ) = (q(0), q̇(0)) should satisfy (6). Set k = 0.
+2. At every sampling instant tk = kT , compute v̇k = v̇(tk ) as
+v̇k =
+
+uk,2 − uk,1 + a4 sin qk,1
+,
+a1 − a3
+
+evaluate q̈ k = F v̇k , and use your preferred integration routine to obtain (q k+1 , q̇ k+1 ).
+2’. In alternative to step 2, since v̇ = q̈2 , compute
+q̈k,2 =
+
+uk,2 − uk,1 + a4 sin(β − qk,2 )
+,
+a1 − a3
+
+use your preferred integration routine to obtain (qk+1,2 , q̇k+1,2 ), and evaluate the remaining components of the state as
+qk+1,1 = β − qk+1,2 ,
+q̇k+1,1 = −q̇k+1,2 .
+3. Set k = k + 1, and cycle over step 2 (or 2’).
+Finally, to address the last control problem, we evaluate eqs. (7–8) for v̇ = v̇d and λ = 0 at a generic state
+(q, q̇) obtaining the (unique) needed joint torque
+!
+!
+u1
+(a3 − a1 − a2 cos q2 ) v̇d − a2 sin q2 q̇1 q̇2 + a4 sin q1 + a5 sin β
+u=
+=
+.
+(9)
+u2
+u1 + (a1 − a3 ) v̇d − a4 sin q1
+∗∗∗∗∗
+
+1 We
+
+use the notation xk,i to denote the i-th component of a vector x(t) evaluated at time tk = kT .
+
+4
+
+

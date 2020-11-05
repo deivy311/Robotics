@@ -1,0 +1,110 @@
+Robotics II
+January 11, 2017
+Exercise 1
+
+x2
+
+y2
+
+䎩
+
+x1
+
+g0
+
+q1
+
+q2
+
+z1
+
+䎩
+
+y0
+x0
+
+Figure 1: A 2R polar robot with associated link frames.
+The 2R polar robot shown in Fig. 1 moves in the presence of gravity and has links of cylindric
+form and uniformly distributed mass. Its dynamic model is
+B(q)q̈ + c(q, q̇) + g(q) = τ ,
+where
+
+B(q) =
+
+a1 + a2 sin2 q2
+0
+
+0
+a3
+
+
+
+
+,
+
+c(q, q̇) =
+
+2a2 sin q2 cos q2 q̇1 q̇2
+−a2 sin q2 cos q2 q̇12
+
+
+
+
+,
+
+g(q) =
+
+0
+a4 cos q2
+
+
+.
+
+with a1 = I1y + I2y + m2 d22 , a2 = I2x − I2y − m2 d22 , a3 = I2z + m2 d22 , and a4 = m2 g0 d2 .
+• Give a physical interpretation of the inertia matrix elements that confirms their correctness.
+• Write down all expressions of feedback control laws for τ that you are aware of, which
+guarantee regulation to a desired (generic) constant configuration q d . Specify for each law
+the design conditions for success and the type of convergence/stability achieved.
+Exercise 2
+In inverse dynamics problems for serial manipulators, the most efficient implementations are based
+on a numerical Newton-Euler (NE) algorithm that contains a forward recursive (FR) part, which
+computes from the base to the tip all relevant differential kinematic terms associated to the links,
+and a backward recursive (BR) part, which computes from the tip to the base the exchanged
+forces/torques between links. Suppose now that we compute the (linear/angular) acceleration
+vector p̈ ∈ R6 of the end-effector by
+p̈ = N EF R(q, q̇, q̈) = J (q)q̈ + J̇ (q)q̇,
+where N EF R denotes compactly the FR part only of the NE algorithm.
+• How can the N EF R algorithm be used to evaluate numerically and separately the Jacobian
+matrix J and the product term J̇ q̇? How many times is the algorithm called in total?
+• With the same algorithm, can we evaluate also the matrix J̇ alone? If so, how?
+
+1
+
+Exercise 3
+Consider a planar 3R robot with unitary link lengths. Taking into account robot redundancy, a
+kinematic control scheme is active at the velocity level so as to track a desired end-effector position
+trajectory, while trying to locally maximize the minimum Cartesian distance of the robot body
+from obstacles.
+
+y0
+P
+
+v
+
+0.5
+
+1+ 5 3/6
+
+x0
+
+Figure 2: A planar 3R robot moving its !end effector in the presence of an obstacle.
+• In the shown configuration q = (30◦ , −30◦ , 30◦ ) and with a single obstacle placed as in Fig. 2,
+the robot end effector is assigned a unitary velocity v in the positive x0 direction. Specify one
+particular kinematic control scheme achieving at best both tasks, and provide the associated
+numerical value of the command vector q̇ ∈ R3 .
+• Compare with a minimum velocity norm solution that neglects the presence of the obstacle.
+[180 minutes; open books but no computer or smartphone]
+
+2
+
+

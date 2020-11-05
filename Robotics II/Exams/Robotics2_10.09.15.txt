@@ -1,0 +1,253 @@
+Robotics II
+September 15, 2010
+
+Consider the planar robot with three degrees of freedom (RPR) shown in Fig. 1.
+
+Y!0!
+
+q!3!
+
+d!
+
+c3!
+
+d!
+
+c2!
+
+q!2!
+d!
+
+c1!
+
+q!1!
+X!0!
+Figure 1: A planar RPR robot
+1. Determine the symbolic expression of the robot inertia matrix B(q). Explicit all assumptions
+that are made.
+2. Find a set of dynamic coefficients a ∈ Rp , with a possibly minimal p, that provides a linear
+parameterization of the inertial term in the dynamic model, i.e., B(q)q̈ = Y (q, q̈)a.
+
+[90 minutes; open books]
+
+1
+
+Solution
+September 15, 2010
+We compute the robot kinetic energy taking into account that the motion is planar: linear velocities
+are vectors in the plane (x, y), angular velocities are scalars (in the z-direction). With standard
+notations, for the first link it is:
+
+1
+I1 + m1 d2c1 q̇12 .
+T1 =
+2
+For the second link, from
+!
+!
+q2 cos q1
+q̇2 cos q1 − q2 sin q1 q̇1
+pc2 =
+⇒
+v c2 =
+,
+q2 sin q1
+q̇2 sin q1 + q2 cos q1 q̇1
+we have:
+T2 =
+
+
+1
+1
+1
+I2 q̇12 + m2 (q22 q̇12 + q̇22 ) .
+I2 ω22 + m2 v Tc2 v c2 =
+2
+2
+2
+
+For the third link, from
+(q2 + dc2 ) cos q1 + dc3 cos(q1 + q3 )
+
+pc3 =
+
+⇒
+
+!
+
+(q2 + dc2 ) sin q1 + dc3 sin(q1 + q3 )
+q̇2 cos q1 − (q2 + dc2 ) sin q1 q̇1 − dc3 sin(q1 + q3 )(q̇1 + q̇3 )
+
+v c3 =
+
+q̇2 sin q1 + (q2 + dc2 ) cos q1 q̇1 + dc3 cos(q1 + q3 )(q̇1 + q̇3 )
+
+!
+,
+
+we have:
+T3 =
+
+1
+1
+1
+I3 ω32 + m3 v Tc3 v c3 = I3 (q̇1 + q̇3 )2
+2
+2
+2
+
+1
++ m3 (q2 + dc2 )2 q̇12 + q̇22 + d2c3 (q̇1 + q̇3 )2 + 2dc3 ((q2 + dc2 ) cos q3 q̇1 − sin q3 q̇2 )(q̇1 + q̇3 ) .
+2
+
+From
+T =
+
+3
+X
+
+
+
+Ti =
+
+i=1
+
+1 T
+q̇ B(q)q̇,
+2
+
+with
+
+b11
+B(q) =  b12
+b13
+
+b12
+b22
+b23
+
+
+b13
+b23  ,
+b33
+
+we obtain for the single elements of the symmetric inertia matrix:
+b11 = I1 + m1 d2c1 + I2 + m2 q22 + I3 + m3 d2c3 + m3 (q2 + dc2 )2 + 2m3 dc3 (q2 + dc2 ) cos q3
+= a1 + a2 q2 + a3 q22 + 2a4 cos q3 + 2a5 q2 cos q3
+b12 = −m3 dc3 sin q3 = −a5 sin q3
+b13 = I3 + m3 d2c3 + m3 dc3 (q2 + dc2 ) cos q3 = a6 + a5 q2 cos q3 + a4 cos q3
+b22 = m2 + m3 = a3
+b23 = −m3 dc3 sin q3 = −a5 sin q3
+b33 = I3 + m3 d2c3 = a6 .
+2
+
+Therefore, the inertia matrix can be compactly rewritten as
+
+a1 + a2 q2 + a3 q22 + 2a4 cos q3 + 2a5 q2 cos q3 −a5 sin q3
+
+−a5 sin q3
+a3
+B(q) = 
+
+a6 + a5 q2 cos q3 + a4 cos q3
+
+
+
+−a5 sin q3
+
+
+
+
+−a5 sin q3
+
+a6 + a5 q2 cos q3 + a4 cos q3
+
+a6
+
+and the (minimal) parametrization of B(q)q̈ = Y (q, q̈)a is thus of dimension p = 6, with
+
+ 
+
+I1 + m1 d2c1 + I2 + I3 + m3 (d2c2 + d2c3 )
+a1
+
+ 
+
+2m3 dc2
+
+ a2  
+
+ 
+
+
+ a3  
+m2 + m3
+
+ 
+
+a=
+
+=
+
+ a4  
+m2 dc2 dc3
+
+ 
+
+
+ 
+
+m3 dc3
+
+ a5  
+I3 + m3 d2c3
+
+a6
+and
+q2 q̈1
+
+q22 q̈1
+
+
+Y (q, q̈) =  0
+
+0
+
+q̈2
+
+0
+
+0
+
+0
+
+0
+
+cos q3 q̈1
+
+
+
+q̈1
+
+cos q3 (2q̈1 + q̈3 ) q2 cos q3 (2q̈1 + q̈3 ) − sin q3 q̈2
+
+∗∗∗∗∗
+
+3
+
+q̈3
+
+
+
+− sin q3 (q̈1 + q̈3 )
+
+0
+
+
+.
+
+q2 cos q3 q̈1 − sin q3 q̈2
+
+q̈1 + q̈3
+
+

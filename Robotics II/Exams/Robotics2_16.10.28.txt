@@ -1,0 +1,322 @@
+Robotics II
+October 28, 2016
+Exercise 1
+
+y
+
+g0
+
+q2
+䎩
+
+! = "/4
+(constant) #
+
+ℓ1
+
+䎩 q1
+x
+Figure 1: A planar RP robot with skewed prismatic joint.
+Derive the inertia matrix B(q) and the gravity vector g(q) in the dynamic model of the planar
+RP robot in Fig. 1, using the Lagrangian coordinates q = (q1 , q2 ) defined therein and assuming
+uniform mass distribution for the two links. Determine all equilibrium configurations q 0 under no
+external or dissipative forces/torques nor actuation inputs.
+Exercise 2
+
+q2
+
+q1
+u
+
+m1
+
+k1
+
+d
+
+m2
+
+q3
+k2
+
+m3
+
+d
+
+d
+
+Figure 2: A mechanical system consisting of three masses connected by linear springs.
+In the three-body mechanical system shown in Fig. 2, the first body (with mass m1 > 0 and
+position q1 ) is actuated by a force u and is connected to a second body (with mass m2 > 0 and
+position q2 ) through a spring of constant stiffness k1 > 0. The second body is in turn connected
+to a third one (having mass m3 > 0 and position q3 ) through another spring of constant stiffness
+k2 > 0. Each mass is subject to a dissipative force when moving on the ground, in the form of a
+viscous friction with coefficient d > 0 (equal for all three masses).
+• Derive the dynamic model of this system by following a Lagrangian approach and using the
+set of generalized coordinates q = (q1 , q2 , q3 ).
+• Determine all equilibrium states, if any, of the system when u = 0, as well as all steady-state
+conditions when a constant force u = ū > 0 is being applied.
+• Prove that a control law of the form
+u = kp (qd − q1 ),
+
+kp > 0
+
+(1)
+
+will globally asymptotically stabilize the closed-loop system to a unique equilibrium state
+(which one?). Hint: Use either a energy-based Lyapunov approach or exploit the linearity of
+the system dynamics.
+[150 minutes; open books]
+1
+
+Solution
+October 28, 2016
+
+Exercise 1
+For i = 1, 2, let mi be the mass of link i and Ii its inertia around an axis normal to the plane
+of motion, passing through the center of mass (which is at the midpoint of the link, because of
+the assumption on uniform mass distribution). Moreover, let d > 0 be the (constant) distance of
+the center of mass of link 2 (which is of unspecified length) from its tip, namely from the point
+characterized by the coordinate q2 . With this in mind, we follow a Lagrangian approach and
+compute the kinetic and the potential energy of the robot system in order to obtain, respectively,
+B(q) and g(q).
+The kinetic energy of the first link is
+1
+T1 =
+2
+
+
+I1 + m1
+
+`1
+2
+
+2 !
+
+q̇12 .
+
+For the second link, the position of the center of mass is
+pc2 =
+
+`1 cos q1 + (q2 − d) cos (q1 + π/4)
+`1 sin q1 + (q2 − d) sin (q1 + π/4)
+
+!
+.
+
+Thus, its velocity is
+
+v c2 = ṗc2 =
+
+− (`1 sin q1 + (q2 − d) sin (q1 + π/4)) q̇1 + cos (q1 + π/4) q̇2
+(`1 cos q1 + (q2 − d) cos (q1 + π/4)) q̇1 + sin (q1 + π/4) q̇2
+
+
+.
+
+The (scalar) angular velocity of link 2 is simply q̇1 . As a result, the kinetic energy of the second
+link is
+T2 =
+
+1
+2
+
+
+
+I2 + m2 `21 + (q2 − d)2 + 2`1 (q2 − d) cos (π/4) q̇12 + m2 q̇22 + 2m2 `1 sin (π/4) q̇1 q̇2 .
+
+Therefore,
+1
+T = T1 + T2 = q̇ T
+2
+
+b11 (q2 ) b12
+b21
+
+b22
+
+!
+q̇ =
+
+1 T
+q̇ B(q)q̇,
+2
+
+from which the elements bij of the 2 × 2, symmetric, positive definite inertia matrix B(q) are
+obtained as
+ 2
+
+√ 
+`1
+b11 (q2 ) = I1 + m1
++ I2 + m2 `21 + (q2 − d)2 + `1 (q2 − d) 2
+2
+√
+2
+b12 = b21 = m2 `1
+2
+b22 = m2 ,
+where sin (π/4) = cos (π/4) =
+
+√
+
+2/2 has been used.
+
+2
+
+For the potential energy U = U1 + U2 of the two robot links due to gravity, we use the expressions
+of the y-component of their center of mass:
+ 
+`1
+sin q1 ,
+U1 (q1 ) = m1 g0
+2
+U2 (q1 , q2 ) = m2 g0 (`1 sin q1 + (q2 − d) sin (q1 + π/4)) .
+Therefore, the gravity vector is
+
+g(q) =
+
+∂U (q)
+∂q
+
+m
+
+T
+
+1
+
+= g0
+
+2
+
+
+!
++ m2 `1 cos q1 + m2 (q2 − d) cos (q1 + π/4)
+
+.
+
+m2 sin (q1 + π/4)
+
+Solving for g(q 0 ) = 0 provides all equilibrium configurations q 0 . For this RP robot, there are two
+unforced equilibria:
+√ 
+
+ T
+π
+`1 2
+m1
+q0 = −
+d−
+1+
+4
+2
+2m2
+and
+
+q0 =
+
+3π
+4
+
+√ 
+ T
+`1 2
+m1
+.
+d−
+1+
+2
+2m2
+
+Exercise 2
+By following a Lagrangian approach, we compute first the kinetic and the potential (elastic) energy
+of the mechanical system in Fig. 2:
+T =
+
+
+1
+m1 q̇12 + m2 q̇22 + m3 q̇32 ,
+2
+
+U=
+
+
+1
+k1 (q1 − q2 )2 + k2 (q2 − q3 )2 .
+2
+
+Applying the Euler-Lagrange equations to L = T − U and keeping into account the dissipative
+forces due to viscous friction, yields the three second-order differential equations
+m1 q̈1 + k1 (q1 − q2 ) = u − dq̇1
+m2 q̈2 + k1 (q2 − q1 ) + k2 (q2 − q3 ) = −dq̇2
+
+(2)
+
+m3 q̈3 + k2 (q3 − q2 ) = −dq̇3 .
+Indeed, the same result would have been obtained by Newton’s law (balance of forces) applied to
+the three masses.
+For the unforced (u = 0) equilibrium configurations, we set q̇ = q̈ = 0 in (2) and obtain an infinity
+of equilibria q 0 , all with equal q1 = q2 = q3 at a common arbitrary value. The two springs will be
+undeformed in this rest condition.
+For the forced case with u = ū > 0, it is rather tedious but straightforward exercise (using, e.g.,
+Laplace transforms) to verify that the system response to a constant force input will asymptotically
+reach a steady-state condition, where all masses will be moving at the same constant speed q̇1 =
+q̇2 = q̇3 = ū/3d. This specific value can be found by setting q̈ = 0 in (2) and summing up the three
+equations (the elastic forces cancel each other). In this steady-state condition, the deformation of
+the two springs can be computed again from the model as
+δ12 = q1 − q2 =
+
+1 2ū
+,
+k1 3
+
+δ23 = q2 − q3 =
+3
+
+1 ū
+,
+k2 3
+
+being in general δ12 =
+6 δ23 . Note also that the steady-state deformations are independent from the
+actual values of the masses (these will influence instead the transient behavior).
+We can prove that the control law (1) asymptotically stabilizes the unique closed-loop equilibrium
+state q1 = q2 = q3 = qd , q̇ = 0, by using a simple Lyapunov/LaSalle argument. Define the
+Lyapunov candidate as the total system energy E = T + U , plus the control energy in the form of
+a virtual spring of stiffness kp > 0, with rest condition in q1 = qd :
+V =
+
+ 1
+
+1
+m1 q̇12 + m2 q̇22 + m3 q̇32 +
+k1 (q1 − q2 )2 + k2 (q2 − q3 )2 + kp (qd − q1 )2 .
+2
+2
+
+Indeed V ≥ 0, whereas V = 0 if and only if the closed-loop system is at the desired equilibrium
+state. Taking the time derivative of V , using (2), and simplifying terms leads to
+
+V̇ = −d q̇12 + q̇22 + q̇32 ≤ 0.
+The non-positivity of V̇ is thus guaranteed by the presence of viscous friction in the mass-ground
+contact (otherwise, we could inject dissipation by just adding a damping term −kd q̇1 , kd > 0, in
+the control law). To complete the proof, we invoke LaSalle’s theorem. From V̇ = 0 ⇐⇒ q̇ = 0,
+we determine the largest invariant set of states contained in V̇ = 0. When q̇ ≡ 0, from the third
+equation in (2), q̈3 = 0 necessarily implies q3 = q2 . Substituting backward in the second equation
+under the same operative conditions yields necessarily q2 = q1 . Finally, from the first equation
+0 = m1 q̈1 = kp (qd − q1 ) − k1 (q1 − q2 ) − dq̇1 = kp (qd − q1 )
+
+⇒
+
+q1 = qd ,
+
+and thus the configuration q e having q1 = q2 = q3 = qd with velocity q̇ = 0 is the only invariant
+state for the closed-loop system. The result is thus proven. Since the system is linear, asymptotic
+stability will be equivalent to exponential stability. For the same reason, one could have analyzed
+the characteristic polynomial of the closed-loop linear system, using the Routh criterion to establish
+stability. However, this would require longer computations in order to prove the same result.
+∗∗∗∗∗
+
+4
+
+
