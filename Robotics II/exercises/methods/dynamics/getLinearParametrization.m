@@ -27,6 +27,6 @@ for i = 1:length(a)
     % Isolate the 'a' coefficient by taking the derivative
     Y = [Y, diff(Yu,a(i))];
 end
-    sincos_ = getShortNotation_SinCosV2(n);
+    sincos_ = getShortNotation_SinCosV2(n,2);
     Yshort = toShortNotation(simplify( Y),sincos_);
 end
