@@ -298,23 +298,23 @@ function [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa
         depenSubs = removeTermsSelfContained2(depen);
         params = [dynParams depenSubs];
         if(~isempty(params))
-            celparams= children(params+ ones(size(params))*none_sym_value);
-            if(~iscell(celparams))
-                celparams={celparams};
-            end
-            %Selects only the parameters with only one term,
-            params1term = cellfun(@length,celparams) <= 2;
-            paramscell2=children(params(params1term));
-            if(~iscell(paramscell2))
-                paramscell2={paramscell2};
-            end
-            %Sort the parameters by length
-            [~,I] = sort(cellfun(@length, paramscell2),'descend');
-            params1 = params(params1term);
-            %First put the composed parameters (m1+m2), and then the single
-            %parameters terms (d*m3)
-            params = [params(~params1term), params1(I)];
-            
+%             celparams= children(params+ ones(size(params))*none_sym_value);
+%             if(~iscell(celparams))
+%                 celparams={celparams};
+%             end
+%             %Selects only the parameters with only one term,
+%             params1term = cellfun(@length,celparams) <= 3;
+%             paramscell2=children(params(params1term));
+%             if(~iscell(paramscell2))
+%                 paramscell2={paramscell2};
+%             end
+%             %Sort the parameters by length
+%             [~,I] = sort(cellfun(@length, paramscell2),'descend');
+%             params1 = params(params1term);
+%             %First put the composed parameters (m1+m2), and then the single
+%             %parameters terms (d*m3)
+%             params = [params(~params1term), params1(I)];
+%             
             nparams = length(params);
             dynamicParams = params;
             for i = 1:nparams
