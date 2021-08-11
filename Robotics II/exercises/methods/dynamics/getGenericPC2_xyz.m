@@ -276,6 +276,7 @@ for i=1:n
     %     Ti2(i)= simplify(0.5*m(i)*collect(simplify(expand(vc3(:,i)'*vc3(:,i))),[qd(1:n)])+0.5*simplify((w(:,i)'*Ic{i}*w(:,i))));%,[qd(1:2)]);
     %     Ti(i)= optiomalSortD(0.5*m(i)*vc(:,i)'*vc(:,i)+0.5*w(:,i)'*Ic{i}*w(:,i),qall_sincos_comb);%,[qd(1:2)]);
     Ti(i)= simplify(0.5*m(i)*collect(simplify(expand(vc(:,i)'*vc(:,i))),[qd(1:n)])+0.5*simplify((w(:,i)'*Ic{i}*w(:,i))))%,[qd(1:2)]);
+    Ti(i)= simplify(collect(Ti(i),z.q_dot.^2))%collecting derivative terms
     if(z.ismotor)
         Ti_m(i)=simplify(0.5*z.m_m(i)*collect(simplify(expand(vc_m(:,i)'*vc_m(:,i))),[z.q_dot_m(1:n)])+0.5*simplify((w_m(:,i)'*z.Ic_m{i}*w_m(:,i))))%,[qd(1:2)]);
         Ti_total(i)=simplify(Ti(i)+Ti_m(i));
