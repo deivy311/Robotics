@@ -368,7 +368,7 @@ Robotics 2
 
 15
 
-Motion control under joint flexibility
+Motion control
 2 videos @DLR München
 
 low-damped oscillations due to flexibility
@@ -395,19 +395,38 @@ compliant motion with Variable Stiffness Actuators
 
 17
 
+Sensorless collision detection
+2 videos @DLR München
+during my sabbatical in 2005-06
+
+master student Sami Haddadin in 2006
+leading now the Munich School of
+Robotics and Machine Intelligence!
+
+residual method to detect collisions: uses
+robot dynamic model, encoder readings,
+commanded torques (in case of rigid joints)
+Robotics 2
+
+NEVER DO THIS!
+
+(unless you’re 100% sure of
+your research results …)
+18
+
 Safe human-robot collaboration
 finalist video IROS 2013 @DIAG Robotics Lab
 
 Robotics 2
 
-18
+19
 
 Physical human-robot interaction control
 video ICRA 2015 @DIAG Robotics Lab
 
 Robotics 2
 
-19
+20
 
 Some recent EU research projects
 n
@@ -441,7 +460,7 @@ n
 
 Robotics 2
 
-20
+21
 
 Contacts
 n
@@ -483,7 +502,7 @@ registration to exams in infostud (code 1021883)
 
 Robotics 2
 
-21
+22
 
 Exams and Master Thesis
 n
@@ -539,6 +558,6 @@ available at DIAG Robotics Lab: http://www.diag.uniroma1.it/labrob
 
 Robotics 2
 
-22
+23
 
 

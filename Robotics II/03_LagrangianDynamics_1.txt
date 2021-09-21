@@ -236,10 +236,10 @@ a
 𝜏] , 𝜃]
 𝑥
 
-𝑛𝜏] , 𝜃
+𝑛X 𝜏] , 𝜃
+𝑚
 
 𝑔[
-𝑚
 
 𝑈 = 𝑈[ − 𝑚𝑔[ 𝑑 cos 𝜃
 
@@ -452,12 +452,12 @@ x
 <a
 
 𝐼••
+𝐼€€
+
+z
 
 𝑎a + 𝑐 a
 <
-<a
-
-ℎ
 
 𝑏
 
@@ -489,7 +489,7 @@ Steiner theorem
 empty cylinder with length ℎ,
 and external/internal radius 𝑎 and 𝑏
 
-y
+ℎ
 
 𝑟m 𝑟
 
@@ -504,12 +504,13 @@ Robotics 2
 𝑚
 <a
 
-=
-𝐼€€
+<a
 
-z
+y
 
 z’
+
+=
 
 𝑏a + 𝑐 a
 
@@ -526,15 +527,10 @@ matrix
 
 𝑆m
 
-3 𝑎a + 𝑏 a
-
-a
-
 𝐼€€ = 𝐼••
 
-+ ℎa
+3 𝑎 a + 𝑏 a + ℎa
 𝐼€€
-
 a
 
 𝑟 𝑆 𝑟
@@ -1311,8 +1307,8 @@ equal to the work of
 non-conservative forces
 27
 
-Appendix:
-Vector format derivation of dynamic model
+Appendix
+dynamic model: alternative vector format derivation
 𝑑 𝜕𝐿
 𝑑𝑡 𝜕 𝑞̇
 
@@ -1346,11 +1342,17 @@ m
 ⋯
 
 𝑀> (𝑞) = ‡ 𝑀R (𝑞)𝑒Rm
-Rˆ<
+
+= 𝑞̇ m 𝑀(𝑞)
 
 m
 
-= 𝑞̇ m 𝑀(𝑞)
+dyadic expansion
+
+= 𝑀 𝑞 𝑞̇
+
+𝑑 𝜕𝐿
+𝑑𝑡 𝜕𝑞̇
 
 m
 
@@ -1362,7 +1364,7 @@ m
 
 1 m
 𝜕𝑀R (𝑞) m
-𝜕𝑈
+𝜕𝑈(𝑞)
 =
 𝑞̇ ‡
 𝑒R 𝑞̇ −
@@ -1377,46 +1379,41 @@ skew-symmetry
 
 Robotics 2
 
-m
-
->
-
-m
+𝑖-th
+position
 
 Rˆ<
+
+m
+
+m
+
+0 ⋯ 1 ⋯ 0
+
 m
 
 >
 
 1
-𝜕𝑀R (𝑞)
 = ‡
 2
 𝜕𝑞
+
+>
+
 Rˆ<
 
-𝜕𝑀R 1 𝜕𝑀R (𝑞)
+𝜕𝑀R 1 𝜕𝑀R
 𝑀 𝑞 𝑞̈ + ‡
 −
 𝜕𝑞
-2
-𝜕𝑞
+2 𝜕𝑞
 
 𝑘-th row of matrix 𝑆
 𝑆?m 𝑞, 𝑞̇ = 𝑞̇ m 𝐶? (𝑞)
 
-𝑖-th
-position
-
-dyadic expansion
-
-= 𝑀 𝑞 𝑞̇
-
-𝑑 𝜕𝐿
-𝑑𝑡 𝜕𝑞̇
-m
-
-0 ⋯ 1 ⋯ 0
+Rˆ<
+𝜕𝑀R m
 
 Rˆ<
 

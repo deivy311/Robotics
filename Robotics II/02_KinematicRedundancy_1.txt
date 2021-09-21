@@ -1,0 +1,1788 @@
+Robotics 2
+
+Robots with
+kinematic redundancy
+Part 1: Fundamentals
+Prof. Alessandro De Luca
+
+Redundant robots
+n
+
+direct kinematics of the task 𝑟 = 𝑓(𝑞)
+
+𝑓: Q ® R
+joint space (dim Q = 𝑁 )
+n
+
+task space (dim R = 𝑀 )
+
+a robot is (kinematically) redundant for the task if 𝑁 > 𝑀
+(more degrees of freedom than strictly needed for executing the task)
+
+n
+
+n
+
+𝑟 may contain the position and/or the orientation of the
+
+end-effector or, more in general, be any parameterization
+of the task (even not in the Cartesian workspace)
+“redundancy” of a robot is thus a relative concept, i.e., it
+holds with respect to a given task
+
+Robotics 2
+
+2
+
+Some E-E tasks and their dimensions
+TASKS [for the robot end-effector (E-E)]
+n
+n
+n
+n
+n
+
+dimension 𝑀
+
+position in the plane
+position in 3D space
+orientation in the plane
+pointing in 3D space
+position and orientation in 3D space
+
+2
+3
+1
+2
+6
+
+a planar robot with 𝑁 = 3 joints is redundant for the task
+of positioning its E-E in the plane (𝑀 = 2), but NOT for the
+task of positioning AND orienting the E-E in the plane (𝑀 = 3)
+
+Robotics 2
+
+3
+
+Typical cases of redundant robots
+n
+
+6R robot mounted on a linear track/rail
+n
+
+n
+
+7 dofs for positioning and orienting its end-effector in 3D space
+
+6-dof robot used for arc welding tasks
+n
+
+task does not prescribe the final roll angle of the welding gun
+
+n
+
+dexterous robotic hands
+multiple cooperating manipulators
+manipulator on a mobile base
+humanoid robots, team of mobile robots ...
+
+n
+
+“kinematic” redundancy is not the only type…
+
+n
+n
+n
+
+n
+n
+
+Robotics 2
+
+redundancy of components (actuators, sensors)
+redundancy in the control/supervision architecture
+
+4
+
+Uses of robot redundancy
+n
+n
+n
+n
+n
+n
+n
+n
+n
+
+avoid collision with obstacles (in Cartesian space) …
+… or kinematic singularities (in joint space)
+stay within the admissible joint ranges
+increase manipulability in specified directions
+uniformly distribute/limit joint velocities and/or accelerations
+minimize energy consumption or needed motion torques
+optimize execution time
+increase dependability with respect to faults
+...
+all objectives should be
+quantitatively “measurable”
+
+Robotics 2
+
+5
+
+DLR robots: LWR-III and Justin
+
+Justin two-arm upper-body humanoid:
+43R actuated =
+two arms (2×7) + torso (3*)
+7R LWR-III lightweight manipulator:
+elastic joints (HD), joint torque sensing, + head (2) + two hands (2×12),
+45 kg weight
+13.5 kg weight = payload
+Robotics 2
+
+* = one joint is dependent on the motion of the other two
+
+6
+
+Justin carrying a trailer
+video
+
+motion planning for DLR Justin robot in the configuration space,
+avoiding Cartesian obstacles and using robot redundancy
+Robotics 2
+
+7
+
+Dual-arm redundancy
+video
+
+DIS, Uni Napoli
+two 6R Comau robots, one mounted on a linear track (+1P)
+coordinated 6D motion using the null-space of the right-side robot (𝑁 − 𝑀 = 1)
+Robotics 2
+
+8
+
+Motion cueing from redundancy
+video
+
+Max Planck Institute for Biological Cybernetics, Tübingen
+a 6R KUKA KR500 mounted on a linear track (+1P) with a sliding cabin (+1R),
+used as a dynamic emulation platform for human perception (𝑁 − 𝑀 = 2)
+Robotics 2
+
+9
+
+Self-motion
+video
+
+video
+
+Nakamura’s Lab, Uni Tokyo
+8R Dexter: self-motion with
+constant 6D pose of E-E (𝑁 − 𝑀 = 2)
+Robotics 2
+
+6R robot with spherical shoulder
+in compliant tasks for the
+Cartesian E-E position (𝑁 − 𝑀 = 3)
+10
+
+Obstacle avoidance
+video
+
+6R planar arm moving on a given geometric path for the E-E (𝑁 − 𝑀 = 4)
+Robotics 2
+
+11
+
+Disadvantages of redundancy
+n
+
+potential benefits should be traded off against
+n
+
+n
+
+a greater structural complexity of construction
+n
+
+mechanical (more links, transmissions, ...)
+
+n
+
+more actuators, sensors, ...
+
+n
+
+costs
+
+more complicated algorithms for inverse kinematics
+and motion control
+
+Robotics 2
+
+12
+
+Inverse kinematics problem
+n
+
+find 𝑞(𝑡) that realizes the task: 𝑓 𝑞 𝑡
+
+n
+
+infinite solutions exist when the robot is redundant
+(even for 𝑟(𝑡) = 𝑟 = constant)
+𝑁=3>2=𝑀
+
+n
+
+n
+
+𝑟 = constant
+E-E position
+
+the robot arm may have “internal displacements” that are
+unobservable at the task level (e.g., not contributing to E-E motion)
+n
+
+n
+
+= 𝑟(𝑡) (at all times 𝑡)
+
+these joint displacements can be chosen so as to improve/optimize
+in some way the behavior of the robotic system
+
+self-motion: an arm reconfiguration in the joint space that
+does not change/affect the value of the task variables 𝑟
+solutions are mainly sought at differential level (e.g., velocity)
+
+Robotics 2
+
+13
+
+Redundancy resolution
+
+via optimization of an objective function
+
+Local methods
+given 𝑟(𝑡)
+̇
+and 𝑞(𝑡), 𝑡 = 𝑘𝑇𝑠
+optimization of 𝐻(𝑞, 𝑞)
+̇
+
+𝑞(𝑘𝑇
+̇
+C)
+
+Global methods
+given 𝑟(𝑡), 𝑡 ∈ [𝑡7 , 𝑡7 + 𝑇], 𝑞(𝑡0)
+>? @A
+optimization of ∫>
+𝐻(𝑞, 𝑞)𝑑𝑡
+̇
+?
+
+ON-LINE
+
+𝑞 𝑘 + 1 𝑇C = 𝑞 𝑘𝑇C + 𝑇C 𝑞̇ 𝑘𝑇C
+
+𝑞(𝑡), 𝑡 ∈ [𝑡7 , 𝑡7 + 𝑇]
+OFF-LINE
+
+discrete-time form
+
+Robotics 2
+
+relatively EASY
+(a LQ problem)
+
+quite DIFFICULT
+(nonlinear TPBV problems arise)
+
+14
+
+Local resolution methods
+three classes of methods for solving 𝑟̇ = 𝐽(𝑞)𝑞̇
+1n Jacobian-based methods (here, analytic Jacobian in general!)
+among the infinite solutions, one is chosen, e.g., that minimizes a
+suitable (possibly weighted) norm
+2n null-space methods
+a term is added to the previous solution so as not to affect execution
+of the task trajectory, i.e., belonging to the null-space 𝒩(𝐽 𝑞 )
+3n task augmentation methods
+redundancy is reduced/eliminated by adding 𝑆 ≤ 𝑁 − 𝑀 further
+auxiliary tasks (when 𝑆 = 𝑁 − 𝑀 , the problem has been “squared”)
+
+𝑟 = 𝑓(𝑞)
+Robotics 2
+
+𝑟̇ = 𝐽(𝑞)𝑞̇
+15
+
+1
+
+Jacobian-based methods
+
+we look for a solution to 𝑟̇ = 𝐽 𝑞 𝑞̇ in the form
+𝐽=
+
+𝑀
+𝑁
+
+𝑞̇ = 𝐾 𝑞 𝑟̇
+
+𝐾=
+
+𝑁
+𝑀
+
+minimum requirement for 𝐾: 𝐽 𝑞 𝐾 𝑞 𝐽 𝑞 = 𝐽(𝑞)
+(
+𝐾 = generalized inverse of 𝐽)
+
+∀𝑟̇ ∈ ℛ(𝐽 𝑞 )
+
+𝐽 𝑞 𝐾(𝑞)𝑟̇ = 𝐽 𝑞 𝐾 𝑞 𝐽 𝑞 𝑞̇ = 𝐽 𝑞 𝑞̇ = 𝑟̇
+
+example:
+LM
+𝐽
+I
+if 𝐽 = 𝐽I 𝐽J , det(𝐽I ) ¹ 0, one such generalized inverse of 𝐽 is 𝐾K =
+0
+(actually, this is a stronger right-inverse)
+Robotics 2
+
+16
+
+Pseudoinverse
+𝑞̇ = 𝐽# (𝑞)𝑟̇
+n
+
+𝐽# always exists, and is the unique matrix satisfying
+𝐽# 𝐽 𝐽# = 𝐽#
+𝐽 𝐽# 𝐽 = 𝐽
+𝐽𝐽
+
+n
+
+... a very common choice: 𝐾 = 𝐽#
+
+# A
+
+=𝐽𝐽
+
+#
+
+𝐽#
+
+𝐽
+
+A
+
+= 𝐽# 𝐽
+
+if 𝐽 is full (row) rank, 𝐽# = 𝐽A 𝐽 𝐽A LM ; else, it is computed
+numerically using the SVD (Singular Value Decomposition) of 𝐽
+(pinv of Matlab)
+
+n
+
+n
+
+the pseudo-inverse joint velocity is the only that minimizes the
+norm 𝑞̇ Q = 𝑞̇ A 𝑞̇ among all joint velocities that minimize the
+task error norm 𝑟̇ − 𝐽(𝑞)𝑞̇ Q
+if the task is feasible (𝑟̇ ∈ ℛ 𝐽(𝑞) ), there will be no task error
+
+Robotics 2
+
+17
+
+Weighted pseudoinverse
+# 𝑞 𝑟̇
+𝑞̇ = 𝐽R
+
+#
+another choice: 𝐾 = 𝐽R
+
+n
+
+#
+if 𝐽 is full (row) rank, 𝐽R
+= 𝑊 LM 𝐽A 𝐽𝑊 LM 𝐽A
+
+n
+
+the solution 𝑞̇ minimizes the weighted norm
+𝑞̇
+
+n
+
+Q
+R
+
+= 𝑞̇ A 𝑊 𝑞̇
+
+LM
+
+𝑊 > 0, symmetric
+(often diagonal)
+
+large weight 𝑊𝑖 ⇒ small 𝑞̇ V (e.g., weights can be
+
+chosen proportionally to the inverse of the joint ranges)
+n
+
+it is NOT a “pseudoinverse” (4th relation does not
+hold ...) but shares similar properties
+
+Robotics 2
+
+18
+
+Singular Value Decomposition (SVD)
+n
+
+the SVD routine of Matlab applied to 𝐽 provides two orthonormal
+matrices 𝑈X×X and 𝑉[×[ , and a matrix ΣX×[ of the form
+𝜎M
+𝜎M ≥ 𝜎Q ≥ ⋯ ≥ 𝜎b > 0
+𝜎Q
+𝜎b@M = ⋯ = 𝜎X = 0
+Σ=
+0X×([LX)
+⋱
+singular values of 𝐽
+𝜎X
+where 𝜌 = rank(𝐽) ≤ 𝑀, so that their product is
+
+𝐽 = 𝑈Σ𝑉 A
+n
+
+n
+
+the columns of 𝑈 are eigenvectors of 𝐽 𝐽𝑇 (associated to its nonnegative eigenvalues 𝜎𝑖2), the columns of 𝑉 are eigenvectors of 𝐽𝑇𝐽
+the last 𝑁 − 𝜌 columns of 𝑉 are a basis for the null space of 𝐽
+
+𝐽𝑣V = 𝜎V 𝑢V (i = 1, ⋯ , 𝜌)
+Robotics 2
+
+𝐽𝑣V = 0 (i = ρ + 1, ⋯ , 𝑁)
+19
+
+Computation of pseudoinverses
+n
+
+show that the pseudoinverse of 𝐽 is equal to
+
+𝐽 = 𝑈Σ𝑉 A
+
+𝐽# = 𝑉Σ # 𝑈 A
+
+⇒
+
+Σ# =
+
+⋱
+
+1
+𝜎b
+
+0(XLb)×(XLb)
+_______________________________
+0([LX)×X
+
+for any rank 𝜌 of 𝐽
+n
+
+1
+𝜎M
+
+#
+show that matrix 𝐽R
+appears when solving the constrained linearquadratic (LQ) optimization problem (with 𝑊 > 0, symmetric, and
+assuming 𝐽 of full rank)
+
+min
+
+M
+Q
+
+𝑞̇
+
+Q
+R
+
+s.t.
+
+𝐽 𝑞 𝑞̇ − 𝑟̇ = 0
+
+and that the pseudoinverse is a particular case for 𝑊 = 𝐼
+n
+
+show that a weighted pseudoinverse of J can be computed by
+SVD/pinv as
+#
+𝐽R
+= 𝑊 LM/Q pinv(𝐽𝑎𝑢𝑥 )
+𝐽Imn = 𝐽𝑊 LM/Q
+
+Robotics 2
+
+20
+
+Singularity robustness
+
+applies equally to
+square and non-square
+matrices
+
+unconstrained
+minimization
+of a suitable
+objective function
+
+SOLUTION
+n
+
+Damped Least Squares (DLS)
+
+min 𝐻 𝑞̇
+u̇
+
+vw
+=
+Q
+
+𝑞̇
+
+Q
+
++
+
+M
+‖𝑟̇
+Q
+
+−
+
+𝐽𝑞‖
+̇ Q
+
+𝑞̇ = 𝐽yz{ 𝑞 𝑟̇ = 𝐽A 𝐽 𝐽A + 𝜇Q 𝐼X
+
+compromise between
+large joint velocity
+and task accuracy
+
+LM 𝑟̇
+
+induces a robust behavior when crossing singularities, but in its basic
+version gives always a task error 𝑒̇ = 𝜇Q 𝐽 𝐽A + 𝜇Q 𝐼X LM 𝑟̇ (as in the 𝑁 = 𝑀 case)
+n
+
+𝐽𝐷𝐿𝑆 is not a generalized inverse 𝐾
+
+n
+
+using SVD: 𝐽 = 𝑈 Σ 𝑉𝑇 ⇒ 𝐽yz{ = 𝑉Σyz{ 𝑈 A , Σyz{ =
+
+n
+
+n
+
+𝜎V
+𝜎VQ + 𝜇Q
+0(XLb)×(XLb)
+𝜌×𝜌
+____________________________________
+0([LX)×b
+0([LX)×(XLb)
+𝑑𝑖𝑎𝑔
+
+choice of a variable damping factor 𝜇2(𝑞) ≥ 0, as a function of the
+minimum singular value 𝜎𝑚(𝑞) of 𝐽 ≅ measure of distance to singularity
+numerical filtering: introduces damping only/mostly in non-feasible
+directions for the task (see Maciejewski and Klein, J of Rob Syst, 1988)
+
+Robotics 2
+
+21
+
+Behavior of DLS solution
+a. comparison of joint velocity norm with
+PINV (pseudoinverse) or DLS solutions
+• in a direction of a singular vector 𝑢 , when
+the associated singular value 𝜎 ⟶ 0
+• PINV goes to infinity (and then is 0 at 𝜎 = 0)
+• DLS peaks a value of 1/2𝜇 at 𝜎 = 𝜇 (and then
+smoothly goes to 0...)
+b. graphical interpretation of “damping” effect (here 𝑀 = 𝑁 = 2, for simplicity)
+one equality
+constraint
+minimum norm
+solution
+
+Robotics 2
+
+two equality
+constraints
+
+exact (unique)
+solution
+
+two (almost dependent)
+equality constraints
+
+approximate
+(damped) solution
+
+𝜇Q
+𝐻(𝑞)
+̇ =
+𝑞̇
+2
+
+exact (ill-conditioned)
+solution
+
+Q
+
+1
++ 𝑟̇ − 𝐽𝑞̇
+2
+
+Q
+
+22
+
+Numerical example of DLS solution
+planar 2R arm, unit links, close to (stretched) singular configuration 𝑞1 = 45°, 𝑞2 = 1.5°)
+𝑞̇ yz{ =
+
+.472
+.055
+
+(𝜇2 = 10-3)
+
+𝑞̇ yz{ =
+
+.133
+.066
+
+(𝜇2 = 10)
+
+𝑟̇ =
+
+−1/ 2
+
+1/ 2
+∈ ℛ(𝐽) even
+@singularity!
+
+(∞ ← µ)
+→
+(µ
+0)
+
+1
+𝑞̇ ∗ =
+−1
+
+𝜇Q
+
+1
+Q
+𝐻=
+𝑞̇ + 𝑟̇ − 𝐽𝑞̇
+2
+2
+
+Robotics 2
+
+µ2
+Q
+
+0
+
+1
+𝑞̇ =
+−1
+
+iso-level
+curves of H
+
+∗
+
+exact
+solution
+(µ=0)
+
+10-4
+
+10-3
+
+10-2
+
+10
+
+‖𝑞‖
+̇ √2
+‖𝑒‖
+̇
+0
+
+.8954
+
+.4755
+
+.4467
+
+.1490
+
+6.6⋅10-3
+
+1.4⋅10-2
+
+1.6⋅10-2
+
+.6668
+
+Hmin
+
+7.7⋅10-5
+
+2.2⋅10-4
+
+1.2⋅10-3
+
+3.4⋅10-1
+
+0
+
+23
+
+Limits of Jacobian-based methods
+n
+
+no guarantee that singularities are globally avoided during
+task execution
+n
+
+n
+
+despite joint velocities are kept to a minimum, this is only a local
+property and “avalanche” phenomena may occur
+
+typically lead to non-repeatable motion in the joint space
+n
+
+cyclic motions in task space do not map to cyclic motions in joint space
+after
+1 tour
+
+qfin ¹ qin
+
+qin = q(0)
+>
+
+𝑞 𝑡 = 𝑞(0) + ‡ 𝐾 𝑞 𝜏 𝑟̇ 𝜏 𝑑𝜏
+Robotics 2
+
+7
+
+24
+
+Drift with Jacobian pseudoinverse
+n
+n
+
+n
+
+a 7R KUKA LWR4 robot moves in the vicinity of a human operator
+we command a cyclic Cartesian path (only in position, 𝑀 = 3), to be
+repeated several times using the pseudoinverse solution
+(unexpected) collision of a link occurs during the third cycle ...
+video
+
+Robotics 2
+
+25
+
+2
+
+Null-space methods
+
+general solution of 𝐽𝑞̇ = 𝑟̇
+
+𝑞̇ =
+
+𝐽# 𝑟̇
+
++
+
+a particular solution
+(here, the pseudoinverse)
+in ℛ(𝐽A )
+
+all solutions of the associated
+𝐼
+𝑞̇ 7
+homogeneous equation 𝐽𝑞̇ = 0
+(self-motions)
+“orthogonal” projection
+of 𝑞̇ 0 in 𝒩(𝐽)
+properties of
+
+− 𝐽# 𝐽
+
+• symmetric
+• idempotent: 𝐼 – 𝐽# 𝐽
+
+projector [𝐼 – 𝐽# 𝐽]
+
+Q
+
+= 𝐼 – 𝐽# 𝐽
+
+• 𝐼 – 𝐽# 𝐽 # = 𝐼 – 𝐽# 𝐽
+• 𝐽# 𝑟̇ is orthogonal to [𝐼 – 𝐽# 𝐽]𝑞̇ 7
+even more in general…
+
+𝐾M , 𝐾2 generalized
+𝑞̇ = 𝐾M 𝑟̇ + 𝐼 − 𝐾Q 𝐽 𝑞̇ 7
+inverses of 𝐽
+... but with less nice properties! ( 𝐽𝐾V 𝐽 = 𝐽)
+Robotics 2
+
+how do we choose 𝑞̇ 0?
+26
+
+Geometric view on Jacobian null space
+in the space of velocity commands
+
+...its projection
+in the
+null space
+
+minimum norm
+solution
+
+0
+
+final
+solution
+
+𝑞̇ 7
+
+.
+
+final
+solution
+(closest
+to 𝑞̇ 7 )
+
+generic/preferred
+joint velocity...
+
+null space
+correction
+subspace
+
+𝓝(J)
+
+0
+a correction is added to the original pseudoinverse (minimum norm) solution
+i) which is in the null space of the Jacobian
+ii) and possibly satisfies additional criteria or objectives
+Robotics 2
+
+27
+
+Linear-Quadratic Optimization
+generalities
+
+𝑥 ∈ ℝ[
+𝑊 > 0 (symmetric)
+
+1
+min 𝐻 𝑥 = 𝑥 − 𝑥7 A 𝑊 𝑥 − 𝑥7
+n
+2
+𝑀×𝑁
+
+s.t.
+
+𝑦 ∈ ℝX
+rank 𝐽 = 𝜌(𝐽) = 𝑀
+
+𝐽𝑥 = 𝑦
+
+𝐿 𝑥, 𝜆 = 𝐻 𝑥 + 𝜆A (𝐽𝑥 − 𝑦)
+necessary
+conditions
++
+sufficient
+condition
+for a minimum
+
+𝜕𝐿
+∇n 𝐿 =
+𝜕𝑥
+
+A
+
+𝜕𝐿
+∇” 𝐿 =
+𝜕𝜆
+
+A
+
+= 𝑊 𝑥 − 𝑥7 + 𝐽A 𝜆 = 0
+= 𝐽𝑥 − 𝑦 = 0
+
+𝑥 = 𝑥7 − 𝑊 LM 𝐽A 𝜆
+
+𝐽𝑥7 − 𝐽𝑊 LM 𝐽A 𝜆 − 𝑦 = 0
+
+∇Qn 𝐿 = 𝑊 > 0
+
+𝜆 = 𝐽𝑊 LM 𝐽A
+Robotics 2
+
+Lagrangian (with multipliers 𝜆)
+
+LM
+
+𝐽𝑥7 − 𝑦
+
+𝑀×𝑀 invertible
+
+𝑥 = 𝑥7 + 𝑊 LM 𝐽A 𝐽𝑊 LM 𝐽A
+
+LM
+
+𝑦 − 𝐽𝑥7
+28
+
+Linear-Quadratic Optimization
+application to robot redundancy resolution
+
+PROBLEM
+
+SOLUTION
+
+1
+min 𝐻 𝑞̇ = 𝑞̇ − 𝑞̇ 7 A 𝑊 𝑞̇ − 𝑞̇ 7
+u̇
+2
+s.t. 𝐽𝑞̇ = 𝑟̇
+𝑞̇ = 𝑞̇ 7 + 𝑊 LM 𝐽A 𝐽𝑊 LM 𝐽A
+
+LM
+
+𝑞̇ 7 is a
+
+“privileged”
+joint velocity
+
+𝑟̇ − 𝐽𝑞̇ 7
+
+#
+𝐽R
+
+𝑞̇ =
+
+#
+𝐽R 𝑟̇
+
++ 𝐼
+
+minimum weighted norm
+solution (for 𝑞̇ 7 = 0)
+Robotics 2
+
+#
+− 𝐽R 𝐽
+
+𝑞̇ 7
+
+“projection” matrix in
+the null-space 𝒩(𝐽)
+29
+
+Projected Gradient (PG)
+𝑞̇ = 𝐽# 𝑟̇ + 𝐼 − 𝐽# 𝐽 𝑞̇ 7
+the choice 𝑞̇ 7 = ∇u 𝐻 𝑞 ® differentiable objective function
+realizes one step of a constrained optimization algorithm
+while executing the time-varying task 𝑟(𝑡)
+the robot tries to increase the value of 𝐻(𝑞)
+𝑞3
+projected
+gradient
+
+𝑞
+𝑆u
+𝑞1
+
+Robotics 2
+
+∇u 𝐻
+
+for a fixed 𝑟˜: 𝑆u = {𝑞 ∈ ℝ𝑁: 𝑓 𝑞 = 𝑟̅ }
+
+⇒ 𝑞̇ = 𝐼 − 𝐽# 𝐽 ∇u 𝐻
+𝑞Q 𝑁-dimensional 𝐼 − 𝐽# 𝐽 ∇ 𝐻 = 0
+u
+is a necessary condition
+of constrained optimality
+
+30
+
+Typical objective functions H(q)
+n
+
+manipulability
+
+(maximize the “distance” from singularities)
+
+𝐻™š› (𝑞) =
+n
+
+joint range
+
+𝑞V ∈ 𝑞¥,V , 𝑞X,V
+𝑞X,V + 𝑞¥,V
+𝑞˜V =
+2
+n
+
+(minimize the “distance” from the mid points of the joint ranges)
+[
+
+𝐻Ÿš›
+
+1
+𝑞V − 𝑞¤V
+¢
+¡ (𝑞) =
+2𝑁
+𝑞X,V − 𝑞¥,V
+
+Robotics 2
+
+Q
+
+𝑞̇ 7 = − ∇u 𝐻(𝑞)
+
+V£M
+
+obstacle avoidance
+also known as
+“clearance”
+
+det 𝐽(𝑞)𝐽A (𝑞)
+
+(maximize the minimum distance to Cartesian obstacles)
+
+𝐻¦§¨ (𝑞) =
+
+min
+
+I ∈ Ÿ¦§¦©
+J ∈ ¦§¨©šª«¡¨
+
+𝑎 𝑞 −𝑏
+
+Q
+
+potential difficulties due
+to non-differentiability
+(this is a max-min problem)
+
+31
+
+Singularities of planar 3R arm
+the robot is redundant
+for a positioning task
+in the plane (𝑀 = 2)
+
+𝐻 𝑞 =
+
+sinQ 𝑞Q
+
++
+
+sinQ 𝑞®
+
+unconstrained
+maxima of
+𝐻(𝑞)
+
+𝐻(𝑞)
+
+p
+
+𝑞2
+𝑞3
+
+p -p
+
+links of equal (unit) length
+Robotics 2
+
+iso-level curves of 𝐻(𝑞)
+
+𝑞3
+
+p
+-p
+
+this 𝐻 is not 𝐻 man
+but has the same minima
+
+𝑞3
+𝑞2
+
+-p
+-p
+
+𝑞2
+
+p
+
+independent from 𝑞1!
+32
+
+Minimum distance computation
+in human-robot interaction
+
+LWR4 robot with
+a finite number of
+control points 𝒂(𝒒)
+(8, including the E-E)
+
+a Kinect sensor monitors
+the workspace giving the
+3D position of points 𝒃
+on obstacles that are
+fixed or moving
+(like humans)
+
+distances in 3D (and then the clearance)
+are computed in this case as
+
+min
+
+I ∈ ª¦›©Ÿ¦« ²¦³›©¨
+J ∈ ´µ™š› §¦¶·
+
+Robotics 2
+
+𝑎 𝑞 −𝑏
+
+Q
+
+33
+
+Comments on null-space methods
+n
+
+n
+
+the projection matrix (𝐼 – 𝐽# 𝐽) has dimension 𝑁×𝑁 , but only rank 𝑁 − 𝑀
+(if 𝐽 is full rank 𝑀 ), with some waste of information
+actual (efficient) evaluation of the solution
+
+𝑞̇ = 𝐽# 𝑟̇ + 𝐼 − 𝐽# 𝐽 𝑞̇ 7 = 𝑞̇ 7 + 𝐽# 𝑟̇ − 𝐽𝑞̇ 7
+but the pseudoinverse is needed anyway, and this is computationally
+intensive (SVD in the general case)
+n
+
+n
+
+in principle, the additional complexity of a redundancy resolution method
+should depend only on the redundancy degree 𝑁– 𝑀
+a constrained optimization method is available, which is known to be more
+efficient than the projected gradient (PG) —at least when the Jacobian
+has full rank …
+
+Robotics 2
+
+34
+
+Decomposition of joint space
+n
+
+if r 𝐽 𝑞 = 𝑀 , there exists a decomposition of the set of joints
+𝑀×𝑀
+(possibly, after a reordering)
+
+𝑞I
+𝑞= 𝑞
+J
+n
+
+𝑀
+𝑁−𝑀
+
+𝜕𝑓
+such that 𝐽I (𝑞) =
+is nonsingular
+𝜕𝑞I
+
+from the implicit function theorem, there exists an inverse function 𝑔
+𝑓 𝑞𝑎 , 𝑞𝑏 = 𝑟
+𝜕𝑔
+𝜕𝑓
+=−
+with
+𝜕𝑞J
+𝜕𝑞I
+
+n
+
+n
+
+𝑞𝑎 = 𝑔(𝑟, 𝑞𝑏)
+LM
+
+𝜕𝑓
+= −𝐽ILM (𝑞)𝐽J (𝑞)
+𝜕𝑞J
+
+the 𝑁 − 𝑀 variables 𝑞𝑏 can be selected independently (e.g., they are
+used for optimizing an objective function 𝐻(𝑞), “reduced” via the use
+of 𝑔 to a function of 𝑞𝑏 only)
+
+𝑞𝑎 = 𝑔(𝑟, 𝑞𝑏) is then chosen so as to correctly execute the task
+
+Robotics 2
+
+35
+
+Reduced Gradient (RG)
+n
+n
+
+𝐻(𝑞) = 𝐻(𝑞𝑎, 𝑞J ) = 𝐻(𝑔(𝑟, 𝑞J ), 𝑞𝑏) = 𝐻′(𝑞𝑏), with 𝑟 at current value
+the Reduced Gradient (w.r.t. 𝑞𝑏 only, but still keeping the effects of this
+choice into account) is
+º
+º
+
+∇u ¹ 𝐻 = −
+
+𝐽ILM 𝐽J A
+
+𝐼[LX ∇u 𝐻
+
+(≠ ∇u¹ 𝐻 only!!)
+n
+
+algorithm
+
+𝑞̇ J = ∇u¹ 𝐻 º
+𝐽I 𝑞̇ I + 𝐽J 𝑞̇ J = 𝑟̇
+
+∇u ¹ 𝐻 = 0
+
+is a “compact”
+(i.e., 𝑁 − 𝑀 dimensional)
+necessary condition
+of constrained optimality
+
+step in the gradient direction of
+the reduced (𝑁 − 𝑀)-dim space
+satisfaction of the 𝑀 -dim
+task constraints
+
+𝑞̇ I = 𝐽ILM 𝑟̇ − 𝐽J 𝑞̇ J
+Robotics 2
+
+36
+
+Comparison between PG and RG
+n
+
+Projected Gradient (PG)
+𝑞̇ = 𝐽# 𝑟̇ + 𝐼 − 𝐽# 𝐽 ∇u 𝐻
+
+n
+
+Reduced Gradient (RG)
+LM
+LM 𝐽
+𝑞̇ I
+𝐽
+−𝐽
+I J
+𝑞̇ =
+= I 𝑟̇ +
+𝑞̇ J
+0
+𝐼
+
+n
+
+n
+
+n
+
+− 𝐽ILM 𝐽J
+
+A
+
+𝐼 ∇u 𝐻
+
+RG is analytically simpler and numerically faster than PG, but
+requires the search for a non-singular minor (𝐽I ) of the robot
+Jacobian
+if 𝑟 = cost & 𝑁 − 𝑀 = 1 ⇒ same (unique) direction for 𝑞̇ , but
+RG has automatically a larger optimization step size
+else ⇒ RG and PG methods provide always different evolutions
+
+Robotics 2
+
+37
+
+Analytic comparison
+PPR robot
+
+1
+𝐽=
+0
+
+𝑙
+𝑞3
+𝑞1
+
+0
+1
+
+−𝑙𝑠®
+= 𝐽I
+𝑙𝑐®
+
+LM
+LM
+𝑞̇ = 𝐽I 𝑟̇ + −𝐽I 𝐽J
+0
+𝐼
+
+RG:
+
+1
+𝑞̇ = 0
+0
+
+𝑞2
+
+𝐽J
+
+𝑞M
+𝑞I = 𝑞
+Q
+
+𝑙𝑠®
+0
+1 𝑟̇ + −𝑙𝑐®
+0
+1
+
+𝑙𝑠®
+
+𝑞J = 𝑞®
+
+− 𝐽ILM 𝐽J
+
+A
+
+𝐼 ∇u 𝐻
+
+−𝑙𝑐®
+
+1 ∇u 𝐻
+
+𝑙 Q 𝑠® 𝑐®
+𝑙 Q 𝑐®Q
+−𝑙𝑐®
+
+𝑙𝑠®
+−𝑙𝑐®
+1
+
+PG: 𝑞̇ = 𝐽# 𝑟̇ + 𝐼 − 𝐽# 𝐽 ∇u 𝐻
+
+1
+#
+𝐽 =
+1 + 𝑙Q
+
+Robotics 2
+
+1 + 𝑙 Q 𝑐®Q
+𝑙 Q 𝑠® 𝑐®
+−𝑙𝑠®
+
+𝑙 Q 𝑠® 𝑐®
+1 + 𝑙 Q 𝑠®Q
+𝑙𝑐®
+
+1
+#
+𝐼−𝐽 𝐽=
+1 + 𝑙Q
+
+𝑙 Q 𝑠®Q
+𝑙 Q 𝑠® 𝑐®
+𝑙𝑠®
+
+always < 1!!
+
+38
+
+Joint range limits
+0
+1
+1
+1
+
+0
+0
+1
+1
+
+−90° ≤ 𝜃V ≤ 90°
+
+0
+0 𝜃 = 𝑇𝜃
+0
+1
+
+⇔
+
+1
+𝑞= 1
+1
+1
+
+−90° ≤ 𝑞V − 𝑞VLM ≤ 90°
+
+absolute ⇔ relative
+coordinates
+𝜃=
+
+1
+0
+−1
+1
+0 −1
+0
+0
+
+0 0
+0 0 𝑞 = 𝑇 LM 𝑞
+1 0
+−1 1
+
+G
+𝑞2
+
+task:
+E-E linear path
+from S to G
+
+S
+
+initial configuration
+
+𝑞4
+
+𝑞1
+
+numerical comparison among pseudoinverse (PS),
+projected gradient (PG), and reduced gradient (RG) methods
+Robotics 2
+
+39
+
+Numerical results
+
+minimizing distance from mid joint range
+
+joint 1
+
+joint 3
+
+joint 2
+
+joint 4
+
+upper
+limit
+
+steps of numerical simulation
+Robotics 2
+
+40
+
+Numerical results
+
+self-motion for escaping singularities
+®
+
+(optimal)
+
+max 𝐻 𝑞 =
+
+¢ sinQ
+V£M
+
+𝑟º0
+
+𝑞V@M − 𝑞V
+
+this function is NOT
+the manipulability index,
+but has the same minima (= 0)
+
+(almost singular)
+
+8.
+
+steps of numerical simulation
+
+RG is faster than PG
+(keeping the same accuracy on 𝑟)
+Robotics 2
+
+41
+
+3
+n
+
+Task augmentation methods
+
+an auxiliary task is added (task augmentation)
+𝑆
+
+𝑓Â (𝑞) = 𝑦
+
+𝑆 ≤ 𝑁−𝑀
+
+corresponding to some desirable feature for the solution
+𝑟
+𝑓(𝑞)
+𝑟Ä = 𝑦 =
+𝑓Â (𝑞)
+n
+
+𝐽(𝑞)
+𝑟Ä̇ =
+𝑞̇ = 𝐽Ä (𝑞)𝑞̇
+𝐽Â (𝑞)
+
+𝐽𝐴
+
+𝑀+𝑆
+
+𝑁
+
+a solution is chosen still in the form of a generalized inverse
+
+𝑞̇ = 𝐾Ä (𝑞)𝑟Ä̇
+or by adding a term in the null space of the augmented
+Jacobian matrix 𝐽𝐴
+Robotics 2
+
+42
+
+Augmenting the task …
+n
+
+advantage: better shaping of the inverse kinematic solution
+
+n
+
+disadvantage: algorithmic singularities are introduced when
+r(𝐽) = 𝑀
+
+r(𝐽Â ) = 𝑆
+
+but
+
+to avoid this, it should be always
+
+r(𝐽Ä ) < 𝑀 + 𝑆
+
+ℛ 𝐽A ∩ ℛ 𝐽ÂA = ∅
+
+difficult to be obtained globally!
+rows of 𝐽 AND rows of 𝐽𝑦
+are all together linearly independent
+
+Robotics 2
+
+43
+
+Augmented task
+example
+
+𝑟(𝑡)
+𝑁 = 4, 𝑀 = 2
+
+absolute joint coordinates
+
+𝑓Â (𝑞) = 𝑞È = p/2
+
+(𝑆 = 1)
+
+last link is to be held vertical…
+Robotics 2
+
+44
+
+Extended Jacobian (𝑆 = 𝑁-𝑀)
+n
+
+square 𝐽𝐴: in the absence of algorithmic singularities, we can choose
+
+𝑞̇ = 𝐽ÄLM (𝑞)𝑟Ä̇
+n
+
+the scheme is then repeatable
+n
+
+n
+
+n
+
+provided no singularities are encountered during a complete task cycle*
+
+when the 𝑁 − 𝑀 conditions 𝑓Â (𝑞) = 0 correspond to necessary (and
+sufficient) conditions for constrained optimality of a given objective
+function 𝐻(𝑞) (see RG method, slide #36), this scheme guarantees that
+constrained optimality is locally preserved during task execution
+in the vicinity of algorithmic singularities, the execution of both the
+original task as well as the auxiliary task(s) are affected by errors
+(when using DLS inversion)
+
+* there exists an unexpected phenomenon in some 3R manipulators having “generic” kinematics: the robot may sometimes perform a pose
+
+change after a full cycle, even if no singularity has been encountered during motion (see J. Burdick, Mech. Mach. Theory, 30(1), 1995)
+
+Robotics 2
+
+45
+
+Extended Jacobian
+example
+
+MACRO-MICRO manipulator
+𝑟(𝑡)
+𝑦(𝑡)
+
+𝑁 = 4, 𝑀 = 2
+
+𝑟̇ = 𝐽(𝑞M , … , 𝑞È )𝑞̇
+𝑦̇ = 𝐽Â (𝑞M , 𝑞Q )𝑞̇
+
+∗ ∗
+𝐽Ä =
+∗ 0
+
+Robotics 2
+
+4×4
+
+46
+
+Task Priority
+if the original (primary) task 𝑟Ṁ = 𝐽M (𝑞)𝑞̇ has higher priority
+than the auxiliary (secondary) task 𝑟Q̇ = 𝐽Q (𝑞)𝑞̇
+n
+
+we first address the task with highest priority
+
+𝑞̇ = 𝐽M# 𝑟Ṁ + 𝐼 − 𝐽M# 𝐽M 𝑣M
+n
+
+and then choose 𝑣M so as to satisfy, if possible, also the secondary
+(lower priority) task
+𝑟Q̇ = 𝐽Q 𝑞̇ = 𝐽Q 𝐽M# 𝑟Ṁ + 𝐽Q 𝐼 − 𝐽M# 𝐽M 𝑣M = 𝐽Q 𝐽M# 𝑟Ṁ + 𝐽Q 𝑃M 𝑣M
+the general solution for 𝑣M takes the usual form
+
+𝑣M = 𝐽Q 𝑃M
+
+#
+
+𝑟Q̇ − 𝐽Q 𝐽M# 𝑟Ṁ + 𝐼 − 𝐽Q 𝑃M
+
+#
+
+𝐽Q 𝑃M
+
+𝑣Q
+
+𝑣Q is available for the execution of further tasks of lower (ordered) priorities
+Robotics 2
+
+47
+
+Task Priority
+
+(continue)
+
+§ substituting the expression of 𝑣M in 𝑞̇
+
+𝑞̇ = 𝐽M# 𝑟Ṁ + 𝑃M 𝐽Q 𝑃M
+= 𝐵𝑃 #
+when matrix 𝑃 is
+
+𝑃 𝐵𝑃
+
+#
+
+idempotent and symmetric
+
+#
+
+𝑟Q̇ − 𝐽Q 𝐽M# 𝑟Ṁ + 𝑃M 𝐼 − 𝐽Q 𝑃M
+
+= 𝐽Q 𝑃M
+
+#
+
+#
+
+𝐽Q 𝑃M
+
+𝑣Q
+
+possibly = 0
+
+§ main advantage: highest priority task is ideally no longer affected
+by algorithmic singularities (error is restricted only to secondary task)
+
+task 1: follow —
+
+WITHOUT
+task priority
+
+WITH
+task priority
+
+task 2: vertical
+third link
+
+Robotics 2
+
+48
+
+

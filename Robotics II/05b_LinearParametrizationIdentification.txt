@@ -33,17 +33,18 @@ each link is characterized by
 𝑟+'
 
 𝑦𝑖
-
-kinematic frame 𝑖
-(DH or modified DH)
-
 𝑂𝑖
 𝑥𝑖
 
 𝑟'
 
+𝑚'
+
+kinematic frame 𝑖
+(DH or modified DH)
+
 𝑟/'
-𝑚' 𝑟+' = 𝑟0'
+𝑟+' = 𝑟0'
 𝑟1'
 
 𝐼+',//
@@ -76,30 +77,33 @@ frame attached to the link (same orientation as the barycentric frame)
 
 n
 
+n
+
 fundamental kinematic relation
 
 𝑣6' = 𝑣' + 𝜔' × 𝑟+' = 𝑣' + 𝑆 𝜔' 𝑟+' = 𝑣' − 𝑆 𝑟+' 𝜔'
-n
-
 kinetic energy of link 𝑖
-
 1
 1 A
 A
 𝑇' = 𝑚' 𝑣+' 𝑣+' + 𝜔' 𝐼+' 𝜔'
 2
 2
-B
 
-= 𝑚' 𝑣' − 𝑆 𝑟+' 𝜔'
-8
+=
+
+B
+𝑚
+8 '
+
+𝑣' − 𝑆 𝑟+' 𝜔'
 
 A
 
-B
+𝑣' − 𝑆 𝑟+' 𝜔'
 
-𝑣' − 𝑆 𝑟+' 𝜔' + 𝜔'A 𝐼+' 𝜔'
-8
+B A
++ 8 𝜔' 𝐼+' 𝜔'
 
 1
 1 A
@@ -151,7 +155,8 @@ mass of link 𝑖
 moment )
 
 𝑚'
-𝝅𝒊 = 𝑚' 𝑖𝑟+'
+𝑖
+𝝅𝒊 = 𝑚' 𝑟+'
 𝑣𝑒𝑐𝑡 𝑖 𝐼'
 n
 
@@ -214,24 +219,16 @@ quantities, the robot dynamic equations can always be rewritten linearly
 in the standard dynamic parameters as
 
 𝑀 𝑞 𝑞̈ + 𝑐 𝑞, 𝑞̇ + 𝑔 𝑞 = 𝑌S 𝑞, 𝑞,̇ 𝑞̈ 𝜋 = 𝑢
-𝜋 A = 𝜋BA
+𝜋 A = 𝜋BA 𝜋8A ⋯ 𝜋GA
 n
-
-𝜋8A
-
-⋯
-
-A
-𝜋G
 
 the open kinematic chain structure of the manipulator implies that the 𝑖 -th
 dynamic equation can depend only on the standard dynamic parameters
 of links 𝑖 to 𝑁 ⇒ 𝑌S has a block upper triangular structure
 
-𝑌S 𝑞, 𝑞,̇ 𝑞̈ =
-
 𝑌BB 𝑌B8
 0 𝑌88
+𝑌S 𝑞, 𝑞,̇ 𝑞̈ =
 ⋮
 0 ⋯
 
@@ -263,7 +260,7 @@ some standard parameters may appear only in fixed combinations with others ⇒ t
 associated columns of 𝑌S are linearly dependent!
 one can isolate 𝑝 ≪ 10𝑁 independent groups of parameters 𝜋 (associated to 𝑝
 functionally independent columns 𝑌'jklm of 𝑌S ) and partition matrix 𝑌S in two
-blocks, the second containing dependent (or zero) columns as 𝑌klm = 𝑌'jklm 𝑇, for a
+blocks, the second containing dependent (or zero) columns as 𝑌klm = 𝑌'jklm 𝑇 , for a
 suitable constant 𝑝 × (10𝑁 − 𝑝) matrix 𝑇
 
 𝑌S 𝑞, 𝑞,̇ 𝑞̈ 𝜋 = 𝑌'jklm
@@ -292,7 +289,7 @@ Robotics 2
 
 6
 
-Linear parameterization of robot dynamics
+Linear parametrization of robot dynamics
 it is always possible to rewrite the dynamic model in the form
 regression
 matrix
@@ -306,7 +303,7 @@ dynamic coefficients
 𝑝×1
 
 e.g., the heuristic grouping (found by inspection) on a 2R planar robot
-
+𝑎B = 𝐼6B,11 + 𝑚B 𝑑B8 + 𝐼68,11 + 𝑚8 𝑑88 + 𝑚8 𝑙B8
 𝑞̈ B
 0
 
@@ -320,17 +317,19 @@ e.g., the heuristic grouping (found by inspection) on a 2R planar robot
 𝑐B8
 𝑐B8
 
-𝑎B = 𝐼6B,11 + 𝑚B 𝑑B8 + 𝐼68,11 + 𝑚8 𝑑88 + 𝑚8 𝑙B8
 𝑎B
-𝑎8 = 𝑚8 𝑙B 𝑑8
 𝑎8
-𝑢B
-𝑎s = 𝐼68,11 + 𝑚8 𝑑88
-𝑎s =
-𝑢8
-𝑎u = 𝑔) 𝑚B 𝑑B + 𝑚8 𝑙B
+𝑎s
 𝑎u
 𝑎t
+
+𝑎8 = 𝑚8 𝑙B 𝑑8
+𝑢B
+= 𝑢
+8
+
+𝑎s = 𝐼68,11 + 𝑚8 𝑑88
+𝑎u = 𝑔) 𝑚B 𝑑B + 𝑚8 𝑙B
 𝑎t = 𝑔) 𝑚8 𝑑8
 
 NOTE: 4 more coefficients are added when including the coefficients 𝐹p,' and 𝐹+,' of viscous and
@@ -341,11 +340,12 @@ Robotics 2
 
 Linear parametrization
 of a 2R planar robot (𝑁 = 2)
-n
 
 n
 
-being the kinematics known (i.e., 𝑙B and 𝑔) ), the number of dynamic
+n
+
+being the kinematics known (i.e., 𝑙B and 𝑔)), the number of dynamic
 coefficients can be reduced since we can merge the two coefficients
 𝑎8 = 𝑚8 𝑙B 𝑑8 & 𝑎t = 𝑔) 𝑚8 𝑑8 ⇒ 𝑎8 = 𝑚8 𝑑8 (factoring out 𝑙B and 𝑔) )
 therefore, after regrouping, 𝒑 = 𝟒 dynamic coefficients are sufficient
@@ -367,23 +367,19 @@ n
 0
 
 𝑎B
-𝑢B
 𝑎8
-=
-𝑌
-𝑎
-=
-𝑢
-=
 𝑎s
-𝑢8
 𝑎u
+
+𝑢B
+=𝑌𝑎=𝑢= 𝑢
+8
 
 𝑎B = 𝐼6B,11 + 𝑚B 𝑑B8 + 𝐼68,11 + 𝑚8 𝑑88 + 𝑚8 𝑙B8
 
 𝑎s = 𝐼68,11 + 𝑚8 𝑑88
 
-𝑎8 = 𝑚8 𝑑8
+𝑎 8 = 𝑚 8 𝑑8
 
 𝑎u = 𝑚B 𝑑B + 𝑚8 𝑙B
 
@@ -399,6 +395,7 @@ a systematic procedure for its derivation would be preferable
 
 Linear parametrization
 of a 2R planar robot (𝑁 = 2)
+
 n
 
 as alternative to the previous heuristic method, apply the general procedure
@@ -414,26 +411,17 @@ in the 2×5 matrix 𝑌S , the 3rd column (associated to 𝑚8 ) is 𝑌Ss = �
 
 after regrouping/reordering, 𝒑 = 𝟒 dynamic coefficients are again sufficient
 𝑎B
-8
 𝑢B
-𝑔) 𝑐B 𝑞̈ B 𝑙B 𝑐8 2𝑞̈ B + 𝑞̈ 8 − 𝑙B 𝑠8 𝑞̇ 8 + 2𝑞̇ B 𝑞̇ 8 + 𝑔) 𝑐B8 𝑞̈ B + 𝑞̈ 8 𝑎8
-=
-𝑌
-𝑎
-=
-𝑢
-=
-𝑢8
+𝑔) 𝑐B 𝑞̈ B 𝑙B 𝑐8 2𝑞̈ B + 𝑞̈ 8 − 𝑙B 𝑠8 𝑞̇ 88 + 2𝑞̇ B 𝑞̇ 8 + 𝑔) 𝑐B8 𝑞̈ B + 𝑞̈ 8 𝑎8
+=𝑌𝑎=𝑢= 𝑢
 0
 0
+8
 𝑙B 𝑐8 𝑞̈ B + 𝑠8 𝑞̇ B8 + 𝑔) 𝑐B8
 𝑞̈ B + 𝑞̈ 8 𝑎s
 𝑎u
-𝑎s = 𝑚8 𝑑8
-8
-8
-8
-𝑎B = 𝑚B 𝑑B + 𝑚8 𝑙B 𝑎8 = 𝐼B,11 + 𝑚8 𝑙B = 𝐼6B,11 + 𝑚B 𝑑B + 𝑚B 𝑙B
+𝑎 s = 𝑚 8 𝑑8
+𝑎B = 𝑚B 𝑑B + 𝑚8 𝑙B 𝑎8 = 𝐼B,11 + 𝑚8 𝑙B8 = 𝐼6B,11 + 𝑚B 𝑑B8 + 𝑚B 𝑙B8
 𝑎u = 𝐼8,11 = 𝐼68,11 + 𝑚8 𝑑88
 n
 
@@ -515,15 +503,10 @@ n
 
 n
 
-n
-
 𝑢 𝑡B
 ⋮
 𝑎=
 𝑢 𝑡j‚
-
-• = 𝑢•
-𝑌𝑎
 
 sufficiently “exciting” trajectories, large enough number of
 samples (𝑛6 × 𝑁 ≫ 𝑝), and their suitable selection/position,
@@ -532,7 +515,15 @@ guarantee rank(𝑌
 
 •
 solution by pseudoinversion of matrix 𝑌
-𝑎 = 𝑌• # 𝑢• = 𝑌• A 𝑌• •B 𝑌• A 𝑢•
+
+𝑎 = 𝑌• # 𝑢• = 𝑌• A 𝑌•
+n
+
+• = 𝑢•
+𝑌𝑎
+
+•B 𝑌
+• A 𝑢•
 
 (∈ ℝm )
 
@@ -552,6 +543,7 @@ sequence of the original 𝑌 matrix
 𝑛6
 
 𝑁×
+
 𝑛6
 
 n
@@ -597,8 +589,8 @@ Robotics 2
 § numerical check of full column rank is
 more robust ⇔ rank = 𝑝 (# of col’s)
 
-outlier data can be eliminated in advance (when building 𝑌 )
-if sufficiently rich friction models are not included in 𝑌𝑎 , discard the
+outlier data can be eliminated in advance (when building 𝑌)
+if sufficiently rich friction models are not included in 𝑌𝑎, discard the
 data collected at joint velocities close to zero
 13
 

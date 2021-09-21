@@ -610,8 +610,6 @@ evolutions
 JOINT POSITIONS
 s
 
-5
-
 −0.025
 
 0
@@ -672,6 +670,10 @@ deg
 joint
 positions
 
+5
+
+2
+
 FAULT INTERVAL 1
 FAULT INTERVAL 2
 
@@ -680,7 +682,7 @@ joint 1
 
 r
 1
-r2
+r
 
 −0.015
 
@@ -809,24 +811,14 @@ planar 2R robot with fault on force measure of sensor on the end-effector
 𝑞 =
 −ℓd − ℓ` 𝑐d
 
-𝑔 𝑞 − 𝑆 O (𝑞, 𝑞)
-̇ 𝑞̇
-
-𝑢`
-
-residual
-generator
-(function of
-𝑞, 𝑞,̇ 𝐹7 , 𝜁 )
-
-ℓ` 𝑠d
-ℓd + ℓ` 𝑐d
-
 8J
 
 8J
 
 𝑞
+
+𝑎b 𝑐` + 𝑎c 𝑐`d
+𝑎c 𝑐`d + 𝑎d 𝑠d 𝑞̇ ` 𝑞̇ ` + 𝑞̇ d
 
 +
 
@@ -839,13 +831,6 @@ adjoint of Jacobian
 
 0
 ℓ` 𝑠d
-
-time derivative of
-transposed
-Jacobian adjoint
-
-𝑎b 𝑐` + 𝑎c 𝑐`d
-𝑎c 𝑐`d + 𝑎d 𝑠d 𝑞̇ ` 𝑞̇ ` + 𝑞̇ d
 
 𝐽8J = det 𝐽 | 𝐽q`
 
@@ -861,7 +846,7 @@ Ex: prove this expression!
 
 input torque
 
-−ℓ` 𝑐d 𝑞̇ d
+ℓ` 𝑠d 𝑞̇ d
 𝑀 𝑞 𝑞̇ + 𝐽O
 ℓ` 𝑐d 𝑞̇ d
 
@@ -873,6 +858,23 @@ Robotics 2
 
 0
 ℓd
+
+time derivative of
+transposed
+Jacobian adjoint
+
+𝑔 𝑞 − 𝑆 O (𝑞, 𝑞)
+̇ 𝑞̇
+
+𝑢`
+
+residual
+generator
+(function of
+𝑞, 𝑞,̇ 𝐹7 , 𝜁 )
+
+ℓ` 𝑠d
+ℓd + ℓ` 𝑐d
 
 𝐽O
 
@@ -1110,13 +1112,13 @@ n
 
 n
 
-X. Zhang, M. Polycarpou, T. Parisini, “Robust detection and isolation scheme for abrupt
-and incipient faults in nonlinear systems,” IEEE Trans. on Automatic Control, vol. 47, no. 4,
-pp. 576-592, 2002.
+X. Zhang, M. Polycarpou, T. Parisini, “Robust detection and isolation scheme for abrupt and
+incipient faults in nonlinear systems,” IEEE Trans. on Automatic Control, vol. 47, no. 4, pp.
+576-592, 2002.
 A. De Luca, R. Mattone, "Actuator failure detection and isolation using generalized
 momenta," Proc. IEEE Int. Conf. on Robotics and Automation, pp. 634-639, 2003.
-A. De Luca, R. Mattone, "An adapt-and-detect actuator FDI scheme for robot
-manipulators," Proc. IEEE Int. Conf. on Robotics and Automation, pp. 4975-4980, 2004.
+A. De Luca, R. Mattone, "An adapt-and-detect actuator FDI scheme for robot manipulators,"
+Proc. IEEE Int. Conf. on Robotics and Automation, pp. 4975-4980, 2004.
 A. De Luca, R. Mattone, "An identification scheme for robot actuator faults," Proc. IEEE/RSJ
 Int. Conf. on Intelligent Robots and Systems, pp.1127-1131, 2005.
 R. Mattone, A. De Luca, "Relaxed fault detection and isolation: An application to a nonlinear
@@ -1126,8 +1128,8 @@ system," IEEE Trans. on Control Systems Technology, vol. 14, no. 6, pp. 1158-116
 L. Le Tien, A. Albu-Schäffer, A. De Luca, G. Hirzinger, "Friction observer and compensation
 for control of robots with joint torque measurements," Proc. IEEE/RSJ Int. Conf. on
 Intelligent Robots and Systems, pp. 3789-3795, 2008.
-C. Gaz, A. Cristofaro, A. De Luca, ”Detection and isolation of actuator faults and collisions
-for a flexible robot arm," 59th IEEE Conf. on Decision and Control, South Korea, Dec 2020.
+C. Gaz, A. Cristofaro, A. De Luca, ”Detection and isolation of actuator faults and collisions for
+a flexible robot arm," Proc. 59th IEEE Conf. on Decision and Control, pp. 2684-2689, 2020.
 
 Robotics 2
 

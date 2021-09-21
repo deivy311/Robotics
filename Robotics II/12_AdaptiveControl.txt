@@ -6,11 +6,16 @@ Prof. Alessandro De Luca
 Motivation and approach
 n
 
-need of adaptation in robot motion control laws
-n
 n
 
+need of adaptation in robot motion control laws
 n
+
+large uncertainty on the robot dynamic parameters
+
+n
+
+poor knowledge of the inertial payload
 
 characteristics of direct adaptive control
 n
@@ -19,8 +24,6 @@ n
 
 n
 
-large uncertainty on the robot dynamic parameters
-poor knowledge of the inertial payload
 direct aim is to bring to zero the state trajectory error, i.e.,
 position and velocity errors
 no need to estimate on line the true values of the dynamic
@@ -61,7 +64,7 @@ n
 n
 
 kinematic description based, e.g., on Denavit-Hartenberg parameters
-({𝛼" , 𝑑" , 𝑎" , 𝑖 = 1, … , 𝑁} in case of all revolute joints), including link
+({𝛼" , 𝑑" , 𝑎" , 𝑖 = 1, … , 𝑁 } in case of all revolute joints), including link
 lengths (kinematic calibration)
 
 viscous 𝐹5" , dry 𝐹6" , and stiction 𝐹7" friction at each joint ⇒ 1 ÷ 3×𝑁
@@ -147,7 +150,7 @@ n
 
 inverse dynamics feedforward (FFW) + PD (linear) control
 
-J 𝑞; 𝑞̈ ; + 𝑆O 𝑞; , 𝑞̇ ; 𝑞̇ ; + 𝑔N 𝑞; + 𝐹P5 𝑞̇ ; + 𝐾L 𝑒 + 𝐾7 𝑒̇
+J 𝑞; 𝑞̈ ; + 𝑆O 𝑞; , 𝑞̇ ; 𝑞̇ ; + 𝑔N 𝑞; + 𝐹P5 𝑞̇ ; + 𝐾L 𝑒 + 𝐾6 𝑒̇
 𝑢=𝑀
 𝑢N ;
 
@@ -155,7 +158,7 @@ n
 
 (nonlinear) control based on feedback linearization (FBL)
 
-J 𝑞 (𝑞̈ ; + 𝐾L 𝑒 + 𝐾7 𝑒)̇ + 𝑆O 𝑞, 𝑞̇ 𝑞̇ + 𝑔N 𝑞 + 𝐹P5 𝑞̇
+J 𝑞 (𝑞̈ ; + 𝐾L 𝑒 + 𝐾6 𝑒)̇ + 𝑆O 𝑞, 𝑞̇ 𝑞̇ + 𝑔N 𝑞 + 𝐹P5 𝑞̇
 𝑢=𝑀
 
 J 𝑆,
@@ -168,7 +171,9 @@ n
 
 ⟺
 
-estimate 𝑎N
+estimate
+
+𝑎N
 
 approximate estimates of dynamic coefficients may lead to
 instability with FBL due to temporary ’non-positive’ PD gains
@@ -187,13 +192,12 @@ n
 nonlinear trajectory tracking control (without cancellations)
 having global asymptotic stabilization properties
 
-J 𝑞 𝑞̈ ; + 𝑆O 𝑞, 𝑞̇ 𝑞̇ ; + 𝑔N 𝑞 + 𝐹P5 𝑞̇ ; + 𝐾L 𝑒 + 𝐾7 𝑒̇
+J 𝑞 𝑞̈ ; + 𝑆O 𝑞, 𝑞̇ 𝑞̇ ; + 𝑔N 𝑞 + 𝐹P5 𝑞̇ ; + 𝐾L 𝑒 + 𝐾6 𝑒̇
 𝑢=𝑀
 n
 
 a natural adaptive version would require ...
-a suitable update law
-𝑎Ṅ = designing
+𝑎Ṅ = designing a suitable update law
 (in continuous time)
 n
 
@@ -212,7 +216,7 @@ idea: on-line modification with a reference velocity
 
 Λ>0
 
-typically Λ = 𝐾7UV𝐾L (all matrices will be chosen diagonal)
+typically Λ = 𝐾6UV 𝐾L (all matrices will be chosen diagonal)
 Robotics 2
 
 7
@@ -223,17 +227,17 @@ n
 elementary case
 n
 
-a mass ‘lagging behind its mobile reference (𝑒 > 0) on a linear rail
+a mass ‘lagging behind’ its mobile reference (𝑒 > 0) on a linear rail
 controlled
 mass
-
-𝑢
-𝑞
 
 mobile
 reference
 
 𝑞̇
+
+𝑢
+𝑞
 
 𝑞̇ R = 𝑞̇ ; + Λ 𝑒
 𝑞̇ ;
@@ -244,7 +248,7 @@ reference
 
 ‘enhanced’ velocity error 𝑠 = 𝑞̇ R − 𝑞̇ > 𝑞̇ ; − 𝑞̇ = 𝑒̇
 
-𝑢 = 𝐾7 𝑠 = 𝐾7 𝑞̇ R − 𝑞̇ = 𝐾7 𝑞̇ ; + Λ 𝑒 − 𝑞̇ = 𝐾7 𝑒̇ + 𝐾7 Λ 𝑒
+𝑢 = 𝐾6 𝑠 = 𝐾6 𝑞̇ R − 𝑞̇ = 𝐾6 𝑞̇ ; + Λ 𝑒 − 𝑞̇ = 𝐾6 𝑒̇ + 𝐾6 Λ 𝑒
 n
 
 a mass ‘leading in front’ of its mobile reference (𝑒 < 0)
@@ -262,11 +266,11 @@ n
 substituting 𝑞̇ R = 𝑞̇ ; + Λ𝑒, 𝑞̈ R = 𝑞̈ ; + Λ𝑒̇ in the previous nonlinear
 controller for trajectory tracking
 
-J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P5 𝑞̇ R + 𝐾L 𝑒 + 𝐾7 𝑒̇
+J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P5 𝑞̇ R + 𝐾L 𝑒 + 𝐾6 𝑒̇
 𝑢=𝑀
 = 𝑌 𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R 𝑎N
 +
-𝐾L 𝑒 + 𝐾7 𝑒̇
+𝐾L 𝑒 + 𝐾6 𝑒̇
 dynamic parameterization of
 PD stabilization
 the control law using current estimates (diagonal matrices, >0)
@@ -332,27 +336,28 @@ estimation
 Proof
 n
 
-(cont)
-
 the time derivative of V is
 
-1 Z
-𝑉̇ = 𝑠 𝑀̇ 𝑞 𝑠 + 𝑠 Z 𝑀 𝑞 𝑠̇ + 𝑒 Z 𝑅𝑒̇ − 𝑎[ Z Γ UV 𝑎Ṅ
-2
-
+𝑉̇ =
 n
+
+(cont)
+
+1 Z
+𝑠 𝑀̇ 𝑞 𝑠 + 𝑠 Z 𝑀 𝑞 𝑠̇ + 𝑒 Z 𝑅 𝑒̇ − 𝑎[ Z Γ UV 𝑎Ṅ
+2
 
 since 𝑎[̇ = −𝑎Ṅ (𝑎̇ = 0)
 the closed-loop dynamics is given by
 
 𝑀 𝑞 𝑞̈ + 𝑆 𝑞, 𝑞̇ 𝑞̇ + 𝑔 𝑞 + 𝐹5 𝑞̇ =
-J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P5 𝑞̇ R + 𝐾L 𝑒 + 𝐾7 𝑒̇
+J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P5 𝑞̇ R + 𝐾L 𝑒 + 𝐾6 𝑒̇
 =𝑀
 subtracting the two sides from 𝑀 𝑞 𝑞̈ R + 𝑆 𝑞, 𝑞̇ 𝑞̇ R + 𝑔 𝑞 + 𝐹5 𝑞̇ R
 leads to
 
 𝑀(𝑞)𝑠̇ + 𝑆 𝑞, 𝑞̇ + 𝐹5 𝑠 =
-` 𝑞 𝑞̈ R + 𝑆a 𝑞, 𝑞̇ 𝑞̇ R + 𝑔[ 𝑞 + 𝐹b5 𝑞̇ R − 𝐾L 𝑒 − 𝐾7 𝑒̇
+` 𝑞 𝑞̈ R + 𝑆a 𝑞, 𝑞̇ 𝑞̇ R + 𝑔[ 𝑞 + 𝐹b5 𝑞̇ R − 𝐾L 𝑒 − 𝐾6 𝑒̇
 =𝑀
 ` = 𝑀 − 𝑀,
 J 𝑆a = 𝑆 − 𝑆,
@@ -370,16 +375,16 @@ n
 
 from the property of linearity in the dynamic coefficients, it follows
 
-𝑀(𝑞)𝑠̇ + 𝑆 𝑞, 𝑞̇ + 𝐹5 𝑠 = 𝑌 𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R 𝑎[ − 𝐾L 𝑒 − 𝐾7 𝑒̇
+𝑀(𝑞)𝑠̇ + 𝑆 𝑞, 𝑞̇ + 𝐹5 𝑠 = 𝑌 𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R 𝑎[ − 𝐾L 𝑒 − 𝐾6 𝑒̇
 n
 
 substituting in 𝑉,̇ together with 𝑎Ṅ = Γ𝑌 Z 𝑠, and using the skewsymmetry of matrix 𝑀̇ − 2𝑆 we obtain
 
-1
-̇𝑉 = 𝑠 Z 𝑀̇ 𝑞 − 2𝑆 𝑞, 𝑞̇ 𝑠 − 𝑠 Z 𝐹5 𝑠 + 𝑠 Z 𝑌𝑎[
+1 Z
+𝑉̇ = 𝑠 𝑀̇ 𝑞 − 2𝑆 𝑞, 𝑞̇ 𝑠 − 𝑠 Z 𝐹5 𝑠 + 𝑠 Z 𝑌 𝑎[
 2
-−𝑠 Z (𝐾L 𝑒 + 𝐾7 𝑒)̇ + 𝑒 Z 𝑅𝑒̇ − 𝑎[ Z 𝑌 Z 𝑠
-= −𝑠 Z 𝐹5 𝑠 − 𝑠 Z (𝐾L 𝑒 + 𝐾7 𝑒)̇ + 𝑒 Z 𝑅𝑒̇
+−𝑠 Z (𝐾L 𝑒 + 𝐾6 𝑒)̇ + 𝑒 Z 𝑅 𝑒̇ − 𝑎[ Z 𝑌 Z 𝑠
+= −𝑠 Z 𝐹5 𝑠 − 𝑠 Z (𝐾L 𝑒 + 𝐾6 𝑒)̇ + 𝑒 Z 𝑅 𝑒̇
 
 n
 
@@ -391,7 +396,7 @@ quadratic form
 in 𝑒, 𝑒̇ !
 Robotics 2
 
-−𝑒 Z 2ΛZ 𝐹5 + ΛZ 𝐾7 + 𝐾L − 𝑅 𝑒̇ − 𝑒̇ Z (𝐹5 + 𝐾7 )𝑒̇
+−𝑒 Z 2ΛZ 𝐹5 + ΛZ 𝐾6 + 𝐾L − 𝑅 𝑒̇ − 𝑒̇ Z (𝐹5 + 𝐾6 )𝑒̇
 12
 
 Proof
@@ -402,12 +407,12 @@ n
 defining now (all matrices are diagonal!)
 leads to
 
-Λ = 𝐾7UV 𝐾L > 0
+Λ = 𝐾6UV 𝐾L > 0
 
-𝑅 = 2𝐾L (𝐼 + 𝐾7UV 𝐹5 ) > 0
+𝑅 = 2𝐾L (𝐼 + 𝐾6UV 𝐹5 ) > 0
 
-𝑉̇ = −𝑒 Z ΛZ (𝐹5 + 𝐾7 )Λ𝑒 − 𝑒̇ Z (𝐹5 + 𝐾7 )𝑒̇
-= −𝑒 Z 𝐾L 𝐾7UV (𝐹5 + 𝐾7 )𝐾7UV 𝐾L 𝑒 − 𝑒̇ Z (𝐹5 + 𝐾7 )𝑒̇ ≤ 0
+𝑉̇ = −𝑒 Z ΛZ (𝐹5 + 𝐾6 )Λ𝑒 − 𝑒̇ Z (𝐹5 + 𝐾6 )𝑒̇
+= −𝑒 Z 𝐾L 𝐾6UV (𝐹5 + 𝐾6 )𝐾6UV 𝐾L 𝑒 − 𝑒̇ Z (𝐹5 + 𝐾6 )𝑒̇ ≤ 0
 
 and thus
 
@@ -449,9 +454,9 @@ in case of known absence of (viscous) friction (𝐹5 ≡ 0), the same
 proof applies (a bit easier in the final part)
 the adaptive controller does not require the inverse of the inertia
 matrix (true or estimated), nor the actual robot acceleration (only the
-desired acceleration), nor further lower bounds on 𝐾L > 0, 𝐾7 > 0
+desired acceleration), nor further lower bounds on 𝐾L > 0, 𝐾6 > 0
 adaptation can be also used only for a subset of dynamic coefficients,
-the remaining being known (𝑌𝑎 = 𝑌f;fgh 𝑎Nf;fgh + 𝑌ijklj 𝑎ijklj )
+the remaining being known (𝑌𝑎 = 𝑌f;fgh 𝑎N f;fgh + 𝑌ijklj 𝑎ijklj )
 the non-adaptive version (using accurate estimates) is a static
 tracking controller based on the passivity property of robot dynamics
 
@@ -481,8 +486,8 @@ sin 𝜃
 
 adaptive controller
 
-t sin 𝜃 + 𝑓J5 𝜃̇ + 𝑘L 𝑒 + 𝑘7 𝑒̇
-𝑒 = 𝜃; − 𝜃 Λ > 0 𝑢 = J𝐼 𝜃̈ + 𝑚𝑔𝑑
+t sin 𝜃 + 𝑓J5 𝜃̇ + 𝑘L 𝑒 + 𝑘6 𝑒̇
+𝑒 = 𝜃; − 𝜃 Λ > 0 𝑢 = J𝐼 𝜃̈R + 𝑚𝑔𝑑
 ̇
 𝑘L
 J
@@ -490,23 +495,22 @@ J
 𝐼
 𝛾
 𝜃
-̇𝜃R = 𝜃̇; +
+̇
+̇
 V
+𝜃R = 𝜃; +
 𝑒
 ̇
-𝑘7
+𝑘6
 ̇
 t
 𝑎Ṅ = 𝑚𝑔𝑑
 = 𝛾u sin 𝜃 (𝜃̇R − 𝜃)
-̇R
 𝛾" > 0, 𝑖 = 1,2,3
-̇
-𝛾
-𝜃
-J
-v
-𝑓5
+𝛾v 𝜃̇R
+𝑓J̇
+5
+
 Robotics 2
 
 15
@@ -527,7 +531,6 @@ t = 5,
 control parameters
 
 𝑘L = 25,
-
 n
 
 𝑓5 = 1
@@ -539,8 +542,12 @@ n
 
 𝑚𝑔𝑑 = 6,
 
+𝑘6 = 10,
+
 𝛾" = 5,
+
 𝑖 = 1,2,3
+
 test trajectories (starting with 𝜃 0 = 0, 𝜃̇ 0 = 0)
 n
 
@@ -549,8 +556,6 @@ first
 n
 
 second
-
-𝑘7 = 10,
 
 𝜃; 𝑡 = − sin 𝑡
 
@@ -638,16 +643,16 @@ n
 adaptation in case 𝑞; is constant
 no special simplifications for the presented adaptive control
 law (designed for the general tracking case…)
-J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P} 𝑞̇ R + 𝐾L 𝑒 + 𝐾7 𝑒̇
+J 𝑞 𝑞̈ R + 𝑆O 𝑞, 𝑞̇ 𝑞̇ R + 𝑔N 𝑞 + 𝐹P} 𝑞̇ R + 𝐾L 𝑒 + 𝐾6 𝑒̇
 𝑢=𝑀
-𝑎Ṅ = Γ𝑌Z (𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R )(𝑞̇ R − 𝑞)̇
+𝑎Ṅ = Γ𝑌 Z (𝑞, 𝑞,̇ 𝑞̇ R , 𝑞̈ R )(𝑞̇ R − 𝑞)̇
 
 n
 
 since 𝑞̇ R = Λ(𝑞; − 𝑞) and 𝑞̈ R = −Λ𝑞̇ do not vanish!
 a different case would be the availability of an adaptive
 version of the trajectory tracking controller
-J 𝑞 𝑞̈ ; + 𝑆O 𝑞, 𝑞̇ 𝑞̇ ; + 𝑔N 𝑞 + 𝐹P} 𝑞̇ ; + 𝐾L 𝑒 + 𝐾7 𝑒̇
+J 𝑞 𝑞̈ ; + 𝑆O 𝑞, 𝑞̇ 𝑞̇ ; + 𝑔N 𝑞 + 𝐹P} 𝑞̇ ; + 𝐾L 𝑒 + 𝐾6 𝑒̇
 𝑢=𝑀
 since, when 𝑞; collapses to a constant, only the adaptation
 of the gravity term would be left over (which is what one
@@ -667,21 +672,25 @@ with a 𝑝𝑔-dimensional vector 𝑎𝑔
 n
 
 an adaptive regulator yielding global asymptotic stability
-of the equilibrium state (𝑞𝑑, 0) is provided by
+of the equilibrium state (𝑞𝑑 , 0) is provided by
 
-𝑢 = 𝐺 𝑞 𝑎N‚ + 𝐾L 𝑞; − 𝑞 − 𝐾7 𝑞̇
-𝑎Ṅ ‚ = 𝛾𝐺 Z 𝑞
+𝑢 = 𝐺 𝑞 𝑎N‚ + 𝐾L 𝑞; − 𝑞 − 𝐾6 𝑞̇
+𝑎Ṅ ‚ =
+
+𝛾𝐺 Z
+
+𝑞
 
 2𝑒
 1+2 𝑒
 
 u
 
-− 𝛽𝑞̇ ,
+− 𝛽 𝑞̇ ,
 
 𝛾>0
 
-where 𝑒 = 𝑞𝑑 − 𝑞, 𝐾𝑃 > 0, 𝐾𝐷 > 0 (symmetric), and
+where 𝑒 = 𝑞𝑑 − 𝑞 , 𝐾𝑃 > 0, 𝐾𝐷 > 0 (symmetric), and
 𝛽 > 0 is chosen sufficiently large
 (see paper by P. Tomei, IEEE TRA, 1991; available as extra material on the course web)
 Robotics 2
@@ -701,7 +710,8 @@ Z𝑀 𝑞 𝑒
 ̇
 1
 Z
-𝑉 = 𝑞̇ 𝑀 𝑞 𝑞̇ + 𝑒 𝐾L 𝑒 −
+𝑉=
+𝑞̇ 𝑀 𝑞 𝑞̇ + 𝑒 𝐾L 𝑒 −
 + 𝑎N‚ − 𝑎‚
 u
 2
@@ -735,7 +745,7 @@ u
 
 1
 
-𝑀ƒ 𝐾L,ƒ 𝐾7,ƒ
+𝑀ƒ 𝐾L,ƒ 𝐾6,ƒ
 
 u
 
@@ -744,14 +754,14 @@ u
 𝑎 > 0, 𝑏 > 0
 
 u
-𝐾7,ƒ
-𝛼6
+𝐾6,ƒ
+𝛼7
 + 4𝑀„ +
 2𝐾L,ƒ
 2
 
 𝑆(𝑞, 𝑞)
-̇ ≤ 𝛼6 𝑞̇
+̇ ≤ 𝛼7 𝑞̇
 
 Note: for any symmetric, positive definite matrix 𝐴
 
@@ -768,9 +778,7 @@ u
 
 V
 
-𝑞̇ Z 𝑀 𝑞 𝑞̇ ≥ 𝑀ƒ 𝑞̇
-
-u
+𝑞̇ Z 𝑀 𝑞 𝑞̇ ≥ u 𝑀ƒ 𝑞̇
 
 u
 

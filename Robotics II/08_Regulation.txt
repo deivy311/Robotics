@@ -36,16 +36,16 @@ $
 (𝑢 = 𝑢(𝑥))
 
 𝑓 𝑥5 = 0
-𝑓 𝑥5 + 𝐺 𝑥5,$ 𝑢(𝑥5 ) = 0
+𝑓 𝑥5 + 𝐺 𝑥5# 𝑢(𝑥5 ) = 0
 
 all equilibrium states of mechanical
 systems have zero velocity!
 Robotics 2
 
-𝑥5,$ = 0
-𝑔 𝑥5,# = 0
-𝑥5,$ = 0
-𝑢 𝑥5 = 𝑔 𝑥5,#
+𝑥5$ = 0
+𝑔 𝑥5# = 0
+𝑥5$ = 0
+𝑢 𝑥5 = 𝑔 𝑥5#
 
 joint torques must balance gravity
 at the equilibrium!
@@ -1088,6 +1088,10 @@ N
 ’¶
 
 > 0)
+
+with global
+exponential
+stability!
 
 Laplace domain analysis: 𝑒 𝑠 = ℒ[𝑒 𝑡 ], 𝑑 𝑠 = ℒ[𝑚𝑔>] + Routh criterion
 

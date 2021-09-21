@@ -1,0 +1,527 @@
+Robotics 2
+
+Introduction
+Prof. Alessandro De Luca
+
+Robotics 2 ̶ 2020/21
+n
+n
+n
+
+II semester: Monday, February 22 ̶ Wednesday, May 26, 2021
+masters: Artificial Intelligence and Robotics & Control Engineering
+credits: 6 = 150h (1 ECTS = 25h of student work)
+n
+
+n
+
+n
+
+n
+
+~50h of Video Lectures (VL) recorded last year: available on YouTube
+in Robotics 2 playlist of Video DIAG – Sapienza channel
+~30h of lectures in the classroom or on Zoom, with
+n Questions & Answers on material covered in the previous VL
+n Exercises (with blackboard) + Discussions + (Remote) Midterm Test
+~70h of individual study
+
+lecture schedule: Monday (8:00-10:00) OR Wednesday (14:00-17:00)
+n
+
+in classroom B2 or via Zoom (with Sapienza institutional email only)
+
+https://uniroma1.zoom.us/j/83717753465?pwd=QU8zS0xCWTcvb1Z3N0pxOW02RGxHdz09
+n
+
+n
+
+~once a week, variable schedule, depending on needs and progress…
+
+G-group: register to
+
+Robotics 2
+
+https://groups.google.com/a/diag.uniroma1.it/g/robotics2_2020-21
+2
+
+General information
+n
+
+prerequisites
+n
+
+n
+
+aims
+n
+n
+
+n
+
+advanced kinematics & dynamic analysis of robot manipulators
+design of sensory feedback control laws for free motion and
+interaction tasks
+
+textbook
+n
+
+n
+
+Robotics 1 as prerequisite (see www.diag.uniroma1.it/deluca/rob1_en.php)
+
+B. Siciliano, L. Sciavicco, L. Villani, G. Oriolo: Robotics: Modelling,
+Planning and Control, 3rd Edition, Springer, 2009
+
+related courses
+n
+n
+
+n
+
+Autonomous and Mobile Robotics: 1st semester of Y2, 6 credits
+Elective in Robotics: whole Y2, 12 credits (four modules)
+or Control Problems in Robotics: 6 credits (two out of four modules)
+Medical Robotics: 2nd semester of Y2, 6 credits
+
+Robotics 2
+
+3
+
+An international textbook...
+B. Siciliano, L. Sciavicco, L. Villani, G. Oriolo: Robotics: Modelling,
+Planning and Control, 3rd Edition, Springer, 2009
+
+Robotics 2
+
+4
+
+Robotics
+n
+
+algorithms for robotics*
+n
+n
+n
+n
+
+n
+
+process inputs from sensors that provide noisy and partial data
+build geometric and physical models of the robot and the world
+plan high- and low-level actions at different time horizons
+execute these actions on actuators with uncertainty/limited precision
+
+design & analysis of robot algorithms raise a unique combination of
+questions from many fields
+n
+n
+n
+n
+n
+n
+
+control theory
+control
+theory
+computational geometry and topology
+geometrical
+geometrical and
+and physical
+physicalmodeling
+modeling
+reasoning under uncertainty
+probabilistic algorithms and game theory
+theoretical computer science
+* = modified from intro to WAFR 2016
+
+Robotics 2
+
+5
+
+Program - 1
+n
+
+advanced kinematics
+n
+n
+
+n
+
+kinematic calibration
+kinematic redundancy and related control methods
+
+dynamic modeling of manipulators
+n
+n
+n
+n
+n
+n
+n
+
+Robotics 2
+
+all on fixed-base
+robot manipulators!
+
+direct and inverse dynamics
+Euler-Lagrange formulation
+Newton-Euler formulation
+properties of the dynamic model
+identification of dynamic parameters
+inclusion of flexibility at the joints
+inclusion of geometric constraints
+
+Q: why/when do we need
+dynamics for robot control?
+6
+
+Program - 2
+n
+
+design of feedback control laws (torque input commands)
+n
+
+free motion tasks
+n
+
+set-point regulation
+n
+n
+n
+
+n
+
+trajectory tracking
+n
+n
+n
+n
+
+n
+
+feedback linearization and input-output decoupling (in different spaces)
+passivity-based control
+adaptive (and robust) control
+on-line learning
+
+interaction tasks with the environment
+n
+n
+n
+
+Robotics 2
+
+PD with gravity cancellation or compensation
+PID or saturated PID
+iterative learning for gravity compensation
+
+compliance/admittance control
+impedance control
+hybrid force/velocity control
+7
+
+Program - 3
+n
+
+exteroceptive feedback control laws
+n
+
+image- and position-based visual servoing
+n
+
+n
+
+research-oriented seminars
+n
+n
+
+diagnosis of robot actuator faults
+physical Human-Robot Interaction (pHRI)
+n
+n
+n
+
+n
+
+kinematic treatment
+
+safety: sensor-less collision detection and robot reaction
+coexistence: collision avoidance while sharing workspace
+collaboration: intentional exchange of contact forces
+
+simulation tools
+n
+n
+
+Robotics 2
+
+Matlab/Simulink (including Robotics Toolbox of Peter Corke)
+CoppeliaSim (formerly V-REP)
+8
+
+Sneak preview of videos follows ...
+n
+
+kinematic redundancy and related control methods
+
+n
+
+robot dynamic modeling and identification
+
+n
+
+interaction with the environment: force and motion control
+
+n
+
+n
+
+motion control in the presence of joint flexibility or variable
+stiffness actuation
+safe physical human-robot interaction & collaboration
+
+Robotics 2
+
+9
+
+Kinematic/dynamic control and redundancy
+SNS algorithm handles hard bounds on robot motion
+
+KUKA LWR4 robot
+
+Robotics 1
+
+video DIAG Sapienza/Stanford, IEEE ICRA 2012
+
+10
+
+Kinematic control and redundancy
+(standing) HRP-2 humanoid robot
+
+video @LAAS/CNRS Toulouse
+
+HQP approach for multiple equality and inequality tasks with priorities
+Robotics 2
+
+11
+
+Dynamic modeling and identification
+
+data acquisition
+for identification
+KUKA LWR4+ robot
+with joint torque
+sensing
+Robotics 2
+
+2 videos ICRA 2014 @DIAG Robotics Lab
+
+model validation
+by torque prediction
+dynamic
+simulation
+with V-REP
+video
+
+12
+
+Dynamic modeling and identification
+e.g., linear parametrization of gravity term in robot dynamic model
+
+symbolic expressions of gravityrelated dynamic coefficients
+
+numerical values
+identified through
+experiments
+gravity joint torques
+prediction/evaluation on
+new validation trajectory
+Robotics 2
+
+13
+
+Dynamic modeling and identification
+complete dynamic model estimation vs. joint torque sensor measurement
+
+-
+
+without the use of a joint friction model
+Robotics 2
+
+friction
+
+meas
+
+including an identified joint friction model
+14
+
+Motion and interaction control
+2 videos @DLR München
+
+low-damped oscillations due to flexibility
+of robot transmissions at the joints
+(use of Harmonic Drives)
+Robotics 2
+
+end-effector response to forces
+with impedance control
+(selective behavior in different directions)
+15
+
+Control of environment interaction
+2 video clips extracted from Springer Handbook of Robotics - Multimedia
+
+surface contour following
+
+peg-in-hole insertion strategy
+
+De Schutter et al @KU Leuven, Belgium (mid ‘90s)
+Robotics 2
+
+16
+
+Motion control with VSA
+
+3 videos
+@University of Pisa
+
+Robotics 2
+
+modular, low-cost
+qbmove units
+
+compliant motion with Variable Stiffness Actuators
+
+17
+
+Sensorless collision detection
+2 videos @DLR München
+during my sabbatical in 2005-06
+
+master student Sami Haddadin in 2006
+leading now the Munich School of
+Robotics and Machine Intelligence!
+
+residual method to detect collisions: uses
+robot dynamic model, encoder readings,
+commanded torques (in case of rigid joints)
+Robotics 2
+
+NEVER DO THIS!
+
+(unless you’re 100% sure of
+your research results …)
+18
+
+Safe human-robot collaboration
+finalist video IROS 2013 @DIAG Robotics Lab
+
+Robotics 2
+
+19
+
+Physical human-robot interaction control
+video ICRA 2015 @DIAG Robotics Lab
+
+Robotics 2
+
+20
+
+Contacts
+n
+
+student hours: Tuesdays 12:00-13:30 (until June 2021)
+n
+n
+n
+
+n
+
+via G-Meet: https://meet.google.com/chp-fghs-fri
+… maybe later on: c/o A-210, left wing, floor 2, DIAG
+other dates: send an email, check also “My travel dates” on web site
+
+communications:
+use the G-group for questions and doubts: everyone would benefit!
+by mail (personal issues): deluca@diag.uniroma1.it
+
+n
+n
+
+n
+n
+
+URL: http://www.diag.uniroma1.it/deluca
+course materials:
+n
+n
+
+n
+
+http://www.diag.uniroma1.it/deluca/rob2_en.html
+slides in pdf, link to video lectures, all shown video clips (zipped),
+syllabus, written exams (most with solutions), …
+
+video channel: http://www.youtube.com/user/RoboticsLabSapienza
+
+Robotics 2
+
+21
+
+Exams and Master Theses
+n
+
+type of exam:
+n
+n
+
+n
+
+Remote Midterm Test (RMT) qualifies for final project
+written test + oral part (OR final project + oral presentation)
+
+schedule for academic year 2020/21:
+n
+
+2 sessions at the end of this semester
+n
+
+n
+
+1 session after the summer break
+n
+
+n
+
+n
+
+January and February 2022, dates/rooms tbd
+
+booking ready in infostud (code 1021883), up to 10 days before, only
+one session is open at a time
+
+2 extra sessions only for students of previous years, part-time, etc.
+n
+
+n
+
+September 10, 9:00, room B2
+
+2 sessions at the end of the first semester of next year
+n
+
+n
+
+June 11, 9:00, room B2 and July 12, 9:00, room B2
+
+in April and October 2021
+
+theses: samples at DIAG Robotics Lab http://www.diag.uniroma1.it/labrob
+
+Robotics 2
+
+22
+
+
