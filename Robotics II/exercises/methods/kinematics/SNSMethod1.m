@@ -30,8 +30,8 @@ q_dMaxTemp_=q_dMax_;
 numiter=1;
 while maxvalue > 0
     [maxvalue, maxindex] = max(abs(qdotstar)-abs(q_dMaxTemp_)); % The positive values are violating the limit. We take the highest one.
-    
-    if (maxvalue > 0) % if there is an exceeding value
+       if any(maxvalue > 0) %triying with thsi aproach
+%     if (maxvalue > 0) % if there is an exceeding value
         disp("Max value that violates is:  "+ originalpos(maxindex)+"  with value:  "+maxvalue)
        
         disp("SNS Iterarion:  "+numiter)

@@ -1,5 +1,5 @@
-%aurhor David Esteban Imnjoa Rui
-%adnr'es fernando ariniegas
+%Author: David Esteban Imnjoa Ruiz
+
 function [Msubs, dynamicParamsReturn_, a] = getDynamicParameters(M,q, exceptionTerms_,parametricmethod_)
 % Very empiric (/messy) method to extract dynamic parameters from the Inertia
 % matrix in robot dynamics. Based on grouping terms.
@@ -38,8 +38,8 @@ nparams = 0; % Number of replacements
 qallcomb=[];
 excallcomb=[];
 
-exTeleng=size(exceptionTerms,2);
-exTeleng_=zeros(1,exTeleng);
+exTeleng=size(exceptionTerms,1);
+exTeleng_=zeros(exTeleng,1);
 % for kle=1:exTeleng%n for organizee similar parameters
 %     excallcomb=[excallcomb,prod(nchoosek(exceptionTerms,kle),2)']; 
 %     
@@ -264,7 +264,7 @@ for iter = 1:2
                         for fqtemp2= lfactmp
                             On_exceptionTerms=true;
                             if(exTeleng>0)
-                                On_exceptionTerms=  ~has(fqtemp2,[exceptionTerms,q']);%%the last part si falla quitarlo y si tienes un dios reza a que funciona,xD
+                                On_exceptionTerms=  ~has(fqtemp2,[exceptionTerms,q]);%%the last part si falla quitarlo y si tienes un dios reza para que funcione,xD. att: David
                             end
                             if(~isempty(symvar(fqtemp2))&&On_exceptionTerms)
                                 
@@ -359,7 +359,7 @@ end
 function [termReturn, keepGoing]= removeExceptionsInTerm(term, exceptionTerms, iteration, nparams, aa)
     % nparams = number of replaced parameters
     if iteration == 1
-        termReturn = subs(term, exceptionTerms, ones(1,length(exceptionTerms))); % Replaces the exception terms by 1
+        termReturn = subs(term, exceptionTerms, ones(length(exceptionTerms),1)); % Replaces the exception terms by 1
         keepGoing = 1 ;% Even if there are replacements, the algorithm should continue
     end
     
@@ -371,7 +371,7 @@ function [termReturn, keepGoing]= removeExceptionsInTerm(term, exceptionTerms, i
                 % This term should be kept just as it is.
                 if(has(term,exceptionTerms(xx)))
                     %%added by david
-                    term = subs(term, exceptionTerms, ones(1,length(exceptionTerms))); % Replaces the exception terms by 1
+                    term = subs(term, exceptionTerms, ones(length(exceptionTerms),1)); % Replaces the exception terms by 1
                     %%added by david
                     if(has(term,aa(hh))) %&& has(term,exceptionTerms(xx)))
                         keepGoing = 0; % No further replacements should be done with this term

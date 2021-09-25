@@ -1,7 +1,7 @@
 %aurhor David Esteban Imnjoa Ruiz
 
-function [Msubs, dynamicParamsReturn_, a] = getDynamicParameters2(M,q, exceptionTerms_,parametricmethod_)
-
+function [Msubs, dynamicParamsReturn_, a] = adaptative_control_get_paramateres2(M,dynamicParameters,aM,q, exceptionTerms_,parametricmethod_)
+M=dynamicParameters
 none_sym_value=sym('zxw_none_David','real')
 if(any(has(M,none_sym_value)))
     rethrow("Symbolic var not allowed, change : zxw_none_David")
@@ -240,6 +240,7 @@ function [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa
     dynParams = [];
     all_childs=children(expand(Msubs)+none_sym_value)
     [n,cols] = size(Msubs)
+    nq=length(q)
     for k = 1:n % Main loop
         for j = k:cols
             dep=[]; % Independent terms
@@ -263,7 +264,7 @@ function [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa
                 child = childs{i};
                 try
                     if(has(child,q))
-                        child = subs(child,[cos(q);sin(q);q],ones(n*3,1));
+                        child = subs(child,[cos(q);sin(q);q],ones(nq*3,1));
                             if child ~= none_sym_value % In case we replace cosine and a '1' is left, discard it. (No coefficient)
                                 dep = [dep, child];
                             end

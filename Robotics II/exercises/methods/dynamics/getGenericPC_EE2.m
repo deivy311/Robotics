@@ -126,10 +126,15 @@ if(~isempty(task_defined))
 end
 PC_EE.f=f;
 PC_EE.J=J;
+PC_EE.J_derivated=derivate_D(J,n,z.t,"q");
+PC_EE.J_dot=PC_EE.J_derivated.dot;
+PC_EE.J_tdot=PC_EE.J_derivated.tdot;
 PC_EE.J_ps=J_ps;
 PC_EE.V=V;
 PC_EEShort.f=toShortNotation(f,sincos_);
 PC_EEShort.J=toShortNotation(J,sincos_);
+%adding derivative terms
+PC_EEShort.J_dot_short=toShortNotation(PC_EE.J_dot,sincos_);
 PC_EEShort.V=toShortNotation(V,sincos_);
 PC_EEShort.Pc=Pc;
 PC_EEShort.Pc_ddot=PCVar.pc_derivated.ddot_short;
