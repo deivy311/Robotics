@@ -12,6 +12,6 @@ Wvars=symvar(W);
 end
 J_pseudo_w=(inv(W)*J'*inv(J*inv(W)*J'));
 
-J__pseudo=pinv(J);
+J__pseudo=pinv(J+ones(size(J))*realmin);
 end
 

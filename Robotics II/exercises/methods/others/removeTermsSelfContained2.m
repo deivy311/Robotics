@@ -7,9 +7,9 @@
 function depenSubs = removeTermsSelfContained2(depen)
 depenSubs = depen;
 for i_coeffs=1:size(depenSubs,2)
-    depenSubs(i_coeffs)=depenSubs(i_coeffs)/coeffs(depenSubs(i_coeffs))
+    depenSubs(i_coeffs)=depenSubs(i_coeffs)/coeffs(depenSubs(i_coeffs));
 end
-depenSubs=unique(depenSubs)
+depenSubs=unique(depenSubs);
 % done = 1;
 % while done
 %     if length(depenSubs) > 1

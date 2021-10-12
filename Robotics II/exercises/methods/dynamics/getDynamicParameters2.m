@@ -46,8 +46,8 @@ end
 qall_sincos_comb=[q',sin(qallcomb),cos(qallcomb)];
 % qall_sincos_comb=[sin(qallcomb),cos(qallcomb)]; no factoriza q sin senos
 %for iter = 1:2
-    [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa,true)
-    [Msubs,dynamicParams_,indepen]=isolating_terms(Msubs,none_sym_value,q,aa,false)
+    [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa,true);
+    [Msubs,dynamicParams_,indepen]=isolating_terms(Msubs,none_sym_value,q,aa,false);
 %     if iter == 2
         % Substitute independent variables
         indepSubs = [];
@@ -57,7 +57,7 @@ qall_sincos_comb=[q',sin(qallcomb),cos(qallcomb)];
             end
         end
         %params = indepSubs;
-        nparams=length(dynamicParams)
+        nparams=length(dynamicParams);
         for i =1:length(indepSubs)
             indepTerm = subs(indepSubs(i), aa(1:nparams), dynamicParams); % Replace any 'aa' term previously assigned
             dynamicParams = [dynamicParams indepTerm];
@@ -67,7 +67,7 @@ qall_sincos_comb=[q',sin(qallcomb),cos(qallcomb)];
             
         end
         disp('MSubs second iteration (before re-replacement)')
-        Msubs
+        Msubs;
         % Finally, reorder the constants and assign the correct order to the
         % parameters.
         % This is done because they might have been replaced with another
@@ -90,7 +90,7 @@ qall_sincos_comb=[q',sin(qallcomb),cos(qallcomb)];
         %         at = sym('at',[1, length(dynamicParamsReturn)],'real');
         
         %         Msubs = subs(Msubs, aa_replace, at);
-        Msubs = simplify(collect(expand(Msubs),qall_sincos_comb))%simplify(Msubs);
+        Msubs = simplify(collect(expand(Msubs),qall_sincos_comb));%simplify(Msubs);
         
         chbuffer=[];
         
@@ -238,8 +238,8 @@ function [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa
     indepen = {};
     depen ={};
     dynParams = [];
-    all_childs=children(expand(Msubs)+none_sym_value)
-    [n,cols] = size(Msubs)
+    all_childs=children(expand(Msubs)+none_sym_value);
+    [n,cols] = size(Msubs);
     for k = 1:n % Main loop
         for j = k:cols
             dep=[]; % Independent terms

@@ -24,19 +24,19 @@ sigmaD(find(sigmaD=='P'))=1 ;
 sigmaD(find(sigmaD=='R'))=0 ;
 joints = size(sigmaD,2); %Number of joints
 if(~exist("angle_"))
-      angle_=sym(zeros(1,joints))
-%     switch sigmaD(2,i)
-%     case 1*'X'
-%         angle_=0
-%     case 1*'Y'
-%         angle_=pi/2
-%     case 1*'Z'
-%         %angle_=0
-%          ME = MException('case in Z axis not programmed!!1');
-%          throw(ME)
-%     otherwise
-        %angle_=sym('alpha','real')
-%     end
+    angle_=sym(zeros(1,joints))
+    %     switch sigmaD(2,i)
+    %     case 1*'X'
+    %         angle_=0
+    %     case 1*'Y'
+    %         angle_=pi/2
+    %     case 1*'Z'
+    %         %angle_=0
+    %          ME = MException('case in Z axis not programmed!!1');
+    %          throw(ME)
+    %     otherwise
+    %angle_=sym('alpha','real')
+    %     end
 end
 if ~exist('firstParam','var')
     % third parameter does not exist, so default it to something
@@ -70,7 +70,7 @@ offsetJoints=zeros(joints,1);%the key
 ThetaPartial=sym(offsetJoints);
 actualaxis=['X'*1];
 if(sigmaD(1,1)==1)
-actualaxis=['Z'*1] ;
+    actualaxis=['Z'*1] ;
 end
 if(z.global_q_reference)
     [params1,Ttemp,ThetaPartial,offsetJoints,anglerot] = localrotationsbyangle(z.q_global,l,sigmaD,actualaxis,angle_);
@@ -79,35 +79,35 @@ else
     [params1,Ttemp,ThetaPartial,offsetJoints,anglerot] = localrotationsbyangle(q,l,sigmaD,actualaxis,angle_);
 end
 for i = 1:joints
-%     tempR{1}=eye(3);
-%     tempR{2}=eye(3)
-%     Ttemp=eye(4);
+    %     tempR{1}=eye(3);
+    %     tempR{2}=eye(3)
+    %     Ttemp=eye(4);
     
-%     if(sigmaD(1,i)==1)
-%         params1 = [pi/2    0       q(i)    pi] ;
-%         switch sigmaD(2,i)
-%             case 'X'
-%                 %         offsetJoints=[0,pi/2,0]';%the key
-%                 if(i<joints)
-%                     if(sigmaD(1,i+1)==0)
-%                        offsetJoints(i+1)=pi/2; %probar esto no s'e si funciona 
-%                     end
-%                 end
-%                 %                 [tempR{1}] = getEulerRotMatProduct('x',pi/2);
-%                 %                 [tempR{1}] = tempR{1}*getEulerRotMatProduct('y',pi/2);
-%                 [tempR{1}] = getEulerRotMatProduct('xy',[pi/2,pi/2]);
-%                 Ttemp(1:end-1,1:end-1)=tempR{1};
-%                 %         case 'Y'
-%                 %              [tempR] = getEulerRotMatProduct('y',pi/2);
-%                 %         case 'Z'
-%                 %             [tempR] = getEulerRotMatProduct('y',pi/2);
-%         end
-%     else
-%         params1 = [ 0    l(i)   0    q(i)+offsetJoints(i)] ;
-%         ThetaPartial(i)=q(i);
-%     end
-%     
-
+    %     if(sigmaD(1,i)==1)
+    %         params1 = [pi/2    0       q(i)    pi] ;
+    %         switch sigmaD(2,i)
+    %             case 'X'
+    %                 %         offsetJoints=[0,pi/2,0]';%the key
+    %                 if(i<joints)
+    %                     if(sigmaD(1,i+1)==0)
+    %                        offsetJoints(i+1)=pi/2; %probar esto no s'e si funciona
+    %                     end
+    %                 end
+    %                 %                 [tempR{1}] = getEulerRotMatProduct('x',pi/2);
+    %                 %                 [tempR{1}] = tempR{1}*getEulerRotMatProduct('y',pi/2);
+    %                 [tempR{1}] = getEulerRotMatProduct('xy',[pi/2,pi/2]);
+    %                 Ttemp(1:end-1,1:end-1)=tempR{1};
+    %                 %         case 'Y'
+    %                 %              [tempR] = getEulerRotMatProduct('y',pi/2);
+    %                 %         case 'Z'
+    %                 %             [tempR] = getEulerRotMatProduct('y',pi/2);
+    %         end
+    %     else
+    %         params1 = [ 0    l(i)   0    q(i)+offsetJoints(i)] ;
+    %         ThetaPartial(i)=q(i);
+    %     end
+    %
+    
     TPartial{i} = simplify(subs(A, params, params1{i}));
     TPartial{i}=anglerot{i}*Ttemp{i}*TPartial{i};
     
@@ -131,34 +131,63 @@ end
 % I = sym(zeros(3,3,n));
 % rc = [];
 % for i = 1:n
-%     rc = [rc [-l(i)+dc(i); 0; 0]];
+%     rc = [rc [-l(i)+z.dc(i); 0; 0]];
 %     I(:,:,i) = diag(sym(strcat({'Ixx','Iyy','Izz'},int2str(i))));
 % end
 TTotal = TPartial{1};
 RTotali{1}=RPartial{1};
 PTotali(:,1)=PPartial{1};
-% Pc(:,1)=subs(PPartial{1},l(1),dc(1));
+% Pc(:,1)=subs(PPartial{1},l(1),z.dc(1));
 i=1;
-if sigmaD(1,1)==1 %% for the moment it is only available for revolutes
-    if prismatic_CoM_method(i)==1
-        Pc(:,1)=simplify(subs(TTotal(1:end-1,end),l(i),dc(i)));
+if (z.dc_method==1)
+    
+    
+    %method based on cartesian
+    %z.dc=[rcx1,rcy1,rcz1;...;rcxn,rcyn,rczn;]'
+    rc_temp=zeros(z.n,1);
+    if any(has(TTotal(1:end-1,end),l(i)))
+        rc_temp=RTotali{i}*[[l(i),0,0]'+z.dc(:,i)];
+        Pc(:,i)=simplify(rc_temp);
     else
-        Pc(:,1)=simplify(subs(TTotal(1:end-1,end),q(i),q(i)-dc(i)));
+        Pc(:,1)=simplify(TTotal(1:end-1,end));
     end
+    
 else
-    Pc(:,1)=simplify(subs(TTotal(1:end-1,end),l(i),dc(i)));
+    if sigmaD(1,1)==1 %% for the moment it is only available for revolutes
+        if prismatic_CoM_method(i)==1
+            Pc(:,1)=simplify(subs(TTotal(1:end-1,end),l(i),z.dc(i)));
+        else
+            Pc(:,1)=simplify(subs(TTotal(1:end-1,end),q(i),q(i)-z.dc(i)));
+        end
+        
+    else
+        Pc(:,1)=simplify(subs(TTotal(1:end-1,end),l(i),z.dc(i)));
+    end
 end
 for i = 2:joints
     TTotal = TTotal*TPartial{i};
     RTotali{i}=simplify(RTotali{i-1}*RPartial{i});
-    if sigmaD(1,i)==1 %% for the moment it is only available for revolutes
-        if prismatic_CoM_method(i)==1
-            Pc(:,i)=simplify(subs(TTotal(1:end-1,end),l(i),dc(i)));
+    if (z.dc_method==1)
+        %method based on cartesian
+        %z.dc=[rcx1,rcy1,rcz1;...;rcxn,rcyn,rczn;]'
+        rc_temp=zeros(z.n,1);
+        if any(has(TTotal(1:end-1,end),l(i)))
+            rc_temp=RTotali{i}*[[l(i),0,0]'+z.dc(:,i)];
+        
+            Pc(:,i)=simplify(PTotali(:,i-1)+rc_temp);
         else
-            Pc(:,i)=simplify(subs(TTotal(1:end-1,end),q(i),q(i)-dc(i)));
+            Pc(:,i)=simplify(TTotal(1:end-1,end));
         end
     else
-        Pc(:,i)=simplify(subs(TTotal(1:end-1,end),l(i),dc(i)));
+        if sigmaD(1,i)==1 %% for the moment it is only available for revolutes
+            if prismatic_CoM_method(i)==1
+                Pc(:,i)=simplify(subs(TTotal(1:end-1,end),l(i),z.dc(i)));
+            else
+                Pc(:,i)=simplify(subs(TTotal(1:end-1,end),q(i),q(i)-z.dc(i)));
+            end
+        else
+            Pc(:,i)=simplify(subs(TTotal(1:end-1,end),l(i),z.dc(i)));
+        end
     end
     PTotali(:,i)=simplify(TTotal(1:end-1,end));
     
