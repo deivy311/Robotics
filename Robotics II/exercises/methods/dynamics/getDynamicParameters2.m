@@ -1,7 +1,7 @@
 %aurhor David Esteban Imnjoa Ruiz
 
 function [Msubs, dynamicParamsReturn_, a] = getDynamicParameters2(M,q, exceptionTerms_,parametricmethod_)
-
+M=expand(M);
 none_sym_value=sym('zxw_none_David','real')
 if(any(has(M,none_sym_value)))
     rethrow("Symbolic var not allowed, change : zxw_none_David")
@@ -224,7 +224,7 @@ qall_sincos_comb=[q',sin(qallcomb),cos(qallcomb)];
             
         end
         
-        Msubs = subs(Msubs, a_, a(dynx3z));
+        Msubs = subs(Msubs, a_', a(dynx3z)); %cehcl this
         
         a=a';
         dynamicParamsReturn_=collect(dynx,exceptionTerms_');
@@ -259,7 +259,12 @@ function [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa
             %                 disp("found cuadratic term");
             %             end
             %             has to be more than 1 term to split]
+            if(~iscell(childs))
+                %checking if the child is a cell or not
+                childs={childs};
+            end
             for i=1:length(childs)%-1
+                
                 child = childs{i};
                 try
                     if(has(child,q))
@@ -297,6 +302,7 @@ function [Msubs,dynamicParams,indepen]=isolating_terms(Msubs,none_sym_value,q,aa
    if complete_all
         depenSubs = removeTermsSelfContained2(depen);
         params = [dynParams depenSubs];
+        dynamicParams=[];
         if(~isempty(params))
 %             celparams= children(params+ ones(size(params))*none_sym_value);
 %             if(~iscell(celparams))
