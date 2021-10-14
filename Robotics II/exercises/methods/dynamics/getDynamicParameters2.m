@@ -223,8 +223,11 @@ qall_sincos_comb=[q',sin(qallcomb),cos(qallcomb)];
             Msubs = subs(Msubs, a_, a3);
             
         end
-        
-        Msubs = subs(Msubs, a_', a(dynx3z)); %cehcl this
+%         a2replace_temp=[];
+%         for i_a=a(dynx3z')
+%             a2replace_temp=[a2replace_temp,i_a]
+%         end
+        Msubs = subs(Msubs, a_, a(dynx3z')); %cehcl this
         
         a=a';
         dynamicParamsReturn_=collect(dynx,exceptionTerms_');
