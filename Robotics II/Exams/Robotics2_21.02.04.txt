@@ -1,0 +1,1479 @@
+Robotics 2
+February 4, 2021
+Exercise #1
+Consider the RRPR robot in Fig. 1, where all relevant kinematic and dynamic parameters are also
+shown. The robot moves in a vertical plane. Compute the inertia matrix M (q) and the gravity
+vector g(q) in the Lagrangian dynamic model of this robot. Provide a linear factorization of each
+term, M (q)q̈ = Y M (q, q̈)aM and g(q) = Y g (q)ag , introducing dynamic coefficients am ∈ Rpm
+and ag ∈ Rpg . Find also all open-loop equilibrium configurations q e , i.e., such that g(q e ) = 0.
+y0
+m2,I2
+
+q2
+
+dc4
+dc3
+
+⨁
+
+a1 m⨁1,I1
+
+⨁
+
+q4
+
+⨁
+
+m4,I4
+
+m3,I3
+
+q3
+
+g
+
+dc1
+
+q1
+x0
+
+Figure 1: A 4-dof RRPR robot: DH coordinates, kinematic and dynamic parameters.
+Exercise #2
+Consider the situation depicted in Fig. 2. The two Cartesian robots A and B are commanded by
+motors and transmissions that generate linear forces τ A ∈ R2 and τ B ∈ R2 along the axes of their
+prismatic joints. Each control force component is bounded as
+|τA,i | ≤ τA,max ,
+
+|τB,i | ≤ τB,max ,
+
+i = 1, 2,
+
+i = 1, 2.
+
+The two robots hold firmly a payload mass mp and cooperate in moving the mass in minimum
+time along a horizontal linear path p = p(s), from point Pin to point Pf in in a rest-to-rest mode.
+2
+2
+In addition, it is desired that the sum H = kτ A k + kτ B k is always minimized instantaneously.
+Motion occurs in the vertical plane, and we assume that motors are powerful enough to sustain the
+weight of the respective robot and of the payload. Provide a dynamic model of this cooperating
+task and determine the optimal time profiles of the four commands τ A and τ B .
+robot B
+
+qB1
+𝜏B2
+
+⨁
+
+mB1
+
+𝜏B1
+
+yw
+
+mA1
+
+⨁
+
+qB2
+
+Pin mp
+
+g
+xw
+
+mB2
+
+𝜏A1
+
+mA2
+
+⨁
+
+Pfin
+
+⨁
+
+qA2
+𝜏A2
+
+qA1
+robot A
+
+Figure 2: Two Cartesian robots that move a mass mp under gravity along a linear horizontal path.
+
+1
+
+Exercise #3
+The planar 3R robot shown in Fig. 3 is commanded by joint torques τ ∈ R3 that use feedback from the current state (q, q̇). The robot is initially at rest in the configuration q in =
+(−π/9, 11π/18, −π/4) and should then perform a self-motion so as to guarantee that the third
+joint asymptotically reaches the final value q3,f in = −π/2, while keeping the position of its endeffector always at the same initial point Pin . Design a torque control scheme that completes this
+task in a robust way, i.e., by rejecting transient position and/or velocity errors and without encountering any singular situation for the control law. Hint: Use an approach based on joint space
+decomposition.
+
+Pin
+q3
+
+y0
+
+𝜏3
+
+g
+
+q1
+
+𝜏1
+
+q2
+
+x0
+
+𝜏2
+Figure 3: A 3R robot that should perform a self-motion task with constant end-effector position.
+Exercise #4
+Figure 4 shows a simple 1-dof model of the interaction between a robot of mass mr > 0, commanded
+by a force F , and a rigid environment, with a force sensor of stiffness ks > 0 measuring the contact
+force Fc . The two coefficients br > 0 and bs > 0 represent, respectively, the viscous friction affecting
+robot motion and the viscous damping of the force sensor. The reference position xr = 0 is when
+the robot mass is in contact with Fc = 0. Provide the dynamic model of this system assuming
+linearity of all effects. Based only on the measured force, design a control law for F that is able to
+regulate asymptotically the contact force Fc to a desired constant value Fd > 0, despite uncertainty
+in all model parameters. Provide the associated steady-state values of F = F̄ and xr = x̄r .
+
+𝑥"
+
+𝐹$
+𝑘'
+
+𝐹
+𝑚"
+𝑏"
+
+𝑏'
+rigid
+robot
+
+force
+sensor
+
+rigid
+environment
+
+Figure 4: A 1-dof model of interaction between a robot and a rigid environment.
+
+[240 minutes (4 hours); open books]
+
+2
+
+Solution
+February 4, 2021
+Exercise #1
+The dynamic modeling steps and the requested linear factorizations of terms are quite standard procedures. They are sketched hereafter for the given RRPR planar robot without further comments.
+We assume that the kinematic parameter a1 ([m]) and the gravity acceleration g0 = 9.81 [m/s2 ]
+are accurately known. We finally evaluate the open-loop equilibria of the robot under gravity.
+Kinetic energy
+
+
+1
+1
+1
+2
+I1 + m1 d2c1 q̇12
+T2 = m2 a21 q̇12 + I2 (q̇1 + q̇2 )
+2
+2
+2
+1
+1
+2
+2
+T3 = m3 kv c3 k + I3 (q̇1 + q̇2 )
+2
+2
+
+
+a1 cos q1 + cos (q1 + q2 ) (q3 − dc3 )
+pc3 =
+a1 sin q1 + sin (q1 + q2 ) (q3 − dc3 )
+
+
+− (a1 s1 + s12 (q3 − dc3 )) q̇1 − s12 (q3 − dc3 )q̇2 + c12 q̇3
+⇒ v c3 = ṗc3 =
+(a1 c1 + c12 (q3 − dc3 )) q̇1 + c12 (q3 − dc3 )q̇2 + s12 q̇3
+1
+1
+2
+2
+T4 = m4 kv c4 k + I4 (q̇1 + q̇2 + q̇4 )
+2
+2
+
+
+a1 cos q1 + q3 cos (q1 + q2 ) + dc4 cos (q1 + q2 + q4 )
+pc4 =
+a1 sin q1 + q3 sin (q1 + q2 ) + dc4 sin (q1 + q2 + q4 )
+
+
+− (a1 s1 + q3 s12 + dc4 s124 ) q̇1 − (q3 s12 + dc4 s124 ) q̇2 + c12 q̇3 − dc4 s124 q̇4
+= ṗc4 =
+(a1 c1 + q3 c12 + dc4 c124 ) q̇1 + (q3 c12 + dc4 c124 ) q̇2 + s12 q̇3 + dc4 c124 q̇4
+T1 =
+
+⇒
+
+v c4
+
+T (q, q̇) = T1 + T2 + T3 + T4 =
+Inertia matrix
+
+
+
+
+
+M (q) = 
+
+
+
+m1 d2c1
+
+m3 d2c3
+
+1 T
+q̇ M (q)q̇
+2
+
+
+m11
+..
+.
+..
+.
+
+m12
+
+m13
+
+m14
+
+m22
+..
+.
+
+m23
+
+symm
+
+···
+
+···
+
+
+m24 
+
+
+m34 
+
+m44
+
+m33
+
+m4 d2c4
+
+m11 = I1 +
++ I2 + I3 +
++ I4 +
++ (m2 + m3 + m4 ) a21 + (m3 + m4 ) q32 − 2 m3 d3 q3
+− 2 m3 dc3 a1 cos q2 + 2 (m3 + m4 ) a1 q3 cos q2 + 2 m4 dc4 (a1 cos(q2 + q4 ) + q3 cos q4 )
+m12 = I2 + I3 + m3 d2c3 + I4 + m4 d2c4 + (m3 + m4 ) q32 − 2 m3 dc3 q3
+− m3 dc3 a1 cos q2 + (m3 + m4 ) a1 q3 cos q2 + m4 dc4 (a1 cos(q2 + q4 ) + 2 q3 cos q4 )
+m13
+m14
+m22
+m23
+m24
+m33
+m34
+m44
+
+=
+=
+=
+=
+=
+=
+=
+=
+
+(m3 + m4 ) a1 sin q2 − m4 dc4 sin q4
+I4 + m4 d2c4 + m4 dd4 (a1 cos(q2 + q4 ) + q3 cos q4 )
+I2 + I3 + m3 d2c3 + I4 + m4 d2c4 + (m3 + m4 ) q32 − 2 m3 dc3 q3 + 2 m4 dc4 q3 cos q4
+−m3 dc3 sin q4
+I4 + m4 d2c4 + m4 dc4 q3 cos q4
+m3 + m4
+−m4 dc4 sin q4
+I4 + m4 d2c4
+3
+
+Linear parametrization of the inertia term
+
+aM ∈ R6
+
+M (q)q̈ = Y M (q, q̈) aM ,
+
+m11 = aM 1 + aM 4 q32 − 2 aM 3 q3 + 2 (aM 4 q3 − aM 3 ) a1 c2 + 2 aM 5 (a1 c24 + q3 c4 )
+m12 = aM 2 + aM 4 q32 − 2 aM 3 q3 + (aM 4 q3 − aM 3 ) a1 c2 + aM 5 (a1 c24 + 2 q3 c4 )
+m13
+m14
+m22
+m23
+m24
+m33
+m34
+m44
+
+
+aM
+
+
+
+
+
+=
+
+
+
+
+aM 4 a1 s2 − aM 5 s4
+aM 6 + aM 5 (a1 c24 + q3 c4 )
+aM 2 + aM 4 q32 − 2 aM 3 q3 + 2 aM 5 q3 c4
+−aM 3 s4
+aM 6 + aM 5 q3 c4
+aM 4
+−aM 5 s4
+aM 6
+ 
+I1 + m1 d2c1 + I2 + I3 + m3 d2c3 + I4 + m4 d2c4 + (m2 + m3 + m4 ) a21
+aM 1
+
+aM 2 
+I2 + I3 + m3 d2c3 + I4 + m4 d2c4
+ 
+
+
+aM 3  
+m3 dc3
+=
+aM 4  
+m3 + m4
+ 
+aM 5  
+m4 dc4
+aM 6
+I4 + m4 d2c4
+=
+=
+=
+=
+=
+=
+=
+=
+
+Y M (q, q̈) =
+
+ q̈1
+
+
+
+
+
+
+ 0
+
+
+
+ 0
+
+
+
+0
+
+
+
+
+
+
+
+
+
+
+
+q̈2
+
+−2 (q3 + a1 s2 ) q̈1
+− (2 q3 + a1 s2 ) q̈2
+
+q̈1 + q̈2
+
+
+q32 + q3 a1 c2 q̈1
+−2 q3 q̈2
+
+
+q32 + 2 q3 a1 c2 q̈1
+
++ q32 + q3 a1 c2 q̈2
++a1 s2 q̈3
+
+q32 + q3 a1 c2 q̈1
++q32 q̈2
+
+0
+
+−s3 q̈2
+
+a1 s2 q̈1 + q̈3
+
+−s4 (q̈1 + q̈4 )
+
+0
+
+0
+
+0
+
+0
+
+(a1 c24 + q3 c4 ) q̈1
++q3 c4 q̈2 − s4 q̈3
+
+q̈1 + q̈2 + q̈4
+
+2 (a1 c24 + q3 c4 ) q̈1
++ (a1 c24 + 2 q3 c4 ) q̈2
+−s4 q̈3 (a1 c24 + q3 c4 ) q̈4
+
+q̈4
+
+(a1 c24 + 2 q3 c4 ) q̈1
++q3 c4 (2 q̈2 + q̈4 )
+
+q̈4
+
+Potential energy
+
+U1 = m1 dc1 g0 sin q1
+
+U2 = m2 a1 g0 sin q1
+
+U3 = m3 g0 (a1 sin q1 + (q3 − dc3 ) sin(q1 + q2 ))
+U4 = m4 g0 (a1 sin q1 + q3 sin(q1 + q2 ) + dc4 sin(q1 + q2 + q4 ))
+U (q) = U1 + U2 + U3 + U4
+Gravity vector
+
+
+
+g(q) =
+
+∂U (q)
+∂q
+
+4
+
+T
+
+
+
+=
+
+
+g1
+g2
+g3
+g4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+g1 = (m1 dc1 + (m2 + m3 + m4 ) a1 ) g0 cos q1 − m3 dc3 g0 c12
++ (m3 + m4 ) g0 q3 c12 + m4 dc4 g0 c124
+g2 = −m3 dc3 g0 c12 + (m3 + m4 ) g0 q3 c12 + m4 dc4 g0 c124
+g3 = (m3 + m4 ) g0 s12
+g4 = m4 dc4 g0 c124
+Linear parametrization of the gravity vector
+
+g(q) = Y g (q) ag ,
+ag ∈ R4
+
+ 
+
+m1 dc1 + (m2 + m3 + m4 ) a1
+ag1
+
+a  
+m3 dc3
+
+ g2  
+ag = 
+
+=
+
+m3 + m4
+ ag3  
+m4 dc4
+ag4
+
+
+g0 c1 −g0 c12 g0 q3 c12 g0 c124
+ 0
+−g0 c12 g0 q3 c12 g0 c124 
+
+
+Y g (q) = 
+
+ 0
+0
+g0 s12
+0 
+0
+0
+0
+g0 c124
+Note. We kept separated the two linear parametrizations, as requested. Indeed, ag2 = aM 3 , ag3 = aM 4
+and ag4 = aM 5 , so that only 6 + 1 = 7 different dynamic coefficients would be needed in total.
+Open-loop equilibria
+
+g(q e ) = 0
+
+⇐⇒
+
+
+π
+
+qe1 = ±
+
+
+
+2
+
+
+ (m3 + m4 ) qe3 = m3 dc3
+
+
+π
+
+qe1 = ±
+
+
+2
+
+
+
+π
+
+
+
+ qe2 = ± 2
+ q = m3 dc3 < d
+
+
+c3
+e3
+
+m3 + m4
+
+
+
+
+
+ qe4 = ± π
+2
+
+⇐⇒
+
+
+qe1 + qe2 = {0, π}
+
+
+
+
+
+ qe1 + qe2 + qe4 = ± π
+2
+
+One of the equilibria is shown in Fig. 5.
+⨁ m4
+
+y0
+
+q2
+
+q4
+
+m3
+⨁
+
+⨁ m2
+
+dc3
+m1 ⨁
+
+q3
+
+g
+
+q1
+x0
+
+
+Figure 5: An equilibrium configuration of the RRPR robot: q e =
+
+5
+
+
+π
+π m3 dc3 π
+,− ,
+,
+.
+2
+2 m3 + m4 2
+
+Exercise #2
+We define first a path parametrization (for the payload motion) and see how the direct kinematics
+of each robot is related to the common cooperative task. The problem is then addressed by
+considering the dynamics of each of the two robots and of the payload separately. However, the
+three subsystems will interact among each other via exchanged forces. For these, the principle of
+action and reaction holds: a force applied from a robot to the payload is equal to the same force
+applied by the payload to that robot.
+Once we put everything together, the original optimal control problem is naturally decomposed in
+i) a minimum-time motion problem for the total mass of the system moving along the path, and ii)
+a minimum internal force problem along the normal to the path (while compensating for gravity).
+The first problem is solved by a common bang-bang profile for the command forces acting on the
+first (horizontal) prismatic joints of the two robots. The second problem is solved by equally distributing the total gravity load between the two command forces on the second (vertical) prismatic
+joints of the two robots. The resulting commands provide the minimum value of the objective function H (sum of the squared norms of the robot inputs ) among all force commands that produce
+the same motion in minimum time along the given path.
+Path parametrization
+
+The simplest parametrization of the desired path is a linear one. Expressing it in the world reference
+frame RFw , we have
+
+
+pf in − pin
+pin,x + s
+s=
+,
+s ∈ [0, L],
+L = pf in − pin .
+p(s) = pin +
+L
+pin,y
+The acceleration along the path is then given by
+
+  
+p̈x
+s̈
+p̈ =
+=
+.
+p̈y
+0
+
+(1)
+
+Task kinematics
+
+Indeed, the payload position p coincides with the end effector position of both robots. As seen from
+each robot side, the direct kinematics of each robot is related to the task by p = f A (q A ) = f B (q B ),
+with
+
+ 
+
+qA1 + qA1,0
+qB1 + qB1,0
+f A (q A ) =
+=
+= f B (q B ),
+qA2,0
+qB2,0
+for some constant (but irrelevant hereafter) values qA1,0 , qA2,0 , qB1,0 , and qB2,0 . Differentiating
+twice w.r.t. time and using (1), yields
+q̈A1 = q̈B1 = p̈x = s̈,
+
+q̈A2 = q̈B2 = p̈y = 0.
+
+(2)
+
+Payload dynamics
+
+With reference to the free-body diagram in Fig. 6, we shall consider the forces applied by the
+two robots A and B to the payload as decomposed in those that contribute to motion (along the
+path tangent) and those that may generate internal forces on the rigid payload (along the normal
+to the path) —and will produce in any event no motion. In this simple cooperative task, such
+decomposition occurs along two fixed directions, i.e., those of the world frame RFw . Thus, we have
+mp p̈x = FA,motion + FB,motion
+mp p̈y + mp g0 = FA,internal − FB,internal .
+6
+
+FB,internal
+yw
+FB,motion
+
+payload
+
+FA,motion
+mpg0
+
+xw
+FA,internal
+
+Figure 6: Free-body diagram of the forces applied to the payload.
+Using (1), these simplify to
+mp s̈ = FA,motion + FB,motion
+
+(3)
+
+mp g0 = FA,internal − FB,internal
+
+(4)
+
+Dynamics of the cooperating robots
+
+For the two robots A and B, one has
+(mA1 + mA2 ) q̈A1 = τA1 − FA,motion
+mA2 q̈A2 + mA2 g0 = τA2 − FA,internal ,
+
+(5)
+
+and, respectively,
+(mB1 + mB2 ) q̈B1 = τB1 − FB,motion
+mB2 q̈B2 − mB2 g0 = τB2 − FB,internal .
+
+(6)
+
+As already mentioned, the force components Fi appearing on the right-hand sides of these equations
+are those applied to the robots by the payload dynamics.
+Minimum time motion
+
+Putting together (3) with the first components of (5) and (6), and using (2), we obtain
+mp s̈ = τA1 − (mA1 + mA2 ) s̈ + τB1 − (mB1 + mB2 ) s̈
+or
+mtot s̈ = τA1 + τB1 = τmotion ,
+
+with mtot = mp + mA1 + mA2 + mB1 + mB2 .
+
+(7)
+
+As a result, the rest-to-rest minimum time solution for the total mass mtot moving under an
+equivalent force command τmotion , bounded as
+|τmotion | ≤ τA,max + τB,max = τmax ,
+∗
+∗
+∗
+will be given by the bang-bang profiles τA1
+, τB1
+, and τmotion
+, as illustrated in Fig. 7. Accordingly,
+the minimum motion time is
+r
+r
+4L
+L mtot
+=2
+.
+T∗ =
+s̈max
+τmax
+
+Minimum internal force
+
+Consider now (4) together with the second components of (5) and (6). Using again (2), we obtain
+mp g0 = τA2 − mA2 g0 − τB2 − mB2 g0 ,
+7
+
+tB1
+
+tB,max
+T/2
+tB
+
+t
+
+tB,max
+tA,max
+
+-tA,max
+
+tmax
+
+T
+
+tmotion
+
+tA
+
+-tB,max
+
+⇔
+
+⇔
+
+tA1
+
+T/2
+
+T
+t
+
+tA,max
+
+-tB,max
+
+T/2
+
+T
+
+-tmax
+
+t
+
+-tA,max
+∗
+Figure 7: Bang-bang profiles of the individual robot force commands τA1
+and τB1∗ and of the
+∗
+equivalent total force τmotion in the minimum motion time solution.
+
+or
+(mp + mA2 + mB2 ) g0 = τA2 − τB2 =
+
+1
+
+−1
+
+
+
+
+
+τA2
+τB2
+
+
+
+
+= J internal
+
+τA2
+τB2
+
+
+.
+
+(8)
+
+The requirement of minimizing the objective function
+2
+
+2
+
+2
+2
+2
+2
+H = kτ A k + kτ B k = τA1
++ τA2
++ τB1
++ τB2
+,
+∗
+∗
+in view of the (unique) minimum time solution already found for τA1 = τA1
+and τB1 = τB1
+, reduces
+to the minimization of the quadratic sub-function
+2
+2
+H 0 = τA2
++ τB2
+,
+
+subject to the linear constraint (8). It is easy to see that the (unique) solution to this simple LQ
+problem for the remaining robot commands is
+∗
+τA2
+=
+
+1
+(mp + mA2 + mB2 ) g0 ,
+2
+
+1
+∗
+∗
+τB2
+= − (mp + mA2 + mB2 ) g0 = −τA2
+.
+2
+
+(9)
+
+Indeed, any other force pair of the perturbed form
+∗
+τA2 = τA2
++ ∆,
+
+∗
+τB2 = τB2
++ ∆,
+
+∀∆ ∈ R,
+
+will still satisfy the linear constraint (8) of the reduced problem. These force perturbations are in
+fact in the null space of the Jacobian of the constraint, or
+ 
+1
+∆
+∈ N {J internal } ,
+1
+and therefore produce solutions that are larger in norm (thus, with a higher H 0 ). Such perturbations have the meaning of internal forces that may arise when the payload is rigidly held by the
+two robots. Thus, the optimal solution (9) has the nice physical interpretation of minimizing the
+internal forces (∆ = 0). We finally note that, if gravity were not present (e.g., for motions occurring
+∗
+∗
+on a horizontal plane), the solution that minimizes the internal forces would be τA2
+= τB2
+= 0.
+8
+
+Exercise #3
+With the dynamics of this planar 3R robot given by
+M (q)q̈ + c(q, q̇) + g(q) = τ
+we apply first a feedback linearization law in the joint space, i.e.,
+τ = M (q)a + c(q, q̇) + g(q)
+
+⇒
+
+q̈ = a,
+
+(10)
+
+to convert the self-motion task into a purely kinematic one. The robot should always keep the
+position of its end effector
+
+
+l1 cos q1 + l2 cos (q1 + q2 ) + l3 cos (q1 + q2 + q3 )
+p = f (q) =
+l1 sin q1 + l2 sin (q1 + q2 ) + l3 sin (q1 + q2 + q3 )
+at
+
+
+√
+π
+2
+l1 cos +
+l3
+
+
+9
+2 √
+.
+pin = f (q in ) = 
+
+π
+2 
+l3
+−l1 cos + l2 +
+9
+2
+Indeed, the 3R robot has n − m = 3 − 2 = 1 degree of redundancy for the positioning task in
+the plane. A joint acceleration command performing a robot self-motion, as driven by the target
+position q3,f in for the third joint, can then be designed as
+
+
+
+0
+
+
+#
+#
+ − K v q̇ ,
+0
+(11)
+a = −J (q)J̇ (q)q̇ + I − J (q)J (q) 
+α (q3,f in − q3 )
+
+
+for some α > 0. In (11), a damping velocity term −K v q̇, with diagonal gain matrix K v > 0, has
+been added in the null space of the task Jacobian so as to stabilize the joint motion1 . In order to
+reject also position and/or velocity errors that may occur around the desired constant end-effector
+position pin , a more robust version of the command (11) is given by
+
+
+−kv,1 q̇1
+
+ 
+
+
+
+−kv,2 q̇2
+a = J #(q) K P (pin − f (q)) − K D J (q)q̇ − J̇ (q)q̇ + I − J #(q)J (q) 
+,
+α (q3,f in − q3 ) − kv,3 q̇3
+(12)
+including thus a PD action, with (typically diagonal) gain matrices K P > 0 and K D > 0, on the
+Cartesian position error, and taking into account that ṗin = 0. Plugging (12) into (10) yields the
+torque control law
+
+
+
+τ = M (q) J #(q) K P (pd − f (q)) − K D J (q)q̇ − J̇ (q)q̇
+
+
+−kv,1 q̇1
+
+
+
+
+
+−kv,2 q̇2
++ I − J #(q)J (q) 
+ + c(q, q̇) + g(q).
+α (q3,f in − q3 ) − kv,3 q̇3
+(13)
+It should be noted that the control law (13), or simply the acceleration law (11) and its robust
+version (12), may or may not guarantee the reaching of the final desired value for the third joint.
+1 This
+
+is rather customary (and almost mandatory) when resolving redundancy at the acceleration level.
+
+9
+
+In principle, at a steady-state with q̇ = 0, the projection operator P = I − J #J (with its columns
+P i , i = 1, 2, 3) may still mask the presence of a residual configuration error. Thus, one should also
+show that there exists no configuration q ∗ such that f (q ∗ ) = pin (i.e., belonging to the self-motion
+manifold in the joint space associated to the initial point Pin ) for which P 3 (q ∗ ) e3 = 0 while
+e3 = q3,f in − q3∗ 6= 0. Such statement about non-existence is in fact true, but its formal proof is
+not trivial. Therefore, an alternative approach that directly guarantees also the convergence of q3
+to q3,f in may be more attractive.
+In the following, we will illustrate the use of a joint space decomposition approach at the acceleration level (i.e., to be applied, after feedback linearization, to q̈ = a). In this case, one focuses on
+the command to be given to the third joint, the one that has a special target assigned, leaving to
+the other two joints the task of keeping the end effector at the desired position Pin . First, for the
+third joint we choose the control law
+q̈3 = a3 = kp,3 (q3,f in − q3 ) − kd,3 q̇3 ,
+
+kp,3 > 0, kd,3 > 0.
+
+(14)
+
+As a result, the error e3 will satisfy the linear differential equation
+ë3 + kd,3 ė3 + kp,3 e3 = 0,
+which guarantees that q3 will converge exponentially from any initial state to the desired q3,f in ,
+with q̇3 = q̇3,f in = 0. Moreover, by a suitable choice of the gains kp,3 and kd,3 , the natural motion
+of q3 will always remain in the interval [q3,f in , q3,in ] = [−π/2, −π/4] (i.e., without overshooting or
+wandering). Next, decompose the second-order differential kinematics as follows:
+p̈ = J (q)q̈ + J̇ (q)q̇ = J 12 (q)q̈ 12 + J 3 (q) q̈3 + J̇ (q)q̇
+
+  
+
+−l1 s1 − l2 s12 − l3 s123 −l2 s12 − l3 s123
+q̈1
+−l3 s123
+=
++
+q̈3 + J̇ (q)q̇.
+l1 c1 + l2 c12 + l3 c123
+l2 c12 + l3 c123
+q̈2
+l3 c123
+
+(15)
+
+The square sub-Jacobian J 12 made by the first two columns of J has
+det J 12 (q) = l1 (l2 sin q2 + l3 sin(q2 + q3 )) .
+As long as this determinant is different from zero, we can set p̈ = 0 in (15) and solve for q̈ 12 so as
+to realize our self-motion task by
+
+
+q̈ 12 = −J −1
+(q)
+J
+(q)
+q̈
++
+J̇
+(q)
+q̇
+,
+(16)
+3
+3
+12
+for any motion q̈3 , in particular that given by (14). To introduce more robustness in the task of
+keeping the end-effector position at pin , we replace
+p̈ = p̈in = 0
+
+⇒
+
+p̈ = K P (pin − f (q)) − K D J (q)q̇,
+
+(17)
+
+with (diagonal) 2 × 2 gain matrices K P > 0 and K D > 0 weighting, respectively, the position
+error eP = pin − f (q) and the velocity error eD = ṗin − ṗ = −ṗ = −J (q)q̇. Using (14) and (17)
+in eq. (15) and solving again for q̈ 12 yields
+
+
+q̈ 12 = J −1
+(q)
+K
+(p
+−
+f
+(q))
+−
+K
+J
+(q)
+q̇
+−
+J
+(q)
+(k
+(q
+−
+q
+)
+−
+k
+q̇
+)
+−
+J̇
+(q)
+q̇
+.
+P
+D
+3
+P,3
+3,f
+in
+3
+d,3
+3
+in
+12
+(18)
+We can also combine (14) and (18) in a single formula as
+!
+
+ !
+
+
+−1
+q̈ 12
+J −1
+(q)
+−J
+(q)
+J
+(q)
+K
+(p
+−
+f
+(q))
+−
+K
+J
+(q)
+−
+J̇
+(q)
+q̇
+3
+P
+D
+12
+12
+in
+a=
+=
+.
+q̈3
+0T
+1
+kP,3 (q3,f in − q3 ) − kd,3 q̇3
+(19)
+10
+
+Finally, plugging (19) into (10) yields the torque control law
+
+ !
+!
+−1
+J −1
+K P (pin − f (q)) − K D J (q) − J̇ (q) q̇
+12 (q) −J 12 (q) J 3 (q)
++ c(q, q̇) + g(q).
+τ = M (q)
+0T
+1
+kP,3 (q3,f in − q3 ) − kd,3 q̇3
+(20)
+The last thing to check is the absence of singularities for J 12 (q) during the self-motion under the
+control law (20), or simply the acceleration law (19). It can be shown that det J 12 (q) = 0 if and
+only if the end-effector of the 3R robot finds itself aligned with the first link of the structure. From
+the illustration in Fig. 8, it is rather evident that such condition is not encountered in this task.
+
+q3,fin = −𝜋/2
+
+Pin
+y0
+
+qin
+x0
+Figure 8: Configuration reached by the 3R robot at the end of the controlled self-motion task.
+Exercise #4
+The dynamics of the system represented in Fig. 4 is
+mr ẍr + (br + bs ) ẋr + ks xr = F,
+
+(21)
+
+with the contact force measured by the sensor given by
+Fc = ks xr .
+Since we deal with a linear dynamics, one can also transform (21) in the Laplace domain and
+represent the system by its transfer function from the control input F to the controlled output Fc
+as
+ks xr (s)
+ks
+Fc (s)
+=
+=
+P (s) =
+.
+(22)
+F (s)
+F (s)
+mr s2 + (br + bs ) s + ks
+Since the physical parameters mr , br , bs and ks are all positive, P (s) has two poles with negative
+real part, and the open-loop system is thus asymptotically stable (with a unitary steady-state
+gain, P (0) = 1). The simplest feedback controller C(s) that tries to regulate the contact force to
+a (constant, but arbitrary) desired value Fd is a proportional law to the force error Fe = Fd − Fc ,
+F = KP (Fd − Fc ) = KP Fe
+
+⇐⇒
+
+C(s) =
+
+F (s)
+= KP > 0.
+Fe (s)
+
+The input-output transfer function of the closed-loop system would then be
+W (s) =
+
+F (s)
+P (s)C(s)
+ks KP
+=
+=
+,
+Fd (s)
+1 + P (s)C(s)
+mr s2 + (br + bs ) s + ks (1 + KP )
+11
+
+which is still asymptotically stable, but with a non-unitary gain W (0) = KP /(1 + KP ) 6= 1. This
+means that the steady-state output response to a desired step input Fd would have an error (unless
+KP → ∞, which is impossible). The value of this force error can also be found from the input-error
+transfer function,
+We (s) =
+
+Fd (s) − F (s)
+1
+mr s2 + (br + bs ) s + ks
+Fe (s)
+=
+= 1 − W (s) =
+=
+.
+2
+Fd (s)
+Fd (s)
+1 + P (s)C(s)
+mr s + (br + bs ) s + ks (1 + KP )
+
+In fact, from the final value theorem, the steady-state error for a constant Fd is computed as
+Fe,∞ = lim Fe (t) = lim Fe (s) = lim We (s)Fd (s) = We (0) Fd =
+t→∞
+
+s→0
+
+𝐹)
+
+s→0
+
+𝐹+
+
++
+
+⎯
+
+𝐾
+𝐾$ + '
+𝑠
+
+𝐹
+
+1
+Fd 6= 0.
+1 + KP
+
+𝐹,
+𝑃 𝑠
+
+Figure 9: The closed-loop scheme of the robot-environment system under PI force control.
+In order to eliminate this steady-state error in a robust way (i.e., using feedback), we need an
+integral action2 (a pole in s = 0) in the controller C(s). With reference to Fig. 9, we consider then
+a proportional-integral (PI) controller on the force error Fe = Fd − Fc , or
+t
+
+Z
+F (t) = KP Fe (t) + KI
+
+⇐⇒
+
+Fe (τ )dτ
+
+C(s) = KP +
+
+0
+
+KP s + KI
+KI
+=
+s
+s
+
+(23)
+
+Combining (23) with (22) gives the closed-loop system
+W (s) =
+
+F (s)
+P (s)C(s)
+ks (KP s + KI )
+=
+=
+,
+Fd (s)
+1 + P (s)C(s)
+mr s3 + (br + bs ) s2 + ks (1 + KP ) s + ks KI
+
+(24)
+
+with gain W (0) = 1. To check the conditions under which the three poles of W (s) will all have
+negative real part, we apply the Routh criterion. From the Routh table built for the polynomial
+denominator of W (s) in (24)
+3
+
+mr
+
+ks (1 + KP )
+
+2
+
+br + bs
+
+ks KI
+
+1
+
+ks (1 + KP ) −
+
+0
+
+ks KI
+
+m r ks K I
+br + bs
+
+we see that the elements in the first column have the same (here, positive) sign iff
+KI > 0,
+
+(1 + KP ) −
+
+mr KI
+> 0.
+br + bs
+
+2 From the elementary feedback theory, in order to guarantee zero error at steady state in the step response, the
+control system in Fig. 9 should be asymptotically stable and have (at least) a pole in s = 0 in the forward path
+(type I). If the process P (s) does not have already such a pole, it should be introduced in the controller.
+
+12
+
+Therefore, choosing the two gains KP and KI in the ranges
+KI ≥
+
+br + bs
+> 0,
+mr
+
+KP >
+
+mr KI − (br + bs )
+≥0
+br + bs
+
+will ensure asymptotic stability of the closed-loop system (in a robust way with respect to uncertainties in system parameters —there is only a need to enforce inequalities that are simple to
+overbound). Moreover, the force error at steady state will be zero as expected, since the input-error
+transfer function
+
+mr s2 + (br + bs ) s + ks s
+,
+We (s) = 1 − W (s) =
+mr s3 + (br + bs ) s2 + ks (1 + KP ) s + ks KI
+has a zero at s = 0, and thus
+Fe,∞ = We (0) Fd = 0 · Fd = 0.
+As a result, at steady state
+F̄c = Fd = ks x̄r ,
+
+Fd
+x̄r =
+,
+ks
+∗∗∗∗∗
+
+13
+
+Z
+F̄ = KI
+
+∞
+
+Fe (τ )dτ = Fd .
+0
+
+

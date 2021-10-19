@@ -6,7 +6,7 @@ if(~exist('num_digits'))
 end
 if(~all(J==0))
     
-    J_pseudo=round(pinv(J),6);
+    J_pseudo=(pinv(J));%removed round
 else
     display("Pay Attention, all zeros in Jacobian, while computing the Pseudo Inverse");
     J_pseudo=J';

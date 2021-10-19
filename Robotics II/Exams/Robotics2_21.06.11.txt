@@ -1,0 +1,789 @@
+Robotics 2
+June 11, 2021
+Exercise #1
+Suppose that a routine is available that computes numerically the pseudoinverse of a matrix A,
+e.g., the pinv function in MATLAB, A# = pinv(A). Given a m × n, full rank matrix J , with
+m < n, and a n × n, positive definite, symmetric weighting matrix W , prove formally that the
+#
+−1/2
+weighted pseudoinverse J #
+pinv(J W −1/2 ). As a verification,
+W can be computed as J W = W
+provide a simple numerical example with m = 2, n = 3.
+Exercise #2
+A single link mounted on a passive elastic support is moved on a horizontal plane by a torque
+τ applied by a motor to the revolute joint at its base, as sketched in Fig. 1. The generalized
+coordinates q1 and q2 are defined therein, together with the relevant dynamic parameters: mass
+m, distance d > 0 of the CoM from the joint, and barycentric inertia IL of the link; stiffness
+k > 0 of the linear spring in the support. The spring is undeformed when q1 = 0. Derive first the
+Lagrangian dynamic model of this simple robotic system. Next, address the following two dynamic
+problems.
+a) An input torque τ0 > 0 is applied at t = 0, with the system at q(0) = q̇(0) = 0 (zero initial
+state). Determine if the spring will initially be compressed or extended and if the link will start
+moving clockwise or counterclockwise. Provide the expression of the initial accelerations q̈1 (0)
+and q̈2 (0) of the two coordinates .
+b) Starting at t = 0 in a generic non-zero initial state (q(0), q̇(0)), define a control law τ = τ (q, q̇)
+such that q 2 (t) will exponentially converge to zero. At steady state, determine the residual
+dynamics of the other coordinate q1 (t) and provide a physical interpretation of this result.
+
+y0
+
+⊕ m, I
+L
+
+d
+
+q2
+
+q1
+k
+
+x0
+
+𝜏
+
+Figure 1: A single-link robotic system mounted on a flexible base.
+Exercise #3
+Draw a 3-dof robot whose dynamic model is given by
+
+m1 + m2 + m3
+0
+
+0
+m2 + m3
+M q̈ + g = u,
+M =
+0
+0
+with masses mi > 0, i = 1, 2, 3, and g0 = 9.81 [m/s2 ].
+1
+
+
+0
+
+0 ,
+m3
+
+
+
+
+0
+
+
+0
+g=
+,
+−m3 g0
+
+Exercise #4
+Consider the planar 3R robot with equal link lengths in Fig. 2 and absolute joint coordinates
+q = (q1 , q2 , q3 ) defined therein. The robot is equipped with three motors producing torques u =
+(u1 , u2 , u3 ) that perform work on the Denavit-Hartenberg angles θ = (θ1 , θ2 , θ3 ), respectively.
+Provide the expression of the torque vector uq = (uq1 , uq2 , uq3 ) that should appear on the righthand side of the robot dynamic model written in terms of the absolute coordinates q (i.e., in
+M (q)q̈ + n(q, q̇) = uq ), as function of the components of u.
+y0
+q3
+
+L
+
+q2
+
+L
+
+P
+
+L
+
+q1
+x0
+
+Figure 2: A planar 3R robot, with absolute joint coordinates q and equal links of length L.
+Exercise #5
+With reference to Fig. 3, the end-point P of a planar 2R robot should execute a desired trajectory
+pd (t) ∈ R2 , specified by a circular path in the Cartesian plane with a time-varying desired tangential
+velocity. Motion occurs on a horizontal plane and the circle should be traced counterclockwise.
+An initial position and/or velocity error between the robot end-point and the desired trajectory is
+present at t = 0. Later on, external disturbances may also affect occasionally the execution of the
+desired motion task. Design a torque control law for the robot such that the trajectory tracking
+error dynamics is exponentially stable, linear, and decoupled along the normal and tangential
+directions to the path. The error behaviors in these two directions (represented, respectively, by
+the xt and y t axes of a time-varying frame that moves with the desired task) should be critically
+damped, with a dominant reaction time to position errors in the normal direction which is about
+five times faster than in the tangential one. Assume that no kinematic singularities are encountered
+(as suggested also by the placement of the circle in Fig. 3).
+
+y0
+
+P
+
+pd(t)
+
+yt
+xt
+
+x0
+Figure 3: Tracking a circular Cartesian trajectory with a planar 2R robot.
+[240 minutes (4 hours); open books]
+2
+
+Solution
+June 11, 2021
+Exercise #1
+The weighted pseudoinverse J #
+W of a m × n matrix J , with rank J = m < n and a symmetric
+matrix W > 0, is given by
+
+−1
+−1 T
+J#
+J J W −1 J T
+,
+W =W
+with the three relations holding
+JJ#
+W J = J,
+
+
+
+#
+#
+J#
+W JJW = JW ,
+
+JJ#
+W
+
+T
+
+= JJ#
+W,
+
+(1)
+
+#
+T
+but not the fourth one (i.e., in general (J #
+W J ) 6= J W J ). On the other hand, for a full row rank
+matrix A the pinv routine provides as output
+
+−1
+A# = pinv(A) = AT AAT
+.
+
+Therefore,
+W −1/2 pinv(J W −1/2 )
+
+
+T 
+
+T −1
+= W −1/2 J W −1/2
+J W −1/2 J W −1/2
+
+−1
+= W −1/2 W −1/2 J T J W −1/2 W −1/2 J T
+
+−1
+= W −1 J T J W −1 J T
+= J#
+W.
+
+As a numerical example with m = 2, n = 3, for
+
+J=
+
+1
+4
+
+2
+5
+
+3
+6
+
+
+
+
+,
+
+W =
+
+
+
+7
+8
+
+,
+9
+
+we obtain
+
+
+
+−0.9792
+
+W −1/2 pinv(J W −1/2 ) =  −0.0417
+0.6875
+
+
+0.4583
+
+0.0833  = J #
+W,
+−0.2083
+
+which satisfies indeed the defining identities (1).
+Note that the same formula holds also in the singular case (rank J < m), being then
+
+
+−1 T
+J#
+J pinv J W −1 J T = W −1/2 pinv(J W −1/2 ).
+W =W
+For instance, with
+
+J=
+
+1
+4
+
+2
+8
+
+3
+12
+
+
+,
+
+rank J = 1,
+
+and the same previous diagonal W > 0, we obtain
+
+0.0051
+
+−1/2
+−1/2
+W
+pinv(J W
+) =  0.0090
+0.0119
+3
+
+
+0.0205
+
+0.0358  = J #
+W.
+0.0477
+
+Exercise #2
+We compute the kinetic energy T of the link and the potential energy Ue due to the elastic spring.
+The position and velocity of the center of mass of the link are
+
+
+
+
+d cos q2
+−d sin q2 q̇2
+pc =
+⇒
+v c = ṗc =
+,
+q1 + d sin q2
+q̇1 + d cos q2 q̇2
+while the angular velocity of the link has only the z-component ωz = q̇2 . Therefore, the kinetic
+energy is
+ 1
+1
+1
+T = m q̇12 + d2 q̇22 + 2d cos q2 q̇1 q̇2 + IL q̇22 = q̇ T M (q)q̇,
+2
+2
+2
+with the inertia matrix given by
+!
+m
+md cos q2
+M (q) =
+.
+md cos q2 IL + md2
+The velocity terms in the dynamic model are computed through the standard Christoffel’s symbols.
+We obtain
+
+
+!
+!T
+!
+
+0
+0
+0
+0
+0
+1 0
++
+−0 =
+,
+C 1 (q) =
+
+2  0 −md sin q2
+0 −md sin q2
+0 −md sin q2
+yielding
+c1 (q, q̇) = q̇ T C 1 (q)q̇ = −md sin q2 q̇22 .
+On the other hand, it is easy to see that
+C 2 (q) = 0
+
+⇒
+
+c2 (q, q̇) = 0.
+
+The elastic potential Ue and its gradient are
+1
+Ue = k q12
+2
+
+
+⇒
+
+∇q Ue =
+
+k q1
+0
+
+
+
+As a result, the dynamic model of the robotic system is
+!
+!
+! 
+  
+m
+md cos q2
+q̈1
+−md sin q2 q̇22
+k q1
+0
++
++
+=
+.
+2
+0
+τ
+md cos q2 IL + md
+q̈2
+0
+
+(2)
+
+For case a), at the initial state q(0) = q̇(0) = 0 and with an input τ = τ0 > 0, we solve from (2)
+for the acceleration q̈(0) as
+!
+
+
+
+
+
+
+q̈1 (0)
+0
+−md cos q2 (0)
+1
+τ0 −d
+= M −1 (q(0))
+=
+τ0 =
+.
+(3)
+det M (q(0))
+IL
+τ0
+m
+1
+q̈2 (0)
+As a consequence, the spring will be initially compressed (q̈1 (0) < 0) and the link will start moving
+counterclockwise (q̈2 (0) > 0).
+For case b), we isolate q̈1 from the first equation in (2),
+q̈1 =
+
+
+1
+md (sin q2 q̇22 − cos q2 q̈2 ) − k q1 ,
+m
+4
+
+and replace it in the second, obtaining thus
+
+IL + md2 (1 − cos2 q2 ) q̈2 + md2 sin q2 cos q2 q̇22 − dk q1 cos q2 = τ.
+
+(4)
+
+Consider now the nonlinear feedback control law
+
+τ = IL + md2 (1 − cos2 q2 ) (−kd q̇2 + kp (q2d − q2 )) + md2 sin q2 cos q2 q̇22 − dk q1 cos q2 ,
+
+(5)
+
+with kp > 0 and kd > 0, and any constant value for q2d . Note that the (inertial) factor multiplying
+q̈2 in this control law is always positive. Then, plugging the torque (5) into (4) will exactly linearize
+and stabilize the dynamics of the coordinate q2 in a global sense, yielding
+⇒
+
+q̈2 + kd q̇2 + kp q2 = kp q2,d
+
+q2 (t) → q2d
+
+exponentially.
+
+At steady state, one has q̇2 = q̈2 = 0. Thus, the first dynamic equation in (2) provides
+m q̈1 + k q1 = 0.
+This is the dynamics of an undamped mass m suspended on a spring of stiffness k. If initially
+excited at some t = t̄ > 0, i.e., for q1 (t̄) 6= 0 and/or q̇1 (t̄) 6= 0, the mass will oscillate forever as
+r
+k
+q̇1 (t̄)
+sin ω(t − t̄),
+ω=
+> 0, ∀t ≥ t̄.
+q1 (t) = q1 (t̄) cos ω(t − t̄) +
+ω
+m
+Accordingly, the control law (5) boils down at steady state to the oscillatory command
+τss (t) = − (dk cos q2d ) q1 (t),
+which will prevent the link from rotating.
+Exercise #3
+It is easy to recognize that the dynamic model refers to a Cartesian 3P robot with orthogonal
+axes, see Fig. 4. Only the third (vertical) prismatic joint is subject to gravity. The structure is
+also called a portal robot. It supports and moves heavy payloads and is usually equipped with an
+additional 3R spherical wrist mounted on the end effector.
+
+m1
+
+q2
+
+⊕
+
+g0
+
+⊕
+
+q3
+
+⊕
+
+m3
+
+m2
+q1
+
+zw
+yw
+
+xw
+
+Figure 4: A Cartesian 3P robot with a portal structure.
+5
+
+Exercise #4
+This is a straightforward application of the principle of virtual work. The (absolute) coordinates
+qi , i = 1, 2, 3, in Fig. 2 are related to the (relative) joint variables θi , i = 1, 2, 3, of the DenavitHartenberg (DH) notation by the linear transformation
+
+
+q1 = θ1
+1 0 0
+
+
+q2 = θ1 + θ2
+⇒
+q =  1 1 0  θ = T θ.
+q3 = θ1 + θ2 + θ3
+1 1 1
+The joint torques u produced by the three motors and performing work on the DH angles θ and
+the torques uq performing work on the q coordinates that appear in the dynamic model
+M (q)q̈ + n(q, q̇) = uq ,
+are related by the identity
+uTq q̇ = uT θ̇
+or
+
+
+
+1
+
+u = T T uq =  0
+0
+
+uTq q̇ = uTq T θ̇ = uT θ̇,
+
+⇒
+1
+1
+0
+
+
+1
+
+1  uq
+1
+
+∀θ̇
+
+u1 = uq1 + uq2 + uq3
+u2 = uq2 + uq3
+u3 = uq3
+
+⇒
+
+and its inverse
+
+
+1
+
+uq = T −T u =  0
+0
+
+
+−1
+0
+
+1 −1  u
+0
+1
+
+⇒
+
+uq1 = u1 − u2
+uq2 = u2 − u3
+uq3 = u3 .
+
+Exercise #5
+The solution is provided by a feedback linearization control law designed to stabilize in a decoupled way the normal and tangential trajectory errors in the time-varying reference frame (xt , y t )
+associated to the task. For this, having defined the position error e = pd − p, the error vector of
+interest in the rotated task frame is
+t
+
+e = 0RTt (t) e = 0RTt (t) (pd − p) ,
+
+where
+0
+
+Rt (t) =
+
+
+
+cos αd (t) − sin αd (t)
+sin αd (t) cos αd (t)
+
+
+
+is the 2 × 2 (planar) rotation matrix characterizing the current orientation (by the angle αd (t)) of
+the task frame (xt , y t ) moving with pd (t) w.r.t. the absolute frame (x0 , y 0 ). Accordingly, the time
+derivative of t e is1
+
+
+T
+t
+ė = 0RTt(t) ė + 0Ṙt (t) e = 0RTt(t) ė + 0RTt(t)S T(α̇d (t)) e = 0RTt(t) ė + S T(α̇d (t)) e ,
+(6)
+1 In
+
+the following, the two formats of the expression of t ė in (6), and later of t ë in (7), can be used equivalently:
+either the one containing time derivatives of the rotation matrix, or the one where these are substituted by their
+explicit computation.
+
+6
+
+with
+
+S(α̇d (t)) =
+
+0
+−α̇d (t)
+α̇d (t)
+0
+
+
+.
+
+Similarly, its second time derivative is
+t
+
+T
+
+T
+
+ë = 0RTt(t) ë + 2 0Ṙt (t) ė + 0R̈t (t) e
+= 0RTt(t) ë + 2 0RTt(t)S T(α̇d (t)) ė + 0RTt(t)S T(α̈d (t)) e − 0RTt (t)D(α̇d (t)) e
+
+
+ 
+= 0RTt(t) ë + 2 S T(α̇d (t)) ė + S T(α̈d (t)) − D(α̇d (t)) e ,
+
+(7)
+
+being
+
+
+2  α̇2 (t)
+0
+d
+D(α̇d2 (t)) = − S T(α̇d (t)) =
+.
+0
+α̇d2 (t)
+Therefore, to satisfy the problem specifications, we should impose to the controlled robot the
+following linear and decoupled error dynamics
+t
+
+ë + tK D t ė + tK P t e = 0,
+
+with diagonal, positive definite gain matrices (task gains)
+
+
+
+kP,norm
+0
+kD,norm
+t
+t
+KP =
+> 0,
+KD =
+0
+kP,tang
+0
+
+(8)
+
+0
+
+
+
+kD,tang
+
+> 0,
+
+where the subscripts norm and tang are used to denote, respectively, the normal direction xt and
+the tangential direction y t of the current task frame.
+Consider the dynamic model of the planar 2R robot (without gravity term, being this on a horizontal plane)
+M (q)q̈ + c(q, q̇) = τ
+and the direct (and first- and second-order differential) kinematics of the robot
+p = f (q),
+
+ṗ =
+
+∂f (q)
+q̇ = J (q)q̇,
+∂q
+
+p̈ = J (q)q̈ + J̇ (q)q̇.
+
+Assuming no singularities of the Jacobian matrix J (q) are encountered, we apply the control law
+
+
+τ = M (q)J −1 (q) a − J̇ (q)q̇ + c(q, q̇),
+(9)
+with
+a = p̈d + 0Rt (t)
+
+
+
+
+K D t ė + tK P t e + 2 S T(α̇d (t)) ė + S T(α̈d (t)) − D(α̇d (t)) e.
+
+t
+
+This gives
+p̈ = p̈d + 0Rt (t)
+or
+
+
+
+
+K D t ė + tK P t e + 2 S T(α̇d (t)) ė + S T(α̈d (t)) − D(α̇d (t)) e
+
+t
+
+
+
+ 
+RTt(t) ë + S T(α̇d (t)) 2 ė + S T(α̈d (t)) − D(α̇d (t)) e + tK D t ė + tK P t e = 0,
+
+0
+
+which is equivalent to the expression (8) of the desired behavior for the task error t e(t).
+7
+
+(10)
+
+Note that the commanded acceleration a in (10) can be equivalently written using the time derivatives of the task rotation matrix 0Rt (t) within the expressions of t ė in (6) and t ë in (7). This
+would lead to
+
+
+T
+T
+a = p̈d + 0Rt (t) tK D t ė + tK P t e + 2 0Ṙt (t) ė + 0R̈t (t) e ,
+(11)
+which produces indeed the same target result (8). Moreover, equation (10) can be rewritten only
+in terms of the position and velocity errors e and ė expressed in the base frame as
+a = p̈d + K D (t) ė + K P (t) e = p̈d + K D (t) (ṗd − ṗ) + K P (t) (pd − p) ,
+
+(12)
+
+where we defined the two time-varying gain matrices associated to the task
+K P (t) = 0Rt (t) tK P 0RTt(t) + 0Rt (t) tK D 0RTt(t) S T(α̇d (t)) + S T(α̈d (t)) − D(α̇d (t))
+and
+K D (t) = 0Rt (t) tK D 0RTt(t) + 2 S T(α̇d (t)).
+We note that the desired task acceleration p̈d needs not to be rotated in the expression (12), and
+that extra terms appear in these time-varying gain matrices, related to the changing orientation
+of the task frame. If the same trajectory were assigned along a linear path, then α̇d = α̈d = 0 and
+these gain matrices would become constant
+t
+
+K P = 0Rt K P 0RTt,
+
+t
+
+K D = 0Rt K D 0RTt.
+
+Finally, in order to assign a critical damping and the desired time scale separation between the
+normal and tangential error components, we use standard results on linear second-order dynamic
+systems. In order to impose two asymptotically stable eigenvalues/poles in
+
+
+p
+p
+with ω > 0, ζ > 0, a = ζω > 0, b = 1 − ζ 2 ω ≥ 0,
+−a ± i b = −ω ζ ± i 1 − ζ 2
+to the characteristic equation s2 + kD s + kP = 0 that governs the dynamics of each component of
+the tracking error in the task frame, one needs to choose
+kP = ω 2 .
+
+kD = 2ζω,
+
+The coefficient ζ affects the way oscillations at the natural frequency ω are damped. Moreover,
+the error response over time is enveloped by a decaying exponential e−ζωt . Therefore, to achieve
+our design target for the transient errors, we choose first a common critical damping ζ = 0.7 (or
+larger) for both the tangential and normal directions. Then, once a sufficiently high frequency
+ωtang > 0 has been selected for the tangential direction, we set
+2
+kP,tang = ωtang
+,
+
+kD,tang = 2ζωtang ,
+
+and
+2
+2
+kP,norm = ωnorm
+= (5 ωtang )2 = 25 ωtang
+,
+
+∗∗∗∗∗
+
+8
+
+kD,norm = 2ζωnorm = 10ζωtang .
+
+

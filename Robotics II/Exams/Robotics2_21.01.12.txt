@@ -1,0 +1,1051 @@
+Robotics 2
+January 12, 2021
+Exercise #1
+The 3R robot in Fig. 1 moves in a vertical plane. Its control architecture consists of an ideal lowlevel controller that is able to execute any (reasonable) reference joint velocity command q̇ r ∈ R3
+(including q̇ r = 0), as received by a high-level control law. The assigned task requires that the end
+effector is kept at a desired position Pd in the plane, while the robot minimizes the potential energy
+Ug (q) due to gravity. Design a suitable high-level control law that realizes this task in a robust
+way (i.e., rejecting also positioning errors for the end effector). Provide the detailed symbolic
+expression of all terms needed in this law. Compute then the numerical value of q̇ r at the starting
+instant t = 0, assuming that the links have a uniform distribution of mass and using the data:
+l1 = 0.5,
+q1 (0) = π,
+
+l2 = 0.4,
+
+l3 = 0.3
+
+q2 (0) = 0,
+m3
+
+Pd
+
+[m],
+
+q3 (0) = −π/2
+
+q3
+
+⨁
+
+m1 = 5,
+
+m2 = 3,
+
+[rad]
+
+⇒
+
+m3 = 2
+
+[kg],
+
+Pd = (−0.9, 0.3).
+
+q2
+⨁
+
+l3
+
+l2 m2
+
+y0
+
+m1
+
+g0
+
+l1
+
+⨁
+
+q1
+x0
+
+Figure 1: A planar 3R robot with a constant desired position Pd defined for its end effector.
+Exercise #2
+Consider again the situation of Exercise #2. Assume now that the robot is torque-controlled,
+namely that the control architecture is able to impose any (reasonable) reference joint torque
+command τ r ∈ R3 . Design a suitable torque-level control law that realizes the same previous task
+in a robust way (i.e., rejecting also position and/or velocity errors for the end effector). [Note: You
+don’t have to detail the expression of the terms in the control law, just define the structure.]
+Exercise #3
+Derive the dynamic model of the 2R polar robot in Fig. 2, assuming that I2,xx 6= I2,yy = I2,zz .
+Consider also the presence of viscous friction at the two joints.
+I2,yy
+
+q1
+I2,zz
+
+I2,xx
+
+⨁m
+
+2
+
+g0
+q2
+
+I1,yy
+
+⨁
+
+I1,zz m1
+
+I1,xx
+
+Figure 2: A 2R polar robot. Mass and diagonal barycentric inertia of each link is indicated.
+1
+
+Exercise #4
+Consider again the robot of Exercise #3. Answer the following questions on its dynamics.
+a) Suppose that the first robot joint is kept at a constant speed q̇1 = Ω > 0 by a constant torque τ̄
+of minimum possible norm kτ̄ k applied at the joints. Find an associated constant steady-state
+position q2 = q̄2 and the expressions of τ̄1 and τ̄2 . Is the joint angle q̄2 unique for a given Ω > 0?
+And is the associated minimum norm torque τ̄ unique?
+b) Assuming that only the gravity acceleration g0 and the kinematic parameters are known for this
+robot, what is the minimum number p of uncertain dynamic coefficients a that fully describe
+the robot dynamics in the linearly parametrized way Y (q, q̇, q̈) a = τ ? Give the symbolic
+expressions for the vector a ∈ Rp and the 2 × p matrix Y .
+Exercise #5
+A PPR robot moving on a horizontal plane may collide with some unknown obstacle in the environment at an a priori unknown point Pc along its structure, as illustrated in Fig. 3. Suppose
+that a single collision occurs and that the interaction can be assumed as pointwise, modeled by an
+unknown and unmeasurable pure force F c,i ∈ R2 applied to the robot, respectively with i = 1, 2,
+or 3 according to which link is involved. Define the complete expression of the dynamic terms in
+a model-based residual vector r ∈ R3 that can be used for collision detection and isolation. For
+every possible situation, analyze if the collision can be detected or not, if the colliding link can be
+isolated or not, if the colliding force F c,i can be identified (completely or in part) or not, and if
+the location of the collision point Pc,i along the ith link can be determined or not.
+Fc,3
+
+L
+q3
+
+yw
+Fc,1
+
+Fc,2
+
+q2
+
+q1
+xw
+
+Figure 3: A planar PPR robot undergoing a possible collision during motion.
+[240 minutes (4 hours); open books]
+
+2
+
+Solution
+January 12, 2021
+Exercise #1
+In the absence of position error at the robot end effector level, a suitable high-level control law
+satisfying the requested self-motion task is obtained by projecting the negative gradient of the
+gravitational potential energy Ug (q) in the null space of the task Jacobian J (q), or
+
+
+
+
+q̇ r = −α I − J # (q)J (q) ∇q Ug (q) = α J # (q)J (q) − I g(q).
+(1)
+T
+
+The scalar α > 0 is a step size in the anti-gradient direction −∇q Ug = − (∂Ug /∂q) and g(q) is
+the gravity term in the robot dynamic model1 . To make the control law robust w.r.t. transient
+Cartesian position errors ep = pd − p = pd − f (q), where f (q) is the (positional) task kinematics
+of the robot, we modify (1) as
+
+
+q̇ r = J #(q)K P ep + α J #(q)J (q) − I g(q) = −α g(q) + J #(q) (K P ep + α J (q)g(q)) , (2)
+where K P > 0 is a (typically, diagonal) control gain matrix. Out of singularities, this produces
+an exponentially converging error dynamics since ėp = −ṗ = −J (q)q̇ r = −K P ep . In order to
+evaluate (2), we need the following terms (using the usual compact trigonometric notation):
+
+
+l1 c1 + l2 c12 + l3 c123
+f (q) =
+,
+l1 s1 + l2 s12 + l3 s123
+T 
+
+
+−(l1 s1 + l2 s12 + l3 s123 ) −(l2 s12 + l3 s123 ) −l3 s123
+∂f (q)
+=
+,
+J (q) =
+∂q
+l1 c1 + l2 c12 + l3 c123
+l2 c12 + l3 c123
+l3 c123
+Ug (q) = g0 (m1 dc1 s1 + m2 (l1 s1 + dc2 s12 ) + m3 (l1 s1 + l2 s12 + dc3 s123 )) ,
+
+
+
+T
+(m1 dc1 + (m2 + m3 )l1 ) c1 + (m2 dc2 + m3 l2 ) c12 + m3 dc3 c123
+∂Ug (q)
+
+
+(m2 dc2 + m3 l2 ) c12 + m3 dc3 c123
+g(q) =
+= g0 
+,
+∂q
+m3 dc3 c123
+where dci > 0 is the distance of the center of mass of link i from the joint axis i, for i = 1, 2, 3.
+T
+With the given data, it is f (q(0)) = 0.9 0.3
+= pd , so that ep = 0 and we don’t need to know
+the actual value of K p . For the remaining terms in (2), we compute
+
+
+
+
+0.5464 −1.1475
+−0.3 −0.3 −0.3
+
+
+J (q(0)) =
+⇒ J # (q(0)) =  −1.2295 0.0820 
+−0.9 −0.4
+0
+−2.6503 1.0656
+and
+
+1 Note
+
+
+
+ 
+
+−5.15
+−50.522
+
+ 
+
+g(q(0)) = g0  −1.4  =  −13.734  [Nm],
+0
+0
+that α converts here a joint torque into a joint velocity. Thus, it has dimensional units [rad·(Nm·s)−1 ].
+
+3
+
+where g0 = 9.81 [m/s−2 ]. Setting for instance α = 1, we finally obtain
+
+
+2.5731
+
+
+q̇ r (0) =  −5.7895  [rad/s].
+3.2164
+The first and third link start moving counterclockwise, while the second link will rotate clockwise.
+Robot motion will continue until the projection of the gravity term g(q) in the null space of the
+Jacobian J (q) will vanish (in general, not implying that g(q) = 0).
+Exercise #2
+When the robot is in a torque-controlled mode, its full dynamics
+M (q)q̈ + c(q, q̇) + g(q) = τ
+has to be taken into account. To address the same task as in Exercise #1 with torque control, we
+apply first a feedback linearization law in the joint space, i.e.,
+τ = M (q)a + c(q, q̇) + g(q)
+
+⇒
+
+q̈ = a.
+
+(3)
+
+A joint acceleration command performing a robot self-motion, as driven by the negative gradient
+of the potential energy due to gravity2 , is then designed as
+
+
+a = −J #(q)J̇ (q)q̇ − I − J #(q)J (q) (α g(q) + K v q̇) .
+(4)
+In (4), a damping velocity term −K v q̇, with K v > 0 and diagonal, has been added in the null
+space of the task Jacobian in order to stabilize the joint motion. This is customary (and almost
+mandatory) when resolving redundancy at the acceleration level.
+For rejecting position and/or velocity errors that may occur around the desired constant endeffector position, the command (4) is modified as
+
+ 
+
+a = J #(q) K P (pd − f (q)) − K D J (q)q̇ − J̇ (q)q̇ − I − J #(q)J (q) (α g(q) + K v q̇) , (5)
+including thus a PD action, with (typically diagonal) gain matrices K P > 0 and K D > 0, on the
+Cartesian position error, and taking into account that ṗd = 0. Plugging (5) into (3) yields finally
+the desired torque control law
+h
+
+
+τ r = M (q) J #(q) K P (pd − f (q)) − K D J (q)q̇ − J̇ (q)q̇
+
+
+i
+(6)
+− I − J #(q)J (q) (α g(q) + K v q̇) + c(q, q̇) + g(q).
+Exercise #3
+Kinetic energy
+
+T1 =
+
+1
+I1,yy q̇12
+2
+
+T2 =
+
+1
+1
+1
+1
+2
+2
+m2 kv c2 k + ω T2 I 2 ω 2 = m2 kv c2 k + 2 ω T2 2 I 2 2 ω 2
+2
+2
+2
+2
+
+2 In this case, α converts a joint torque into a joint acceleration. Thus, it has dimensional units [rad·Nm−1 ·s−2 ].
+Similarly, the units of K v are [s−1 ].
+
+4
+
+
+
+
+−dc2 (s1 c2 q̇1 + c1 s2 q̇2 )
+
+
+⇒ v c2 = ṗc2 =  dc2 (c1 c2 q̇1 − s1 s2 q̇2 ) 
+pc2
+dc2 c2 q̇2
+
+2
+⇒ kv c2 k = d2c2 q̇22 + c22 q̇12
+
+
+
+
+
+ 
+
+
+0
+0
+s2 q̇1
+0
+c2 s2 0
+
+
+
+
+
+ 
+
+
+1
+ω 1 =  q̇1  ⇒ 1 ω 2 =  q̇1  ⇒ 2 ω 2 = 1 RT2 (q2 ) 1 ω 2 =  −s2 c2 0  q̇1  =  c2 q̇1 
+0
+q̇2
+q̇2
+q̇2
+0
+0 1
+
+
+
+I
+0
+0
+s2 q̇1
+ 1
+  2,xx
+1
+
+
+s2 q̇1 c2 q̇1 q̇2  0
+I2,yy
+0   c2 q̇1 
+⇒ T2 = m2 d2c2 q̇22 + c22 q̇12 +
+2
+2
+0
+0
+I2,zz
+q̇2
+
+
+1
+1
+1
+= m2 d2c2 q̇22 + c22 q̇12 + I2,zz q̇22 +
+I2,xx s22 + I2,yy c22 q̇12
+2
+2
+2
+1
+T (q, q̇) = T1 + T2 = q̇ T M (q)q̇
+2
+
+ 
+dc2 c1 c2
+dc2 cos q2 cos q1
+
+
+ 
+=  dc2 cos q2 sin q1  =  dc2 s1 c2 
+dc2 s2
+dc2 sin q2
+
+
+Inertia matrix
+
+
+M (q) =
+
+
+I1,yy + I2,xx s22 + I2,yy + m2 d2c2 c22
+0
+
+0
++ m2 d2c2
+
+
+(7)
+
+I2,zz
+
+
+
+I1,yy + I2,xx + I2,yy + m2 d2c2 − I2,xx c22
+0
+=
+0
+I2,zz + m2 d2c2
+
+ 
+
+a1 + a2 c22 0
+=
+= m1 (q2 ) m2
+0
+a3
+
+Potential energy and gravity vector
+
+U1 = 0
+
+U2 = g0 m2 dc2 s2
+
+
+⇒ g(q) =
+
+∂U (q)
+∂q
+
+T
+
+
+=
+
+U (q) = U1 + U2
+
+0
+g0 m2 dc2 c2
+
+
+
+
+=
+
+0
+a4 c2
+
+
+
+Coriolis and centrifugal vector
+
+1
+C 1 (q) =
+2
+
+
+
+∂m1
+∂q
+
+
+
+
++
+
+∂m1
+∂q
+
+T
+
+
+−
+
+∂M
+∂q1
+
+!
+
+
+=
+
+c1 (q, q̇) = q̇ T C 1 (q)q̇ = −2 a2 s2 c2 q̇1 q̇2 = −a2 sin(2q2 )q̇1 q̇2
+
+ 
+T 
+! 
+a2 s2 c2
+∂m2
+∂m2
+∂M
+1
++
+−
+=
+C 2 (q) =
+2
+∂q
+∂q
+∂q2
+−0
+c2 (q, q̇) = q̇ T C 2 (q)q̇ = a2 s2 c2 q̇12
+
+⇒ c(q, q̇) =
+
+−2 a2 s2 c2 q̇1 q̇2
+a2 s2 c2 q̇12
+
+
+
+5
+
+−a2 s2 c2
+0
+
+0
+−a2 s2 c2
+
+0
+0
+
+
+
+
+
+Dynamic model (including viscous friction)
+
+(
+M (q)q̈ + c(q.q̇) + g(q) + F q̇ = τ
+
+⇐⇒
+
+
+a1 + a2 c22 q̈1 − 2 a2 s2 c2 q̇1 q̇2 + f1 q̇1 = τ1
+a3 q̈2 + a2 s2 c2 q̇12 + a4 c2 + f2 q̇2 = τ2
+
+(8)
+
+Exercise #4
+a) With reference to eqs. (8), set q̇1 = Ω > 0, q̈1 = 0, q2 = q̄2 , q̇2 = q̈2 = 0 for the desired steady
+state. We get
+
+f1 Ω = τ1
+
+(9)
+
+a2 sin q̄2 cos q̄2 Ω + a4 cos q̄2 = τ2
+
+(10)
+
+2
+
+From (9), the torque on joint 1 should necessarily compensate the loss of energy due to viscous
+friction when the joint is rotating with a speed Ω, so τ̄1 = f1 Ω. Because of the minimum norm
+requirement for the steady-state torque τ̄ , we seek then a solution q̄2 in (10) for τ2 = τ̄2 = 0. This
+is possible in two cases.
+
+𝑞̇ % = Ω
+reaction
+force
+centrifugal
+force
+
+⨁
+
+dc2
+
+𝑞"#
+
+m2g0
+
+Figure 4: Equilibrium of forces for a polar robot spinning its first joint at a constant q̇1 = Ω > 0.
+• For q̄2 = ±π/2 (second link vertical, up or down along the first joint axis). Indeed, cos q̄2 = 0 and
+(10) will be an identity with zero applied torque. However, these equilibria are both unstable:
+small perturbations to this steady-state condition will let the second robot joint deviate from
+any of these two configurations.
+• When a2 sin q̄2 Ω2 + a4 = 0. This corresponds to a special balancing between the vector sum of
+the gravity force (pointing vertically and downward) and centrifugal force (pointing horizontally
+and radially from the first joint axis), both applied to the center of mass of link 2, and the
+internal reaction force by the rigid robot structure (see Fig. 4). This balance is obtained for
+ π 
+−a4
+g0 m2 dc2
+q̄2 = arcsin
+=
+−
+arcsin
+∈
+− ,0 .
+(11)
+a2 Ω2
+(I2,yy + m2 d2c2 − I2,xx ) Ω2
+2
+The domain of definition for q̄2 follows from dc2 > 0 and from the fact that I2,yy + m2 d2c2 > I2,xx
+always holds, namely that the inertia of link 2 around an axis belonging to its base is less than
+the baricentral inertia around an axis stretching along the link length. Such inequality can be
+proven for any rigid body, no matter what mass it has and how the mass is distributed in the
+body volume3 . For low values of Ω, the angle in (11) would be close to −π/2; for large values of
+Ω, we have instead q̄2 → 0− . It can be shown that this equilibrium is dynamically stable.
+3 Triangular inequalities hold among the elements of a diagonal barycentric inertia matrix of a rigid body (or for
+the elements on its principal axes), such as Iyy + Izz > Ixx . In addition, the inertia I around any barycentric axis
+of a body of mass m is smaller than md2 , where d is the distance from the CoM to a parallel axis at the body end.
+These two physical properties together prove the inequality in the text.
+
+6
+
+In any case, we note that the (minimum norm) torque for this dynamic equilibrium will be the
+same:
+
+
+f1 Ω
+τ̄ =
+,
+kτ̄ k = f1 |Ω| .
+0
+Indeed, when considering also a constant torque τ̄2 6= 0 applied at the second joint (and thus, a
+total torque with kτ̄ k > f1 |Ω|), we may find other steady-state solutions for q̄2 .
+b) The minimum number of dynamic coefficients required is p = 6. From eqs. (8), one has
+
+
+
+Y =
+
+q̈1
+0
+
+c22 q̈1
+
+− 2s2 c2 q̇1 q̇2
+s2 c2 q̇12
+
+0
+q̈2
+
+0
+c2
+
+⇒
+
+q̇1
+0
+
+
+0
+,
+q̇2
+
+
+
+
+
+a=
+
+
+
+
+a1
+a2
+a3
+a4
+a5
+a6
+
+
+
+
+
+ 
+ 
+ 
+ 
+=
+ 
+ 
+ 
+
+I1,yy + I2,xx
+I2,yy + m2 d2c2 − I2,xx
+I2,zz + m2 d2c2
+g0 m2 dc2
+f1
+f2
+
+
+
+
+
+
+
+
+
+
+
+Y (q, q̇.q̈) a = τ .
+
+A comment is in place on the alternative definition of coefficients in (7), before introducing the
+trigonometric substitution s22 = 1 − c22 . When I2,yy = I2,zz , as in the present case, only three
+independent dynamic coefficients would appear anyway in the inertia matrix, although with the
+different definitions
+a01 = I1,yy ,
+
+a02 = I2,xx ,
+
+a03 = I2,yy + m2 d2c2 = I2,zz + m2 d2c2 = a3 ,
+
+whereas a0i = ai for the remaining i = 4, 5, 6. Although the associated regressor matrix Y 0 would
+look slightly different, both parametrizations are minimal (p = 6). On the other hand, this would no
+longer be true for the parametrization suggested by (7) in case I2,yy 6= I2,zz : 4 dynamic coefficients
+would then be used in M , leading to a total of 7 coefficients in the dynamic model.
+Exercise #5
+We shall derive first the terms in the dynamic model of the planar PPR robot in Fig. 3, following
+a Lagrangian approach. In the absence of gravity, we have
+τ c = J Tc (q)F c ,
+
+M (q)q̈ + S(q, q̇)q̇ = τ + τ c ,
+
+where S q̇ is a factorization of the quadratic velocity terms such that Ṁ − 2S is a skew-symmetric
+matrix (or, equivalently, Ṁ = S + S T ), τ c is the joint torque resulting from a collision with a
+force F c , and J c is the Jacobian of the collision point along the structure.
+The kinetic energy of the first two links, moved by two prismatic joints with orthogonal axes, is
+T1 + T2 =
+
+
+1
+1
+m1 q̇12 + m2 q̇12 + q̇22 .
+2
+2
+
+From
+
+pc3 =
+
+q1 + dc3 c3
+q2 + dc3 s3
+
+
+
+
+⇒
+
+v c3 = ṗc3 =
+
+q̇1 − dc3 s3 q̇3
+q̇2 + dc3 c3 q̇3
+
+
+,
+
+ω3 = q̇3 ,
+
+the kinetic energy of the third (rotational) link is computed as
+T3 =
+
+ 1
+1
+1
+1
+2
+m3 kv c3 k + I3 ω32 = m3 q̇12 + q̇22 + d2c3 q̇32 + 2 dc3 (−s3 q̇1 + c3 q̇2 )q̇3 + I3 q̇32 .
+2
+2
+2
+2
+7
+
+From the kinetic energy of the system,
+T = T1 + T2 + T3 =
+the inertia matrix is extracted as
+
+
+m1 + m2 + m3
+
+0
+M (q) = 
+−m3 dc3 s3
+
+1 T
+q̇ M (q)q̇,
+2
+
+0
+m2 + m3
+m3 dc3 c3
+
+
+−m3 dc3 s3
+
+m3 dc3 c3  .
+I3 + m3 d2c3
+
+The (purely) centrifugal terms c(q, q̇) = S(q, q̇)q̇ are derived using the Christoffel symbols, i.e.,
+for each component
+!
+T
+
+1 ∂mi (q)
+∂mi (q)
+∂M (q)
+T
+ci (q, q̇) = q̇ C i (q)q̇,
+C i (q) =
+, i = 1, 2, 3
++
+−
+2
+∂q
+∂q
+∂q i
+being mi the ith column of the inertia matrix M . We obtain
+
+
+0 0
+0
+
+
+0
+C 1 (q) =  0 0
+⇒
+c1 (q, q̇) = −m3 dc3 c3 q̇32
+
+0 0 −m3 dc3 c3
+
+
+0 0
+0
+
+
+0
+⇒
+c2 (q, q̇) = −m3 dc3 s3 q̇32
+C 2 (q) =  0 0
+
+0 0 −m3 dc3 s3
+⇒
+
+C 3 (q) = 0
+and thus
+
+c3 (q, q̇) = 0,
+
+
+
+
+−m3 dc3 c3 q̇32
+
+
+c(q, q̇) =  −m3 dc3 s3 q̇32  .
+0
+
+Using again the Christoffel symbols, a suitable factorization matrix for c is computed as
+ T
+ 
+
+q̇ C 1 (q)
+0 0 −m3 dc3 c3 q̇3
+
+ 
+
+S(q, q̇) =  q̇ T C 2 (q)  =  0 0 −m3 dc3 s3 q̇3  ,
+0 0
+0
+q̇ T C 3 (q)
+The model-based residual for collision detection and isolation can then be evaluated in all its terms,
+namely
+
+Z t
+ 
+T
+r(t) = K I M (q)q̇ −
+τ + S (q, q̇)q̇ + r ds ,
+K I > 0,
+(12)
+0
+
+where we have assumed that q̇(0) = 0 (the robot starts at rest).
+second term in the integral
+
+0
+
+T
+0
+S (q, q̇)q̇ = 
+−m3 dc3 (s3 q̇2 + c3 q̇1 ) q̇3
+
+8
+
+In particular, we have for the
+
+
+.
+
+The residual r in (12) is affected, through the joint torque τ ci , by a collision force F ci = Fx Fy
+acting at the collision point Pci on the robot link i as
+
+
+ṙ = K I (τ ci − r) = K I J Tci (q)F ci − r ,
+i = 1, 2, 3,
+
+T
+
+except for some singular cases. Essentially, there are directions along which the point Pci cannot
+be given a linear instantaneous velocity in the motion plane by means of a joint velocity q̇ ∈ R3 .
+Next, we shall distinguish between collisions on the first, second, or third link and analyze the
+various possible situations in terms of collision detection and isolation, as well as collision force
+identification and localization. Assuming that sufficiently large gains can be chosen in the diagonal
+matrix K I , we will have
+r ≈ τ ci ,
+and the residual r (in particular, its components ri ) can be used as a proxy for τ ci when reasoning
+about the nature of collisions. In the following, all quantities will be expressed in the world frame
+RFw of Fig. 3.
+• Collision on link 1. The position of the collision point along the first link4 and the associated
+Jacobian and joint torque are
+ 
+
+
+
+
+Fx
+q1 − ρ1
+1 0 0
+ 
+pc1 =
+, with ρ1 ∈ [0, 2l1,max ] ⇒ J c1 =
+⇒ τ c1 = J Tc1 F c1 =  0 .
+0
+0 0 0
+0
+Clearly, a collision is not detected at all when
+
+
+0
+0
+F c1 =
+⇒
+Fy
+
+0
+J Tc1 F c1
+= 0.
+
+Only the intensity Fx of F c1 can be identified. The closer is the alignment of F c1 to the axis
+of joint 1, the poorer will be the detection. Moreover, we will never have an information on the
+localization of the collision point Pc1 .
+• Collision on link 2. The position of the contact point along the second link and the associated
+Jacobian and joint torque are
+ 
+
+
+
+
+Fx
+q1
+1 0 0
+ 
+pc2 =
+, with ρ2 ∈ [0, 2l2,max ] ⇒ J c2 =
+⇒ τ c2 = J Tc2 F c2 =  Fy .
+q 2 − ρ2
+0 1 0
+0
+Thus, the collision will always be detected and the collision force F c2 fully identified. However,
+once again, no information on the localization of the collision point Pc2 is provided by the
+residual. This is also critical for the isolation of the actual link in collision. In fact, when Fy = 0
+in F c2 , we obtain τ c2 = τ c1 and there will be no way to understand whether the collision
+occurred on link 1 (with the force intensity being possibly identified only in part) or on link 2
+(with direction and intensity of the collision force being fully identified).
+• Collision on link 3. The position of the contact point along the third link and the associated
+Jacobian and joint torque are
+
+
+
+
+q 1 + ρ 3 c3
+1 0 −ρ3 s3
+pc3 =
+, with ρ3 ∈ [0, L] ⇒ J c3 (q) =
+q2 + ρ3 s3
+0 1 ρ 3 c3
+4 For
+
+simplicity, assume that the prismatic joints have limited excursions, i.e., qi ∈ [−li,max , li,max ], for i = 1, 2.
+
+9
+
+
+
+⇒
+
+τ c3 = J Tc3 (q)F c3
+
+
+Fx
+
+
+Fy
+=
+.
+ρ3 (c3 Fy − s3 Fx )
+
+The first two components of τ c3 (in practice, of its proxy r) show again that the collision is always
+detected, and that the collision force F c3 is fully identified as well. In this case, localization of the
+actual collision point Pc3 (i.e., the value ρ3 ) is also possible, provided that the third component
+τc3,3 6= 0. In fact, we can estimate then ρ3 as
+ρ3 =
+
+τc3,3
+τc3,3
+r3
+=
+≈
+= ρ̂3 .
+c3 Fy − s3 Fx
+c3 τc3,2 − s3 τc3,1
+c3 r2 − s3 r1
+
+Such localization will fail when
+
+F c3 = kF c3 k
+
+c3
+s3
+
+
+⇒
+
+τc3,3 = 0,
+
+namely F c3 is aligned with the third link. Moreover, in this situation we obtain τ c3 = τ c2 and
+also the isolation of the actual link in collision will fail. In fact, we cannot distinguish between
+a collision occurred on link 2 or 3. The same happens when a force F c3 hits the third link at its
+base (being then ρ3 ).
+∗∗∗∗∗
+
+10
+
+

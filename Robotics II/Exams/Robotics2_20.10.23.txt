@@ -1,0 +1,113 @@
+Robotics 2
+Remote Exam – October 23, 2020
+Exercise #1
+The PR robot in Fig. 1 moves on a horizontal plane. Its positive definite inertia matrix has the
+form
+
+
+a
+b cos q2
+M (q) =
+> 0.
+(1)
+b cos q2
+c
+Using only the symbolic coefficients a, b and c in (1), provide the expression of the regressor matrix
+Y (q, q̇, q̇ r , q̈ r ) in the adaptive control law that guarantees global asymptotic tracking of a smooth
+joint trajectory q d (t), without a priori information on the values of the dynamic coefficients.
+y
+
+l2
+dc2
+
+⊕
+
+q2
+m1 ⊕
+
+m2,I2
+
+q1
+x
+
+Figure 1: The planar PR robot with definition of joint variables q1 and q2 and relevant parameters.
+Exercise #2
+For the same PR robot in Fig. 1, suppose that a desired twice-differentiable trajectory yd (t) ∈ R has
+been assigned to the coordinate y of the end-effector position. With the robot in the configuration
+T
+q̄ = 1 π/2
+and at rest, provide the three input vectors of joint force/torque τ A , τ B , and τ C
+(all ∈ R2 ) that execute the desired task and instantaneously minimize, respectively,
+HA =
+
+1
+2
+kτ k ,
+2
+
+HB =
+
+1
+2
+kτ kM −1 (q̄) ,
+2
+
+or
+
+HC =
+
+1
+2
+kτ kM −2 (q̄) .
+2
+
+Which of the three solutions has the largest component at the first joint in absolute value?
+Exercise #3
+Assume now that the robot in Fig. 1 is moving instead in a vertical plane. Derive the expression
+of the gravity term g(q) in the dynamic model as a function of the robot dynamic parameters m1 ,
+m2 , dc2 and I2 . In order to regulate the robot configuration at a desired constant value q d , the
+following control law is being applied:
+τ = K P (q d − q) − K D q̇ + g(q d ).
+
+(2)
+
+Provide explicit sufficient conditions (depending also on the robot dynamic parameters) ensuring
+that the law (2) globally asymptotically stabilizes the closed-loop equilibrium state (q, q̇) = (q d , 0).
+1
+
+Exercise #4
+Consider the task of rolling a sphere of radius R on a rigid plane, while the contact point C follows
+a desired trajectory on the planar surface. The sphere will be held by a robot through a gimbal
+fork that allows free rotation of the sphere around the instantaneous direction of the axis r —see
+Fig. 2. In turn, the fork can be rotated around the axis t, which remains however always vertical.
+Under the action of a sufficiently large force in the normal direction to the plane, friction at the
+contact will let the sphere only roll when in motion, without slipping. With this in mind, define
+a suitable task frame and specify the natural and artificial constraints associated to this hybrid
+T
+∈ R6
+force-velocity control problem. How many generalized velocity directions V = v T ω T
+can be independently assigned by the control law?
+
+axis t
+
+gimbal
+fork
+R
+
+trajectory
+
+C
+
+planar
+surface
+
+axis r
+sphere
+
+Figure 2: A sphere rolling on a plane and following a desired trajectory of the contact point C.
+
+[180 minutes (3 hours); open books]
+
+2
+
+
