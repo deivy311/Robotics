@@ -23,41 +23,44 @@ abs_on=false
 q_dMax_=-abs(q_dMax_)
 end
 Jtemp = J_;
-Jiter_V=zeros(nx,ny);
+J_q_dot_N=zeros(nx,ny);
 originalpos=1:qnum;
 qdotstarFinal=q_dMax_;
 q_dMaxTemp_=q_dMax_;
 numiter=1;
 while maxvalue > 0
-    [maxvalue, maxindex] = max(abs(qdotstar)-abs(q_dMaxTemp_)); % The positive values are violating the limit. We take the highest one.
+    [maxvalue, maxindex] = max(abs(qdotstar)-abs(q_dMaxTemp_)); % Current positive values violating the limits. We take the highest one.
        if any(maxvalue > 0) %triying with thsi aproach
 %     if (maxvalue > 0) % if there is an exceeding value
         disp("Max value that violates is:  "+ originalpos(maxindex)+"  with value:  "+maxvalue)
        
         disp("SNS Iterarion:  "+numiter)
 %         s = q_dMaxTemp_(1)/qdotstar(maxindex);
-        %xdot_sns  = xdot - J(:,maxindex)* sign(qdotPS(maxindex))*V(maxindex)
+        %xdot_diff  = xdot - J(:,maxindex)* sign(qdotPS(maxindex))*V(maxindex)
         %Same as
         if(abs_on)
-        Jiter_V=abs(Jtemp(:,maxindex)*q_dMaxTemp_(maxindex));% va con abs o no
+        J_q_dot_N=abs(Jtemp(:,maxindex)*q_dMaxTemp_(maxindex));% va con abs o no
         else
-        Jiter_V=Jiter_V+(Jtemp(:,maxindex)*q_dMaxTemp_(maxindex));% va con abs o no
+        J_q_dot_N=J_q_dot_N+(Jtemp(:,maxindex)*q_dMaxTemp_(maxindex));% va con abs o no
         end
         
-        xdot_sns  = xdot - Jiter_V;
-        vpa(xdot_sns)
+        xdot_diff  = xdot - J_q_dot_N;
+        vpa(xdot_diff)
         %         Jtemp = J_;
-        q_dMaxTemp_(maxindex)=[];
+        
         disp("Jtemp #:  "+originalpos(maxindex));
         Jtemp(:,maxindex) = []
         disp("Jtemp pseudo inverse #:  "+originalpos(maxindex));
         psJ_=vpa(pinv(Jtemp))
         originalpos(maxindex)=[];
-        qdot_components = eval(psJ_*xdot_sns)'
-%         qdot_components = eval(simplify(pinv(Jtemp))*xdot_sns)
+        qdot_components = eval(psJ_*xdot_diff)'
+%         qdot_components = eval(simplify(pinv(Jtemp))*xdot_diff)
 %         qdot_sns = [qdot_components(1:maxindex-1), q_dMax_(maxindex), qdot_components(maxindex:end)]'
         qdot_sns = [qdot_components(1:maxindex-1), [], qdot_components(maxindex:end)]'
         qdotstar = qdot_sns;
+
+        %redoing q limitsvalues
+        q_dMaxTemp_(maxindex)=[];
     else
         disp("[INFO] No values are exceeding the limits.")
         disp('Result:')
