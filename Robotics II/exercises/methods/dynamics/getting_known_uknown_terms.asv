@@ -53,7 +53,7 @@ function [new_mat_res]=getting_known_uknown_terms(old_terms,old_terms_a,except_t
         end
         for j=1:size(excep_terms_i,2)
             excep_terms_i_j=excep_terms_i(j);
-            terms_except_childrens_i_j=factor(excep_terms_i_j);%cell2sym(children(excep_terms_i_j));
+            terms_except_childrens_i_j=cell2sym(children(excep_terms_i_j));
             index_except_term_i_j=has(terms_except_childrens_i_j,except_terms);
             no_excep_terms_i_j=terms_except_childrens_i_j(~index_except_term_i_j);
             excep_terms_i_j=terms_except_childrens_i_j(index_except_term_i_j)*1;
@@ -65,13 +65,13 @@ function [new_mat_res]=getting_known_uknown_terms(old_terms,old_terms_a,except_t
             %attaching except terms
             if(compute_unknown_terms)
                 if(tot_except_terms_i_j~=1&tot_except_terms_i_j~=0)
-                    tot_except_terms_i_j_mat=[tot_except_terms_i_j_mat;((tot_except_terms_i_j))];
+                    tot_except_terms_i_j_mat=[tot_except_terms_i_j_mat;tot_except_terms_i_j];
                 end
             end
             if(true)
                 %attaching no except terms
                 if(tot_no_except_terms_i_j~=1&tot_no_except_terms_i_j~=0)
-                    tot_no_except_terms_i_j_mat=[tot_no_except_terms_i_j_mat;((tot_no_except_terms_i_j))];
+                    tot_no_except_terms_i_j_mat=[tot_no_except_terms_i_j_mat;prod(factor(tot_no_except_terms_i_j))];
                 end
             end
         end
