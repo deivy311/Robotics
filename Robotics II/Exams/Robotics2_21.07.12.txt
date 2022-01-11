@@ -1,0 +1,1369 @@
+Robotics 2
+July 12, 2021
+Exercise #1
+Consider the planar 3R robot in Fig. 1. The three links have all equal length L. The robot
+is controlled by a joint acceleration command u = q̈ ∈ R3 . The input commands are bounded
+componentwise as |ui | ≤ Umax,i , for i = 1, 2, 3. Moreover, let p = f (q) ∈ R2 be the end-effector
+position. At a given instant t = t0 , the robot is in a generic state (q(t0 ), q̇(t0 )) = (q 0 , q̇ 0 ) ∈ R6 .
+Assume in the following that it is always q̇ 0 6= 0. For this robot, provide (if it exists) a feasible
+solution u0 = u(t0 ) to each of the following problems. If there are multiple feasible solutions,
+provide the one having minimum norm.
+
+q3
+
+y0
+L
+
+q2
+
+L
+
+P
+
+L
+
+q1
+x0
+
+Figure 1: A planar 3R robot.
+a) Is it possible to define u0 so that the end-effector acceleration instantaneously vanishes, i.e.,
+p̈0 = p̈(t0 ) = 0? If so, under which conditions on the current robot state (q 0 , q̇ 0 )? Provide a
+specific example (or counterexample) illustrating the situation, giving the numerical values of
+q 0 , q̇ 0 , and u0 (and of the resulting p̈0 , if different from zero).
+b) Which command u0 should be applied to stop as fast as possible the motion of the robot joints?
+Provide an example with numerical values of q 0 , q̇ 0 , u0 , and of the obtained p̈0 .
+Exercise #2
+The dynamics of a robot arm with n joints that may be subject to actuator faults can be written
+in a standard form as
+M (q)q̈ + c(q, q̇) + g(q) = τ − τ f ,
+(1)
+where τ f ∈ Rn is an additional torque that models a generic actuator fault when present. Consider now as fault an incipient block of the joint/motor i, with i ∈ {1, . . . , n}. This situation
+is represented by an acceleration of the faulted joint that behaves as q̈i = −λi q̇i , with λi  1,
+until the joint eventually stops. Show that this fault can be described as in (1), by providing the
+model-based expression of the fault τf,i (with τf,j ≡ 0, for j 6= i). Find also the expression of the
+accelerations of the other joints, j 6= i, at the instant when this type of fault occurs.
+
+1
+
+Exercise #3
+The 3-dof RPR robot in Fig. 2 moves on a horizontal plane. The robot should asymptotically
+track a smooth joint trajectory q d (t) in the presence of a partly unknown dynamic model. In fact,
+only the dynamic parameters m3 , dc3 , and I3 are assumed to be known. Derive first the dynamic
+model of this robot, neglecting any dissipative frictional effect.
+yw
+
+m3,I3
+⊕
+
+dc3
+
+q3
+
+⊕
+
+dc2
+m2,I2
+
+q2
+
+q1
+
+m1,I1
+
+xw
+
+⊕
+
+dc1
+
+Figure 2: A planar RPR robot with its generalized coordinates and dynamic parameters.
+Consider next the following adaptive trajectory tracking control law that takes advantage of the
+partly known dynamics
+τ = Y U (q, q̇, q̇ r , q̈ r ) â U + Y K (q, q̇, q̇ r , q̈ r ) aK + K P (q d − q) + K D (q̇ d − q̇)
+˙ U = Γ Y T (q, q̇, q̇ , q̈ ) (q̇ − q̇),
+â
+r
+r
+r
+U
+
+(2)
+
+−1
+where q̇ r = q̇ d + Λ (q d − q) = q̇ d + K D
+K P (q d − q), K P > 0, K D > 0, and Γ > 0 are diagonal
+gain matrices, a U ∈ Rpu and aK ∈ Rpk are vectors containing, respectively, the unknown and the
+known dynamic coefficients of the robot model. The 3 × pu matrix Y U and 3 × pk matrix Y K are
+the associated regressors in the linear parametrization of the dynamic model. Provide the explicit
+expressions of all terms in the adaptive control law (2). If time remains, sketch a proof of the
+asymptotic stability of the trajectory tracking error with this modified adaptive law.
+
+[180 minutes (3 hours); open books]
+
+2
+
+Solution
+July 12, 2021
+Exercise #1
+The second-order differential kinematics of a robot with n joints performing a m-dimensional task
+(with m ≤ n) is
+p̈ = J (q)q̈ + J̇ (q)q̇ = J (q)u + h(q, q̇),
+(3)
+with vector h ∈ Rm being quadratic in q̇. The joint acceleration q̈ ∈ Rn is taken here as input
+command u. For the planar 3R robot of Fig. 1, we have n = 3, m = 2, and the terms in (3) are
+the 2 × 3 task Jacobian
+
+
+− (s1 + s12 + s123 ) − (s12 + s123 ) −s123
+∂f (q)
+=L
+,
+J (q) =
+∂q
+c1 + c12 + c123
+c12 + c123
+c123
+its time derivative
+J̇ (q) = −L ·
+
+
+c1 q̇1 + c12 (q̇1 + q̇2 ) + c123 (q̇1 + q̇2 + q̇3 )
+
+c12 (q̇1 + q̇2 ) + c123 (q̇1 + q̇2 + q̇3 )
+
+c123 (q̇1 + q̇2 + q̇3 )
+
+s1 q̇1 + s12 (q̇1 + q̇2 ) + s123 (q̇1 + q̇2 + q̇3 )
+
+s12 (q̇1 + q̇2 ) + s123 (q̇1 + q̇2 + q̇3 )
+
+s123 (q̇1 + q̇2 + q̇3 )
+
+
+,
+
+and the product of matrix J̇ by the joint velocity q̇
+
+
+(c1 + c12 + c123 ) q̇12 + 2 (c12 + c123 ) q̇1 q̇2 + 2 c123 q̇1 q̇3 + (c12 + c123 ) q̇22 + 2 c123 q̇2 q̇3 + c123 q̇32
+h(q, q̇) = −L
+,
+2
+2
+2
+(s1 + s12 + s123 ) q̇1 + 2 (s12 + s123 ) q̇1 q̇2 + 2 s123 q̇1 q̇3 + (s12 + s123 ) q̇2 + 2 s123 q̇2 q̇3 + s123 q̇3
+
+having used the shorthand notation for trigonometric functions (e.g., c123 = cos(q1 + q2 + q3 )).
+Problem #1a
+The minimum norm solution of (3) for p̈ = 0 at a generic state (q 0 , q̇ 0 ) is
+u0 = −J # (q 0 )h(q 0 , q̇ 0 ).
+
+(4)
+
+In the absence of bounds on the command u0 , this acceleration would return p̈0 = 0 if and only
+if h(q 0 , q̇ 0 ) ∈ R {J (q 0 )}. In particular, when rank {J (q 0 )} = 2 (regular case), this condition is
+always satisfied and we only need to check whether u0 is feasible, i.e., if |u0,i | ≤ Umax,i , for all
+i = 1, 2, 3. If so, then we stop. The same would happen in the singular case (rank {J (q 0 )} < 2).
+If instead the acceleration command (4) is unfeasible, we should attempt the use of the general
+solution to (3) for p̈ = 0, namely
+
+
+(5)
+u0 = −J # (q 0 )h(q 0 , q̇ 0 ) + I − J # (q 0 )J (q 0 ) q̈ 0 ,
+with an extra joint acceleration q̈ 0 projected in the null space of J . This term may possibly help in
+recovering feasibility when the preferred minimum norm solution (4) is unfeasible. The definition
+of the actual command (5) is obtained by a simple variant of the SNS (Saturation in the Null
+Space) method for redundant robots.
+Consider for simplicity only the regular case for the Jacobian, rank {J (q 0 )} = 2. Taking into
+account that there is only n−m = 1 degree of redundancy in the problem, if two (or all) of the scalar
+components of (4) are out of bounds, then no feasible solution will exist in any case. Otherwise,
+Algorithm 1 (written in pseudo-code) will provide a feasible solution, if one exists. The bounds on
+T
+the commands are organized in vector form as U max = Umax,1 Umax,2 Umax,3
+∈ R3 . We set
+also J 0 = J (q 0 ), J̇ 0 = J̇ (q 0 ), and h0 = h(q 0 , q̇ 0 ) = J̇ 0 q̇ 0 .
+3
+
+Algorithm 1 SNS method for finding a feasible solution, if it exists (case n = 3, m = 2)
+if the command u0 in (4) satisfies |u0 | ≤ U max (componentwise) then
+STOP % the minimum norm solution (4) is feasible and returns already p̈0 = 0
+else
+
+j ∗ = arg maxi=1,2,3 J #
+% it is then |u0,j ∗ | > Umax,j ∗ ; by assumption,
+0 h0 i
+5:
+% u0,j ∗ will be the only command out of bounds
+
+#
+6:
+set u0,j ∗ = sign −J 0 h0 j ∗ Umax,j ∗ % the overdriven command is now saturated
+1:
+
+2:
+3:
+4:
+
+7:
+8:
+9:
+10:
+11:
+12:
+13:
+14:
+15:
+16:
+17:
+
+define the 2 × 2 matrix J̄ {−j ∗ } by deleting the j ∗ -th column J j ∗ from J 0 ,
+u{−j ∗ } ∈ R2 by deleting uj ∗ from u, and U max,{−j ∗ } ∈ R2 deleting Umax,j ∗ from U max
+set a = J j ∗ u0,j ∗ + h0 % . . . one needs to solve J̄ {−j ∗ } u{−j ∗ } + a = 0
+
+#
+compute u0,{−j ∗ } = −J̄ {−j ∗ } a
+% . . . a unique solution if rank J̄ {−j ∗ } = 2 !!
+if u0,{−j ∗ } ≤ U max,{−j ∗ } (componentwise) then
+recompose u0,SNS from u0,j ∗ and u0,{−j ∗ }
+STOP % a new feasible solution u0,SNS has been found, returning p̈0 = 0
+else
+EXIT
+% there is no feasible solution providing p̈0 = 0
+end if
+end if
+
+We provide next several numerical examples illustrating different situations1 . In all cases, we have
+set L = 1 [m] for the link lengths and chosen
+
+ 
+
+47.1239
+15 π
+
+ 
+
+U max =  10 π  =  31.4159  [rad/s2 ]
+31.4159
+10 π
+as bounds for the acceleration commands. The same data will be used also for Problem #1b of
+this Exercise. Computations are performed in MATLAB.
+1. Regular configuration q 0 = (0, π/2, π/2) [rad], joint velocity q̇ 0 = (π, π, 0) [rad/s]
+We evaluate the terms in (3)
+
+
+
+−1 −1 0
+π
+, J̇ 0 =
+J0 =
+−2π
+0 −1 −1
+
+2π
+−2π
+
+2π
+0
+
+
+
+
+,
+
+h0 =
+
+3 π2
+−4 π 2
+
+
+
+
+=
+
+29.6088
+−39.4784
+
+
+,
+
+and compute the pseudoinverse as
+
+
+
+1/3
+
+T
+T
+−1/3  .
+J#
+0 = J0 J0 J0
+−2/3
+T
+Note that the end-effector velocity ṗ0 = J 0 q̇ 0 = −2π −π
+[m/s] is different from zero.
+Applying the minimum norm solution (4), we obtain the feasible command
+
+ 
+
+10 π 2 /3
+32.8987
+
+ 
+
+2
+2
+u0 = −J #
+0 h0 =  −π /3  =  −3.2899  [rad/s ],
+2
+−11 π /3
+−36.1885
+
+
+−1
+
+which returns p̈0 = 0.
+1 Indeed,
+
+only one example was requested in the text.
+
+4
+
+−2/3
+
+=  −1/3
+1/3
+
+2. Same regular configuration q 0 = (0, π/2, π/2) [rad], new velocity q̇ 0 = (π, π, −π/4) [rad/s]
+The Jacobian J 0 and its pseudoinverse J #
+0 are the same as before. The different terms to be
+computed are
+
+ 
+
+2.3562
+5.4978 5.4978
+3π/4 7π/4 7π/4
+=
+J̇ 0 =
+−6.2832 −6.2832
+0
+−2π −2π
+0
+and
+
+h0 =
+
+33 π 2 /16
+−4 π 2
+
+
+
+
+=
+
+20.3561
+−39.4784
+
+
+.
+
+T
+The end-effector velocity is ṗ0 = −2π −3π/4 6= 0. The minimum norm solution (4) is now
+
+
+ 
+26.7302
+65 π 2 /24
+
+
+ 
+2
+2
+u0 = −J #
+0 h0 =  −31 π /48  =  −6.3741  [rad/s ],
+2
+−33.1043
+−161 π /48
+which is unfeasible, being the third joint acceleration u0,3 = −33.1043 larger (in module) than
+its bound Umax,3 = 31.4159. The other two acceleration commands remain instead within their
+bounds, so that we can apply Algorithm 1 to check if a feasible solution can be found by the
+SNS method. Being j ∗ = 3, we set u0,3 = −Umax,3 = −10 π = −31.4159 (saturation to the
+closest limit, the negative one) and compute
+
+
+
+
+ 
+
+
+0
+33 π 2 /16
+20.3561
+−1 −1
+, a = −J 3 Umax,3 + h0 = −
+10 π +
+=
+.
+J̄ {−3} =
+−1
+−4 π 2
+−8.0625
+0 −1
+Thus
+
+28.4186
+
+
+=  −8.0625  .
+−31.4159
+
+
+#
+
+−1
+
+u0,{−3} = −J̄ {−3} a = −J̄ {−3} a =
+
+
+
+28.4186
+−8.0625
+
+
+⇒
+
+u0,SNS
+
+The SNS result u0,SNS is now a feasible solution and returns again p̈0 = 0.
+3. Singular configuration q 0 = (0, 0, π) [rad], joint velocity q̇ 0 = (π/2, −π, π/2) [rad/s]
+The robot has the second link stretched and the third folded. This is a singular configuration
+since
+
+
+ 
+0 0 0
+0
+J0 =
+⇒
+rank {J 0 } = 1,
+R{J 0 } =
+.
+1 0 −1
+1
+The end-effector is placed at p0 = f (q 0 ) = (1, 0). Note also
+now
+
+π/2
+
+ṗ0 = J 0 q̇ 0 = 0
+⇐⇒
+q̇ 0 =  −π
+π/2
+
+that the end-effector velocity is
+
+
+ ∈ N {J 0 }.
+
+We evaluate the other terms in (3):
+
+
+
+ 
+
+0 π/2 0
+−π 2 /2
+−4.9348
+J̇ 0 =
+,
+h0 =
+=
+0
+0
+0
+0
+0
+
+5
+
+⇒
+
+h0 6∈ R{J 0 }.
+
+Computing the pseudoinverse of the singular task Jacobian,
+
+
+0 0.5
+
+
+0 ,
+J#
+0 = 0
+0 −0.5
+we obtain that the minimum norm solution (4) is simply u0 = −J #
+0 h0 = 0. Therefore, the
+end-effector acceleration cannot be modified in any case, remaining equal to
+
+
+−4.9348
+p̈0 = h0 =
+6= 0.
+0
+4. Another singular case q 0 = (0, π, −π) [rad], same joint velocity q̇ 0 = (π/2, −π, π/2) [rad/s]
+In this last example, the robot has the second and third links both folded. We are again in a
+singularity, being
+
+
+ 
+0 0 0
+0
+J0 =
+⇒
+rank {J 0 } = 1,
+R{J 0 } =
+.
+1 0 1
+1
+The end-effector position p0 is the same as in the previous example. On the other hand, the
+end-effector velocity is now
+ 
+0
+ṗ0 = J 0 q̇ 0 =
+6= 0
+⇐⇒
+ṗ0 ∈ R{J 0 }.
+π
+Moreover, being
+
+J̇ 0 =
+
+−π
+0
+
+−π/2
+0
+
+0
+0
+
+
+,
+
+h0 = J̇ 0 q̇ 0 = 0 (!!),
+
+the minimum norm solution (4) will be u0 = −J #
+0 h0 = 0 as in the previous example. However,
+the (feasible) solution u0 will produce now p̈0 = h0 = 0, keeping thus the end-effector at the
+same instantaneous velocity ṗ0 .
+Problem #1b
+There is a unique command u0 that should be applied to stop as fast as possible the motion of the
+robot joints. This is given componentwise by
+u0,i = − Umax,i sign (q̇0,i ) ,
+
+i = 1, 2, 3,
+
+(6)
+
+where the sign function takes the value 0 when its argument is 0. The logic is that each positive
+(negative) component of the initial velocity q̇ 0 is counterbalanced by the maximum negative (positive) value of its associated acceleration. Keeping the same strategy (6) also after t = t0 will let
+the robot eventually stop in the minimum (and finite!) possible time.
+Taking as example the same initial state as in case 3 of Problem #1a, with q̇ 0 = (π/2, −π, π/2) [rad/s],
+we have
+
+ 
+
+−Umax,1
+−15 π
+
+
+
+ 
+
+0 0 0
+−π 2 /2
+−π 2 /2
+
+ 
+
+u0 =  Umax,2  =  10 π  ⇒ p̈0 = J 0 u0 +h0 =
+u0 +
+=
+.
+1 0 −1
+0
+−5 π
+−Umax,3
+−10 π
+Note that it is ṗ0 = 0 in this case. Thus, in order to stop the overall joint motion of the robot as
+fast as possible, the end-effector should be brought in motion at time t = t0 by such p̈0 6= 0.
+6
+
+Exercise #2
+Denote the inverse of the (symmetric) robot inertia matrix as
+
+ T
+h1 (q)
+ hT (q) 
+
+ 2
+−1
+,
+H(q) = M (q) = 
+..
+
+
+
+
+.
+T
+hn (q)
+with hi (q) being the i-th column of H(q), for i = 1, 2, . . . , n. Also, denote by hii (q) the i-th
+element on the diagonal of H(q), for i = 1, 2, . . . , n.
+With reference to the dynamic model (1), the incipient blocking fault of the motor at the joint i
+is modeled by a vector τ f ∈ Rn with the single nonzero i-th component having the expression
+
+1  T
+τf,i =
+hi (q) (τ − c(q, q̇) − g(q)) + λi q̇i ,
+λi  1,
+(7)
+hii (q)
+whereas τf,j = 0, for all j 6= i.
+In fact, since the acceleration vector q̈ ∈ Rn is given by
+q̈ = H(q) (τ − c(q, q̇) − g(q) − τ f ) ,
+using (7), the scalar component of the acceleration at joint i will be
+ 
+
+
+0
+ . 
+
+
+ .. 
+
+
+
+ 
+
+ 
+
+
+T
+q̈i = hi (q) τ − c(q, q̇) − g(q) −  1  τf,i 
+ 
+
+
+ .. 
+
+
+ . 
+
+
+0
+
+1  T
+= hTi (q) (τ − c(q, q̇) − g(q)) − hii (q) ·
+hi (q) (τ − c(q, q̇) − g(q)) + λi q̇i
+hii (q)
+= −λi q̇i ,
+as requested. Moreover, the acceleration at any other joint j 6= i is
+q̈j = hTj (q) (τ − c(q, q̇) − g(q)) − hji (q) τf,i ,
+showing that the fault of motor i will affect also the acceleration of the other joints, because of the
+inertial couplings of the inverse of the robot inertia matrix (the off-diagonal terms hji (q), j 6= i).
+Exercise #3
+The robot in Fig. 2 has n = 3 joints and moves on the horizontal plane. Neglecting friction effects,
+its dynamic model is
+M (q)q̈ + c(q, q̇) = τ .
+In computing the kinetic energy T of the robot, we take into account that the motion is planar;
+thus, linear velocities will be 2D vectors in the plane (xw , y w ), while angular velocities will be just
+scalars (in the z w -direction). For the first link, it is
+T1 =
+
+
+1
+I1 + m1 d2c1 q̇12 .
+2
+7
+
+For the second link, since
+
+− sin q1
++ (q2 − dc2 ) q̇1
+cos q1
+
+
+
+
+− sin q1
+q̇2
+− sin q1
+= R(q1 )
+,
+cos q1
+(q2 − dc2 ) q̇1
+cos q1
+
+
+
+pc2 = (q2 − dc2 )
+
+cos q1
+sin q1
+
+v c2 = ṗc2 = q̇2
+
+
+⇒
+
+
+=
+
+cos q1
+sin q1
+
+cos q1
+sin q1
+
+
+
+
+
+it follows
+
+
+1
+1
+1
+I2 ω22 + m2 v Tc2 v c2 =
+I2 q̇12 + m2 (q2 − dc2 )2 q̇12 + q̇22 .
+2
+2
+2
+For the third link, from
+
+
+q2 cos q1 + dc3 cos(q1 + q3 )
+pc3 =
+q2 sin q1 + dc3 sin(q1 + q3 )
+
+
+cos q1 q̇2 − q2 sin q1 q̇1 − dc3 sin(q1 + q3 )(q̇1 + q̇3 )
+,
+⇒ v c3 =
+sin q1 q̇2 + q2 cos q1 q̇1 + dc3 cos(q1 + q3 )(q̇1 + q̇3 )
+T2 =
+
+we obtain
+1
+1
+I3 ω32 + m3 v Tc3 v c3
+2
+2
+
+
+1
+1
+2
+2
+= I3 (q̇1 + q̇3 ) + m3 q22 q̇12 + q̇22 + d2c3 (q̇1 + q̇3 ) + 2 dc3 (q2 cos q3 q̇1 − sin q3 q̇2 ) (q̇1 + q̇3 ) .
+2
+2
+
+T3 =
+
+Thus, being
+
+T =
+
+3
+X
+i=1
+
+
+
+Ti =
+
+1 T
+q̇ M (q)q̇,
+2
+
+with
+
+m11
+
+M (q) =  m12
+m13
+
+m12
+m22
+m23
+
+
+m13
+
+m23  ,
+m33
+
+we can write the single elements of the symmetric inertia matrix M (q) as follows:
+m11 = I1 + m1 d2c1 + I2 + m2 d2c2 + I3 + m3 d2c3
+− 2 m2 dc2 q2 + (m2 + m3 ) q22 + 2 m3 dc3 q2 cos q3
+m12 = −m3 dc3 sin q3
+m13 = I3 + m3 d2c3 + m3 dc3 q2 cos q3
+
+(8)
+
+m22 = m2 + m3
+m23 = −m3 dc3 sin q3
+m33 = I3 + m3 d2c3 .
+The inertial term in the dynamic model can be rewritten in terms of p = 5 coefficients that collect
+the dynamic parameters of the robot,
+
+
+
+a1 + 2a2 q2 + a3 q22 + 2a4 q2 cos q3 −a4 sin q3 a5 + a4 q2 cos q3
+q̈1
+
+
+
+−a4 sin q3
+a3
+−a4 sin q3
+M (q)q̈ = 
+ q̈2  = Y M (q, q̈)a,
+a5 + a4 q2 cos q3
+−a4 sin q3
+a5
+q̈3
+
+8
+
+with the vector of dynamic coefficients a ∈ R5 defined by
+a1 = I1 + m1 d2c1 + I2 + m2 d2c2 + I3 + m3 d2c3
+a2 = −m2 dc2
+a3 = m2 + m3
+
+(9)
+
+a4 = m3 dc3
+a5 = I3 + m3 d2c3 .
+Similarly, the entire dynamic model (because of the absence of gravity) is linearly parametrized
+in terms of the same dynamic coefficients a, with a suitable n × p = 3 × 5 regressor matrix
+Y (q, q̇, q̈). However, the parametrization (9) does not separate the unknown from the known
+dynamic coefficients in the inertia matrix (and thus in the dynamic model). On the other hand,
+the proposed adaptive law (2) does not need updating coefficients that involve only known dynamic
+parameters, i.e., m3 , dc3 , and I3 .
+Therefore, looking at the expressions of the elements mij in (8) and at the definitions of the
+coefficients ai in (9), we can organize and separate terms in the inertia matrix as
+
+m11 = I1 + m1 d2c1 + I2 + m2 d2c2 + I3 + m3 d2c3 − 2 m2 dc2 q2 + (m2 + m3 ) q22 + 2 m3 dc3 q2 cos q3
+= aU 1 + aK1 + 2 aU 2 q2 + (aU 3 + aK2 ) q22 + 2 aK3 q2 cos q3
+m12 = −m3 dc3 sin q3 = −aK3 sin q3
+m13 = I3 + m3 d2c3 + m3 dc3 q2 cos q3 = aK1 + aK3 q2 cos q3
+m22 = m2 + m3 = aU 3 + aK2
+m23 = −m3 dc3 sin q3 = −aK3 sin q3
+m33 = I3 + m3 d2c3 = aK1 ,
+with pu = 3 unknown dynamic coefficients
+aU 1 = I1 + m1 d2c1 + I2 + m2 d2c2
+aU 2 = −m2 dc2
+
+(10)
+
+aU 3 = m2 ,
+organized as components of a vector aU ∈ R3 , and, respectively, pk = 3 known dynamic coefficients
+aK1 = I3 + m3 d2c3
+aK2 = m3
+
+(11)
+
+aK3 = m3 dc3 ,
+organized as components of a vector aK ∈ R3 . Despite the total number of dynamic coefficients is
+now higher than before (pu + pk = 6 > 5 = p), the number of those to be updated in the adaptive
+law is actually lower (pu = 3).
+To complete the dynamic modeling, we have to derive also the Coriolis and centrifugal terms. This
+will be done by referring directly to the double parametrization by aU and aK , in view of their
+
+9
+
+final use in the adaptive control law (2). Rewrite the robot
+
+
+M (q) = m1 (q) m2 (q) m3 (q) =
+
+aU 1 + aK1 + 2 aU 2 q2 + (aU 3 + aK2 ) q22 + 2 aK3 q2 cos q3
+
+−aK3 sin q3
+
+aK1 + aK3 q2 cos q3
+
+inertia matrix as
+
+
+aK1 + aK3 q2 cos q3
+
+−aK3 sin q3
+.
+aK1
+(12)
+Using the Christoffel’s symbols for computing the components ci (q, q̇) of the Coriolis and centrifugal vector c(q, q̇),
+!
+
+T
+∂M (q)
+1 ∂mi (q)
+∂mi (q)
+−
+,
+ci (q, q̇) = q̇ T C i (q)q̇,
+i = 1, 2, 3,
+C i (q) =
++
+2
+∂q
+∂q
+∂qi
+−aK3 sin q3
+aU 3 + aK2
+−aK3 sin q3
+
+we obtain
+
+0
+1 
+C 1 (q) =  0
+2
+0
+
+2 aU 2 + 2 (aU 3 + aK2 ) q2 + 2 aK3 cos q3
+0
+aK3 cos q3
+
+
+
+0
+
+aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3
+0
+0
+
+=  aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3
+−aK3 q2 sin q3
+
+⇒
+
+
+−2 aK3 q2 sin q3
+
+−aK3 cos q3  +
+−aK3 q2 sin q3
+
+...
+
+
+− O
+
+
+
+−aK3 q2 sin q3
+
+0
+−aK3 q2 sin q3
+
+c1 (q, q̇) = 2 (aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇1 q̇2 − aK3 q2 sin q3 (2 q̇1 + q̇3 ) q̇3 ,
+
+
+0
+1
+C 2 (q) =  0
+2
+0
+
+0
+0
+0
+
+
+
+−aK3 cos q3
++
+0
+−aK3 cos q3
+
+!T
+...
+
+
+
+2 aU 2 + 2 (aU 3 + aK2 ) q2 + 2 aK3 cos q3
+0
+−
+aK3 cos q3
+
+
+
+− (aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 )
+0
+= 
+−aK3 cos q3
+
+0
+0
+0
+
+0
+0
+0
+
+
+
+aK3 cos q3
+
+0
+0
+
+
+
+−aK3 cos q3
+
+0
+−aK3 cos q3
+
+c2 (q, q̇) = − (aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇12 − aK3 cos q3 (2 q̇1 + q̇3 ) q̇3 ,
+
+⇒
+
+
+0 aK3 cos q3
+1 
+0
+0
+C 3 (q) =
+2
+0
+
+0
+
+
+
+−aK3 q2 sin q3
+−aK3 cos q3  +
+0
+
+!T
+...
+
+
+−2aK3 q2 sin q3
+−  −aK3 cos q3
+−aK3 q2 sin q3
+
+
+
+aK3 q2 sin q3
+=  aK3 cos q3
+0
+
+⇒
+
+
+
+!T
+
+aK3 cos q3
+0
+0
+
+
+
+0
+0
+0
+
+c3 (q, q̇) = aK3 q2 sin q3 q̇12 + 2 aK3 cos q3 q̇1 q̇2 ,
+
+10
+
+−aK3 cos q3
+0
+−aK3 cos q3
+
+
+
+−aK3 q2 sin q3
+−aK3 cos q3 
+0
+
+yielding
+
+
+c(q, q̇) = 
+
+
+2 (aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇1 q̇2 − aK3 q2 sin q3 (2 q̇1 + q̇3 ) q̇3
+− (aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇12 − aK3 cos q3 (2 q̇1 + q̇3 ) q̇3
+aK3 q2 sin q3 q̇12 + 2 aK3 cos q3 q̇1 q̇2
+
+
+
+ = S(q, q̇) q̇,
+
+
+with the factorizing matrix
+
+S(q, q̇) = col q̇ T C i (q, q̇) =
+
+
+(13)
+
+(aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇2
+−aK3 q2 sin q3 q̇3
+
+
+
+
+ − (aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇1
+
+−aK3 cos q3 q̇3
+
+
+
+(aU 2 + (aU 3 + aK2 ) q2 + aK3 cos q3 ) q̇1 −aK3 q2 sin q3 (q̇1 + q̇3 )
+
+
+
+
+−aK3 cos q3 (q̇1 + q̇3 ) 
+
+
+0
+
+aK3 q2 sin q3 q̇1 + aK3 cos q3 q̇2
+
+aK3 cos q3 q̇1
+
+0
+
+being such that Ṁ − 2S is skew-symmetric (check this!).
+As a result, the complete dynamic model can be linearly parametrized as
+M (q)q̈ + S(q, q̇)q̇ = Y U (q, q̇, q̈) aU + Y K (q, q̇, q̈) aK
+
+(14)
+
+with the n × pu = 3 × 3 regressor matrix Y U for the unknown coefficients (conveniently separating
+the contributions by the inertial and by the velocity terms)
+Y U (q, q̇, q̈) = Y U,M (q, q̈) + Y U,c (q, q̇)
+
+ 
+q̈1 2 q2 q̈1 q22 q̈1
+0 2 q̇1 q̇2
+
+ 
+0
+q̈2  +  0 −q̇12
+=0
+0
+0
+0
+0
+0
+
+q2 q̇1 q̇2
+
+
+
+
+−q2 q̇12 
+
+(15)
+
+0
+
+and, similarly, with the n × pk = 3 × 3 regressor matrix Y K for the known coefficients
+Y K (q, q̇, q̈) = Y K,M (q, q̈) + Y K,c (q, q̇)
+
+
+q̈1 + q̈3 q22 q̈1 q2 cos q3 (2 q̈1 + q̈3 ) − sin q3 q̈2
+
+
+q̈2
+− sin q3 (q̈1 + q̈3 )
+= 0
+
+q̈1 + q̈3
+0
+q2 cos q3 q̈1 − sin q3 q̈2
+
+
+0 2 q2 q̇1 q̇2 2 cos q3 q̇1 q̇2 − q2 sin q3 (2 q̇1 + q̇3 ) q̇3
+
+
+2
++  0 −q2 q̇12
+− cos q3 (q̇1 + q̇3 )
+.
+2
+0
+0
+q2 sin q3 q̇1 + 2 cos q3 q̇1 q̇2
+
+(16)
+
+To complete the design of the (partly) adaptive control law (2), we need to evaluate the two above
+regressors using suitable arguments. In particular, for the regressor Y U we have
+Y U (q, q̇, q̇ r , q̈ r ) = Y U,M (q, q̈ r ) + Y U,c (q, q̇, q̇ r ) .
+
+(17)
+
+Inside the second (velocity-dependent) addend, we have to split the quadratic velocity terms by
+exploiting the factorization given by matrix S in (13). For this, let
+M (q) = M U (q) + M K (q)
+11
+
+be a decomposition of the inertia matrix in elements that depends (linearly) only on aU and,
+respectively, only on aK . Accordingly, one can decompose also
+S(q, q̇) = S U (q, q̇) + S K (q, q̇).
+It can be easily shown that the three matrices
+Ṁ − 2S,
+
+Ṁ U − 2S U ,
+
+Ṁ K − 2S K ,
+
+satisfy all the skew-symmetry property (as requested by the adaptive control law —see below). In
+particular, for this robot we have
+
+
+aU 1 + 2 aU 2 q2 + aU 3 q22
+0
+0
+
+
+0
+aU 3 0 
+M U (q) = 
+0
+0
+0
+and
+
+
+
+(aU 2 + aU 3 q2 ) q̇2
+
+S U (q, q̇) =  − (aU 2 + aU 3 q2 ) q̇1
+0
+
+(aU 2 + aU 3 q2 ) q̇1
+0
+0
+
+
+0
+
+0 .
+0
+
+It is easy to verify the skew-symmetry of Ṁ U − 2S U . As a result, the second term Y U,c in (17) is
+obtained by using the identity
+
+
+
+aU 1
+0 q̇1 q̇2r + q̇2 q̇1r q2 (q̇1 q̇2r + q̇2 q̇1r )
+
+
+
+−q̇1 q̇1r
+−q2 q̇1 q̇1r
+(18)
+S U (q, q̇) q̇ r = Y U,c (q, q̇, q̇ r ) aU =  0
+  aU 2  .
+aU 3
+0
+0
+0
+Summarizing, the regressor matrix Y U needed in control (2), together with its transpose for the
+adaptation law, is computed by (17) using Y U,M (q, q̈ r ) from (15) and Y U,c (q, q̇, q̇ r ) from (18):
+
+
+q̈1r 2 q2 q̈1r + q̇1 q̇2r + q̇2 q̇1r q22 q̈2r + q2 (q̇1 q̇2r + q̇2 q̇1r )
+
+
+−q̇1 q̇1r
+q̈2r − q2 q̇1 q̇1r
+Y U (q, q̇, q̇ r , q̈ r ) =  0
+.
+0
+0
+0
+The same considerations can be repeated for M K , S K , and Y K,c , leading to Y K (q, q̇, q̇ r , q̈ r )
+(these computations are left to the reader).
+The modified adaptive control law (2) provides (global) asymptotic stability of the trajectory
+tracking error. The proof follows the same argument as in the complete adaptive case (simpler in
+the absence of friction terms), once the above partitioned notation for unknown and known terms
+has been introduced. Consider in fact the same positive definite Lyapunov candidate
+V =
+
+1 T
+1
+s M (q)s + eT K P e + ãTU Γ−1 ã U ≥ 0,
+2
+2
+
+(19)
+
+where e = q d − q, s = q̇ r − q̇ = ė + Λe, Λ = K −1
+D K P > 0, ã U = a U − â U , and the gain matrices
+K P > 0, K D > 0 and Γ > 0 have been chosen as diagonal. Note that only the unknown dynamic
+coefficients, those that need to be updated online, and their estimates appear in the Lyapunov
+candidate. The time derivative of (19) is
+V̇ =
+
+1 T
+˙U
+s Ṁ (q)s + sT M (q)ṡ + 2 eT K P ė − ãTU Γ−1 â
+2
+12
+
+(20)
+
+The closed-loop dynamics, i.e., eq. (14) with the control (2), is
+M (q)q̈ + S(q, q̇)q̇ = Y U (q, q̇, q̇ r , q̈ r ) â U + Y K (q, q̇, q̇ r , q̈ r ) aK + K P e + K D ė
+= M̂ U (q)q̈ r + Ŝ U (q, q̇)q̇ r + M K (q)q̈ r + S K (q, q̇)q̇ r + K P e + K D ė.
+
+(21)
+
+Subtracting both sides of eq. (21) from the identity
+M (q)q̈ r + S(q, q̇)q̇ r = Y U (q, q̇, q̇ r , q̈ r ) a U + Y K (q, q̇, q̇ r , q̈ r ) aK
+yields
+M (q)ṡ + S(q, q̇)s = Y U (q, q̇, q̇ r , q̈ r ) (a U − â U ) − K P e − K D ė
+= Y U (q, q̇, q̇ r , q̈ r ) ã U − (K P e + K D ė)
+
+(22)
+
+where the known term Y K aK has been cancelled. Substituting M (q)ṡ from (22) into (20) and
+˙ U = Γ Y T (q, q̇, q̇ , q̈ ) s gives
+using the update law â
+r
+r
+U
+
+1 T
+s Ṁ (q) − 2 S(q, q̇) s + sT Y U (q, q̇, q̇ r , q̈ r ) ã U − sT (K P e + K D ė)
+2
++ 2 eT K P ė − ãTU Γ−1 · Γ Y UT (q, q̇, q̇ r , q̈ r ) s
+T
+= − ė + K −1
+(K P e + K D ė) + 2 eT K P ė
+D KP e
+
+V̇ =
+
+= −ėT K D ė − eT K P K −1
+D K P e ≤ 0,
+where we used the skew-symmetry of Ṁ − 2 S and the diagonality of the gain matrices. The proof
+is completed by Barbalat lemma and LaSalle theorem.
+∗∗∗∗∗
+
+13
+
+

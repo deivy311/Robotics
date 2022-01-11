@@ -1,0 +1,1097 @@
+Robotics 2
+Remote Exam – September 11, 2020
+Exercise #1
+Consider the planar 3R robot with links of equal length L in Fig. 1, driven by joint velocity
+commands q̇ ∈ R3 . The end effector should trace the nominal linear path from A to B with a
+constant speed v > 0, while the entire robot avoids any collision with a single static obstacle O.
+The obstacle is of known circular shape but uncertain radius R ≤ L/4, and is placed at least at
+a distance ρmin = L from the robot base and not farther than ρmax = 3L. Its actual location
+is unknown a priori, but the obstacle can be detected by an omnidirectional proximity sensor
+mounted on the robot end effector and having a sensing range σ = 1.5L.
+Define a sensor-based control scheme that makes the robot perform at best the assigned task, and
+describe qualitatively its expected performance.
+
+sensing range
+s = 1.5L
+
+y0
+
+𝑞̇ 2
+L
+
+p A = (2.3L, L)
+L 𝑞̇ L
+3
+
+𝑞̇ 1
+x0
+O
+rmin = L
+
+B = (2.3L, −L)
+
+R ≤ L/4
+
+rmax = 3L
+range of possible
+placement of the
+single obstacle O
+
+Figure 1: The 3R robot with the nominal Cartesian path AB to be traced and the static circular
+obstacle O to be avoided (several possible alternative locations of the single obstacle are shown).
+Exercise #2
+In an image-based visual servoing control scheme, the camera mounted on the robot end effector
+(eye-in-hand) looks for three specific points in the scene, characterized by their point features in the
+image plane with coordinates (ui , vi ), for i = 1, 2, 3. Derive the expression of the 2 × 6 interaction
+matrix J b associated to the geometric barycenter b ∈ R2 of the triangle in the image having these
+point features as the three vertices, namely
+ 
+V
+ḃ = J b
+,
+Ω
+where V ∈ R3 and Ω ∈ R3 are respectively the linear and angular velocity of the camera.
+Provide then an instantaneous motion of the camera such that ḃ = 0.
+1
+
+Exercise #3
+With reference to the planar RP robot in Fig. 2, using the symbolic parameters specified therein,
+determine the complete expression of the Cartesian inertia matrix M p (q) of the robot at the tip
+p ∈ R2 as a function of the configuration q.
+T
+[rad, m], using the parameters:
+Provide then the numerical value of M p (q ∗ ) at q ∗ = 0 3
+l1 = 1,
+
+d1 = 0.5,
+
+m1 = 3,
+
+I1 = 0.25;
+
+d2 = 0.5,
+
+m2 = 0.5,
+
+I2 = 0.875.
+
+Assuming that this robot is at rest in q ∗ on a horizontal plane, check that the tip acceleration
+p̈ ∈ R2 has the same direction of any force F ∈ R2 in the plane applied to the tip of the robot.
+y0
+
+q2
+l1
+
+d2
+
+⊕
+⊕
+
+d1
+
+m2,I2
+
+m1,I1
+
+p
+
+q1
+
+x0
+
+Figure 2: A 2-dof RP robot with its relevant kinematic and dynamic parameters.
+Exercise #4
+A 3R robot moves on a horizontal plane in the presence of geometric constraints in the Cartesian
+space, as illustrated in Fig. 3. Assume that the distance k satisfies the inequalities l1 < k < l1 + l2 .
+• Determine the dimension M of the constraints and their possible expression h(q) = 0, with the
+associated Jacobian matrix A(q) = ∂h(q)/∂q.
+• Define the (3 − M ) × 3 matrix D(q) to complete A(q) in a nonsingular way, as well as the blocks
+E(q) and F (q) of the inverse that appear in the reduced dynamics of this constrained robot.
+The reduced model should hold for any q such that the contact situation remains as in Fig. 3.
+• Let mij be the elements of the (symmetric) inertia matrix M (q) of this robot in free space.
+Give the full expression of the (3 − M )×(3 − M ) reduced inertia matrix in the constrained case.
+
+q2
+
+y0
+
+l3
+l2
+l1
+
+q3
+
+q1
+
+k
+x0
+
+Figure 3: A 3R robot with geometric constraints in the Cartesian space limiting its motion.
+2
+
+Exercise #5
+Consider a 2R robot arm of human-like size and weight moving in a vertical plane with negligible
+friction. Two model-based controllers are being compared in a trajectory tracking problem in the
+joint space. The first is based on feedback linearization, yielding a control torque uF BL (t), the
+second is a Lyapunov-based control law with global asymptotic convergence property, yielding a
+torque uGLB (t).
+Assuming that the PD gain matrices are the same in both control laws, provide the explicit
+expression of the torque difference ∆u(t) = uF BL (t) − uGLB (t).
+Next, when the desired joint trajectory and the PD gains are respectively
+
+
+π
+πt
++ 3 sin
+2 ,
+K P = 100 · I2×2 , K D = 20 · I2×2 ,
+q d (t) =  2
+1 − cos 2πt
+T
+assume that at time t = 2 s, the current robot configuration is q(2) = π/2 −π/2
+[rad] and
+the velocity tracking error is zero. For each robot joint, determine which is the controller that uses
+the larger instantaneous torque in absolute value.
+[240 minutes (4 hours); open books]
+
+3
+
+Solution
+September 11, 2020
+Exercise #1
+This is an open-ended exercise and many possible schemes could be devised. Here, we present one
+where the 3R robot uses its redundancy with respect to the two-dimensional motion task assigned
+to its end effector as a mean to avoid the single obstacle detected online. The end-effector motion
+task has a higher priority than the collision avoidance task, as long as the minimum distance
+between the robot and the obstacle O stays above some threshold ε > 0. Otherwise, the controller
+switches the priority order and moves the robot primarily to avoid collision with the obstacle,
+trying to keep also the tracking error as small as possible. Indeed, when the obstacle is placed on
+the end-effector path, this switching will certainly happen. To implement such a control strategy,
+we use the following items.
+• A clearance function defined by
+H(q) =
+
+min
+
+ka(q) − bk.
+
+(1)
+
+a(q)∈ robot
+b ∈ obstacle
+
+In this expression, the detection of points b belonging to the circular obstacle O is made by
+the proximity sensor mounted on the end-effector. The sensor is able to reconstruct the entire
+visible surface of the obstacle and thus determine the closest point to the robot. The range of
+the proximity sensor covers the entire area of interest. The location of every point a(q) on the
+robot body is known from the encoder measures of q and via the direct kinematics of the robot.
+The clearance function in (1) can also be approximated by choosing a number of control points
+on the robot body for robot-obstacle distance computation, rather than the entire robot skeleton.
+For instance, one can use the three points P j2 = location of joint 2, P j3 = location of joint 3,
+and P ee = end-effector location. Then, (1) would be replaced by the clearance function
+H(q) =
+
+min
+
+b ∈ obstacle
+
+{kP j2 (q1 ) − bk, kP j3 (q1 , q2 ) − bk, kP ee (q1 , q2 , q3 ) − bk} .
+
+(2)
+
+T
+
+In both cases, we can use the gradient ∇q H(q) = (∂H(q)/∂q) in the control scheme, together
+with a stepsize factor α > 0. While both clearance functions (1) and (2) are continuous (in space
+and time), their gradient may have discontinuities.
+• The primary task Jacobian associated to the end-effector position p, as given by
+
+
+− (l1 s1 + l2 s12 + l3 s123 ) − (l2 s12 + l3 s123 ) −l3 s123
+∂p(q)
+,
+=
+J (q) =
+∂q
+l1 c1 + l2 c12 + l3 c123
+l2 c12 + l3 c123
+l3 c123
+with the usual shorthand notation for trigonometric quantities (e.g., s123 = sin(q1 + q2 + q3 )).
+We will use the pseudoinverse J # (q) of this matrix. Moreover, the desired task velocity will be
+ṗd = v (B − A) /kB − Ak.
+• A switching control law defined as
+
+
+
+#
+#
+
+ J (q) (ṗd + K P (pd − p(q))) + I − J (q)J (q) α∇q H(q)
+
+
+
+
+= α∇q H(q) + J # (q) ṗd + K P (pd − p(q)) − αJ (q)∇q H(q) ,
+q̇ =
+
+
+
+
+α∇q H(q),
+4
+
+if H(q) > ,
+if H(q) ≤ .
+
+(3)
+
+When the obstacle is sufficiently far, with the control law (3) the robot executes exactly the
+desired end-effector trajectory pd (t), while the gradient of the clearance function is projected in
+the one-dimension null space of the primary task. Instead, when the robot is getting too close
+to the obstacle, the control law will move away the nearest point of the robot. In the given form
+of the gradient of H(q) in the configuration space, obstacle repulsion is a three-dimensional task
+which leaves no space for a secondary consideration of the original tracking task. Therefore,
+during this phase, the end-effector path is typically abandoned1 . When the minimum clearance
+ε is recovered, the control will switch back to the previous law, trying to recover the accumulated
+error with respect to the desired Cartesian trajectory. In order to do so, a position error feedback
+term with (diagonal) matrix gain K P > 0 has been added in (3).
+We note finally that the proposed control scheme is purely reactive (there is no planning for obstacle
+avoidance) and only local in scope (we cannot exclude that the robot gets stuck before reaching
+the point B). Further, there is no motion stop explicitly involved with a control switch. As a
+consequence, switches are typically associated with discontinuities of the joint velocity commands.
+Exercise #2
+Associated to a point P i = (Xi , Yi , Zi ) in the Cartesian space, with its coordinates expressed in
+the camera frame, there is a point feature f pi = (ui , vi ) in the image plane whose interaction
+matrix J pi takes the form (see the lecture slides)
+
+
+λ
+ − Zi
+J pi (ui , vi , Zi ) = 
+
+0
+
+0
+−
+
+λ
+Zi
+
+ui
+Zi
+vi
+Zi
+
+ui vi
+λ
+vi2
++λ
+λ
+
+u2
+− i −λ
+λ
+ui v i
+−
+λ
+
+
+vi 
+,
+
+−ui
+
+where λ > 0 is the focal length of the camera and the depth Zi > 0 is limited (by the visual
+range of the camera). The geometric barycenter b ∈ R2 of a triangle in the image plane is simply
+obtained from its three vertices, namely the coordinates of the point features f pi , i = 1, 2, 3, as
+
+b=
+
+bu
+bv
+
+
+
+1
+=
+3
+
+
+
+u1 + u2 + u3
+v1 + v2 + v3
+
+
+.
+
+Therefore, the interaction matrix J b takes the form
+
+1
+J p1 (u1 , v1 , Z1 ) + J p2 (u2 , v2 , Z2 ) + J p3 (u3 , v3 , Z3 )
+3
+
+3
+3
+3
+3
+X
+X
+1
+ui
+1X
+1X 2
+0
+ui vi
+−
+u − 3λ
+ −λ
+Z
+Z
+λ i=1
+λ i=1 i
+1
+i=1 i
+i=1 i
+
+= 
+3
+3
+3
+3
+3
+X
+1 X vi 1 X 2
+1X
+
+0
+−λ
+vi + 3λ
+−
+ui vi
+Z
+Z
+λ i=1
+λ i=1
+i=1 i
+i=1 i
+
+Jb =
+
+3
+X
+
+
+
+vi 
+
+
+
+3
+X 
+
+−
+ui
+i=1
+
+i=1
+
+= J b (u, v, Z),
+1 Other collision avoidance schemes can be defined, still using an artificial potential to keep the robot away from
+the obstacle. Obstacle avoidance can be formulated as a two-dimensional task, when the repulsive action is defined
+along the gradient of the Cartesian clearance, or even as a one-dimensional task, when only the projection of the
+repulsive Cartesian alction along the clearance direction is specified. In both cases, it is possible to accommodate
+the tracking task in the null space of the avoidance task.
+
+5
+
+with u = (u1 , u2 , u3 ), v = (v1 , v2 , v3 ), and depths Z = (Z1 , Z2 , Z3 ). Note that the obtained
+interaction matrix J b is in general different from the interaction matrix associated to the single
+point feature of the Cartesian barycenter P b = 13 (P 1 + P 2 + P 3 ) of the three points in 3D space.
+Possible camera motions that belong
+ 3
+X ui
+
+ i=1 Zi
+
+
+3
+ X
+vi
+V =
+−
+
+Z
+ i=1 i
+
+3
+ X
+1
+
+λ
+Z
+i=1 i
+
+to the null space of J b are
+
+
+
+
+
+
+,
+
+
+
+
+
+
+Ω=0
+
+(a pure linear motion),
+
+or
+
+
+3
+X
+
+
+
+vi 
+
+ i=1 
+
+
+ 3
+
+V =X
+,
+
+
+u
+i 
+
+ i=1 
+
+
+
+
+
+Ω=
+
+
+
+0
+
+0
+
+
+
+
+
+
+
+3
+X
+1 
+
+λ
+Z
+i=1 i
+0
+
+(linear motion parallel to the image plane,
+with angular motion around the optical axis).
+
+More independent camera motions with ḃ = 0 exist, since the dimension of N {J b } is at least 4.
+Exercise #3
+We compute first the kinetic energy of the RP robot. For the two links, we have
+T1 =
+
+
+1
+I1 + m1 d21 q̇12 ,
+2
+
+T2 =
+
+1
+1
+I2 q̇12 + m2 v Tc2 v c2 ,
+2
+2
+
+with
+v c2 = ṗc2 =
+
+d
+dt
+
+
+
+l1 cos q1 + q2 sin q1
+l1 sin q1 − q2 cos q1
+
+
+
+
+=
+
+(q2 cos q1 − l1 sin q1 ) q̇1 + sin q1 q̇2
+(l1 cos q1 + q2 sin q1 ) q̇1 − cos q1 q̇2
+
+
+.
+
+Therefore, from T = T1 + T2 = 21 q̇ T M (q)q̇, we obtain the inertia matrix
+
+M (q) =
+
+I1 + m1 d21 + I2 + m2 l12 + m2 q22
+−m2 l1
+
+−m2 l1
+m2
+
+
+.
+
+The Jacobian associated to the linear velocity v = ṗ ∈ R2 of the robot tip is computed as
+
+
+l1 cos q1 + (q2 + d2 ) sin q1
+d
+∂p(q)
+ṗ =
+=
+q̇ = J (q)q̇
+dt l1 sin q1 − (q2 + d2 ) cos q1
+∂q
+
+
+(q2 + d2 ) cos q1 − l1 sin q1
+sin q1
+⇒ J (q) =
+.
+l1 cos q1 + (q2 + d2 ) sin q1 − cos q1
+
+6
+
+A singularity occurs when det J (q) = − (q2 + d2 ) = 0. Out of this singularity, and using also a
+shorthand notation for the trigonometric terms, the Cartesian inertia matrix at the robot tip is
+M p (q) = J −T (q)M (q)J −1 (q)
+1
+(q2 + d2 )2
+
+=
+
+
+
+−c1
+−s1
+
+−l1 c1 − (q2 + d2 )s1
+(q2 + d2 )c1 − l1 s1
+
+
+
+
+·
+
+I1 + m1 d21 + I2 + m2 l12 + m2 q22
+−m2 l1
+−c1
+−l1 c1 − (q2 + d2 )s1
+
+−m2 l1
+m2
+
+
+
+−s1
+(q2 + d2 )c1 − l1 s1
+
+
+
+with elements
+
+ 2
+1
+2
+2
+2
+2
+s1 ,
+I
++
+I
++
+m
+d
++
+m
+q
++
+2m
+d
+q
++
+m
+d
+−
+I
+−
+I
+−
+m
+d
+1
+2
+1
+2
+2
+2
+2
+2
+1
+2
+1
+1
+2
+2
+1
+(q2 + d2 )2
+
+
+1
+= M p,21 =
+I1 + I2 + m1 d21 − m2 d22 − 2m2 d2 q2 s1 c1 ,
+(q2 + d2 )2
+
+ 2
+1
+2
+2
+2
+=
+I
++
+I
++
+m
+d
+−
+m
+d
+−
+2m
+d
+q
+s1 .
+m
+(q
++
+d
+)
++
+1
+2
+1
+2
+2
+2
+2
+2
+2
+2
+1
+2
+(q2 + d2 )2
+
+M p,11 =
+M p,12
+M p,22
+
+The Cartesian inertia matrix is not diagonal in general. However, when evaluating M p (q ∗ ) for
+T
+q∗ = 0 3
+[rad, m] and using the numerical parameters given in the text, we obtain
+M p (q ∗ ) = J −T (q ∗ )M (q ∗ )J −1 (q ∗ )
+
+=
+
+0.2857
+0
+
+0.2857
+−1
+
+
+
+6.625 −0.5
+−0.5 0.5
+
+
+
+0.2857
+0.2857
+
+0
+−1
+
+
+
+
+=
+
+0.5
+0
+
+0
+0.5
+
+
+= 0.5 · I 2×2
+
+As a result, we can immediately verify that the Cartesian acceleration p̈ ∈ R2 of the robot end
+effector in response to an arbitrary force F ∈ R2 applied at the tip when the robot is at rest in q ∗
+and in the absence of gravity is
+∗
+p̈ = M −1
+p (q )F = 2F ,
+namely, p̈ has the same direction of the applied force F .
+Exercise #4
+The 3R robot (having N = 3 degrees of freedom) is geometrically constrained in its Cartesian
+motion in two ways:
+• it cannot change the absolute orientation of the last link, which remains always parallel to y 0 ;
+• it cannot move the tip of the second link away from the axis x = k.
+Therefore, this situation can be modeled by M = 2 scalar constraints, written in the joint space as
+
+
+π
+q1 + q2 + q3 −
+ = 0.
+2
+h(q) = 
+l1 cos q1 + l2 cos(q1 + q2 ) − k
+The Jacobian of these constraints is
+∂h(q)
+A(q) =
+=
+∂q
+
+1
+
+1
+
+− (l1 sin q1 + l2 sin(q1 + q2 )) −l2 sin(q1 + q2 )
+7
+
+1
+0
+
+!
+.
+
+,
+
+The rank of matrix A(q) is 2, except when sin(q1 + q2 ) = sin q1 = 0, which occur if and only if
+q1 = {0, π} and q2 = {0, π}, i.e., when the first two links are stretched or folded along the x0 -axis.
+However, these singular configurations are not allowed by the geometric constraints (thanks to the
+two inequalities imposed on the parameter k, otherwise arbitrary).
+The first step for deriving the reduced dynamics of this constrained robot is to find a matrix D(q)
+of size (N − M ) × M = 1 × 3 such that it completes A(q), building a nonsingular square matrix
+in the operating region. A suitable choice that satisfies this requirement is
+
+D(q) = l1 cos q1 + l2 cos(q1 + q2 ) l2 cos(q1 + q2 ) 0 ,
+which leads to
+
+
+!
+1
+1
+1
+A(q)
+
+
+=  − (l1 sin q1 + l2 sin(q1 + q2 )) −l2 sin(q1 + q2 ) 0 ,
+D(q)
+l1 cos q1 + l2 cos(q1 + q2 )
+l2 cos(q1 + q2 ) 0
+
+det
+
+A(q)
+D(q)
+
+!
+= l1 l2 sin q2 .
+
+(4)
+The determinant is never zero for all q such that the contact situation remains the same as in Fig. 3.
+As a matter of fact, this choice of D(q) reconstructs the 2 × 2 Jacobian of the 2R substructure
+made by the first two links of the 3R robot. The constrained robot has only one degree of freedom
+left, which is described by the scalar term
+v = D(q)q̇ = (l1 cos q1 + l2 cos(q1 + q2 )) q̇1 + l2 cos(q1 + q2 ) q̇2 .
+This pseudovelocity represents the motion of the tip of the second link along the direction y 0 .
+The second step of the procedure is to invert the matrix in (4) so as to define the blocks E(q) and
+F (q) in the inverse. We obtain
+
+
+!−1
+0
+l2 cos(q1 + q2 )
+l2 sin(q1 + q2 )
+A(q)
+1
+
+
+0
+− (l1 cos q1 + l2 cos(q1 + q2 )) − (l1 sin q1 + l2 sin(q1 + q2 ))  .
+=
+
+l1 l2 sin q2
+D(q)
+l1 l2 sin q2
+l1 cos q1
+l1 sin q1
+Thus, we have the partition into the first M = 2 columns
+
+
+0
+l2 cos(q1 + q2 )
+1
+
+
+0
+− (l1 cos q1 + l2 cos(q1 + q2 )) 
+E(q) =
+
+l1 l2 sin q2
+l1 l2 sin q2
+l1 cos q1
+and the last N − M = 1 column
+
+F (q) =
+
+l2 sin(q1 + q2 )
+
+
+
+1
+
+
+ − (l1 sin q1 + l2 sin(q1 + q2 ))  .
+l1 l2 sin q2
+l1 sin q1
+
+Finally, introducing in symbolic form the elements of the robot inertia of the 3R robot in free space
+
+
+m11 m12 m13
+
+
+M (q) =  m12 m22 m23  > 0,
+m13 m23 m33
+
+8
+
+we have that the reduced inertia matrix is a scalar given by2
+
+
+(m11 − m12 ) l2 sin(q1 + q2 ) + (m13 − m12 ) l1 sin q1
+1
+
+
+F T(q)M (q)F (q) = F T(q) ·
+ (m12 − m22 ) l2 sin(q1 + q2 ) + (m23 − m22 ) l1 sin q1  .
+l1 l2 sin q2
+(m13 − m23 ) l2 sin(q1 + q2 ) + (m33 − m23 ) l1 sin q1
+
+1
+(m11 + m22 − 2m12 ) l22 sin2 (q1 + q2 )
+=
+2
+(l1 l2 sin q2 )
++ (m22 + m33 − 2m23 ) l12 sin2 q1
+
++ 2 (m22 − m12 + m13 − m23 ) l1 l2 sin q1 sin(q1 + q2 ) .
+Exercise #5
+The trajectory tracking control law based on feedback linearization is
+
+
+uF BL = M (q) q̈ d + K D (q̇ d − q̇) + K P (q d − q) + c(q, q̇) + g(q).
+
+(5)
+
+The Lyapunov-based control law with global asymptotic convergence property is
+uGLB = M (q)q̈ d + S(q, q̇)q̇ d + g(q) + K D (q̇ d − q̇) + K P (q d − q),
+
+(6)
+
+where Ṁ − 2S is a skew symmetric matrix and the PD gains are by hypothesis the same as in (5).
+Since the Coriolis and centrifugal terms in (5) can always be rewritten as c(q, q̇) = S(q, q̇)q̇ using
+the same factorization used in (6), the difference between the two control torques can be written
+in general as
+∆u = uF BL − uGLB = (M (q) − I) (K D (q̇ d − q̇) + K P (q d − q)) + S(q, q̇) (q̇ − q̇ d ) .
+From the desired joint trajectory, we obtain
+
+
+3π
+πt
+cos
+2 ,
+q̇ d (t) =  2
+2π sin 2πt
+At time t = 2 s, we have thus
+ π 
+q d (2) =  2  ,
+0
+
+(7)
+
+
+3π 2
+πt
+−
+sin
+q̈ d (t) = 
+4
+2 .
+2
+4π cos 2πt
+
+
+
+q̇ d (2) = 
+
+−
+
+
+3π
+2 ,
+0
+
+q̇ d (2) =
+
+while the robot state and the position and velocity errors are
+ π 
+
+
+0
+
+
+q(2) =  2π  ⇒ e(2) =  π  ,
+q̇(2) = q̇ d (2)
+−
+2
+2
+
+0
+4π 2
+
+⇒
+
+!
+,
+
+ė(2) = 0.
+
+In this case, the only information needed in eq. (7) is the inertia matrix of the 2R robot. From the
+lecture slides, this matrix has the form
+!
+a1 + 2a2 cos q2 a3 + a2 cos q2
+M (q) =
+,
+a3 + a2 cos q2
+a3
+2 Performing computations by hand in the given sequence is surprisingly faster than setting up a similarly efficient
+code using symbolic programming!
+
+9
+
+with dynamic coefficients ai > 0, i = 1, 2, 3. Using the PD gains given in the text, we finally obtain
+
+
+!
+!
+0
+a1 − 1
+a3
+a3
+
+
+∆u(2) = (M (q(2)) − I) · K P e(2) =
+· 100 π
+= 50π ·
+.
+a3
+a3 − 1
+a3 − 1
+2
+It is quite reasonably to assume that a3 = I2 + m2 d2c2 > 1, being the robot arm of human-like
+size and weight. Thus, both components of ∆u(2) are positive. However, to determine which
+controller is using the larger torques in absolute value at t = 2 s, we need to assess also the
+signs of the components of at least one of the two torque commands3 . We evaluate then the
+Lyapunov-based tracking controller under the assumed conditions, obtaining
+uGLB (2) = M (q(2)) q̈ d (2) + S(q(2), q̇ d (2)) q̇ d (2) + g(q(2)) + K P e(2).
+For each term in the expression of uGLB (2), the following can be easily observed:
+!
+!
+!
+a1 a3
+0
+1
+2
+M (q(2)) q̈ d (2) =
+= 4π a3
+> 0,
+a3 a3
+4π 2
+1
+S(q(2), q̇ d (2)) q̇ d (2) = c(q(2), q̇ d (2)) =
+
+!
+2
+−a2 sin q2 (2) q̇d2
+(2) − 2 q̇d1 (2)q̇d2 (2)
+
+2
+a2 sin q2 (2) q̇d1
+(2)
+!
+2
+0
+9π
+a2
+≤ 0,
+=−
+4
+1
+!
+!
+a4 cos q1 (2) + a5 cos(q1 (2) + q2 (2))
+1
+g(q(2)) =
+= a5
+> 0,
+a5 cos(q1 (2) + q2 (2))
+1
+!
+0
+K P e(2) = 50
+≥ 0.
+π
+
+Despite of the negative addend in the second component of the velocity term, it can be safely
+concluded that this single term is compensated by the multiple other positive ones, so that
+uGLB (2) > 0 holds componentwise. Thus, it is also uF BL (2) = uGLB (2) + ∆u(2) > 0 componentwise. For both two components, the feedback linearization law requires at t = 2 s a larger
+torque (in absolute value, but in fact positive) than the Lyapunov-based control law.
+∗∗∗∗∗
+
+3 Suppose that ∆u = a − b > 0. If b > 0, both a and b will be positive and a is certainly larger than b. If instead
+b < 0, we could have both |b| > |a| or viceversa in absolute value, and thus also the sign of a should be checked.
+
+10
+
+

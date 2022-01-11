@@ -2,15 +2,16 @@
 %email:     imbajoaruiz.1922212@studenti.uniroma1.it
 %this functions has the intentio to split the matrix into
 function [struct_sub_mat,params]=Adpatative_Control_parameters2(submats,dinamics_parameters,known_params,aM)
-    a  =expand(dinamics_parameters); %all parameteres available
+%     a  =expand(dinamics_parameters); %all parameteres available
     submats=expand(submats)
-    a_k=expand(known_params);
-    a_k_sym=sym('a_k',size(a_k),'real')
-    a_k_sym_zeros=zeros(size(a_k))
+%     a_k=expand(known_params);
+%     a_k_sym=sym('a_k',size(a_k),'real')
+%     a_k_sym_zeros=zeros(size(a_k))
 
     %extracting known terms terms
     [independet_var_combs_except_terms]=independet_var_combs_generator(known_params,length(known_params));
-    [new_mat_struct]=getting_known_uknown_terms(dinamics_parameters,[],[],known_params,independet_var_combs_except_terms,'a');
+    compute_known_uknown_terms=true;
+    [new_mat_struct]=getting_known_uknown_terms(dinamics_parameters,[],[],known_params,independet_var_combs_except_terms,'a',compute_known_uknown_terms);
 %     %sorting forlenght the symbolic values
 %     [B_u,I_u]=sort(cellfun(@length,string(a_k)),'descend')
 %     new_a=subs(a,a_k(I_u),a_k_sym(I_u))
@@ -33,8 +34,8 @@ function [struct_sub_mat,params]=Adpatative_Control_parameters2(submats,dinamics
 %     params.unknown_parameters_=new_mat_struct.new_a_unknown
     params.unknown_parameters =new_mat_struct.new_a_unknown
     
-    params.known_parameters=[params.known_parameters;params.unknown_parameters]
-    params.known_parameters_=[params.known_parameters_;params.unknown_parameters_]
+    params.all_parameters=[params.known_parameters;params.unknown_parameters]
+    params.all_parameters_=[params.known_parameters_;params.unknown_parameters_]
 %     known_parameters_=
 %     struct_sub_mat.new_submats_u=subs(struct_sub_mat.new_submats,a_k_sym,a_k_sym_zeros)
 %     struct_sub_mat.new_submats_k=subs(struct_sub_mat.new_submats,a_u_sym,a_u_sym_zeros)

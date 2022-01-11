@@ -24,8 +24,8 @@ end
 
 %returning values
 Msubs=new_mat_structure.new_mat;
-dynamicParamsReturn_=new_mat_structure.new_dynamic_values_known;
-a=new_mat_structure.new_a_known;
+dynamicParamsReturn_=new_mat_structure.new_dynamic_values_unknown;
+a=new_mat_structure.new_a_unknown;
 
 %returning values
 
@@ -38,8 +38,8 @@ if(~isempty(exceptionTerms))
     
     
     Msubs=subs(Msubs,a,new_mat_known_terms);
-    dynamicParamsReturn_=new_mat_known_structure.new_dynamic_values_known;
-    a=new_mat_known_structure.new_a_known;
+    dynamicParamsReturn_=new_mat_known_structure.new_dynamic_values_unknown;
+    a=new_mat_known_structure.new_a_unknown;
 end
 
 end
