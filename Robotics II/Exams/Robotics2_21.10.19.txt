@@ -1,0 +1,53 @@
+Robotics 2
+October 19, 2021
+Exercise #1
+The DLR Justin robot in Fig. 1 has a torso with three revolute joints, with joint variables q t 2 R3 ,
+on which two 7R identical left and right arms are mounted, with joint variables q l 2 R7 and
+q r 2 R7 , respectively. The robot has thus a total of 17 dofs, neglecting those of the end e↵ectors
+(two anthropomorphic hands), with a perfectly symmetric body structure. Assume that the robot
+is commanded by the joint velocity q̇ = (q̇ l , q̇ r , q̇ t ) 2 R17 . Consider the following kinematic control
+problems and introduce in a symbolic way all kinematic terms (matrices, vectors, etc.) that you
+need for the definition of the control laws.
+
+Figure 1: The DLR Justin robot, a torso with bimanual arms.
+a) Let the Cartesian motion tasks for the left and right end e↵ectors be specified in an independent way in terms of a desired position and orientation trajectory r l,d (t) 2 R6 and r r,d (t) 2 R6 ,
+respectively. A minimal representation is used for the orientations. Both trajectories are expressed in the base frame of the torso. Define a control strategy q̇ = q̇ a (t) for all the robot
+joints that is able to execute simultaneously the two tasks, whenever possible, recovering also
+from any (initial or later) Cartesian error and keeping the joints close to their midrange. Specify
+qualitatively the conditions for the feasibility of these tasks.
+b) Is it possible to execute the complete bimanual task as in a), but shaping the solution so that
+the motion of the torso joints is largely reduced? And blocking completely the motion of the
+torso joints? Provide the associated control laws q̇ = q̇ b (t) and q̇ = q̇ bb (t), and discuss which
+may be the difficulties possibly encountered.
+c) Consider the same task r l,d (t) 2 R6 as in a) for the left end e↵ector. The right end e↵ector
+should move now in coordination with the left one, as specified by a desired relative position
+plr,d (t) and orientation lRr,d (t), both expressed with respect to the frame of the left end e↵ector.
+Define a control strategy q̇ = q̇ c (t) for all the robot joints that addresses this new composite
+task for Justin, recovering also from any error during task execution.
+d) What if the command is moved to the acceleration level, with q̈ = (q̈ l , q̈ r , q̈ t ) 2 R17 ? Provide an
+extension q̈ = q̈ d (t) for the case in a) that prevents also the internal build up of joint velocities.
+1
+
+Exercise #2
+
+Figure 2: Two masses connected by a visco-elastic spring.
+Figure 2 shows a mechanical system made of two masses B and M with a visco-elastic coupling,
+viscous friction on the motion of the individual masses, and an input force ⌧ acting on the first
+mass. The zero of the two position variables ✓ and q is associated to an undeformed spring. The
+spring has sti↵ness K > 0 and its elastic potential energy is quadratic in the deformation q ✓.
+This model represents also a visco-elastic joint of a robot, where B and M are, respectively, the
+motor and the link inertia, while ✓ and q are their respective (angular) positions.
+a) Derive the dynamic model of this system, including all non-conservative terms due to the viscous
+friction a↵ecting the motion of the two masses (with coefficients F✓ > 0 and Fq > 0) and to the
+viscous damping on the deformation velocity of the spring (with coefficient D 0).
+b) Provide the simplest feedback law that is able to asymptotically stabilize the position of the
+second mass to a constant desired value qd . Prove the result using a Lyapunov/LaSalle technique
+(or any other preferred method).
+c) Set now D = 0. Solve the inverse dynamics problem for a desired, sufficiently smooth trajectory
+qd (t). Provide the explicit expression of ⌧d (t) as a function of qd (t) and its (higher order) time
+derivatives only.
+[150 minutes (2.5 hours); open books]
+
+2
+
+
